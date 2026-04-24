@@ -74,10 +74,10 @@
             errorNetwork: "Connexion au serveur impossible. Vérifiez votre accès internet.",
             errorServer: "Désolé, une erreur technique est survenue. Veuillez réessayer.",
             quickQs: [
-                { text: "Donne-moi 3 exercices de maths niveau CM2", hint: "📚 Exercices élèves" },
-                { text: "Exercices de remédiation en français pour la 6ème", hint: "🔁 Remédiation" },
-                { text: "C'est quoi PLANETE 3.0 ?", hint: "💻 Plateforme enseignants" },
-                { text: "Comment avancer dans ma carrière d'enseignant ?", hint: "📋 Carrière & administration" }
+                { text: "Donne-moi 3 exercices de maths niveau CM2" },
+                { text: "Exercices de remédiation en français pour la 6ème" },
+                { text: "C'est quoi PLANETE 3.0 ?" },
+                { text: "Comment avancer dans ma carrière d'enseignant ?" }
             ]
         }
     };
@@ -146,7 +146,6 @@
             card.innerHTML = `
                 <div class="quick-card-body">
                     <span class="quick-card-text">${q.text}</span>
-                    ${q.hint ? `<span class="quick-card-hint">${q.hint}</span>` : ""}
                 </div>`;
             card.onclick = () => sendMessage(q.text);
             elements.quickGrid.appendChild(card);

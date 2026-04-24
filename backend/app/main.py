@@ -28,6 +28,7 @@ from app.services import (
     FAQService,
     KnowledgeService,
     ChatService,
+    EmbeddingService,
 )
 from app.middleware.rate_limit import limiter
 
@@ -77,8 +78,15 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
     app.state.language_service = LanguageService()
     app.state.translation_service = TranslationService(app.state.language_service)
     app.state.nlp_service = NLPService()
-    app.state.faq_service = FAQService()
-    app.state.knowledge_service = KnowledgeService(faq_service=app.state.faq_service)
+
+    # Service d'embeddings sémantiques (Jina AI si clé disponible, TF-IDF sinon)
+    app.state.embedding_service = EmbeddingService(api_key=settings.JINA_API_KEY)
+
+    app.state.faq_service = FAQService(embedding_service=app.state.embedding_service)
+    app.state.knowledge_service = KnowledgeService(
+        faq_service=app.state.faq_service,
+        embedding_service=app.state.embedding_service
+    )
 
     app.state.chat_service = ChatService(
         language_service=app.state.language_service,

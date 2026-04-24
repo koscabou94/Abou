@@ -8,6 +8,7 @@ from .nlp_service import NLPService
 from .faq_service import FAQService
 from .knowledge_service import KnowledgeService
 from .chat_service import ChatService
+from .embedding_service import EmbeddingService
 
 __all__ = [
     "LanguageService",
@@ -16,4 +17,5 @@ __all__ = [
     "FAQService",
     "KnowledgeService",
     "ChatService",
+    "EmbeddingService",
 ]

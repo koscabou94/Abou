@@ -37,6 +37,12 @@ class Settings(BaseSettings):
         default="",
         description="Clé API Groq (https://console.groq.com)"
     )
+
+    # === Jina AI Embeddings (RAG sémantique) ===
+    JINA_API_KEY: str = Field(
+        default="",
+        description="Clé API Jina AI - gratuit 1M tokens/mois (https://jina.ai)"
+    )
     LLM_MODEL: str = Field(
         default="llama-3.3-70b-versatile",
         description="Modèle Groq à utiliser"

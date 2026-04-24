@@ -1,6 +1,7 @@
 """
-Service de gestion des FAQ avec recherche sémantique TF-IDF (scikit-learn).
-Remplace sentence-transformers pour éviter les dépendances ML lourdes.
+Service de gestion des FAQ avec recherche sémantique.
+- Avec JINA_API_KEY : embeddings Jina AI (recherche par sens, multilingue)
+- Sans clé : TF-IDF scikit-learn (fallback)
 """
 
 import json
@@ -15,20 +16,28 @@ logger = structlog.get_logger(__name__)
 
 class FAQService:
     """
-    Service de FAQ avec correspondance sémantique TF-IDF + similarité cosinus.
-    Utilise scikit-learn, sans GPU ni modèle lourd à télécharger.
+    Service de FAQ avec correspondance sémantique.
+    Utilise Jina AI embeddings si disponible, TF-IDF sinon.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, embedding_service=None) -> None:
+        self._embedding_service = embedding_service
         self._vectorizer = None
         self._tfidf_matrix = None
         self._faq_cache: list = []
+        self._faq_embeddings: list = []   # embeddings Jina des questions
         self._model_loaded = False
         self._loading_lock = asyncio.Lock()
         logger.info("Service FAQ initialisé (TF-IDF)")
 
+    def set_embedding_service(self, embedding_service) -> None:
+        self._embedding_service = embedding_service
+
+    # ─────────────────────────────────────────────────────────────────
+    # CHARGEMENT
+    # ─────────────────────────────────────────────────────────────────
+
     def _load_vectorizer(self) -> None:
-        """Charge le vectorizer TF-IDF (synchrone, très rapide)."""
         from sklearn.feature_extraction.text import TfidfVectorizer
         self._vectorizer = TfidfVectorizer(
             analyzer='word',
@@ -38,10 +47,12 @@ class FAQService:
         )
 
     def _fit_faqs(self) -> None:
-        """Entraîne le TF-IDF sur les FAQ chargées."""
         if not self._faq_cache or self._vectorizer is None:
             return
-        questions = [faq.get("question", "") + " " + " ".join(faq.get("keywords", [])) for faq in self._faq_cache]
+        questions = [
+            faq.get("question", "") + " " + " ".join(faq.get("keywords", []))
+            for faq in self._faq_cache
+        ]
         self._tfidf_matrix = self._vectorizer.fit_transform(questions)
         logger.info("TF-IDF entraîné", faq_count=len(self._faq_cache))
 
@@ -61,8 +72,29 @@ class FAQService:
                 logger.error("Échec chargement TF-IDF", error=str(exc))
                 return False
 
+    async def _build_jina_embeddings(self) -> None:
+        """Génère les embeddings Jina pour toutes les FAQ (appelé après le chargement)."""
+        if not self._embedding_service or not self._embedding_service.is_jina_enabled:
+            return
+        if not self._faq_cache:
+            return
+        try:
+            questions = [
+                faq.get("question", "") + " " + " ".join(faq.get("keywords", []))
+                for faq in self._faq_cache
+            ]
+            embeddings = await self._embedding_service.embed_texts(questions)
+            if embeddings and len(embeddings) == len(self._faq_cache):
+                self._faq_embeddings = embeddings
+                logger.info("Embeddings Jina FAQ générés", count=len(embeddings))
+            else:
+                logger.warning("Échec génération embeddings FAQ, fallback TF-IDF")
+                self._faq_embeddings = []
+        except Exception as exc:
+            logger.error("Erreur génération embeddings FAQ", error=str(exc))
+            self._faq_embeddings = []
+
     async def load_faqs(self, db) -> int:
-        """Charge les FAQ depuis la base de données en cache."""
         try:
             from sqlalchemy import select
             from app.database.models import FAQ
@@ -82,6 +114,7 @@ class FAQService:
             await self._ensure_model_loaded()
             loop = asyncio.get_event_loop()
             await loop.run_in_executor(None, self._fit_faqs)
+            await self._build_jina_embeddings()
             logger.info("FAQ chargées en cache", count=len(self._faq_cache))
             return len(self._faq_cache)
         except Exception as exc:
@@ -89,21 +122,16 @@ class FAQService:
             return 0
 
     async def seed_from_json(self, json_path: str, db) -> int:
-        """Importe les FAQ depuis un fichier JSON vers la base de données."""
         try:
             import os
             if not os.path.exists(json_path):
                 logger.warning("Fichier FAQ introuvable", path=json_path)
                 return 0
-
             with open(json_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
-
             faqs_data = data.get("faqs", [])
             if not faqs_data:
-                logger.warning("Aucune FAQ dans le fichier JSON")
                 return 0
-
             from app.database.models import FAQ
             count = 0
             for faq_item in faqs_data:
@@ -117,32 +145,110 @@ class FAQService:
                 )
                 db.add(faq)
                 count += 1
-
             await db.commit()
-
-            # Recharger le cache
             await self.load_faqs(db)
             logger.info("FAQ importées depuis JSON", count=count)
             return count
-
         except Exception as exc:
             logger.error("Erreur import FAQ JSON", error=str(exc))
             return 0
 
+    async def load_from_json_direct(self, json_path: str) -> int:
+        """Charge les FAQ depuis JSON en mémoire (fallback BD inaccessible)."""
+        import os
+        try:
+            if not os.path.exists(json_path):
+                logger.warning("Fichier FAQ introuvable", path=json_path)
+                return 0
+            with open(json_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            faqs_data = data.get("faqs", [])
+            self._faq_cache = [
+                {
+                    "id": i + 1,
+                    "question": f.get("question", ""),
+                    "answer": f.get("answer", ""),
+                    "category": f.get("category", "general"),
+                    "keywords": f.get("keywords", []),
+                }
+                for i, f in enumerate(faqs_data)
+                if f.get("question") and f.get("answer")
+            ]
+            await self._ensure_model_loaded()
+            loop = asyncio.get_event_loop()
+            await loop.run_in_executor(None, self._fit_faqs)
+            # Générer les embeddings Jina pour les FAQ
+            await self._build_jina_embeddings()
+            logger.info("FAQ chargées depuis JSON (fallback)", count=len(self._faq_cache))
+            return len(self._faq_cache)
+        except Exception as exc:
+            logger.error("Erreur chargement FAQ JSON direct", error=str(exc))
+            return 0
+
+    # ─────────────────────────────────────────────────────────────────
+    # RECHERCHE
+    # ─────────────────────────────────────────────────────────────────
+
     async def find_best_match(self, query: str, language: str = "fr") -> Optional[dict]:
         """
-        Trouve la meilleure FAQ correspondant à la requête via TF-IDF.
+        Trouve la meilleure FAQ correspondant à la requête.
+        Utilise Jina AI si disponible, sinon TF-IDF.
         """
-        if not self._faq_cache or self._tfidf_matrix is None:
+        if not self._faq_cache:
             return None
 
+        # ── Mode Jina AI (sémantique) ──
+        if (self._embedding_service
+                and self._embedding_service.is_jina_enabled
+                and self._faq_embeddings
+                and len(self._faq_embeddings) == len(self._faq_cache)):
+            return await self._find_match_jina(query)
+
+        # ── Mode TF-IDF (fallback) ──
+        return await self._find_match_tfidf(query)
+
+    async def _find_match_jina(self, query: str) -> Optional[dict]:
+        """Recherche sémantique via embeddings Jina."""
         try:
+            import numpy as np
+            query_vec = await self._embedding_service.embed_query_jina(query)
+            if query_vec is None:
+                return await self._find_match_tfidf(query)
+
+            scores = self._embedding_service.cosine_similarity_batch(
+                query_vec, self._faq_embeddings
+            )
+            best_idx = int(np.argmax(scores))
+            best_score = float(scores[best_idx])
+
+            # Seuil plus bas pour les embeddings (plus précis que TF-IDF)
+            JINA_THRESHOLD = 0.45
+            if best_score < JINA_THRESHOLD:
+                return None
+
+            faq = self._faq_cache[best_idx]
+            logger.info(
+                "Réponse FAQ trouvée (Jina)",
+                score=round(best_score, 3),
+                faq_id=faq.get("id"),
+                category=faq.get("category"),
+            )
+            return {**faq, "score": best_score}
+        except Exception as exc:
+            logger.error("Erreur recherche Jina FAQ", error=str(exc))
+            return await self._find_match_tfidf(query)
+
+    async def _find_match_tfidf(self, query: str) -> Optional[dict]:
+        """Recherche TF-IDF classique (fallback)."""
+        if self._tfidf_matrix is None:
+            return None
+        try:
+            from sklearn.metrics.pairwise import cosine_similarity
+            import numpy as np
+
             model_ok = await self._ensure_model_loaded()
             if not model_ok or self._vectorizer is None:
                 return None
-
-            from sklearn.metrics.pairwise import cosine_similarity
-            import numpy as np
 
             query_vec = self._vectorizer.transform([query])
             scores = cosine_similarity(query_vec, self._tfidf_matrix).flatten()
@@ -153,21 +259,22 @@ class FAQService:
                 return None
 
             faq = self._faq_cache[best_idx]
-            logger.debug("FAQ match trouvé", score=best_score, faq_id=faq.get("id"))
+            logger.debug("FAQ match TF-IDF", score=best_score, faq_id=faq.get("id"))
             return {**faq, "score": best_score}
-
         except Exception as exc:
-            logger.error("Erreur recherche FAQ", error=str(exc))
+            logger.error("Erreur recherche FAQ TF-IDF", error=str(exc))
             return None
 
+    # ─────────────────────────────────────────────────────────────────
+    # UTILITAIRES
+    # ─────────────────────────────────────────────────────────────────
+
     async def get_all_faqs(self, category: Optional[str] = None) -> list:
-        """Retourne toutes les FAQ (filtrées par catégorie si précisé)."""
         if category:
             return [f for f in self._faq_cache if f.get("category") == category]
         return self._faq_cache
 
     async def get_faq_by_id(self, faq_id: int, db) -> Optional[dict]:
-        """Récupère une FAQ par son ID."""
         try:
             from sqlalchemy import select
             from app.database.models import FAQ
@@ -187,40 +294,3 @@ class FAQService:
         except Exception as exc:
             logger.error("Erreur récupération FAQ", error=str(exc))
             return None
-
-    async def load_from_json_direct(self, json_path: str) -> int:
-        """
-        Charge les FAQ directement depuis le JSON en mémoire, sans passer par la BD.
-        Utilisé comme fallback si la BD est inaccessible.
-        """
-        import os
-        try:
-            if not os.path.exists(json_path):
-                logger.warning("Fichier FAQ introuvable", path=json_path)
-                return 0
-
-            with open(json_path, "r", encoding="utf-8") as f:
-                data = json.load(f)
-
-            faqs_data = data.get("faqs", [])
-            self._faq_cache = [
-                {
-                    "id": i + 1,
-                    "question": f.get("question", ""),
-                    "answer": f.get("answer", ""),
-                    "category": f.get("category", "general"),
-                    "keywords": f.get("keywords", []),
-                }
-                for i, f in enumerate(faqs_data)
-                if f.get("question") and f.get("answer")
-            ]
-
-            await self._ensure_model_loaded()
-            loop = asyncio.get_event_loop()
-            await loop.run_in_executor(None, self._fit_faqs)
-
-            logger.info("FAQ chargées depuis JSON (fallback)", count=len(self._faq_cache))
-            return len(self._faq_cache)
-        except Exception as exc:
-            logger.error("Erreur chargement FAQ JSON direct", error=str(exc))
-            return 0

@@ -58,7 +58,8 @@
         filePreview: document.getElementById("file-preview"),
         deleteModal: document.getElementById("delete-modal"),
         deleteCancelBtn: document.getElementById("delete-cancel-btn"),
-        deleteConfirmBtn: document.getElementById("delete-confirm-btn")
+        deleteConfirmBtn: document.getElementById("delete-confirm-btn"),
+        homeBtn: document.getElementById("home-btn")
     };
 
     // === LOCALIZATION (Français uniquement) ===
@@ -197,6 +198,8 @@
         state.attachedFiles = [];
         renderFilePreview();
         elements.welcomeSection.style.display = "none";
+        // Afficher le bouton Accueil dès qu'une conversation commence
+        if (elements.homeBtn) elements.homeBtn.classList.remove("hidden");
 
         // Add User Message
         appendMessage("user", displayMsg);
@@ -398,6 +401,24 @@
         if (window.lucide) lucide.createIcons();
     }
 
+    // === RETOUR À L'ACCUEIL ===
+    function goHome() {
+        state.currentSessionId = crypto.randomUUID();
+        elements.messagesArea.innerHTML = "";
+        elements.welcomeSection.style.display = "";
+        state.attachedFiles = [];
+        renderFilePreview();
+        renderHistory();
+        // Cacher le bouton Accueil (on est de retour à l'accueil)
+        if (elements.homeBtn) elements.homeBtn.classList.add("hidden");
+        // Fermer la sidebar sur mobile
+        if (window.innerWidth <= 900 && state.isSidebarOpen) {
+            toggleSidebar();
+        }
+        // Remettre le focus sur le champ de texte
+        elements.messageInput.focus();
+    }
+
     // === DELETE CONVERSATION ===
     function showDeleteConfirm(sessionId) {
         state.deleteTargetId = sessionId;
@@ -415,6 +436,7 @@
             state.currentSessionId = crypto.randomUUID();
             elements.messagesArea.innerHTML = "";
             elements.welcomeSection.style.display = "";
+            if (elements.homeBtn) elements.homeBtn.classList.add("hidden");
         }
 
         renderHistory();
@@ -523,14 +545,12 @@
             btn.onclick = () => applyLanguage(btn.dataset.lang);
         });
 
-        elements.newChatBtn.onclick = () => {
-            state.currentSessionId = crypto.randomUUID();
-            elements.messagesArea.innerHTML = "";
-            elements.welcomeSection.style.display = "";
-            state.attachedFiles = [];
-            renderFilePreview();
-            renderHistory();
-        };
+        elements.newChatBtn.onclick = () => goHome();
+
+        // Bouton Accueil (retour écran d'accueil depuis une conversation)
+        if (elements.homeBtn) {
+            elements.homeBtn.onclick = () => goHome();
+        }
 
         // File upload
         if (elements.attachBtn && elements.fileInput) {

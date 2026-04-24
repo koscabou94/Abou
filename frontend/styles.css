@@ -328,6 +328,36 @@ h1, h2, h3, h4 {
 .menu-btn:hover { background: var(--color-bg-hover); color: var(--color-accent); }
 .menu-btn i, .menu-btn svg { width: 20px; height: 20px; }
 
+/* === LEFT GROUP (menu + home) === */
+.top-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* === BOUTON ACCUEIL === */
+.home-btn {
+    background: none;
+    border: 1px solid var(--color-simen-border);
+    color: var(--color-simen);
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    transition: var(--transition-elite);
+    white-space: nowrap;
+}
+.home-btn:hover {
+    background: var(--color-simen-bg);
+    border-color: var(--color-simen);
+}
+.home-btn i, .home-btn svg { width: 15px; height: 15px; }
+
 /* Centrage absolu du titre DPTIC */
 .top-nav-center {
     position: absolute;
@@ -960,22 +990,78 @@ h1, h2, h3, h4 {
         margin-right: 0;
     }
 
+    /* Touch targets plus grands sur tablette */
+    .menu-btn, .sidebar-toggle, .action-btn {
+        padding: 10px;
+        min-width: 40px;
+        min-height: 40px;
+    }
+
+    .send-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .quick-access-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
 }
 
 /* === RESPONSIVE: MOBILE === */
 @media (max-width: 600px) {
-    .welcome-center { margin-top: 40px; }
-    .welcome-center h2 { font-size: 1.5rem; }
-    .quick-access-grid { grid-template-columns: 1fr; }
-    .input-wrapper { border-radius: 20px; }
-    .dptic-nav-icon { width: 24px; height: 24px; }
-    .dptic-nav-title { font-size: 0.9rem; letter-spacing: 0.12em; }
+    .welcome-center {
+        margin-top: 32px;
+        padding: 0 16px;
+    }
+    .welcome-center h2 { font-size: 1.4rem; }
+    .welcome-center p { font-size: 0.9rem; }
+
+    .quick-access-grid {
+        grid-template-columns: 1fr;
+        padding: 0 16px;
+        margin-top: 20px;
+    }
+
+    .quick-card { padding: 12px 14px; }
+
+    .input-container {
+        bottom: 12px;
+        padding: 0 12px;
+    }
+    .input-wrapper {
+        border-radius: 20px;
+        padding: 8px 12px;
+    }
+
+    .dptic-nav-title { font-size: 0.9rem; letter-spacing: 0.1em; }
     .language-selector { gap: 2px; }
     .lang-pill { padding: 4px 7px; font-size: 0.65rem; }
 
-    .messages-list { padding: 20px 16px; gap: 24px; }
+    .messages-list { padding: 16px 12px; gap: 20px; }
     .message-node { gap: 10px; }
-    .user .msg-bubble { max-width: 90%; }
+    .user .msg-bubble { max-width: 88%; font-size: 0.9rem; }
+    .msg-bubble { font-size: 0.9rem; }
+
+    /* Bouton accueil : icône seulement sur très petit écran */
+    .home-btn-text { display: none; }
+    .home-btn { padding: 7px 10px; border-radius: 50%; }
+
+    /* Top nav adapté mobile */
+    .top-nav { padding: 0 12px; height: 52px; }
+
+    /* Chat viewport avec padding sécurité bas (notch iPhone) */
+    .chat-viewport { padding-bottom: 160px; }
+
+    /* Message input plus confortable */
+    #message-input { font-size: 16px; /* évite zoom iOS */ }
+}
+
+/* === RESPONSIVE: TRÈS PETITS ÉCRANS === */
+@media (max-width: 380px) {
+    .welcome-center h2 { font-size: 1.2rem; }
+    .dptic-nav-title { font-size: 0.8rem; letter-spacing: 0.06em; }
+    .messages-list { padding: 12px 10px; }
 }
 
 /* === PRINT === */

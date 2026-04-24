@@ -74,10 +74,10 @@
             errorNetwork: "Connexion au serveur impossible. Vérifiez votre accès internet.",
             errorServer: "Désolé, une erreur technique est survenue. Veuillez réessayer.",
             quickQs: [
-                { text: "C'est quoi PLANETE 3.0 ?", hint: "Découvrir la plateforme" },
-                { text: "Comment consulter les résultats dans MIRADOR ?", hint: "Statistiques et bilans" },
-                { text: "Comment avancer dans ma carrière d'enseignant ?", hint: "Avancement et promotion" },
-                { text: "Comment faire une demande administrative ?", hint: "Démarches officielles" }
+                { text: "Donne-moi 3 exercices de maths niveau CM2", hint: "📚 Exercices élèves" },
+                { text: "Exercices de remédiation en français pour la 6ème", hint: "🔁 Remédiation" },
+                { text: "C'est quoi PLANETE 3.0 ?", hint: "💻 Plateforme enseignants" },
+                { text: "Comment avancer dans ma carrière d'enseignant ?", hint: "📋 Carrière & administration" }
             ]
         }
     };

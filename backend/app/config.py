@@ -49,7 +49,7 @@ class Settings(BaseSettings):
     )
 
     # === Paramètres LLM ===
-    MAX_TOKENS: int = Field(default=800)
+    MAX_TOKENS: int = Field(default=1500)
     TEMPERATURE: float = Field(default=0.3)
     CONTEXT_WINDOW: int = Field(default=5)
 

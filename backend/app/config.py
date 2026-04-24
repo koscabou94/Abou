@@ -43,7 +43,7 @@ class Settings(BaseSettings):
     )
 
     # === Paramètres LLM ===
-    MAX_TOKENS: int = Field(default=512)
+    MAX_TOKENS: int = Field(default=800)
     TEMPERATURE: float = Field(default=0.3)
     CONTEXT_WINDOW: int = Field(default=5)
 
@@ -70,8 +70,8 @@ class Settings(BaseSettings):
     )
 
     # === FAQ ===
-    FAQ_MATCH_THRESHOLD: float = Field(default=0.15)
-    FAQ_HIGH_CONFIDENCE_THRESHOLD: float = Field(default=0.30)
+    FAQ_MATCH_THRESHOLD: float = Field(default=0.30)
+    FAQ_HIGH_CONFIDENCE_THRESHOLD: float = Field(default=0.55)
 
     # === Cache ===
     CACHE_TTL_SECONDS: int = Field(default=3600)

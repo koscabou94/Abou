@@ -171,7 +171,21 @@ class ChatService:
                 }
 
             # === ÉTAPE 4 : Recherche dans les FAQ (chemin rapide) ===
-            faq_match = await self.faq_service.find_best_match(fr_message, "fr")
+            # Détecter les questions de culture générale (géographie, histoire...)
+            # qui ne doivent PAS être répondues par la FAQ éducative
+            _general_knowledge_markers = [
+                "capitale", "président", "president", "population", "superficie",
+                "monnaie", "langue officielle", "drapeau", "hymne", "histoire de",
+                "qui a fondé", "quand a été", "combien d'habitants", "situé",
+                "quelle est la religion", "quel pays", "continent",
+            ]
+            _msg_lower_check = fr_message.lower()
+            _is_general_knowledge = (
+                intent == "general"
+                and any(m in _msg_lower_check for m in _general_knowledge_markers)
+            )
+
+            faq_match = None if _is_general_knowledge else await self.faq_service.find_best_match(fr_message, "fr")
             source = "llm"
             fr_response = None
 

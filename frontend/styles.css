@@ -1103,6 +1103,68 @@ h1, h2, h3, h4 {
     .messages-list { padding: 12px 10px; }
 }
 
+/* === BOUTONS DE CLARIFICATION (choix multiples) === */
+.clarification-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 14px 0 10px;
+}
+
+.clarification-btn {
+    background: var(--color-simen-bg);
+    border: 1.5px solid var(--color-simen-border);
+    color: var(--color-simen);
+    padding: 8px 18px;
+    border-radius: 24px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+}
+
+.clarification-btn:hover:not(:disabled) {
+    background: var(--color-simen);
+    color: #ffffff;
+    border-color: var(--color-simen);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 135, 81, 0.25);
+}
+
+.clarification-btn.selected {
+    background: var(--color-simen);
+    color: #ffffff;
+    border-color: var(--color-simen);
+    opacity: 0.7;
+}
+
+.clarification-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* Animation du loader PDF */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Actions messages toujours visibles sur mobile */
+@media (max-width: 768px) {
+    .msg-actions {
+        opacity: 1 !important;
+    }
+    .clarification-options {
+        gap: 6px;
+    }
+    .clarification-btn {
+        padding: 8px 14px;
+        font-size: 0.82rem;
+    }
+}
+
 /* === PRINT === */
 @media print {
     .sidebar, .top-nav, .input-container, .typing-container { display: none !important; }

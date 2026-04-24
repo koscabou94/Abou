@@ -126,6 +126,24 @@ class ChatService:
             intent, confidence = self.nlp_service.classify_intent(fr_message)
             logger.debug("Intention classifiée", intent=intent, confidence=confidence)
 
+            # === CHEMIN RAPIDE : Clarification exercice ===
+            clarification = self._check_needs_clarification(fr_message, intent)
+            if clarification:
+                response_time_ms = int((time.time() - start_time) * 1000)
+                return {
+                    "response": clarification["message"],
+                    "clarification": {
+                        "options": clarification["options"],
+                    },
+                    "session_id": session_id,
+                    "language": detected_lang,
+                    "intent": intent,
+                    "confidence": confidence,
+                    "source": "clarification",
+                    "response_time_ms": response_time_ms,
+                    "timestamp": datetime.utcnow().isoformat(),
+                }
+
             # === CHEMIN ULTRA-RAPIDE : Salutations ===
             # Intercepter les salutations AVANT la recherche FAQ et le LLM
             # Seulement si le message est court (vrais salutations, pas des questions)
@@ -643,6 +661,72 @@ class ChatService:
         except Exception as exc:
             logger.error("Erreur effacement session", session_id=session_id, error=str(exc))
             return False
+
+    def _check_needs_clarification(self, message: str, intent: str) -> Optional[dict]:
+        """
+        Vérifie si le message exercice manque d'informations essentielles
+        et retourne une question de clarification avec des choix si nécessaire.
+        """
+        if intent != "exercice":
+            return None
+
+        msg_lower = message.lower()
+
+        # Ne pas déclencher si c'est une réponse courte à une clarification précédente
+        # (ex: l'utilisateur dit juste "CM2" ou "Mathématiques")
+        word_count = len(msg_lower.split())
+
+        # Mots-clés de niveau scolaire
+        LEVEL_KEYWORDS = [
+            "cp", "ce1", "ce2", "cm1", "cm2", "primaire",
+            "6ème", "6eme", "5ème", "5eme", "4ème", "4eme", "3ème", "3eme",
+            "seconde", "2nde", "première", "premiere", "1ère", "1ere",
+            "terminale", "lycée", "lycee", "college", "collège",
+            "petite section", "moyenne section", "grande section", "maternelle",
+            "préscolaire", "prescolaire"
+        ]
+
+        # Mots-clés de matière
+        SUBJECT_KEYWORDS = [
+            "mathématiques", "mathematiques", "maths", "math",
+            "français", "francais", "lecture", "dictée", "dictee",
+            "sciences", "svt", "physique", "chimie",
+            "histoire", "géographie", "geographie", "histoire-geo",
+            "anglais", "philosophie", "calcul", "géométrie", "geometrie",
+            "ecriture", "écriture", "lecture"
+        ]
+
+        # Mots indiquant qu'on parle d'un enfant
+        CHILD_KEYWORDS = [
+            "mon fils", "ma fille", "mon enfant", "mon élève", "mon eleve",
+            "mes enfants", "mes élèves", "mon petit", "ma petite"
+        ]
+
+        has_level = any(kw in msg_lower for kw in LEVEL_KEYWORDS)
+        has_subject = any(kw in msg_lower for kw in SUBJECT_KEYWORDS)
+        has_fiche = any(w in msg_lower for w in ["fiche", "préparation", "preparation", "plan de leçon", "plan de cours", "séance", "seance"])
+
+        # Pour les fiches pédagogiques, on n'interrompt pas avec la clarification
+        if has_fiche:
+            return None
+
+        # Si le message est très court (1-2 mots), c'est probablement une réponse à une clarification
+        if word_count <= 2:
+            return None
+
+        if not has_level:
+            return {
+                "message": "Pour vous proposer des exercices parfaitement adaptés, j'ai besoin de connaître le niveau scolaire. Quel est le niveau ?",
+                "options": ["CP", "CE1", "CE2", "CM1", "CM2", "6ème", "5ème", "4ème", "3ème", "2nde", "1ère", "Terminale"]
+            }
+
+        if has_level and not has_subject:
+            return {
+                "message": "Super ! Dans quelle matière souhaitez-vous des exercices ?",
+                "options": ["Mathématiques", "Français", "Sciences", "Histoire-Géographie", "Anglais", "Physique-Chimie", "Toutes les matières"]
+            }
+
+        return None
 
     def _get_greeting_response(self, message: str) -> str:
         """

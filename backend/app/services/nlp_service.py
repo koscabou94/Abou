@@ -425,4 +425,7 @@ RÈGLE ABSOLUE : Ne jamais refuser de générer des exercices. Ne jamais donner 
             "connexion": "Utilisez votre e-mail professionnel (prenom.nom@education.sn). En cas d'oubli, contactez votre administrateur local.",
             "general": "Je suis votre assistant éducatif. Posez-moi votre question et je ferai de mon mieux pour vous aider !",
         }
+        # Fallback exercice explicite
+        if intent == "exercice":
+            return "Je serais ravi de vous proposer des exercices ! Pourriez-vous me préciser le niveau scolaire (CP, CE1, CE2, CM1, CM2, 6ème…) et la matière souhaitée (maths, français, sciences…) ?"
         return fallbacks.get(intent, fallbacks["general"])

@@ -27,7 +27,9 @@
         isTyping: false,
         messages: {},
         attachedFiles: [],
-        deleteTargetId: null
+        deleteTargetId: null,
+        // Contexte de clarification : message original en attente d'une précision
+        pendingClarificationContext: null
     };
 
     // === DOM ELEMENTS ===
@@ -183,6 +185,12 @@
         const message = text || elements.messageInput.value.trim();
         if ((!message && state.attachedFiles.length === 0) || state.isTyping) return;
 
+        // Si une clarification est en attente, enrichir le message avec le contexte
+        if (state.pendingClarificationContext && message) {
+            message = state.pendingClarificationContext + " — " + message;
+            state.pendingClarificationContext = null;
+        }
+
         // Build display message with file names
         let displayMsg = message;
         if (state.attachedFiles.length > 0) {
@@ -224,6 +232,12 @@
             if (response.ok) {
                 const data = await response.json();
                 await appendBotMessageStreaming(data.response);
+                // Si le serveur renvoie des options de clarification, les afficher
+                if (data.clarification && data.clarification.options && data.clarification.options.length > 0) {
+                    // Stocker le message orignal (sans le contexte déjà ajouté)
+                    state.pendingClarificationContext = message;
+                    showClarificationOptions(data.clarification.options);
+                }
                 addToHistory(message, data.response);
             } else {
                 const errorData = await response.json().catch(() => null);
@@ -317,6 +331,50 @@
         elements.chatViewport.scrollTo({ top: elements.chatViewport.scrollHeight, behavior: "smooth" });
     }
 
+    // === CLARIFICATION AVEC OPTIONS CLIQUABLES ===
+    function showClarificationOptions(options) {
+        // Trouver le dernier message du bot
+        const allBotMessages = elements.messagesArea.querySelectorAll(".message-node.bot");
+        const lastBotMessage = allBotMessages[allBotMessages.length - 1];
+        if (!lastBotMessage) return;
+
+        const msgContent = lastBotMessage.querySelector(".msg-content");
+        if (!msgContent) return;
+
+        // Supprimer d'anciens boutons de clarification s'il y en a
+        const oldOptions = msgContent.querySelector(".clarification-options");
+        if (oldOptions) oldOptions.remove();
+
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "clarification-options";
+
+        options.forEach(opt => {
+            const btn = document.createElement("button");
+            btn.className = "clarification-btn";
+            btn.textContent = opt;
+            btn.onclick = () => {
+                // Désactiver tous les boutons après clic
+                optionsDiv.querySelectorAll(".clarification-btn").forEach(b => {
+                    b.disabled = true;
+                    b.classList.remove("selected");
+                });
+                btn.classList.add("selected");
+                // Envoyer directement le choix (le contexte est dans state.pendingClarificationContext)
+                sendMessage(opt);
+            };
+            optionsDiv.appendChild(btn);
+        });
+
+        // Insérer avant les actions (copier/PDF)
+        const actions = msgContent.querySelector(".msg-actions");
+        if (actions) {
+            msgContent.insertBefore(optionsDiv, actions);
+        } else {
+            msgContent.appendChild(optionsDiv);
+        }
+        scrollToBottom();
+    }
+
     // === COPY TO CLIPBOARD ===
     window.copyMessage = function (btn) {
         const bubble = btn.closest(".msg-content").querySelector(".msg-bubble");
@@ -331,66 +389,132 @@
         });
     };
 
-    // === TÉLÉCHARGEMENT PDF ===
+    // === TÉLÉCHARGEMENT PDF (jsPDF — vrai fichier .pdf) ===
     window.downloadPDF = function (btn) {
         const bubble = btn.closest(".msg-content").querySelector(".msg-bubble");
-        const content = bubble.innerHTML;
         const today = new Date().toLocaleDateString("fr-SN", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
 
-        const printWindow = window.open("", "_blank", "width=820,height=700");
-        if (!printWindow) { alert("Autorisez les pop-ups pour télécharger le PDF."); return; }
+        // Afficher un indicateur de chargement sur le bouton
+        const originalHTML = btn.innerHTML;
+        btn.innerHTML = '<i data-lucide="loader-2" style="width:14px;height:14px;animation:spin 1s linear infinite"></i>';
+        if (window.lucide) lucide.createIcons();
+        btn.disabled = true;
 
-        printWindow.document.write(`<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<title>EduBot — Ministère de l\'Éducation Nationale du Sénégal</title>
-<style>
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family: \'Segoe UI\', Arial, sans-serif; font-size:13px; color:#1a1a2e; background:#fff; padding:32px 40px; }
-  .header { display:flex; align-items:center; gap:16px; padding-bottom:14px; border-bottom:3px solid #008751; margin-bottom:24px; }
-  .flag { display:flex; width:54px; height:36px; border-radius:4px; overflow:hidden; flex-shrink:0; }
-  .fg { flex:1; }
-  .fg-g { background:#008751; }
-  .fg-y { background:#FDEF42; position:relative; }
-  .fg-r { background:#E31B23; }
-  .fg-star { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:#008751; font-size:14px; line-height:1; }
-  .htext h1 { font-size:14px; font-weight:700; color:#008751; }
-  .htext p  { font-size:11px; color:#666; margin-top:3px; }
-  .body { line-height:1.8; }
-  .body h1, .body h2, .body h3 { color:#008751; margin:18px 0 8px; font-size:14px; font-weight:700; }
-  .body hr { border:none; border-top:1px solid #ddd; margin:14px 0; }
-  .body p  { margin:8px 0; }
-  .body ul, .body ol { margin:8px 0 8px 22px; }
-  .body li { margin:4px 0; }
-  .body strong { font-weight:700; }
-  .body em { font-style:italic; }
-  .body table { width:100%; border-collapse:collapse; margin:12px 0; font-size:12px; }
-  .body th { background:#008751; color:#fff; padding:6px 8px; text-align:left; }
-  .body td { border:1px solid #ddd; padding:6px 8px; }
-  .body tr:nth-child(even) td { background:#f7f7f7; }
-  .footer { margin-top:36px; padding-top:12px; border-top:1px solid #eee; font-size:10px; color:#aaa; text-align:center; }
-  @media print { @page { margin:1.5cm; } body { padding:0; } }
-</style>
-</head>
-<body>
-  <div class="header">
-    <div class="flag">
-      <div class="fg fg-g"></div>
-      <div class="fg fg-y"><span class="fg-star">★</span></div>
-      <div class="fg fg-r"></div>
-    </div>
-    <div class="htext">
-      <h1>EduBot — Ministère de l'Éducation Nationale</h1>
-      <p>République du Sénégal &nbsp;·&nbsp; ${today}</p>
-    </div>
-  </div>
-  <div class="body">${content}</div>
-  <div class="footer">Document généré par EduBot &nbsp;•&nbsp; educonnect-w7tr.onrender.com &nbsp;•&nbsp; Ministère de l'Éducation Nationale du Sénégal</div>
-  <script>setTimeout(function(){ window.print(); }, 600);<\/script>
-</body>
-</html>`);
-        printWindow.document.close();
+        // Créer un conteneur temporaire bien formaté pour le rendu HTML → PDF
+        const tempDiv = document.createElement("div");
+        tempDiv.style.cssText = `
+            position: fixed;
+            top: -9999px;
+            left: -9999px;
+            width: 760px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-size: 13px;
+            color: #1a1a2e;
+            background: #ffffff;
+            padding: 40px 50px;
+            line-height: 1.8;
+            z-index: -1;
+        `;
+
+        tempDiv.innerHTML = `
+            <div style="display:flex;align-items:center;gap:16px;padding-bottom:14px;border-bottom:3px solid #008751;margin-bottom:24px;">
+                <div style="display:flex;width:54px;height:36px;border-radius:4px;overflow:hidden;flex-shrink:0;">
+                    <div style="flex:1;background:#008751;"></div>
+                    <div style="flex:1;background:#FDEF42;display:flex;align-items:center;justify-content:center;color:#008751;font-size:14px;">★</div>
+                    <div style="flex:1;background:#E31B23;"></div>
+                </div>
+                <div>
+                    <div style="font-size:14px;font-weight:700;color:#008751;">EduBot — Ministère de l'Éducation Nationale</div>
+                    <div style="font-size:11px;color:#666;margin-top:3px;">République du Sénégal &nbsp;·&nbsp; ${today}</div>
+                </div>
+            </div>
+            <div class="pdf-body" style="line-height:1.8;">${bubble.innerHTML}</div>
+            <div style="margin-top:36px;padding-top:12px;border-top:1px solid #eee;font-size:10px;color:#aaa;text-align:center;">
+                Document généré par EduBot &nbsp;•&nbsp; educonnect-w7tr.onrender.com &nbsp;•&nbsp; Ministère de l'Éducation Nationale du Sénégal
+            </div>
+        `;
+
+        // Styles internes pour les éléments markdown
+        const styleTag = document.createElement("style");
+        styleTag.textContent = `
+            .pdf-body h1,.pdf-body h2,.pdf-body h3{color:#008751;margin:18px 0 8px;font-weight:700;}
+            .pdf-body h1{font-size:16px;}.pdf-body h2{font-size:15px;}.pdf-body h3{font-size:14px;}
+            .pdf-body hr{border:none;border-top:1px solid #ddd;margin:14px 0;}
+            .pdf-body p{margin:8px 0;}
+            .pdf-body ul,.pdf-body ol{margin:8px 0 8px 22px;}
+            .pdf-body li{margin:4px 0;}
+            .pdf-body strong{font-weight:700;}
+            .pdf-body em{font-style:italic;}
+            .pdf-body table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12px;}
+            .pdf-body th{background:#008751;color:#fff;padding:6px 8px;text-align:left;}
+            .pdf-body td{border:1px solid #ddd;padding:6px 8px;}
+            .pdf-body tr:nth-child(even) td{background:#f7f7f7;}
+            .pdf-body code{background:#f4f4f5;padding:2px 6px;border-radius:4px;font-size:12px;}
+            .pdf-body blockquote{border-left:3px solid #008751;padding-left:12px;color:#555;font-style:italic;}
+        `;
+        tempDiv.prepend(styleTag);
+        document.body.appendChild(tempDiv);
+
+        // Utiliser html2canvas + jsPDF pour générer un vrai PDF
+        const generatePDF = () => {
+            const { jsPDF } = window.jspdf;
+
+            html2canvas(tempDiv, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: "#ffffff",
+                logging: false,
+                width: 760,
+                windowWidth: 760
+            }).then(canvas => {
+                const imgData = canvas.toDataURL("image/jpeg", 0.92);
+                const doc = new jsPDF("p", "mm", "a4");
+
+                const pageWidth = doc.internal.pageSize.getWidth();   // 210mm
+                const pageHeight = doc.internal.pageSize.getHeight(); // 297mm
+                const margin = 10;
+                const contentWidth = pageWidth - margin * 2;
+                const imgWidth = canvas.width;
+                const imgHeight = canvas.height;
+                const ratio = contentWidth / imgWidth;
+                const contentHeightMm = imgHeight * ratio;
+
+                let position = margin;
+                let heightLeft = contentHeightMm;
+
+                // Première page
+                doc.addImage(imgData, "JPEG", margin, position, contentWidth, contentHeightMm);
+                heightLeft -= (pageHeight - margin * 2);
+
+                // Pages supplémentaires si le contenu est long
+                while (heightLeft > 0) {
+                    position = -(pageHeight - margin * 2) + (contentHeightMm - heightLeft) * -1;
+                    doc.addPage();
+                    doc.addImage(imgData, "JPEG", margin, margin + position, contentWidth, contentHeightMm);
+                    heightLeft -= (pageHeight - margin * 2);
+                }
+
+                // Générer un nom de fichier avec la date
+                const dateStr = new Date().toISOString().slice(0, 10);
+                doc.save(`EduBot-${dateStr}.pdf`);
+
+                // Nettoyer
+                document.body.removeChild(tempDiv);
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+                if (window.lucide) lucide.createIcons();
+            }).catch(err => {
+                console.error("Erreur génération PDF:", err);
+                document.body.removeChild(tempDiv);
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+                if (window.lucide) lucide.createIcons();
+                alert("Erreur lors de la génération du PDF. Veuillez réessayer.");
+            });
+        };
+
+        // Laisser le temps au DOM de se mettre à jour avant le rendu
+        setTimeout(generatePDF, 300);
     };
 
     // === UTILS ===

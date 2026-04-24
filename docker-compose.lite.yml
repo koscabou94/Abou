@@ -1,0 +1,83 @@
+# ============================================================
+# Docker Compose LITE - Version allégée pour zones à faibles ressources
+# Pas d'Ollama (utilise TinyLlama via transformers)
+# SQLite au lieu de PostgreSQL
+# Pas de Redis (cache en mémoire)
+# Option single-container possible
+# ============================================================
+
+version: '3.9'
+
+services:
+
+  # ============================================================
+  # Backend FastAPI - Configuration allégée
+  # ============================================================
+  backend-lite:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        SKIP_MODEL_DOWNLOAD: "0"
+    container_name: edu_chatbot_lite
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      # SQLite à la place de PostgreSQL
+      DATABASE_URL: "sqlite+aiosqlite:////app/data/chatbot.db"
+      # Pas de Redis
+      REDIS_URL: ""
+      # Mode allégé : pas d'Ollama
+      USE_LIGHTWEIGHT_MODE: "True"
+      # Modèle léger pour CPU
+      FALLBACK_MODEL: "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+      EMBEDDING_MODEL: "all-MiniLM-L6-v2"
+      # Sécurité - CHANGEZ EN PRODUCTION
+      SECRET_KEY: ${SECRET_KEY:-changez-cette-cle-en-production}
+      API_KEY: ${API_KEY:-admin-key-changez-en-production}
+      # Paramètres LLM réduits pour TinyLlama
+      MAX_TOKENS: "256"
+      TEMPERATURE: "0.7"
+      # Serveur
+      HOST: "0.0.0.0"
+      PORT: "8000"
+      DEBUG: "False"
+      WORKERS: "1"
+    volumes:
+      - ./data:/app/data
+      - ./frontend:/app/frontend:ro
+      - lite_models:/app/models
+      - lite_db:/app/sqlite
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8000/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+
+  # ============================================================
+  # Nginx simplifié
+  # ============================================================
+  nginx-lite:
+    image: nginx:alpine
+    container_name: edu_chatbot_nginx_lite
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./frontend:/usr/share/nginx/html:ro
+    depends_on:
+      - backend-lite
+
+# ============================================================
+# Volumes
+# ============================================================
+volumes:
+  lite_models:
+    driver: local
+    name: edu_chatbot_lite_models
+  lite_db:
+    driver: local
+    name: edu_chatbot_lite_db

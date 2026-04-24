@@ -1,0 +1,2390 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "source": "Ministère de l'Éducation du Sénégal",
+    "last_updated": "2026-04-06",
+    "total_faqs": 168,
+    "languages": [
+      "fr",
+      "wo",
+      "ff",
+      "ar"
+    ],
+    "categories": [
+      "administratif",
+      "bourse",
+      "calendrier",
+      "cantine",
+      "carriere",
+      "conges",
+      "daara",
+      "droits",
+      "enseignant",
+      "examen",
+      "frais",
+      "general",
+      "inclusion",
+      "inscription",
+      "mirador",
+      "mutation",
+      "orientation",
+      "planete_bulletins",
+      "planete_config",
+      "planete_connexion",
+      "planete_dashboard",
+      "planete_edt",
+      "planete_eleves",
+      "planete_general",
+      "planete_notes",
+      "planete_pedagogique",
+      "planete_personnel",
+      "planete_utilisateurs",
+      "prescolaire",
+      "programme",
+      "retraite",
+      "salaire",
+      "securite",
+      "structures_men"
+    ]
+  },
+  "faqs": [
+    {
+      "id": 1,
+      "question": "Quelles sont les dates d'inscription pour l'année scolaire 2024-2025?",
+      "answer": "Les inscriptions pour l'année scolaire 2024-2025 se déroulent généralement de juillet à septembre. Pour le préscolaire et le primaire, les inscriptions se font directement dans les établissements scolaires. Pour le moyen et le secondaire, les dates précises sont fixées par les Inspections d'Académie régionales. Renseignez-vous auprès de l'établissement le plus proche de chez vous.",
+      "category": "inscription",
+      "language": "fr",
+      "tags": [
+        "inscription",
+        "rentrée",
+        "dates",
+        "2024-2025"
+      ]
+    },
+    {
+      "id": 2,
+      "question": "Quels documents faut-il pour inscrire un enfant à l'école primaire?",
+      "answer": "Pour inscrire votre enfant à l'école primaire, vous devez fournir : 1) Un extrait d'acte de naissance ou une copie certifiée conforme, 2) Un carnet de vaccination à jour, 3) Deux photos d'identité récentes, 4) La fiche de transfert si l'enfant vient d'une autre école. L'inscription est gratuite dans les écoles publiques. Aucun frais d'inscription ne doit être demandé.",
+      "category": "inscription",
+      "language": "fr",
+      "tags": [
+        "inscription",
+        "primaire",
+        "documents",
+        "acte de naissance"
+      ]
+    },
+    {
+      "id": 3,
+      "question": "Comment inscrire un enfant au lycée ou au collège?",
+      "answer": "L'inscription au collège (CEM) se fait après l'obtention du CFEE (Certificat de Fin d'Études Élémentaires). Pour le lycée, il faut avoir le BFEM (Brevet de Fin d'Études Moyennes). Les étapes sont : 1) Retirer un dossier d'inscription à l'établissement, 2) Remplir le formulaire avec les informations de l'élève, 3) Joindre les documents requis (relevé de notes, diplôme, photos, acte de naissance), 4) Déposer le dossier avant la date limite fixée par l'établissement.",
+      "category": "inscription",
+      "language": "fr",
+      "tags": [
+        "inscription",
+        "collège",
+        "lycée",
+        "CEM",
+        "CFEE",
+        "BFEM"
+      ]
+    },
+    {
+      "id": 4,
+      "question": "Qu'est-ce que le CFEE et comment se préparer?",
+      "answer": "Le CFEE (Certificat de Fin d'Études Élémentaires) est l'examen de fin de cycle primaire au Sénégal. Il sanctionne la fin de la classe de CM2. Les épreuves portent sur : le français (dictée, rédaction, questions de langue), les mathématiques (calcul, problèmes), l'histoire-géographie et les sciences. Pour bien se préparer : révisez régulièrement les leçons, faites des exercices pratiques, consultez les annales des années précédentes disponibles dans les librairies ou auprès de vos enseignants.",
+      "category": "examen",
+      "language": "fr",
+      "tags": [
+        "CFEE",
+        "primaire",
+        "CM2",
+        "examen",
+        "préparation"
+      ]
+    },
+    {
+      "id": 5,
+      "question": "Quand ont lieu les examens du BFEM en 2025?",
+      "answer": "Le BFEM (Brevet de Fin d'Études Moyennes) se déroule généralement en mai-juin. En 2025, les épreuves théoriques sont prévues en mai et les épreuves pratiques peuvent se tenir en juin. Les dates exactes sont publiées par l'Office du Baccalauréat et les Inspections d'Académie en début d'année scolaire. Suivez les annonces officielles sur le site du Ministère de l'Éducation.",
+      "category": "examen",
+      "language": "fr",
+      "tags": [
+        "BFEM",
+        "dates",
+        "examen",
+        "2025",
+        "mai",
+        "juin"
+      ]
+    },
+    {
+      "id": 6,
+      "question": "Comment consulter les résultats du BAC?",
+      "answer": "Les résultats du Baccalauréat sont publiés par l'Office du Baccalauréat du Sénégal. Vous pouvez les consulter : 1) Sur le site officiel de l'Office du Baccalauréat (officedubaccalaureat.sn), 2) Dans les centres d'examen où un affichage est effectué, 3) Sur les plateformes numériques officielles du Ministère de l'Éducation, 4) Via SMS en envoyant votre numéro de candidat au numéro indiqué lors des inscriptions. Les résultats sont généralement disponibles dans les 48 heures suivant les délibérations.",
+      "category": "examen",
+      "language": "fr",
+      "tags": [
+        "BAC",
+        "résultats",
+        "Office du Baccalauréat",
+        "consultation"
+      ]
+    },
+    {
+      "id": 7,
+      "question": "Quelles sont les épreuves du Baccalauréat en série S?",
+      "answer": "Le Baccalauréat série S (Scientifique) comprend les épreuves suivantes : Mathématiques (coefficient 5), Physique-Chimie (coeff. 4), Sciences de la Vie et de la Terre (coeff. 3), Français (coeff. 3), Philosophie (coeff. 2), Histoire-Géographie (coeff. 2), Anglais (coeff. 2), Langue nationale (coeff. 1), Éducation physique (coeff. 1). La note éliminatoire est de 5/20 pour certaines matières. Un total minimal de points est requis pour l'admission.",
+      "category": "examen",
+      "language": "fr",
+      "tags": [
+        "BAC",
+        "série S",
+        "scientifique",
+        "épreuves",
+        "coefficient"
+      ]
+    },
+    {
+      "id": 8,
+      "question": "Quelle est la date de la rentrée scolaire 2024-2025?",
+      "answer": "La rentrée scolaire 2024-2025 au Sénégal est fixée au mois d'octobre pour la plupart des établissements publics. Les dates précises varient selon les régions et les niveaux : le préscolaire et le primaire reprennent généralement en début octobre, le moyen et le secondaire suivent quelques jours après. Le calendrier officiel est publié chaque année par le Ministère de l'Éducation Nationale.",
+      "category": "calendrier",
+      "language": "fr",
+      "tags": [
+        "rentrée",
+        "calendrier",
+        "2024-2025",
+        "octobre"
+      ]
+    },
+    {
+      "id": 9,
+      "question": "Quand sont les vacances scolaires au Sénégal?",
+      "answer": "L'année scolaire au Sénégal est découpée en trois trimestres avec des vacances entre chaque période : 1er trimestre (octobre-décembre) : vacances de Noël/Nouvel An de fin décembre à début janvier, 2e trimestre (janvier-mars) : vacances de mi-trimestre en février-mars, 3e trimestre (avril-juin) : fin d'année en juin-juillet. Les dates exactes sont fixées par le Ministère et peuvent varier légèrement d'une année à l'autre.",
+      "category": "calendrier",
+      "language": "fr",
+      "tags": [
+        "vacances",
+        "calendrier",
+        "trimestre",
+        "congés"
+      ]
+    },
+    {
+      "id": 10,
+      "question": "Combien de jours de cours y a-t-il dans l'année scolaire?",
+      "answer": "L'année scolaire au Sénégal compte environ 180 jours de cours effectifs, répartis sur 36 semaines. Cela inclut les cours normaux mais exclut les jours fériés, les congés et les jours d'examen. Le Ministère de l'Éducation veille au respect du volume horaire minimum pour garantir la qualité de l'enseignement.",
+      "category": "calendrier",
+      "language": "fr",
+      "tags": [
+        "jours de cours",
+        "volume horaire",
+        "semaines",
+        "calendrier"
+      ]
+    },
+    {
+      "id": 11,
+      "question": "Quelles filières choisir après le BFEM?",
+      "answer": "Après le BFEM, vous pouvez choisir parmi plusieurs filières au lycée : Sciences (Série S) pour les passionnés de sciences, Lettres-Sciences Humaines (Série L) pour ceux qui aiment le français et l'histoire, Économie-Gestion (Série G) pour les intéressés par le commerce, Sciences et Technologies (Série T) pour la technologie appliquée. Le choix doit être guidé par vos résultats, vos centres d'intérêt et votre projet professionnel futur. Parlez-en avec votre conseiller d'orientation.",
+      "category": "orientation",
+      "language": "fr",
+      "tags": [
+        "orientation",
+        "BFEM",
+        "filières",
+        "lycée",
+        "série S",
+        "série L"
+      ]
+    },
+    {
+      "id": 12,
+      "question": "Comment s'orienter vers l'enseignement technique et professionnel?",
+      "answer": "L'enseignement technique et professionnel (ETP) offre des formations pratiques très valorisées sur le marché du travail sénégalais. Après le BFEM, vous pouvez intégrer un lycée technique ou professionnel (CAP, BEP, BAC Pro) dans des domaines comme : l'électricité, la mécanique, l'informatique, le bâtiment, l'agriculture, la couture et les arts. Les lycées techniques sont présents dans toutes les grandes villes. Cette voie mène directement à l'emploi ou à des études supérieures techniques.",
+      "category": "orientation",
+      "language": "fr",
+      "tags": [
+        "orientation",
+        "technique",
+        "professionnel",
+        "lycée technique",
+        "CAP",
+        "BEP"
+      ]
+    },
+    {
+      "id": 13,
+      "question": "Y a-t-il des bourses disponibles pour les élèves méritants?",
+      "answer": "Oui, le Sénégal propose plusieurs types de bourses scolaires : 1) Bourses d'excellence du Ministère pour les meilleurs élèves des examens nationaux, 2) Bourses régionales attribuées par les Inspections d'Académie, 3) Bourses de l'OFAD (Office des Foyers et des Antennes de Développement), 4) Bourses d'organismes internationaux (UNICEF, AFD, etc.), 5) Bourses d'entreprises privées. Pour candidater, renseignez-vous auprès de votre établissement ou de l'Inspection d'Académie de votre région.",
+      "category": "bourse",
+      "language": "fr",
+      "tags": [
+        "bourse",
+        "aide financière",
+        "mérite",
+        "excellence",
+        "OFAD"
+      ]
+    },
+    {
+      "id": 14,
+      "question": "Comment obtenir une bourse pour étudier à l'université?",
+      "answer": "Pour les études supérieures, plusieurs dispositifs existent : 1) Bourse nationale de l'OFAD : accordée aux étudiants des universités publiques selon des critères de mérite et de ressources, 2) Aide sociale de l'UCAD et des universités régionales, 3) Bourses de coopération bilatérale (France, Maroc, Chine, etc.) - renseignez-vous aux ambassades, 4) Bourses sectorielles pour des domaines prioritaires (médecine, ingénierie). Déposez vos candidatures en début d'année universitaire.",
+      "category": "bourse",
+      "language": "fr",
+      "tags": [
+        "bourse",
+        "université",
+        "OFAD",
+        "UCAD",
+        "études supérieures"
+      ]
+    },
+    {
+      "id": 15,
+      "question": "Le programme de CM1-CM2 contient-il des changements récents?",
+      "answer": "Les programmes du primaire au Sénégal ont été révisés dans le cadre de la réforme curriculaire. Les nouvelles approches pédagogiques mettent l'accent sur l'Approche Par Compétences (APC). Les matières principales au CM1-CM2 sont : français, mathématiques, sciences, histoire-géographie, éducation civique, langue nationale (wolof ou autre). Les manuels officiels sont disponibles gratuitement dans les écoles publiques grâce au Programme de Gratuité des Manuels Scolaires.",
+      "category": "programme",
+      "language": "fr",
+      "tags": [
+        "programme",
+        "CM1",
+        "CM2",
+        "primaire",
+        "APC",
+        "manuels"
+      ]
+    },
+    {
+      "id": 16,
+      "question": "Quelles sont les matières enseignées au collège (6e à 3e)?",
+      "answer": "Au collège (CEM), les élèves étudient les matières suivantes : Français, Mathématiques, Histoire-Géographie, Sciences de la Vie et de la Terre (SVT), Physique-Chimie (à partir de la 4e), Anglais (LV1), Arabe ou 2e langue vivante (optionnel), Éducation physique et sportive (EPS), Éducation artistique, Informatique (selon les établissements). La progression est validée par un relevé de notes trimestriel et le BFEM en fin de 3e.",
+      "category": "programme",
+      "language": "fr",
+      "tags": [
+        "programme",
+        "collège",
+        "matières",
+        "6ème",
+        "3ème",
+        "CEM"
+      ]
+    },
+    {
+      "id": 17,
+      "question": "Comment obtenir une attestation de scolarité?",
+      "answer": "L'attestation de scolarité est délivrée par votre établissement scolaire. Voici la procédure : 1) Se présenter au secrétariat de l'école ou du lycée, 2) Présenter votre carte d'identité ou acte de naissance, 3) Remplir le formulaire de demande, 4) L'attestation est généralement délivrée immédiatement ou dans les 48 heures. Ce document est gratuit dans les établissements publics. Il peut être exigé pour des démarches administratives, des bourses ou des concours.",
+      "category": "administratif",
+      "language": "fr",
+      "tags": [
+        "attestation",
+        "scolarité",
+        "document",
+        "secrétariat"
+      ]
+    },
+    {
+      "id": 18,
+      "question": "Comment demander un relevé de notes officiel?",
+      "answer": "Le relevé de notes officiel s'obtient auprès du secrétariat de votre établissement ou de l'Inspection d'Académie pour les examens nationaux. Pour les examens nationaux (CFEE, BFEM, BAC) : contactez l'Office du Baccalauréat ou votre Inspection d'Académie. Munissez-vous de votre numéro de candidat et d'une pièce d'identité. Un délai de quelques jours peut être nécessaire. Des frais administratifs modiques peuvent être demandés pour les copies certifiées.",
+      "category": "administratif",
+      "language": "fr",
+      "tags": [
+        "relevé de notes",
+        "document",
+        "officiel",
+        "Office du Baccalauréat"
+      ]
+    },
+    {
+      "id": 19,
+      "question": "Comment contacter l'Inspection d'Académie de ma région?",
+      "answer": "Il existe 16 académies (IA) au Sénégal correspondant aux régions administratives. Pour trouver les coordonnées de votre IA : consultez le site du Ministère de l'Éducation (education.gouv.sn), ou rendez-vous directement au chef-lieu de votre région. Les principales IA se trouvent à Dakar, Thiès, Saint-Louis, Kaolack, Ziguinchor, Tambacounda, Louga, Fatick, Diourbel, Matam, Kaffrine, Kédougou, Sédhiou, Kolda et Podor.",
+      "category": "administratif",
+      "language": "fr",
+      "tags": [
+        "Inspection d'Académie",
+        "contact",
+        "région",
+        "IA"
+      ]
+    },
+    {
+      "id": 20,
+      "question": "Comment devenir enseignant au Sénégal?",
+      "answer": "Pour devenir enseignant dans le public, il faut passer un concours de recrutement organisé par le Ministère de l'Éducation. Selon le niveau : Enseignant du primaire : concours des Instituteurs (après le BAC + formation à la CRFPE), Professeur du secondaire : concours des professeurs (après Licence/Master + formation à la FASTEF), Professeur du technique : formation spécialisée. Les concours sont annoncés dans la presse nationale et sur le site du Ministère. La formation se fait dans les Centres Régionaux de Formation des Personnels de l'Éducation (CRFPE).",
+      "category": "enseignant",
+      "language": "fr",
+      "tags": [
+        "enseignant",
+        "instituteur",
+        "concours",
+        "CRFPE",
+        "FASTEF",
+        "recrutement"
+      ]
+    },
+    {
+      "id": 21,
+      "question": "Qu'est-ce que la FASTEF?",
+      "answer": "La FASTEF (Faculté des Sciences et Technologies de l'Éducation et de la Formation) est l'institution de formation des enseignants du secondaire au Sénégal. Elle est rattachée à l'Université Cheikh Anta Diop (UCAD) de Dakar. La FASTEF forme : les professeurs des lycées et collèges (PLC et PEM), les conseillers d'orientation, les inspecteurs de l'Éducation. La formation dure 2 ans après une Licence dans la discipline concernée. Les admis sont des fonctionnaires stagiaires rémunérés pendant leur formation.",
+      "category": "enseignant",
+      "language": "fr",
+      "tags": [
+        "FASTEF",
+        "formation enseignant",
+        "UCAD",
+        "secondaire",
+        "PLC"
+      ]
+    },
+    {
+      "id": 22,
+      "question": "L'éducation est-elle gratuite au Sénégal?",
+      "answer": "Oui, l'éducation de base est gratuite et obligatoire au Sénégal de 6 à 16 ans. Le Programme de Gratuité des Manuels Scolaires fournit des livres gratuitement aux élèves du primaire et du collège dans les écoles publiques. Les frais d'inscription dans les établissements publics sont très faibles ou nuls. Cependant, certaines charges annexes (fournitures, tenues, cotisations associatives) peuvent subsister. Dans les lycées, des frais de scolarité modiques peuvent être demandés.",
+      "category": "general",
+      "language": "fr",
+      "tags": [
+        "gratuité",
+        "scolarité",
+        "obligatoire",
+        "manuels gratuits"
+      ]
+    },
+    {
+      "id": 23,
+      "question": "À quel âge un enfant doit-il commencer l'école?",
+      "answer": "Au Sénégal, la scolarité est obligatoire à partir de 6 ans. Cependant, le préscolaire accueille les enfants dès 3 ans dans les structures de la Petite Enfance (cases des tout-petits, garderies, écoles maternelles). L'entrée en classe de CI (Cours d'Initiation) se fait à 6 ans pour commencer le cycle primaire. Une inscription peut se faire à 5 ans révolus si l'enfant montre une maturité suffisante, selon l'appréciation du directeur d'école.",
+      "category": "inscription",
+      "language": "fr",
+      "tags": [
+        "âge scolaire",
+        "entrée à l'école",
+        "6 ans",
+        "obligatoire",
+        "préscolaire"
+      ]
+    },
+    {
+      "id": 24,
+      "question": "Quels sont les examens du cycle primaire?",
+      "answer": "Le cycle primaire comporte un examen principal : le CFEE (Certificat de Fin d'Études Élémentaires) en CM2. Il valide les 6 années du primaire (CI, CP, CE1, CE2, CM1, CM2). Il existe aussi le Concours d'Entrée en 6e pour intégrer les collèges publics. Les épreuves du CFEE portent sur : Français (dictée, rédaction, questions), Mathématiques, Histoire-Géographie-Éducation civique, Sciences. La réussite au CFEE est nécessaire pour passer en 6e.",
+      "category": "examen",
+      "language": "fr",
+      "tags": [
+        "examen primaire",
+        "CFEE",
+        "CM2",
+        "concours 6ème"
+      ]
+    },
+    {
+      "id": 25,
+      "question": "Où trouver les annales des examens nationaux?",
+      "answer": "Les annales des examens nationaux (CFEE, BFEM, BAC) sont disponibles : 1) Dans les librairies scolaires des grandes villes (Dakar, Thiès, Saint-Louis, etc.), 2) Sur le site de l'Office du Baccalauréat (officedubaccalaureat.sn), 3) Auprès des établissements scolaires qui en conservent des exemplaires, 4) Dans les bibliothèques municipales, 5) Sur certains sites internet éducatifs sénégalais. Le prix des annales imprimées varie entre 500 et 2000 FCFA selon l'édition.",
+      "category": "examen",
+      "language": "fr",
+      "tags": [
+        "annales",
+        "CFEE",
+        "BFEM",
+        "BAC",
+        "révision",
+        "préparation"
+      ]
+    },
+    {
+      "id": 26,
+      "question": "Comment s'inscrire au BAC au Sénégal?",
+      "answer": "L'inscription au Baccalauréat suit ces étapes : 1) Votre lycée collecte les dossiers d'inscription en début d'année scolaire (octobre-novembre), 2) Remplir la fiche d'inscription fournie par l'établissement, 3) Joindre une photo d'identité et une copie de la pièce d'identité, 4) Payer les droits d'inscription (frais modiques fixés par l'Office du Bac), 5) L'établissement transmet les dossiers à l'Office du Baccalauréat. Vous recevrez votre convocation environ 2-3 semaines avant les épreuves.",
+      "category": "inscription",
+      "language": "fr",
+      "tags": [
+        "inscription",
+        "BAC",
+        "Office du Bac",
+        "dossier",
+        "convocation"
+      ]
+    },
+    {
+      "id": 27,
+      "question": "Qu'est-ce que le programme des cases des tout-petits?",
+      "answer": "Les Cases des Tout-Petits (CTP) sont des structures de la Petite Enfance créées par le gouvernement sénégalais pour accueillir les enfants de 3 à 6 ans. Elles offrent : des activités d'éveil et d'apprentissage adaptées, une prise en charge nutritionnelle (repas), des soins de santé basiques, une préparation à l'entrée à l'école primaire. Les CTP sont présentes dans les zones rurales et péri-urbaines pour les familles les plus défavorisées. Elles sont gérées par des comités de quartier avec l'appui du Ministère.",
+      "category": "general",
+      "language": "fr",
+      "tags": [
+        "cases des tout-petits",
+        "CTP",
+        "préscolaire",
+        "petite enfance",
+        "rural"
+      ]
+    },
+    {
+      "id": 28,
+      "question": "Puis-je m'inscrire à l'école en cours d'année?",
+      "answer": "En principe, les inscriptions se font avant la rentrée scolaire. Cependant, des inscriptions en cours d'année peuvent être acceptées dans certains cas : arrivée dans une nouvelle région ou un nouveau pays, raisons médicales documentées, situations familiales exceptionnelles. Pour une inscription tardive, présentez-vous directement à l'établissement avec les documents requis et expliquez votre situation. Le directeur évaluera si une place est disponible et si le niveau de l'élève correspond à la classe.",
+      "category": "inscription",
+      "language": "fr",
+      "tags": [
+        "inscription tardive",
+        "en cours d'année",
+        "transfert"
+      ]
+    },
+    {
+      "id": 29,
+      "question": "Qu'est-ce que le système LMD et comment ça marche?",
+      "answer": "Le système LMD (Licence-Master-Doctorat) est le système d'organisation des études supérieures adopté au Sénégal, harmonisé avec les standards internationaux. Il comprend : Licence (Bac+3) : 3 ans après le BAC, 180 crédits, Master (Bac+5) : 2 ans après la Licence, 120 crédits, Doctorat (Bac+8) : 3 ans minimum après le Master. Ce système facilite la mobilité internationale des étudiants et la reconnaissance des diplômes à l'étranger. Il est appliqué dans toutes les universités publiques sénégalaises.",
+      "category": "orientation",
+      "language": "fr",
+      "tags": [
+        "LMD",
+        "université",
+        "licence",
+        "master",
+        "doctorat",
+        "supérieur"
+      ]
+    },
+    {
+      "id": 30,
+      "question": "Quels sont les droits d'inscription à l'université au Sénégal?",
+      "answer": "Les droits d'inscription dans les universités publiques sénégalaises sont parmi les plus bas d'Afrique : Université Cheikh Anta Diop (UCAD) : environ 5 000 à 10 000 FCFA par an selon la filière, Universités régionales (UGB, UGBM, UDA, UDZ, etc.) : tarifs similaires. Des frais annexes peuvent s'ajouter (cotisations, examens). Les étudiants boursiers voient souvent ces frais couverts par leur bourse. Les grandes écoles et universités privées ont des frais nettement plus élevés (200 000 à plusieurs millions de FCFA).",
+      "category": "bourse",
+      "language": "fr",
+      "tags": [
+        "université",
+        "frais d'inscription",
+        "UCAD",
+        "droits",
+        "coût"
+      ]
+    },
+    {
+      "id": 31,
+      "question": "Comment se déroule le concours d'entrée en 6ème?",
+      "answer": "Le Concours d'Entrée en 6e (CEE) permet aux élèves de CM2 ayant le CFEE d'intégrer un collège public. Il se déroule généralement en juillet. Les épreuves portent sur : le Français et les Mathématiques principalement. Les candidats sont classés selon leurs résultats et affectés dans les CEM selon leur rang et les places disponibles. Les élèves non admis au concours peuvent s'inscrire dans des établissements privés ou redoubler le CM2 pour repasser le CFEE.",
+      "category": "examen",
+      "language": "fr",
+      "tags": [
+        "concours 6ème",
+        "CEE",
+        "CM2",
+        "CFEE",
+        "collège"
+      ]
+    },
+    {
+      "id": 32,
+      "question": "Existe-t-il des cours du soir ou des classes de rattrapage?",
+      "answer": "Oui, plusieurs options existent pour les élèves qui ont besoin de soutien : 1) Cours de soutien organisés par les établissements scolaires (souvent gratuits dans le public), 2) Cours particuliers avec des enseignants privés (payants), 3) Associations de parents d'élèves qui organisent parfois des soutiens, 4) Centres de cours du soir dans certaines villes, 5) Ressources en ligne sur des plateformes éducatives africaines. Pour les adultes non scolarisés, des programmes d'alphabétisation existent dans chaque région.",
+      "category": "programme",
+      "language": "fr",
+      "tags": [
+        "cours de soutien",
+        "rattrapage",
+        "soir",
+        "cours particuliers"
+      ]
+    },
+    {
+      "id": 33,
+      "question": "L'arabe est-il enseigné dans les écoles publiques?",
+      "answer": "Oui, l'enseignement de l'arabe est présent dans le système éducatif sénégalais : Dans les écoles publiques, l'arabe est une matière optionnelle ou obligatoire selon les établissements. Les daara (écoles coraniques) proposent un enseignement principalement en arabe. Des établissements franco-arabes existent où l'enseignement est bilingue français-arabe. L'Institut Islamique de Dakar offre des formations supérieures en arabe. Le Sénégal a des accords de coopération avec des pays arabes pour l'enseignement de la langue.",
+      "category": "programme",
+      "language": "fr",
+      "tags": [
+        "arabe",
+        "enseignement",
+        "franco-arabe",
+        "daara",
+        "islamique"
+      ]
+    },
+    {
+      "id": 34,
+      "question": "Qu'est-ce qu'un daara et comment fonctionne-t-il?",
+      "answer": "Un daara est une école coranique traditionnelle sénégalaise où l'enseignement porte principalement sur la mémorisation et la récitation du Coran en arabe. Les daara accueillent des enfants dès le bas âge et sont dirigés par un marabout (maître coranique). Le gouvernement sénégalais travaille à moderniser les daara en y intégrant un enseignement en français et en mathématiques. Des programmes de 'daara modernes' combinent enseignement islamique et programme officiel. Les talibés (élèves des daara) peuvent aussi suivre le cursus de l'école publique.",
+      "category": "general",
+      "language": "fr",
+      "tags": [
+        "daara",
+        "école coranique",
+        "talibé",
+        "marabout",
+        "enseignement islamique"
+      ]
+    },
+    {
+      "id": 35,
+      "question": "Comment se passe la scolarisation dans les zones rurales?",
+      "answer": "La scolarisation en zone rurale au Sénégal bénéficie de programmes spéciaux : Construction de nouvelles écoles et classes dans les villages éloignés, Programme de recrutement d'enseignants pour les zones difficiles avec des primes, Distribution gratuite de manuels et de matériel scolaire, Cantines scolaires pour encourager la présence des enfants (surtout des filles), Cases des Tout-Petits pour le préscolaire rural, Programme d'alphabétisation pour les adultes. Malgré ces efforts, des défis persistent notamment pour la rétention des filles à l'école.",
+      "category": "general",
+      "language": "fr",
+      "tags": [
+        "zone rurale",
+        "scolarisation",
+        "accès",
+        "cantine",
+        "filles"
+      ]
+    },
+    {
+      "id": 36,
+      "question": "Waaw fan lañuy jàng ci kanam bi ak inscription bi?",
+      "answer": "Ci Senegaal, diggante bi (inscription) doxal ci juillet ak septembre pour xalé yi bees yëgël ci école bi. Pour xalé ci primaire, dem ci école bi rekk, jox birth certificate bi ak vaccination yi. Pour collège, dafa soxor CFEE. Pour lycée, dafa soxor BFEM. Inscription bi amul njënd ci école yi biir gouv. Bëgg na la demm ci école yi ci kaw dëkk sa ak Inspection d'Académie bi.",
+      "category": "inscription",
+      "language": "wo",
+      "tags": [
+        "inscription",
+        "jàng",
+        "école",
+        "wolof"
+      ]
+    },
+    {
+      "id": 37,
+      "question": "BFEM bi lan la? Lan la soxor ci kanam?",
+      "answer": "BFEM (Brevet de Fin d'Études Moyennes) mooy examen bi ci diggante bi kanam, ci fin de 3ème. Bëgg na ko jëfe ngir dem lycée. Ci kanam, bëgg na: xam Français, Mathématiques, Sciences, Histoire-Géographie, Anglais. BFEM bi doxal ci mai-juin. Résultat yi ñuy wone ci établissement yi ak internet. Kan am BFEM ak bonne note, mënanu dem ci lycée général walla lycée technique.",
+      "category": "examen",
+      "language": "wo",
+      "tags": [
+        "BFEM",
+        "examen",
+        "3ème",
+        "wolof",
+        "lycée"
+      ]
+    },
+    {
+      "id": 38,
+      "question": "Bourse yi lan ñu la? Fan ñu dem ngir bourse?",
+      "answer": "Ci Senegaal, bourse yi am ñu pour xalé yu dëkk yu baax jàng: 1) Bourses d'excellence du Ministère - pour les meilleurs élèves aux examens nationaux, 2) Bourses régionales - auprès des Inspections d'Académie, 3) Bourses OFAD pour les étudiants à l'université, 4) Bourses de coopération internationale. Ngir dox ak bourse: dem ci établissement bi walla IA bi sa région ci, wone résultats yi, remplir formulaire bi, attente décision bi.",
+      "category": "bourse",
+      "language": "wo",
+      "tags": [
+        "bourse",
+        "aide",
+        "wolof",
+        "mérite",
+        "OFAD"
+      ]
+    },
+    {
+      "id": 39,
+      "question": "Calendrier scolaire bi lan la pour année bi?",
+      "answer": "Calendrier scolaire bi ci Senegaal doxal ndax: Rentrée bi: octobre, 1er trimestre: octobre à décembre, Vacances: décembre-janvier (fêtes), 2ème trimestre: janvier à mars, Vacances: février-mars, 3ème trimestre: avril à juin, Examens: mai à juillet. Datat yi déelaat ca Ministère de l'Education bi wax leen. Gurel informations ci site officiel walla directeur bi sa école.",
+      "category": "calendrier",
+      "language": "wo",
+      "tags": [
+        "calendrier",
+        "wolof",
+        "rentrée",
+        "vacances",
+        "trimestre"
+      ]
+    },
+    {
+      "id": 40,
+      "question": "Hol no faawtude karal e jannde?",
+      "answer": "Ngam fawtude karal e jannde e Senegaal : 1) Inscription e collège : ɓe foti CFEE, 2) Inscription e lycée : ɓe foti BFEM, 3) Filière e lycée : Sciences (S), Lettres (L), Gestion (G), Techniques (T). Kaifal jannde e fawtude oo waawi wallitaade e kaaɗe laamu gardiiɗo oo amen e IA oo. Ngam waɗde laamu ngam fawtude, cooto e sukaaɓe fawtude wano Orientation Scolaire bi.",
+      "category": "orientation",
+      "language": "ff",
+      "tags": [
+        "orientation",
+        "pulaar",
+        "filière",
+        "jannde"
+      ]
+    },
+    {
+      "id": 41,
+      "question": "Hol no waɗde jannde e Senegaal ngam ɓiɓɓe?",
+      "answer": "Jannde e Senegaal : Préscolaire (3-6 jawɗe) : cases des tout-petits, écoles maternelles. Primaire (6-12 jawɗe) : CI haa CM2, karal CFEE. Moyen (12-16 jawɗe) : 6ème haa 3ème e CEM, karal BFEM. Secondaire (16-19 jawɗe) : 2nde haa Terminale e lycée, karal BAC. Jannde wonii fayde ngam kala sukaaɓe e Senegaal. Hol ngam inscription, cooto e école teddata wuro maa.",
+      "category": "general",
+      "language": "ff",
+      "tags": [
+        "système éducatif",
+        "pulaar",
+        "primaire",
+        "collège",
+        "lycée"
+      ]
+    },
+    {
+      "id": 42,
+      "question": "ما هي مواعيد التسجيل في المدارس السنغالية؟",
+      "answer": "تجري عمليات التسجيل في المدارس السنغالية عادةً خلال الفترة من يوليو إلى سبتمبر من كل عام. بالنسبة للمرحلة الابتدائية، يمكن التسجيل مباشرةً في المدرسة مع تقديم شهادة الميلاد وبطاقة التطعيم. أما للمرحلة الإعدادية، فيشترط اجتياز امتحان CFEE. وللمرحلة الثانوية، يشترط اجتياز امتحان BFEM. التعليم مجاني في المدارس الحكومية. للمزيد من المعلومات، تواصل مع مديرية التعليم في منطقتك.",
+      "category": "inscription",
+      "language": "ar",
+      "tags": [
+        "تسجيل",
+        "مدرسة",
+        "التعليم",
+        "السنغال",
+        "عربي"
+      ]
+    },
+    {
+      "id": 43,
+      "question": "ما هو امتحان الباكالوريا في السنغال وكيف يمكن التسجيل فيه؟",
+      "answer": "الباكالوريا (BAC) هي شهادة نهاية المرحلة الثانوية في السنغال. يتضمن الامتحان عدة مواد تختلف حسب الشعبة (علمية، أدبية، اقتصادية). للتسجيل: يقوم الثانوي بجمع ملفات التسجيل في بداية السنة الدراسية، ثم تُرسل إلى مكتب الباكالوريا (Office du Baccalauréat). النتائج تُعلن عبر الموقع الرسمي ومراكز الامتحانات. للاستفسار، تواصل مع إدارة مدرستك أو مكتب الباكالوريا مباشرةً.",
+      "category": "examen",
+      "language": "ar",
+      "tags": [
+        "باكالوريا",
+        "امتحان",
+        "التسجيل",
+        "عربي",
+        "ثانوية"
+      ]
+    },
+    {
+      "id": 44,
+      "question": "هل التعليم مجاني في السنغال؟",
+      "answer": "نعم، التعليم الأساسي مجاني وإلزامي في السنغال للأطفال من سن 6 إلى 16 عاماً. تُوفر الحكومة الكتب المدرسية مجاناً للطلاب في المدارس الابتدائية والإعدادية الحكومية. رسوم التسجيل في المدارس الحكومية رمزية أو معدومة. قد تبقى بعض النفقات الجانبية مثل القرطاسية والزي المدرسي. التعليم العالي في الجامعات الحكومية بأسعار مدعومة جداً (حوالي 5000-10000 فرنك أفريقي).",
+      "category": "general",
+      "language": "ar",
+      "tags": [
+        "مجاني",
+        "إلزامي",
+        "تعليم",
+        "عربي"
+      ]
+    },
+    {
+      "id": 45,
+      "question": "كيف يمكن الحصول على منحة دراسية في السنغال؟",
+      "answer": "تتوفر عدة أنواع من المنح الدراسية في السنغال: 1) منح التميز من وزارة التعليم للطلاب المتفوقين في الامتحانات الوطنية، 2) المنح الإقليمية من مفتشيات الأكاديميات، 3) منح OFAD للطلاب الجامعيين، 4) المنح الدولية (فرنسا، المغرب، الصين، السعودية...) - تستفسر من السفارات، 5) منح التعاون الثنائي. للتقديم: تواصل مع مؤسستك التعليمية أو مفتشية الأكاديمية في منطقتك.",
+      "category": "bourse",
+      "language": "ar",
+      "tags": [
+        "منحة",
+        "دراسية",
+        "OFAD",
+        "عربي",
+        "تمويل"
+      ]
+    },
+    {
+      "id": 46,
+      "question": "Comment s'appelle le système de notation au Sénégal?",
+      "answer": "Au Sénégal, le système de notation est basé sur une échelle de 0 à 20, comme en France. La moyenne est de 10/20. Les appréciations sont généralement : 16-20 : Très Bien (TB), 14-16 : Bien (B), 12-14 : Assez Bien (AB), 10-12 : Passable (P), moins de 10 : insuffisant. Pour les examens nationaux, la mention est accordée selon la moyenne générale. Il faut avoir au moins 10/20 de moyenne générale pour être admis à un examen.",
+      "category": "programme",
+      "language": "fr",
+      "tags": [
+        "notation",
+        "moyenne",
+        "système",
+        "mention",
+        "évaluation"
+      ]
+    },
+    {
+      "id": 47,
+      "question": "Qu'est-ce que l'IDEN et quel est son rôle?",
+      "answer": "L'IDEN (Inspection Départementale de l'Éducation Nationale) est la structure administrative qui supervise l'éducation au niveau des départements au Sénégal. Il en existe une dans chaque département. L'IDEN est responsable de : la supervision des écoles primaires du département, le suivi pédagogique des enseignants, la gestion des examens locaux, la collecte des statistiques scolaires, la mise en œuvre des politiques éducatives. Pour toute question relative à l'éducation dans votre département, c'est votre premier interlocuteur.",
+      "category": "administratif",
+      "language": "fr",
+      "tags": [
+        "IDEN",
+        "département",
+        "inspection",
+        "administration"
+      ]
+    },
+    {
+      "id": 48,
+      "question": "Comment signaler un problème dans un établissement scolaire?",
+      "answer": "Pour signaler un problème dans un établissement scolaire (harcèlement, mauvais traitements, manque d'enseignant, état des locaux, etc.) : 1) Parlez d'abord au directeur de l'établissement, 2) Si non résolu, contactez l'Association des Parents d'Élèves (APE), 3) Saisissez l'IDEN de votre département, 4) Remontez à l'Inspection d'Académie si nécessaire, 5) Contactez le Ministère de l'Éducation pour les cas graves. Chaque établissement doit avoir un mécanisme de plaintes accessible à tous.",
+      "category": "administratif",
+      "language": "fr",
+      "tags": [
+        "signalement",
+        "problème",
+        "APE",
+        "IDEN",
+        "plainte"
+      ]
+    },
+    {
+      "id": 49,
+      "question": "Quels sont les établissements d'enseignement supérieur au Sénégal?",
+      "answer": "Le Sénégal dispose de plusieurs universités publiques : UCAD (Université Cheikh Anta Diop) à Dakar - la plus grande, UGB (Université Gaston Berger) à Saint-Louis, UGBM à Bambey, UDA à Ziguinchor (Assane Seck), UDZ à Diourbel (Sine Saloum), UTM à Touba, UVS (Université Virtuelle du Sénégal). Il existe aussi des grandes écoles publiques : ESP (École Supérieure Polytechnique), ENSEPT, ENEA, ENCR, etc. Plus de 200 établissements privés d'enseignement supérieur sont également reconnus.",
+      "category": "orientation",
+      "language": "fr",
+      "tags": [
+        "université",
+        "supérieur",
+        "UCAD",
+        "UGB",
+        "grandes écoles"
+      ]
+    },
+    {
+      "id": 50,
+      "question": "Qu'est-ce que l'Université Virtuelle du Sénégal (UVS)?",
+      "answer": "L'Université Virtuelle du Sénégal (UVS) est un établissement public d'enseignement supérieur à distance, créé en 2013. Elle permet à des étudiants de toutes régions du Sénégal d'accéder à l'enseignement supérieur via internet et des Espaces Numériques Ouverts (ENO) répartis dans tout le pays. L'UVS propose des licences dans de nombreuses filières à des frais très réduits. C'est une solution idéale pour les étudiants éloignés de Dakar ou ayant des contraintes de déplacement.",
+      "category": "orientation",
+      "language": "fr",
+      "tags": [
+        "UVS",
+        "virtuel",
+        "distance",
+        "e-learning",
+        "ENO"
+      ]
+    },
+    {
+      "id": 51,
+      "question": "Comment se passe le redoublement au Sénégal?",
+      "answer": "Au Sénégal, un élève peut redoubler une classe s'il n'a pas la moyenne requise pour passer en classe supérieure. Les règles générales : une moyenne inférieure à 8/20 entraîne généralement le redoublement, un conseil de classe décide du passage ou du redoublement en fin d'année, un élève ne peut pas redoubler plus de 2 fois dans le même cycle. Le Ministère décourage le redoublement excessif et promeut des mécanismes de rattrapage. Les parents peuvent demander une révision de la décision auprès du directeur.",
+      "category": "programme",
+      "language": "fr",
+      "tags": [
+        "redoublement",
+        "passage",
+        "moyenne",
+        "conseil de classe"
+      ]
+    },
+    {
+      "id": 52,
+      "question": "Qu'est-ce que le PDEF et PAQUET-EF?",
+      "answer": "Le PDEF (Programme Décennal de l'Éducation et de la Formation) était le plan stratégique 2000-2010 du Sénégal pour améliorer son système éducatif. Il a été suivi par le PAQUET-EF (Programme d'Amélioration de la Qualité, de l'Équité et de la Transparence dans l'Éducation et la Formation) pour 2013-2025. Le PAQUET-EF vise à : améliorer l'accès à l'éducation, renforcer la qualité de l'enseignement, promouvoir l'équité (notamment pour les filles et les zones rurales), moderniser la gestion du système éducatif.",
+      "category": "general",
+      "language": "fr",
+      "tags": [
+        "PDEF",
+        "PAQUET-EF",
+        "réforme",
+        "politique éducative",
+        "qualité"
+      ]
+    },
+    {
+      "id": 53,
+      "question": "Comment fonctionne l'affectation des élèves en classe de 6ème?",
+      "answer": "L'affectation en 6ème dans les établissements publics se fait par le biais du Concours d'Entrée en 6e (CEE) organisé par les Inspections d'Académie. Les élèves sont classés selon leurs résultats et affectés dans les collèges selon les places disponibles et la distance domicile-établissement. Les parents peuvent exprimer des vœux mais ne sont pas garantis. Les élèves non admis au concours ou n'ayant pas le CFEE peuvent s'inscrire dans le privé ou redoubler.",
+      "category": "inscription",
+      "language": "fr",
+      "tags": [
+        "affectation",
+        "6ème",
+        "CEE",
+        "collège",
+        "CFEE"
+      ]
+    },
+    {
+      "id": 54,
+      "question": "Quelle est la procédure pour un transfert d'école?",
+      "answer": "Pour transférer votre enfant d'une école à une autre, voici la procédure : 1) Demander un certificat de radiation (ou fiche de transfert) à l'ancienne école, 2) Se présenter à la nouvelle école avec ce document, l'acte de naissance et le carnet de notes, 3) Le directeur de la nouvelle école examine le dossier et les places disponibles, 4) Si accepté, l'inscription est enregistrée. Pour un transfert entre régions, informez les deux IDEN concernées. Il n'y a pas de frais officiels pour un transfert.",
+      "category": "administratif",
+      "language": "fr",
+      "tags": [
+        "transfert",
+        "changement d'école",
+        "radiation",
+        "mutation"
+      ]
+    },
+    {
+      "id": 55,
+      "question": "Les enfants handicapés ont-ils accès à l'éducation au Sénégal?",
+      "answer": "Le Sénégal s'engage dans l'éducation inclusive pour les enfants en situation de handicap : Des Classes d'Initiation à l'Intégration Scolaire (CIIS) existent dans certaines écoles primaires, Des écoles et centres spécialisés accueillent les enfants avec des besoins particuliers (déficience visuelle, auditive, motrice, etc.), Le Plan d'Action National pour les Personnes Handicapées prévoit des mesures inclusives, L'ANPH (Agence Nationale des Personnes Handicapées) peut orienter vers les ressources disponibles. Des efforts importants restent à faire pour une inclusion complète.",
+      "category": "general",
+      "language": "fr",
+      "tags": [
+        "handicap",
+        "inclusion",
+        "CIIS",
+        "éducation inclusive",
+        "ANPH"
+      ]
+    },
+    {
+      "id": 56,
+      "question": "Qu'est-ce que la Langue Nationale dans les programmes scolaires?",
+      "answer": "Le Sénégal a intégré les langues nationales dans son système éducatif dans le cadre de la politique de valorisation des langues africaines. Six langues nationales sont reconnues comme véhicules d'enseignement : le wolof, le pulaar, le sérère, le diola, le mandingue et le soninké. Des écoles bilingues expérimentales enseignent dans la langue nationale de la communauté et en français. Cette approche améliore les résultats des élèves notamment en zones rurales. Les langues nationales figurent au BAC comme matière optionnelle.",
+      "category": "programme",
+      "language": "fr",
+      "tags": [
+        "langue nationale",
+        "wolof",
+        "pulaar",
+        "bilingue",
+        "diversité"
+      ]
+    },
+    {
+      "id": 57,
+      "question": "Y a-t-il des programmes d'alphabétisation pour les adultes?",
+      "answer": "Oui, le Sénégal dispose de programmes d'alphabétisation et d'Éducation Non Formelle (ENF) pour les adultes : Le Programme National d'Alphabétisation et d'Apprentissage des Métiers (PNAM), Les cours du soir dans certaines écoles publiques, Les centres d'alphabétisation gérés par des ONG et associations, Les programmes en langues nationales pour les zones rurales, Les formations professionnelles courtes dans les centres CDEPS. Pour trouver un centre près de chez vous, contactez l'IDEN ou la Direction de l'Alphabétisation du Ministère.",
+      "category": "general",
+      "language": "fr",
+      "tags": [
+        "alphabétisation",
+        "adultes",
+        "ENF",
+        "PNAM",
+        "formation"
+      ]
+    },
+    {
+      "id": 58,
+      "question": "Comment s'inscrire au concours de l'Université Virtuelle du Sénégal?",
+      "answer": "L'inscription à l'UVS (Université Virtuelle du Sénégal) se fait en ligne sur le portail de l'université (uvs.edu.sn). Les étapes sont : 1) Créer un compte sur le portail UVS, 2) Remplir le formulaire d'inscription en ligne, 3) Télécharger les documents requis (BAC, pièce d'identité, photo), 4) Choisir votre filière et votre Espace Numérique Ouvert (ENO) de rattachement, 5) Payer les frais d'inscription (très faibles), 6) Valider l'inscription. Des ENO sont présents dans toutes les régions du Sénégal pour faciliter l'accès.",
+      "category": "inscription",
+      "language": "fr",
+      "tags": [
+        "UVS",
+        "inscription en ligne",
+        "université virtuelle",
+        "ENO"
+      ]
+    },
+    {
+      "id": 59,
+      "question": "Qu'est-ce que le Projet Sénégal Numérique pour l'éducation?",
+      "answer": "Le Sénégal développe plusieurs initiatives numériques pour moderniser son éducation : Projet USAID YEE (Youth and Education) intégrant les TIC dans les classes, Distribution de tablettes dans certaines écoles pilotes, Plateforme MENFP (menfp.sn) pour les ressources pédagogiques en ligne, Connexion internet dans les établissements prioritaires via le Programme de Connectivité Scolaire, Partenariat avec des EdTech africaines pour les contenus localisés. L'objectif est d'atteindre une école connectée dans chaque commune du Sénégal d'ici 2030.",
+      "category": "general",
+      "language": "fr",
+      "tags": [
+        "numérique",
+        "TIC",
+        "tablette",
+        "connectivité",
+        "innovation"
+      ]
+    },
+    {
+      "id": 60,
+      "question": "Comment obtenir une équivalence de diplôme étranger au Sénégal?",
+      "answer": "Pour faire reconnaître un diplôme étranger au Sénégal, la procédure est la suivante : 1) Rassembler les documents : diplôme original + traduction officielle (si en langue étrangère), relevés de notes, programmes des cours suivis, 2) Déposer le dossier à la Direction de l'Enseignement Supérieur du Ministère ou à l'université d'accueil, 3) Une commission d'équivalence examine le dossier (délai : 1 à 3 mois), 4) En cas d'accord, une attestation d'équivalence est délivrée. Le CAMES (Conseil Africain et Malgache pour l'Enseignement Supérieur) peut aussi traiter certaines demandes.",
+      "category": "administratif",
+      "language": "fr",
+      "tags": [
+        "équivalence",
+        "diplôme étranger",
+        "reconnaissance",
+        "CAMES",
+        "supérieur"
+      ]
+    },
+    {
+      "id": 98,
+      "question": "C'est quoi MIRADOR ?",
+      "answer": "MIRADOR est la plateforme de gestion des ressources humaines du Ministère de l'Éducation Nationale. Elle contient les dossiers administratifs de tous les agents (corps, grade, échelon, affectations, ordres de service). Les données MIRADOR sont utilisées pour mettre à jour PLANETE.",
+      "category": "mirador",
+      "language": "fr",
+      "tags": [
+        "MIRADOR",
+        "RH",
+        "ressources humaines",
+        "dossier administratif"
+      ]
+    },
+    {
+      "id": 99,
+      "question": "Quel est le lien entre MIRADOR et PLANETE ?",
+      "answer": "MIRADOR et PLANETE sont liés : les agents titulaires sont importés depuis MIRADOR vers PLANETE via le bouton Mis à Jour Personnel. Quand vous mettez à jour le dossier d'un agent dans PLANETE, la synchronisation avec MIRADOR maintient la cohérence des données RH.",
+      "category": "mirador",
+      "language": "fr",
+      "tags": [
+        "MIRADOR",
+        "PLANETE",
+        "synchronisation",
+        "lien",
+        "agents"
+      ]
+    },
+    {
+      "id": 100,
+      "question": "Comment faire une demande de mutation ?",
+      "answer": "Pour demander une mutation, adressez une demande manuscrite au Ministre via votre IEF. Joignez votre certificat de prise de service et votre arrêté de nomination. Les mutations sont traitées par la DRH du Ministère et prononcées chaque année avant la rentrée.",
+      "category": "mutation",
+      "language": "fr",
+      "tags": [
+        "mutation",
+        "demande",
+        "IEF",
+        "DRH",
+        "changer d'établissement"
+      ]
+    },
+    {
+      "id": 101,
+      "question": "Quels documents faut-il pour une demande de mutation ?",
+      "answer": "Pour une demande de mutation, vous avez besoin de : une demande manuscrite adressée au Ministre, un certificat de prise de service actuel, votre arrêté de nomination ou ordre de service, et éventuellement des pièces justificatives (raison familiale, médicale, etc.).",
+      "category": "mutation",
+      "language": "fr",
+      "tags": [
+        "mutation",
+        "documents",
+        "dossier",
+        "pièces",
+        "demande"
+      ]
+    },
+    {
+      "id": 102,
+      "question": "Quand sont prononcées les mutations des enseignants ?",
+      "answer": "Les mutations des enseignants au Sénégal sont généralement prononcées avant la rentrée scolaire (en juillet-août). La DRH du Ministère gère les mouvements annuels du personnel. Renseignez-vous auprès de votre IEF pour les délais de dépôt des dossiers.",
+      "category": "mutation",
+      "language": "fr",
+      "tags": [
+        "mutation",
+        "calendrier",
+        "dates",
+        "prononcée",
+        "rentrée"
+      ]
+    },
+    {
+      "id": 103,
+      "question": "Comment fonctionne l'avancement de carrière d'un enseignant ?",
+      "answer": "L'avancement se fait en trois types : l'avancement d'échelon (automatique tous les 2 ans selon l'ancienneté), l'avancement de grade (par concours professionnel ou au choix) et le reclassement (après un nouveau diplôme). Le tout est géré par la DRH du Ministère.",
+      "category": "carriere",
+      "language": "fr",
+      "tags": [
+        "avancement",
+        "carrière",
+        "échelon",
+        "grade",
+        "ancienneté"
+      ]
+    },
+    {
+      "id": 104,
+      "question": "Tous les combien d'années avance-t-on d'échelon ?",
+      "answer": "L'avancement d'échelon est automatique tous les 2 ans selon l'ancienneté. Pour vérifier votre échelon actuel, consultez votre bulletin de solde ou contactez la DRH du Ministère. Vous pouvez aussi vérifier sur MIRADOR si vous avez accès.",
+      "category": "carriere",
+      "language": "fr",
+      "tags": [
+        "échelon",
+        "avancement",
+        "2 ans",
+        "ancienneté",
+        "carrière"
+      ]
+    },
+    {
+      "id": 105,
+      "question": "Comment faire un reclassement après un nouveau diplôme ?",
+      "answer": "Pour un reclassement suite à un nouveau diplôme, constituez un dossier avec votre diplôme, une demande de reclassement et vos pièces administratives. Déposez le dossier auprès de votre IEF qui le transmet à la DRH du Ministère pour traitement.",
+      "category": "carriere",
+      "language": "fr",
+      "tags": [
+        "reclassement",
+        "diplôme",
+        "avancement",
+        "dossier",
+        "DRH"
+      ]
+    },
+    {
+      "id": 106,
+      "question": "Comment consulter son bulletin de salaire ?",
+      "answer": "Le bulletin de solde est disponible sur la plateforme du Trésor Public ou auprès du service de la Solde. Pour tout problème (retard, erreur, suspension), contactez d'abord votre IEF, puis la Direction de la Solde au Ministère des Finances.",
+      "category": "salaire",
+      "language": "fr",
+      "tags": [
+        "salaire",
+        "bulletin de solde",
+        "paie",
+        "Trésor Public"
+      ]
+    },
+    {
+      "id": 107,
+      "question": "Quel est le salaire d'un enseignant au Sénégal ?",
+      "answer": "Le salaire d'un enseignant au Sénégal dépend de son corps, son grade et son échelon. Il comprend le salaire de base plus les indemnités (logement, sujétion, prime de rendement, indemnité de zone). Pour connaître votre salaire précis, consultez votre bulletin de solde ou contactez la DRH.",
+      "category": "salaire",
+      "language": "fr",
+      "tags": [
+        "salaire",
+        "enseignant",
+        "indemnités",
+        "corps",
+        "grade",
+        "prime"
+      ]
+    },
+    {
+      "id": 108,
+      "question": "Quelles sont les indemnités d'un enseignant ?",
+      "answer": "Les principales indemnités pour les enseignants au Sénégal sont : l'indemnité de logement, l'indemnité de sujétion, la prime de rendement et l'indemnité de zone (pour les zones difficiles). Le montant varie selon le corps, le grade et la zone d'affectation.",
+      "category": "salaire",
+      "language": "fr",
+      "tags": [
+        "indemnités",
+        "prime",
+        "logement",
+        "sujétion",
+        "zone",
+        "enseignant"
+      ]
+    },
+    {
+      "id": 109,
+      "question": "Mon salaire est en retard, que faire ?",
+      "answer": "Si votre salaire est en retard, contactez d'abord votre IEF pour signaler le problème. Si non résolu, contactez la Direction de la Solde au Ministère des Finances. La DRH du MEN peut aussi intervenir. Préparez votre bulletin de solde et vos pièces administratives.",
+      "category": "salaire",
+      "language": "fr",
+      "tags": [
+        "salaire",
+        "retard",
+        "paiement",
+        "problème",
+        "IEF",
+        "solde"
+      ]
+    },
+    {
+      "id": 110,
+      "question": "Comment demander un congé de maladie ?",
+      "answer": "Pour un congé de maladie : adressez une demande écrite au chef d'établissement avec un certificat médical. Le chef d'établissement transmet à l'IEF, qui transmet à l'IA pour décision. Pour les congés de longue durée, un avis du Conseil de santé est nécessaire.",
+      "category": "conges",
+      "language": "fr",
+      "tags": [
+        "congé",
+        "maladie",
+        "certificat médical",
+        "demande",
+        "IEF"
+      ]
+    },
+    {
+      "id": 111,
+      "question": "Combien de semaines dure le congé de maternité ?",
+      "answer": "Le congé de maternité pour les enseignantes fonctionnaires est de 14 semaines : 6 semaines avant l'accouchement et 8 semaines après. La demande se fait auprès du chef d'établissement qui la transmet à l'IEF.",
+      "category": "conges",
+      "language": "fr",
+      "tags": [
+        "congé maternité",
+        "14 semaines",
+        "accouchement",
+        "enseignante"
+      ]
+    },
+    {
+      "id": 112,
+      "question": "Comment prendre une permission d'absence ?",
+      "answer": "Pour une permission d'absence : adressez une demande au chef d'établissement en précisant le motif. Les permissions sont limitées à 15 jours par an pour des événements familiaux (mariage, décès...). La décision remonte à l'IEF si nécessaire.",
+      "category": "conges",
+      "language": "fr",
+      "tags": [
+        "permission",
+        "absence",
+        "congé",
+        "famille",
+        "demande"
+      ]
+    },
+    {
+      "id": 113,
+      "question": "À quel âge part-on à la retraite au Sénégal pour un enseignant ?",
+      "answer": "Les enseignants fonctionnaires partent à la retraite à 60 ans au Sénégal. Des prolongations sont possibles dans certains cas. La pension est calculée en fonction de l'ancienneté et du dernier indice, et versée par le FNR (Fonds National de Retraite).",
+      "category": "retraite",
+      "language": "fr",
+      "tags": [
+        "retraite",
+        "60 ans",
+        "age",
+        "FNR",
+        "pension"
+      ]
+    },
+    {
+      "id": 114,
+      "question": "Comment préparer son dossier de retraite ?",
+      "answer": "Pour préparer votre dossier de retraite, commencez 2 ans avant la date prévue. Rassemblez : acte de naissance, arrêté de nomination, derniers bulletins de solde, et certificat de prise de service. Déposez le dossier à la DRH du MEN qui le transmet au FNR.",
+      "category": "retraite",
+      "language": "fr",
+      "tags": [
+        "retraite",
+        "dossier",
+        "documents",
+        "FNR",
+        "DRH",
+        "préparer"
+      ]
+    },
+    {
+      "id": 115,
+      "question": "Quand passe-t-on le CFEE ?",
+      "answer": "Le CFEE (Certificat de Fin d'Études Élémentaires) se passe en juin pour les élèves de CM2. C'est le premier grand examen national, qui permet l'entrée en 6ème (collège). Les épreuves sont : Dictée, Calcul, Rédaction et Lecture.",
+      "category": "examen",
+      "language": "fr",
+      "tags": [
+        "CFEE",
+        "CM2",
+        "juin",
+        "primaire",
+        "examen",
+        "entrée 6ème"
+      ]
+    },
+    {
+      "id": 116,
+      "question": "Quelles sont les matières du BFEM ?",
+      "answer": "Les épreuves du BFEM (Brevet de Fin d'Études Moyennes) sont : Français, Mathématiques, Sciences de la vie et de la Terre, Physique-Chimie, Histoire-Géographie, Langues vivantes et EPS. Il se passe en fin de 3ème et les résultats sortent environ 2 semaines après.",
+      "category": "examen",
+      "language": "fr",
+      "tags": [
+        "BFEM",
+        "matières",
+        "épreuves",
+        "3ème",
+        "collège"
+      ]
+    },
+    {
+      "id": 117,
+      "question": "Comment connaître les résultats du BAC au Sénégal ?",
+      "answer": "Les résultats du BAC au Sénégal sont publiés par l'Office du Bac (www.officedubac.sn) environ 2-3 semaines après les épreuves. Vous pouvez les consulter en ligne, à la radio ou dans les établissements. Le BAC se passe en juin pour les élèves de terminale.",
+      "category": "examen",
+      "language": "fr",
+      "tags": [
+        "BAC",
+        "résultats",
+        "Office du Bac",
+        "officedubac.sn",
+        "terminale"
+      ]
+    },
+    {
+      "id": 118,
+      "question": "Quelles sont les séries du BAC au Sénégal ?",
+      "answer": "Les séries du BAC au Sénégal sont : Série L (Littéraire), Série S1 (Mathématiques et Sciences physiques), Série S2 (Sciences naturelles et Biologie), et Série G (Technique et Gestion). Chaque série a ses matières et coefficients spécifiques.",
+      "category": "examen",
+      "language": "fr",
+      "tags": [
+        "BAC",
+        "séries",
+        "L",
+        "S1",
+        "S2",
+        "G",
+        "terminale"
+      ]
+    },
+    {
+      "id": 119,
+      "question": "Quelle série choisir après le BFEM ?",
+      "answer": "Après le BFEM, choisissez selon vos points forts : Série L si vous aimez le Français et les langues, Série S1 pour les Maths et la Physique, Série S2 pour la Biologie et les Sciences naturelles, Série G pour le commerce et la gestion. Consultez votre conseiller d'orientation.",
+      "category": "orientation",
+      "language": "fr",
+      "tags": [
+        "orientation",
+        "série",
+        "BFEM",
+        "lycée",
+        "L",
+        "S1",
+        "S2",
+        "G"
+      ]
+    },
+    {
+      "id": 120,
+      "question": "Quelles sont les universités publiques au Sénégal ?",
+      "answer": "Les universités publiques au Sénégal sont : UCAD (Dakar), UGB (Saint-Louis), UASZ (Ziguinchor), UdM (Bambey) et UT (Thiès). L'admission se fait via le Bac et les concours d'entrée selon la filière. Pour l'orientation en licence, consultez le site du MESRI.",
+      "category": "orientation",
+      "language": "fr",
+      "tags": [
+        "université",
+        "UCAD",
+        "UGB",
+        "UASZ",
+        "supérieur",
+        "admission"
+      ]
+    },
+    {
+      "id": 121,
+      "question": "Comment obtenir une bourse d'études au Sénégal ?",
+      "answer": "Pour une bourse nationale : inscrivez-vous d'abord à l'université, puis déposez un dossier au CROUS de votre région. Les documents requis sont : attestation d'inscription, extrait de naissance, certificat de scolarité des parents. Pour la France, renseignez-vous sur Campus France.",
+      "category": "bourse",
+      "language": "fr",
+      "tags": [
+        "bourse",
+        "CROUS",
+        "dossier",
+        "université",
+        "aide financière"
+      ]
+    },
+    {
+      "id": 122,
+      "question": "Quels sont les critères pour obtenir une bourse ?",
+      "answer": "Pour une bourse nationale au Sénégal, les critères sont : les résultats scolaires (moyennes obtenues), la situation sociale et économique de la famille. Les demandes sont traitées par le CROUS (Centre des Œuvres Universitaires et Sociales) selon votre région.",
+      "category": "bourse",
+      "language": "fr",
+      "tags": [
+        "bourse",
+        "critères",
+        "conditions",
+        "CROUS",
+        "résultats",
+        "social"
+      ]
+    },
+    {
+      "id": 123,
+      "question": "C'est quoi l'IEF ?",
+      "answer": "L'IEF (Inspection de l'Éducation et de la Formation) est la structure locale du Ministère de l'Éducation. C'est le premier interlocuteur pour les enseignants et les établissements. L'IEF supervise les écoles de sa zone et transmet les dossiers administratifs à l'IA.",
+      "category": "structures_men",
+      "language": "fr",
+      "tags": [
+        "IEF",
+        "inspection",
+        "structure",
+        "MEN",
+        "local"
+      ]
+    },
+    {
+      "id": 124,
+      "question": "C'est quoi la DPTIC ?",
+      "answer": "La DPTIC (Division de la Promotion des TIC) gère la stratégie numérique pour l'éducation au Sénégal. Elle déploie PLANETE dans les établissements, équipe les salles informatiques, forme les enseignants au numérique et développe la stratégie numérique 2025-2029.",
+      "category": "structures_men",
+      "language": "fr",
+      "tags": [
+        "DPTIC",
+        "numérique",
+        "TIC",
+        "informatique",
+        "PLANETE",
+        "formation"
+      ]
+    },
+    {
+      "id": 125,
+      "question": "C'est quoi la DRH du Ministère de l'Éducation ?",
+      "answer": "La DRH (Direction des Ressources Humaines) du Ministère de l'Éducation gère la carrière de tous les enseignants fonctionnaires : recrutement, affectations, mutations, avancements, congés et départs en retraite. C'est l'interlocuteur principal pour toutes les questions de carrière.",
+      "category": "structures_men",
+      "language": "fr",
+      "tags": [
+        "DRH",
+        "ressources humaines",
+        "carrière",
+        "Ministère",
+        "enseignants"
+      ]
+    },
+    {
+      "id": 126,
+      "question": "Quels documents faut-il pour inscrire un enfant à l'école primaire ?",
+      "answer": "Pour inscrire un enfant à l'école primaire, apportez : l'extrait de naissance de l'enfant, le carnet de santé avec les vaccinations à jour. Pour les écoles publiques, l'inscription est gratuite au primaire. Rendez-vous directement à l'école souhaitée entre juillet et septembre.",
+      "category": "inscription",
+      "language": "fr",
+      "tags": [
+        "inscription",
+        "primaire",
+        "documents",
+        "extrait de naissance",
+        "vaccinations"
+      ]
+    },
+    {
+      "id": 127,
+      "question": "À quelle période s'inscrit-on à l'école au Sénégal ?",
+      "answer": "Les inscriptions scolaires au Sénégal se déroulent généralement entre juillet et septembre, avant la rentrée d'octobre. Pour le préscolaire et le primaire, les inscriptions se font directement dans les établissements. Pour le moyen et le secondaire, suivez les dates de votre IA.",
+      "category": "inscription",
+      "language": "fr",
+      "tags": [
+        "inscription",
+        "dates",
+        "juillet",
+        "septembre",
+        "rentrée",
+        "calendrier"
+      ]
+    },
+    {
+      "id": 128,
+      "question": "L'école primaire publique est-elle gratuite au Sénégal ?",
+      "answer": "Oui, l'école primaire publique est entièrement gratuite au Sénégal. Les inscriptions ne coûtent rien. Au collège et au lycée, des frais modiques (GOSCO, tenue, examens) peuvent s'appliquer selon l'établissement, validés par le CGE.",
+      "category": "inscription",
+      "language": "fr",
+      "tags": [
+        "gratuit",
+        "primaire",
+        "école publique",
+        "frais",
+        "inscription"
+      ]
+    },
+    {
+      "id": 129,
+      "question": "Quand a lieu la rentrée scolaire au Sénégal ?",
+      "answer": "La rentrée scolaire au Sénégal a lieu généralement le premier lundi d'octobre. Les dates officielles sont publiées chaque année par le Ministère de l'Éducation Nationale. L'année scolaire se termine fin juin.",
+      "category": "calendrier",
+      "language": "fr",
+      "tags": [
+        "rentrée",
+        "octobre",
+        "calendrier",
+        "début cours",
+        "année scolaire"
+      ]
+    },
+    {
+      "id": 130,
+      "question": "Quand sont les vacances scolaires au Sénégal ?",
+      "answer": "Les vacances scolaires au Sénégal sont : Toussaint (fin octobre, 1 semaine), Noël (fin décembre, 2 semaines), Février (mi-février, 1 semaine), Pâques (avril, 2 semaines), et les grandes vacances (juillet-septembre). Les dates exactes varient selon les années.",
+      "category": "calendrier",
+      "language": "fr",
+      "tags": [
+        "vacances",
+        "calendrier",
+        "Toussaint",
+        "Noël",
+        "Pâques",
+        "congés"
+      ]
+    },
+    {
+      "id": 131,
+      "question": "Quelles sont les matières enseignées au primaire au Sénégal ?",
+      "answer": "Au primaire (CP à CM2), les matières sont : Français, Mathématiques, Sciences de l'environnement, Histoire-Géographie, Éducation civique, EPS, Arts plastiques et éventuellement une langue nationale. Le programme est défini par le Ministère de l'Éducation.",
+      "category": "programme",
+      "language": "fr",
+      "tags": [
+        "primaire",
+        "matières",
+        "programme",
+        "CP",
+        "CM2",
+        "curriculum"
+      ]
+    },
+    {
+      "id": 132,
+      "question": "Quelles matières au collège au Sénégal ?",
+      "answer": "Au collège (6ème à 3ème), les matières sont : Français, Mathématiques, Sciences de la vie et de la Terre, Physique-Chimie, Histoire-Géographie, Anglais, EPS, et optionnellement une 2ème langue vivante. La liste précise dépend du niveau et de la série.",
+      "category": "programme",
+      "language": "fr",
+      "tags": [
+        "collège",
+        "matières",
+        "programme",
+        "6ème",
+        "3ème",
+        "curriculum"
+      ]
+    },
+    {
+      "id": 133,
+      "question": "Comment obtenir un certificat de scolarité ?",
+      "answer": "Pour obtenir un certificat de scolarité, adressez-vous directement au directeur ou au proviseur de votre établissement. Ce document est gratuit et généralement délivré dans la journée. Il atteste votre inscription dans l'établissement pour l'année en cours.",
+      "category": "administratif",
+      "language": "fr",
+      "tags": [
+        "certificat de scolarité",
+        "document",
+        "administratif",
+        "directeur"
+      ]
+    },
+    {
+      "id": 134,
+      "question": "Comment retirer son diplôme du BFEM ou du BAC ?",
+      "answer": "Les diplômes du BFEM et du BAC se retirent à la DEXCO (Direction des Examens et Concours) après publication officielle des résultats. Présentez votre relevé de notes et une pièce d'identité. Renseignez-vous auprès de votre IA pour les délais de disponibilité.",
+      "category": "administratif",
+      "language": "fr",
+      "tags": [
+        "diplôme",
+        "BFEM",
+        "BAC",
+        "DEXCO",
+        "retrait",
+        "résultats"
+      ]
+    },
+    {
+      "id": 135,
+      "question": "Comment inscrire un enfant en situation de handicap à l'école ?",
+      "answer": "Pour inscrire un enfant handicapé, contactez votre IEF pour connaître les établissements avec des classes inclusives ou des assistants de vie scolaire dans votre zone. Dans PLANETE, le dossier élève permet de renseigner le type de handicap et de demander des adaptations.",
+      "category": "inclusion",
+      "language": "fr",
+      "tags": [
+        "handicap",
+        "inclusion",
+        "éducation inclusive",
+        "IEF",
+        "PLANETE",
+        "inscription"
+      ]
+    },
+    {
+      "id": 136,
+      "question": "Comment devenir enseignant au Sénégal ?",
+      "answer": "Pour devenir enseignant au Sénégal : passez le concours d'entrée à la FASTEF (pour le secondaire) ou au CRFPE (pour le primaire). La formation dure 2 ans. Le concours est organisé chaque année avec comme condition minimum le BAC. Après titularisation, vous devenez fonctionnaire.",
+      "category": "enseignant",
+      "language": "fr",
+      "tags": [
+        "enseignant",
+        "devenir",
+        "FASTEF",
+        "CRFPE",
+        "concours",
+        "recrutement"
+      ]
+    },
+    {
+      "id": 137,
+      "question": "C'est quoi la FASTEF ?",
+      "answer": "La FASTEF (anciennement ENS) est la Faculté des Sciences et Technologies de l'Éducation et de la Formation. C'est l'institution qui forme les enseignants du secondaire au Sénégal. Le concours d'entrée est organisé annuellement pour les titulaires du BAC ou d'une licence.",
+      "category": "enseignant",
+      "language": "fr",
+      "tags": [
+        "FASTEF",
+        "ENS",
+        "formation enseignants",
+        "secondaire",
+        "concours"
+      ]
+    },
+    {
+      "id": 139,
+      "question": "Comment fonctionne la cantine scolaire au Sénégal ?",
+      "answer": "Les cantines scolaires au Sénégal sont gérées par la DCEJ (Division des Cantines). Elles concernent surtout les écoles primaires en zone rurale et sont financées par l'État et le PAM. Les repas y sont gratuits. Contactez votre IEF pour savoir si votre école est éligible.",
+      "category": "cantine",
+      "language": "fr",
+      "tags": [
+        "cantine",
+        "alimentation",
+        "DCEJ",
+        "PAM",
+        "repas gratuits",
+        "primaire"
+      ]
+    },
+    {
+      "id": 143,
+      "question": "C'est quoi le GOSCO ?",
+      "answer": "Le GOSCO est la contribution des familles pour le fonctionnement de l'établissement scolaire (entretien, activités...). Ce montant est fixé par le CGE (Comité de Gestion de l'École) et varie selon l'établissement. Dans PLANETE, il est paramétré dans Configuration > Paramétrage scolarité.",
+      "category": "frais",
+      "language": "fr",
+      "tags": [
+        "GOSCO",
+        "frais",
+        "contribution",
+        "CGE",
+        "PLANETE",
+        "scolarité"
+      ]
+    },
+    {
+      "id": 144,
+      "question": "À quel âge un enfant peut aller à la maternelle au Sénégal ?",
+      "answer": "Au Sénégal, l'éducation préscolaire accueille les enfants dès 3 ans. Les cases des tout-petits (CTP) reçoivent les enfants de 3 à 6 ans, notamment en zone rurale. Les écoles maternelles ont trois sections : petite (3-4 ans), moyenne (4-5 ans) et grande (5-6 ans).",
+      "category": "prescolaire",
+      "language": "fr",
+      "tags": [
+        "maternelle",
+        "préscolaire",
+        "âge",
+        "3 ans",
+        "CTP",
+        "petite section"
+      ]
+    },
+    {
+      "id": 145,
+      "question": "Les daaras sont-ils reconnus par l'État sénégalais ?",
+      "answer": "Oui, le Ministère a lancé un programme de modernisation des daaras. Les daaras modernisés qui intègrent le programme scolaire national en plus de l'enseignement coranique sont reconnus par l'État. Les écoles franco-arabes ont également leurs programmes reconnus par le MEN.",
+      "category": "daara",
+      "language": "fr",
+      "tags": [
+        "daara",
+        "reconnaissance",
+        "État",
+        "modernisation",
+        "franco-arabe",
+        "coranique"
+      ]
+    },
+    {
+      "id": 146,
+      "question": "C'est quoi le CGE d'une école ?",
+      "answer": "Le CGE (Comité de Gestion de l'École) est l'organe de gouvernance d'un établissement. Il est composé du chef d'établissement, des enseignants, des parents et des élèves. Il gère les fonds de l'établissement, approuve le budget et le projet d'école (PAE).",
+      "category": "administratif",
+      "language": "fr",
+      "tags": [
+        "CGE",
+        "comité de gestion",
+        "école",
+        "gouvernance",
+        "parents",
+        "budget"
+      ]
+    },
+    {
+      "id": 149,
+      "question": "Quels sont les syndicats d'enseignants au Sénégal ?",
+      "answer": "Les principaux syndicats d'enseignants au Sénégal sont : SYPROS, CUSEMS, SAEMSS, UDEN, SELS, SNELAS et d'autres. Ils défendent les droits des enseignants (salaires, conditions de travail, avancement). Pour toute question sur vos droits, rapprochez-vous de votre syndicat ou de la DRH du MEN.",
+      "category": "droits",
+      "language": "fr",
+      "tags": [
+        "syndicat",
+        "SYPROS",
+        "CUSEMS",
+        "enseignants",
+        "droits",
+        "grève"
+      ]
+    },
+    {
+      "id": 150,
+      "question": "Comment signaler une violence scolaire ?",
+      "answer": "En cas de violence scolaire, signalez immédiatement au chef d'établissement qui saisit l'IEF. Un procès-verbal est dressé. En cas de gravité, les autorités judiciaires peuvent être saisies. Le Ministère a mis en place un numéro vert pour signaler les violences en milieu scolaire. Dans PLANETE, utilisez le Rapport de fin de journée.",
+      "category": "securite",
+      "language": "fr",
+      "tags": [
+        "violence",
+        "signaler",
+        "sécurité",
+        "IEF",
+        "numéro vert",
+        "PLANETE"
+      ]
+    },
+    {
+      "id": 151,
+      "question": "C'est quoi PLANETE ?",
+      "answer": "PLANETE 3.0 est la plateforme officielle de gestion scolaire du Ministère de l'Éducation Nationale du Sénégal. C'est une solution intégrée qui permet de gérer, au quotidien, toutes les activités d'un établissement scolaire : inscriptions et suivi des élèves, emplois du temps, cours, évaluations, notes, bulletins, gestion du personnel, rapports et pilotage. Elle est accessible à l'adresse https://planete3.education.sn.",
+      "category": "planete_general",
+      "language": "fr",
+      "tags": [
+        "planete",
+        "présentation",
+        "définition",
+        "plateforme",
+        "simen"
+      ]
+    },
+    {
+      "id": 152,
+      "question": "Quelles sont les nouveautés de PLANETE 3 ?",
+      "answer": "PLANETE 3 apporte plusieurs évolutions importantes par rapport aux versions précédentes : 1) La dématérialisation complète des procédures administratives et pédagogiques (inscriptions, transferts, notes, bulletins en ligne). 2) La dématérialisation des inscriptions et des transferts d'élèves sans dossiers physiques. 3) L'ouverture des accès à tous les acteurs : chefs d'établissement, enseignants, élèves, parents, inspections (IEF), académies (IA) et niveau central. 4) Des tableaux de bord et outils de suivi avec des indicateurs clés pour piloter l'établissement. 5) Une interconnexion entre les établissements, les inspections et les académies pour un pilotage cohérent.",
+      "category": "planete_general",
+      "language": "fr",
+      "tags": [
+        "planete 3",
+        "nouveautés",
+        "dématérialisation",
+        "fonctionnalités"
+      ]
+    },
+    {
+      "id": 153,
+      "question": "À quoi sert PLANETE dans un établissement ?",
+      "answer": "PLANETE sert à gérer toutes les activités d'un établissement scolaire au quotidien. Concrètement : le chef d'établissement peut suivre en temps réel les absences des élèves et du personnel ; les enseignants peuvent renseigner leur cahier de texte depuis la salle de classe ; les parents peuvent consulter les résultats de leurs enfants sans se déplacer. La plateforme gère aussi les inscriptions, les transferts d'élèves, les emplois du temps, les évaluations, les notes, les bulletins, les conseils de classe et la gestion du personnel. Toutes les opérations sont tracées et sécurisées.",
+      "category": "planete_general",
+      "language": "fr",
+      "tags": [
+        "planete",
+        "utilité",
+        "fonctions",
+        "établissement"
+      ]
+    },
+    {
+      "id": 154,
+      "question": "Comment se connecter à PLANETE ?",
+      "answer": "Pour vous connecter à PLANETE : 1) Ouvrez votre navigateur et allez sur https://planete3.education.sn. 2) Saisissez votre e-mail professionnel (fourni par le Ministère, du type prenom.nom@education.sn) dans le champ prévu, puis cliquez sur Continuer. 3) Saisissez votre mot de passe personnel sur le second écran, puis cliquez sur Connexion. Ce processus sécurisé vous donne accès à votre espace selon votre profil (chef d'établissement, enseignant, etc.).",
+      "category": "planete_connexion",
+      "language": "fr",
+      "tags": [
+        "connexion",
+        "login",
+        "mot de passe",
+        "email",
+        "planete"
+      ]
+    },
+    {
+      "id": 155,
+      "question": "Quelle est l'adresse du site PLANETE ?",
+      "answer": "PLANETE est accessible à l'adresse officielle https://planete3.education.sn. C'est la plateforme du Ministère de l'Éducation Nationale du Sénégal. Utilisez toujours cette adresse officielle pour vous connecter.",
+      "category": "planete_connexion",
+      "language": "fr",
+      "tags": [
+        "adresse",
+        "url",
+        "site",
+        "planete3.education.sn"
+      ]
+    },
+    {
+      "id": 156,
+      "question": "Avec quel e-mail se connecte-t-on à PLANETE ?",
+      "answer": "Pour se connecter à PLANETE, vous devez utiliser votre e-mail professionnel fourni par le Ministère de l'Éducation Nationale. Dans un établissement, il s'agit généralement de l'adresse utilisée pour les communications officielles, du type prenom.nom@education.sn. Ce n'est pas votre adresse personnelle (Gmail, Yahoo, etc.), mais bien l'adresse professionnelle institutionnelle. Si vous ne connaissez pas votre e-mail professionnel, contactez votre chef d'établissement ou le référent numérique de votre IEF.",
+      "category": "planete_connexion",
+      "language": "fr",
+      "tags": [
+        "email",
+        "connexion",
+        "adresse professionnelle",
+        "education.sn"
+      ]
+    },
+    {
+      "id": 157,
+      "question": "J'ai oublié mon mot de passe PLANETE, que faire ?",
+      "answer": "Si vous avez oublié votre mot de passe PLANETE, contactez votre chef d'établissement ou le référent numérique de votre IEF pour une réinitialisation. Le chef d'établissement peut réinitialiser les mots de passe depuis la rubrique Utilisateurs dans PLANETE : il va dans Utilisateurs, trouve votre compte et procède à la réinitialisation. Une fois réinitialisé, vous pourrez vous connecter avec le nouveau mot de passe et le modifier si nécessaire.",
+      "category": "planete_connexion",
+      "language": "fr",
+      "tags": [
+        "mot de passe",
+        "oublié",
+        "réinitialisation",
+        "connexion"
+      ]
+    },
+    {
+      "id": 158,
+      "question": "Je n'arrive pas à me connecter à PLANETE.",
+      "answer": "Si vous ne pouvez pas vous connecter à PLANETE, vérifiez les points suivants : 1) Êtes-vous bien sur le bon site : https://planete3.education.sn ? 2) Utilisez-vous votre e-mail professionnel (prenom.nom@education.sn) et non une adresse personnelle ? 3) Votre mot de passe est-il correct (attention aux majuscules/minuscules) ? 4) Votre connexion internet fonctionne-t-elle ? Si tout est correct et que vous ne pouvez toujours pas vous connecter, contactez votre chef d'établissement ou le référent numérique de votre IEF pour vérifier que votre compte est bien actif.",
+      "category": "planete_connexion",
+      "language": "fr",
+      "tags": [
+        "connexion",
+        "problème",
+        "dépannage",
+        "accès"
+      ]
+    },
+    {
+      "id": 159,
+      "question": "Que contient le tableau de bord de PLANETE ?",
+      "answer": "Le tableau de bord PLANETE offre une vue rapide de la situation de l'établissement et facilite le suivi quotidien. Il permet de consulter rapidement les informations essentielles comme les effectifs par classe, les absences du jour, les cours prévus, les évaluations planifiées, les demandes de transfert en cours et les messages reçus. Les données évoluent au fil de la journée. Les principaux indicateurs visibles concernent les effectifs, les classes, les absences, les activités récentes et des raccourcis vers les fonctions utiles. Il aide à organiser la journée, repérer les situations importantes et agir plus vite.",
+      "category": "planete_dashboard",
+      "language": "fr",
+      "tags": [
+        "tableau de bord",
+        "dashboard",
+        "indicateurs",
+        "suivi"
+      ]
+    },
+    {
+      "id": 160,
+      "question": "Comment accéder à la fiche établissement dans PLANETE ?",
+      "answer": "Pour accéder à la fiche établissement dans PLANETE : après la connexion, ouvrez le menu de gauche puis cliquez sur Établissement. La fiche s'affiche automatiquement. Elle regroupe les informations essentielles de la structure : adresse, contacts, infrastructures, classes et effectifs. Il est conseillé de vérifier ces informations en début d'année ou après un changement administratif.",
+      "category": "planete_config",
+      "language": "fr",
+      "tags": [
+        "établissement",
+        "fiche",
+        "informations",
+        "accès"
+      ]
+    },
+    {
+      "id": 161,
+      "question": "Comment modifier les informations de l'établissement dans PLANETE ?",
+      "answer": "Pour modifier la fiche établissement dans PLANETE : allez dans le menu Établissement, puis cliquez sur le bouton Éditer fiche. Les champs modifiables s'affichent à l'écran. Apportez vos corrections, puis cliquez sur Enregistrer pour valider la mise à jour.",
+      "category": "planete_config",
+      "language": "fr",
+      "tags": [
+        "établissement",
+        "modifier",
+        "éditer",
+        "informations",
+        "enregistrer"
+      ]
+    },
+    {
+      "id": 162,
+      "question": "Comment mettre à jour le cycle de l'établissement dans PLANETE ?",
+      "answer": "Pour mettre à jour le cycle de l'établissement dans PLANETE (par exemple le passage d'un collège à un lycée de cycle long moyen-secondaire) : allez dans Établissement, puis utilisez le bouton Mise à jour. Cela permet d'actualiser le cycle et de faire apparaître les niveaux du secondaire (Seconde, Première, Terminale). Cette mise à jour ne doit être effectuée que lorsque l'établissement change effectivement de statut ou de cycle.",
+      "category": "planete_config",
+      "language": "fr",
+      "tags": [
+        "cycle",
+        "établissement",
+        "mise à jour",
+        "lycée",
+        "collège",
+        "secondaire"
+      ]
+    },
+    {
+      "id": 163,
+      "question": "C'est quoi la polarisation BST dans PLANETE ?",
+      "answer": "La polarisation BST (Bloc Scientifique et Technologique) concerne les collèges d'enseignement moyen qui envoient leurs élèves de 4ème et 3ème vers un établissement BST pour certaines disciplines. Dans PLANETE, le collège concerné doit déclarer cette polarisation dans sa fiche établissement. Pour ce faire : allez dans Établissement, choisissez Oui pour indiquer que l'établissement est concerné par la polarisation BST, puis sélectionnez l'établissement BST polarisateur dans la liste nationale des BST.",
+      "category": "planete_config",
+      "language": "fr",
+      "tags": [
+        "BST",
+        "polarisation",
+        "bloc scientifique",
+        "4ème",
+        "3ème"
+      ]
+    },
+    {
+      "id": 164,
+      "question": "Comment créer un bâtiment dans PLANETE ?",
+      "answer": "Pour créer un bâtiment dans PLANETE : allez dans Configuration, cliquez sur Bâtiments, puis sur Ajouter. Dans le formulaire qui s'ouvre, renseignez le type de bâtiment (virtuel, physique ou aire de jeu), le nom du bâtiment et les coordonnées (facultatif). Cliquez sur Enregistrer. Le bâtiment apparaît ensuite dans la liste où il peut être modifié ou supprimé.",
+      "category": "planete_config",
+      "language": "fr",
+      "tags": [
+        "bâtiment",
+        "configuration",
+        "créer",
+        "ajouter"
+      ]
+    },
+    {
+      "id": 165,
+      "question": "Comment ajouter une salle dans PLANETE ?",
+      "answer": "Pour ajouter une salle dans PLANETE : allez dans Configuration, cliquez sur Salle, puis sur Ajouter. Dans le formulaire, renseignez le bâtiment dans lequel se trouve la salle, le type de salle (salle de classe, laboratoire, bureau, etc.), le nom de la salle ainsi que ses dimensions (longueur et largeur). Cliquez sur Enregistrer. Une fois créée, la salle apparaît dans la liste et vous pouvez indiquer le type d'équipement disponible, la modifier ou la supprimer.",
+      "category": "planete_config",
+      "language": "fr",
+      "tags": [
+        "salle",
+        "configuration",
+        "créer",
+        "bâtiment",
+        "équipement"
+      ]
+    },
+    {
+      "id": 166,
+      "question": "Comment voir les programmes et les coefficients dans PLANETE ?",
+      "answer": "Pour voir les programmes dans PLANETE : allez dans Configuration, puis cliquez sur l'onglet Programme pour afficher les programmes disponibles dans le cycle d'enseignement de l'établissement. Cliquez ensuite sur Discipline pour faire apparaître les disciplines avec les coefficients et les crédits horaires pré-programmés. Il existe deux types de disciplines : les disciplines obligatoires (affectées à tous les élèves) et les disciplines optionnelles (à affecter individuellement aux élèves concernés).",
+      "category": "planete_config",
+      "language": "fr",
+      "tags": [
+        "programme",
+        "coefficients",
+        "disciplines",
+        "configuration",
+        "horaires"
+      ]
+    },
+    {
+      "id": 167,
+      "question": "Comment créer une classe pédagogique dans PLANETE ?",
+      "answer": "Pour créer une classe dans PLANETE : allez dans Configuration, cliquez sur l'onglet Classe pédagogique, puis sur Ajouter. Dans le formulaire, renseignez le niveau de la classe, la série, le nom de la classe ainsi que la salle occupée (facultatif, car une classe peut être fixe ou nomade). Cliquez sur Enregistrer. Après création, affectez les professeurs qui tiennent la classe, le surveillant de classe et désignez l'élève responsable. Attention : supprimer une classe entraîne la suppression des affectations des élèves, des professeurs et de l'emploi du temps, et cette action est irréversible.",
+      "category": "planete_config",
+      "language": "fr",
+      "tags": [
+        "classe",
+        "pédagogique",
+        "configuration",
+        "créer",
+        "niveau",
+        "professeur"
+      ]
+    },
+    {
+      "id": 168,
+      "question": "Comment créer un groupage de classes dans PLANETE ?",
+      "answer": "Le groupage de classe permet de regrouper deux classes pédagogiques tenues par un même professeur dans une seule salle durant la même heure (pratique courante pour les disciplines optionnelles comme la LV2, ou les classes de séries différentes avec disciplines communes comme le français et le franco-arabe). Pour créer un groupage : allez dans Configuration, cliquez sur l'onglet Groupage classe, puis sur le bouton plus. Remplissez le formulaire avec le libellé du groupage, le niveau, la discipline et le professeur. Une fois le groupage créé, liez les classes concernées.",
+      "category": "planete_config",
+      "language": "fr",
+      "tags": [
+        "groupage",
+        "classes",
+        "LV2",
+        "configuration",
+        "disciplines optionnelles"
+      ]
+    },
+    {
+      "id": 169,
+      "question": "Comment activer le deuxième semestre dans PLANETE ?",
+      "answer": "Dans PLANETE, le premier semestre est activé par défaut. Pour activer le second semestre : allez dans Configuration, cliquez sur Gestion des semestres, puis sur la carte Second Semestre, et cliquez sur le bouton Activer. Précisez ensuite la date de début du second semestre. Si vous avez besoin de modifier cette date ultérieurement, commencez par cliquer sur le bouton Purger pour effacer la date existante, puis renseignez la nouvelle date.",
+      "category": "planete_config",
+      "language": "fr",
+      "tags": [
+        "semestre",
+        "deuxième semestre",
+        "configuration",
+        "date",
+        "activer"
+      ]
+    },
+    {
+      "id": 170,
+      "question": "Comment ajouter le compte bancaire de l'établissement dans PLANETE ?",
+      "answer": "Pour ajouter le compte bancaire dans PLANETE : allez dans Configuration, cliquez sur l'onglet Compte bancaire, puis sur Ajouter. Dans le formulaire, renseignez le code banque, le code guichet, le numéro de compte, le RIB et le nom de la banque. Cliquez sur Enregistrer. Chaque établissement possède un compte bancaire, un code établissement et un identifiant unique appelé IEN pour chaque élève.",
+      "category": "planete_config",
+      "language": "fr",
+      "tags": [
+        "compte bancaire",
+        "configuration",
+        "RIB",
+        "banque",
+        "établissement"
+      ]
+    },
+    {
+      "id": 171,
+      "question": "Comment paramétrer les frais de scolarité dans PLANETE ?",
+      "answer": "Pour paramétrer les frais dans PLANETE : allez dans Configuration, cliquez sur Paramétrage scolarité, puis sur Ajouter. Deux modes de facturation sont possibles : 1) Par rubrique (tenue, GOSCO, IME, Examen, etc.) ou 2) Par montant unique (Inscription). Après avoir choisi le mode, fixez le montant à payer et les échéances (paiement à la rentrée ou paiement différé). Vous pouvez aussi facturer par niveau (6ème, 5ème, 4ème, 3ème, 2nde, 1ère, Tle) ou par cycle sans préciser de niveau.",
+      "category": "planete_config",
+      "language": "fr",
+      "tags": [
+        "frais de scolarité",
+        "paramétrage",
+        "facturation",
+        "paiement",
+        "scolarité"
+      ]
+    },
+    {
+      "id": 172,
+      "question": "Comment importer le personnel titulaire dans PLANETE depuis MIRADOR ?",
+      "answer": "Pour importer les agents titulaires dans PLANETE : allez dans Personnel, puis cliquez sur le bouton Mis à Jour Personnel. Cela importe automatiquement les agents titulaires affectés à l'établissement depuis MIRADOR. Une fois l'import terminé, vous pouvez consulter la liste du personnel en cliquant sur le chiffre indiquant le nombre d'agents.",
+      "category": "planete_personnel",
+      "language": "fr",
+      "tags": [
+        "personnel",
+        "titulaires",
+        "import",
+        "MIRADOR",
+        "agents"
+      ]
+    },
+    {
+      "id": 173,
+      "question": "Comment ajouter un complément horaire dans PLANETE ?",
+      "answer": "Les compléments horaires sont des agents qui viennent d'autres établissements pour compléter leur service. Pour les ajouter dans PLANETE : allez dans Personnel, cliquez sur le bouton Complément horaire, saisissez l'IEN ou l'e-mail de l'agent concerné. Dans le dossier de l'agent qui s'affiche, complétez le numéro de l'OS, sa date ainsi que la date de prise de service, puis enregistrez.",
+      "category": "planete_personnel",
+      "language": "fr",
+      "tags": [
+        "complément horaire",
+        "personnel",
+        "agents",
+        "OS",
+        "IEN"
+      ]
+    },
+    {
+      "id": 174,
+      "question": "Comment faire le pointage du personnel dans PLANETE ?",
+      "answer": "Après avoir importé les agents dans PLANETE, allez dans Personnel, affichez la liste du personnel, puis cliquez sur le bouton Pointage pour chaque agent. Indiquez la date de prise de service au début de chaque année scolaire. Le pointage permet de confirmer la présence effective de l'agent dans l'établissement pour l'année en cours.",
+      "category": "planete_personnel",
+      "language": "fr",
+      "tags": [
+        "pointage",
+        "personnel",
+        "prise de service",
+        "début d'année"
+      ]
+    },
+    {
+      "id": 175,
+      "question": "Comment consulter le dossier d'un agent dans PLANETE ?",
+      "answer": "Pour consulter le dossier d'un agent dans PLANETE : allez dans Personnel, utilisez la zone Rechercher pour retrouver l'agent, puis cliquez sur son nom pour ouvrir son dossier. Le dossier affiche les informations d'identification et de contact à gauche, la fiche agent au centre (date et lieu de naissance, fonction, spécialité, diplômes, corps, grade, adresse, téléphone, email) et le bloc Dossier donnant accès aux rubriques de suivi. En bas, la zone Emploi du temps permet de voir les heures de cours affectées à l'agent.",
+      "category": "planete_personnel",
+      "language": "fr",
+      "tags": [
+        "dossier agent",
+        "personnel",
+        "fiche",
+        "consultation",
+        "informations"
+      ]
+    },
+    {
+      "id": 176,
+      "question": "Comment archiver un agent dans PLANETE ?",
+      "answer": "Pour archiver un agent (le retirer de la liste active quand il n'est plus en service) dans PLANETE : ouvrez le dossier de l'agent depuis la liste du personnel, puis cliquez sur le bouton Archiver en haut à droite de l'écran. Une fenêtre d'Archivage personnel s'affiche avec les informations de l'agent. Choisissez le type de sortie dans la liste proposée, renseignez la date de sortie, ajoutez une observation si nécessaire, puis cliquez sur Enregistrer. L'agent est alors retiré de la liste active.",
+      "category": "planete_personnel",
+      "language": "fr",
+      "tags": [
+        "archiver",
+        "agent",
+        "personnel",
+        "sortie",
+        "liste active"
+      ]
+    },
+    {
+      "id": 177,
+      "question": "C'est quoi l'IEN d'un agent dans PLANETE ?",
+      "answer": "L'IEN d'un agent dans PLANETE est son Identifiant de l'Éducation Nationale, un numéro unique qui l'identifie dans le système éducatif sénégalais. Il est utilisé pour retrouver un agent lors de l'import des compléments horaires (saisir l'IEN dans la zone de recherche). Chaque agent titulaire ou complément horaire possède son propre IEN dans MIRADOR, la plateforme de gestion du personnel du Ministère.",
+      "category": "planete_personnel",
+      "language": "fr",
+      "tags": [
+        "IEN",
+        "identifiant",
+        "agent",
+        "personnel",
+        "numéro"
+      ]
+    },
+    {
+      "id": 178,
+      "question": "Comment inscrire un élève dans PLANETE ?",
+      "answer": "Pour inscrire un élève dans PLANETE : allez dans Élèves, cliquez sur l'icône Inscriptions depuis le tableau de bord du module. Cliquez sur Ajouter une inscription. Dans la fenêtre Nouvelle inscription, saisissez l'IEN de l'élève puis cliquez sur Rechercher. Une fois l'élève trouvé, renseignez le montant à payer, le mode de paiement et la date de paiement. Vérifiez les informations puis cliquez sur Enregistrer pour valider l'inscription.",
+      "category": "planete_eleves",
+      "language": "fr",
+      "tags": [
+        "inscription",
+        "élève",
+        "IEN",
+        "paiement",
+        "scolarité"
+      ]
+    },
+    {
+      "id": 179,
+      "question": "Comment consulter la liste des élèves d'une classe dans PLANETE ?",
+      "answer": "Pour consulter la liste des élèves d'une classe dans PLANETE : allez dans Élèves, puis cliquez sur la classe souhaitée depuis le tableau de bord du module. L'écran Liste Élèves affiche tous les apprenants de la classe. En haut, vous voyez l'effectif total, la répartition filles/garçons et les options d'exportation en PDF et Excel. Utilisez la zone Rechercher pour retrouver rapidement un élève. Vous pouvez aussi accéder aux documents administratifs de chaque élève (certificat de scolarité, quitus bibliothèque, autorisation d'absence) depuis cette liste.",
+      "category": "planete_eleves",
+      "language": "fr",
+      "tags": [
+        "liste élèves",
+        "classe",
+        "effectif",
+        "consultation",
+        "export"
+      ]
+    },
+    {
+      "id": 180,
+      "question": "Comment consulter le dossier d'un élève dans PLANETE ?",
+      "answer": "Pour ouvrir le dossier d'un élève dans PLANETE : depuis la liste des élèves de la classe, cliquez sur le nom ou la ligne de l'élève. Le dossier affiche l'identité de l'élève, sa fiche élève et des raccourcis vers les documents (Certificat de scolarité, Quitus bibliothèque, Autorisation d'absence). Le bloc Détails dossier donne accès aux rubriques : Filiation, Changer classe, Emploi du temps, Documents scolaires, Parcours élève, Régularisation, Mot de passe et Rapport Performances. Les boutons Précédent et Suivant permettent de naviguer entre les dossiers des élèves de la classe.",
+      "category": "planete_eleves",
+      "language": "fr",
+      "tags": [
+        "dossier élève",
+        "fiche",
+        "documents",
+        "consultation"
+      ]
+    },
+    {
+      "id": 181,
+      "question": "Comment modifier les informations d'un élève dans PLANETE ?",
+      "answer": "Pour modifier les informations d'un élève dans PLANETE : ouvrez son dossier depuis la liste des élèves, puis cliquez sur le bouton Édition. Le formulaire Mise à jour informations élève s'ouvre. Vous pouvez modifier l'identité, la date et lieu de naissance, le sexe, les contacts, la nationalité, les informations d'état civil, l'exemption EPS, l'année de déclaration, les informations de redoublement, et les champs Handicap et Orphelin. Cliquez sur Enregistrer pour valider les modifications.",
+      "category": "planete_eleves",
+      "language": "fr",
+      "tags": [
+        "modifier",
+        "élève",
+        "informations",
+        "dossier",
+        "mise à jour"
+      ]
+    },
+    {
+      "id": 182,
+      "question": "Comment faire un transfert entrant dans PLANETE ?",
+      "answer": "Pour traiter un transfert entrant dans PLANETE (un élève qui rejoint votre établissement) : allez dans Élèves, cliquez sur l'icône Transfert entrant depuis le tableau de bord. La liste des demandes de transfert adressées à votre établissement s'affiche. Cliquez sur le nom de l'élève pour voir le détail : profil de l'élève, établissement d'origine, motif du transfert, performances scolaires et circuit de validation. Utilisez les boutons Rejeter transfert ou Accepter transfert pour rendre votre décision. La validation suit un circuit incluant l'établissement d'origine, l'IA d'origine, l'IA d'accueil et l'établissement d'accueil.",
+      "category": "planete_eleves",
+      "language": "fr",
+      "tags": [
+        "transfert entrant",
+        "élève",
+        "accepter",
+        "rejeter",
+        "circuit validation"
+      ]
+    },
+    {
+      "id": 183,
+      "question": "Comment faire un transfert sortant dans PLANETE ?",
+      "answer": "Pour initier un transfert sortant dans PLANETE (un élève qui quitte votre établissement) : allez dans Élèves, cliquez sur l'icône Transfert sortant. Cliquez sur le bouton plus pour créer une nouvelle demande. Saisissez l'IEN de l'élève à transférer puis cliquez sur Rechercher. Une fois l'élève retrouvé, renseignez l'IA d'accueil, l'IEF d'accueil, l'établissement d'accueil et le motif du transfert. Ajoutez un commentaire si nécessaire. La liste affichée permet aussi de suivre l'état des demandes déjà envoyées.",
+      "category": "planete_eleves",
+      "language": "fr",
+      "tags": [
+        "transfert sortant",
+        "élève",
+        "IEN",
+        "demande",
+        "mutation"
+      ]
+    },
+    {
+      "id": 184,
+      "question": "Comment affecter un élève à une classe dans PLANETE ?",
+      "answer": "Pour affecter des élèves non affectés à une classe dans PLANETE : allez dans Élèves, cliquez sur l'icône Affectation Élèves. L'écran indique le nombre total d'élèves non affectés répartis par niveau (6ème, 5ème, 4ème, 3ème, 2nde, 1ère, Tle). Cliquez sur le niveau concerné pour afficher la liste des élèves. Cochez le ou les élèves à affecter, sélectionnez la classe d'accueil dans la liste déroulante, puis cliquez sur Affecter pour valider.",
+      "category": "planete_eleves",
+      "language": "fr",
+      "tags": [
+        "affectation",
+        "élève",
+        "classe",
+        "non affecté",
+        "niveau"
+      ]
+    },
+    {
+      "id": 185,
+      "question": "Comment importer des élèves en masse dans PLANETE ?",
+      "answer": "Pour importer plusieurs élèves à la fois dans PLANETE : 1) Téléchargez d'abord le template en cliquant sur l'icône Template xlsx depuis le tableau de bord du module Élèves. Enregistrez le modèle Excel sur votre poste et renseignez-le. 2) Revenez dans PLANETE, cliquez sur Import élèves, sélectionnez le niveau et la classe concernée, choisissez votre fichier Excel préparé, puis cliquez sur Charger. 3) Vérifiez les données affichées (IEN, nom, prénom, date et lieu de naissance, motif d'entrée, nationalité, statut) et utilisez le bouton Enregistrer & Continuer pour valider. Vous pouvez aussi renseigner les informations supplémentaires (père, mère, tuteur) avant la validation finale.",
+      "category": "planete_eleves",
+      "language": "fr",
+      "tags": [
+        "import élèves",
+        "template",
+        "Excel",
+        "xlsx",
+        "importation en masse"
+      ]
+    },
+    {
+      "id": 186,
+      "question": "Comment gérer l'examen d'entrée dans PLANETE ?",
+      "answer": "La fonction Examen d'entrée dans PLANETE permet de traiter les demandes d'inscription des candidats soumis à l'examen d'entrée. Pour y accéder : allez dans Élèves, cliquez sur l'icône Examen d'entrée. Dans l'écran correspondant, renseignez l'IEN ou l'identifiant de l'élève dans la zone de recherche, puis cliquez sur Rechercher pour afficher le dossier et poursuivre le traitement de la demande.",
+      "category": "planete_eleves",
+      "language": "fr",
+      "tags": [
+        "examen d'entrée",
+        "6ème",
+        "inscription",
+        "candidats",
+        "IEN"
+      ]
+    },
+    {
+      "id": 187,
+      "question": "Comment traiter une reprise de scolarité dans PLANETE ?",
+      "answer": "La fonction Reprise de scolarité dans PLANETE permet de réinscrire un élève qui reprend ses études après une interruption. Pour y accéder : allez dans Élèves, cliquez sur l'icône Reprise Scolarité. Dans l'écran Reprise de scolarité, recherchez l'élève à l'aide de son IEN, puis cliquez sur Rechercher pour afficher son dossier et engager la procédure de reprise.",
+      "category": "planete_eleves",
+      "language": "fr",
+      "tags": [
+        "reprise de scolarité",
+        "réinscription",
+        "élève",
+        "IEN"
+      ]
+    },
+    {
+      "id": 188,
+      "question": "Comment déclarer des élèves pour le BST dans PLANETE ?",
+      "answer": "Pour déclarer des élèves pour le BST dans PLANETE : allez dans Élèves, cliquez sur l'icône Élèves BST depuis le tableau de bord. Dans l'écran Déclarer élève BST, sélectionnez le niveau puis la classe concernée. Cliquez sur Afficher pour charger la liste des élèves. Activez ensuite le bouton de sélection en face de chaque élève à déclarer pour le BST.",
+      "category": "planete_eleves",
+      "language": "fr",
+      "tags": [
+        "BST",
+        "élèves BST",
+        "déclaration",
+        "4ème",
+        "3ème"
+      ]
+    },
+    {
+      "id": 189,
+      "question": "C'est quoi l'IEN d'un élève ?",
+      "answer": "L'IEN (Identifiant de l'Élève National) est le numéro unique qui identifie chaque élève dans le système éducatif sénégalais. Il est utilisé dans PLANETE pour retrouver un élève lors d'une inscription, d'un transfert, d'une importation ou d'une reprise de scolarité. L'IEN figure sur les documents officiels de l'élève. Si vous ne connaissez pas l'IEN d'un élève, contactez votre référent numérique ou cherchez dans son dossier administratif.",
+      "category": "planete_eleves",
+      "language": "fr",
+      "tags": [
+        "IEN",
+        "identifiant",
+        "élève",
+        "numéro unique"
+      ]
+    },
+    {
+      "id": 190,
+      "question": "Comment construire l'emploi du temps dans PLANETE ?",
+      "answer": "Pour construire l'emploi du temps dans PLANETE : allez dans le menu Emploi du temps, sélectionnez la classe concernée. L'écran affiche une grille hebdomadaire avec les jours en colonnes et les heures en lignes. Dans le panneau Enseignants de la classe, faites glisser un enseignant vers une cellule de la grille pour positionner un cours. Utilisez le sélecteur de durée (1h ou 2h) pour préciser la durée. Double-cliquez sur un cours déjà placé pour le supprimer. Cliquez sur le nom d'un enseignant déjà placé pour ajuster la durée de 1h à 2h. Une fois la grille remplie, cliquez sur Enregistrer pour sauvegarder l'emploi du temps.",
+      "category": "planete_edt",
+      "language": "fr",
+      "tags": [
+        "emploi du temps",
+        "grille",
+        "construction",
+        "enseignant",
+        "classe"
+      ]
+    },
+    {
+      "id": 191,
+      "question": "Comment générer automatiquement l'emploi du temps dans PLANETE ?",
+      "answer": "Pour générer automatiquement les emplois du temps dans PLANETE : allez dans Emploi du temps, puis cliquez sur le bouton Générer EDT. L'écran Génération emploi du temps affiche les niveaux de l'établissement (de la Sixième à la Terminale). Cliquez sur le niveau souhaité pour visualiser ou lancer la génération automatique. Cette fonctionnalité permet de créer rapidement des emplois du temps cohérents pour l'ensemble des classes d'un niveau.",
+      "category": "planete_edt",
+      "language": "fr",
+      "tags": [
+        "emploi du temps",
+        "génération automatique",
+        "niveau",
+        "classe"
+      ]
+    },
+    {
+      "id": 192,
+      "question": "Comment exporter l'emploi du temps dans PLANETE ?",
+      "answer": "Pour exporter l'emploi du temps depuis PLANETE : allez dans Emploi du temps, sélectionnez la classe souhaitée. Deux boutons d'exportation sont disponibles : Export EDT pour extraire l'emploi du temps complet de la classe, et Export cours pour extraire uniquement les cours saisis. Ces exports vous permettent d'imprimer ou de partager les informations en dehors de la plateforme.",
+      "category": "planete_edt",
+      "language": "fr",
+      "tags": [
+        "emploi du temps",
+        "export",
+        "imprimer",
+        "télécharger"
+      ]
+    },
+    {
+      "id": 193,
+      "question": "Comment remplir le cahier de texte dans PLANETE ?",
+      "answer": "Pour remplir le cahier de texte dans PLANETE : allez dans Cours, cliquez sur la tuile Cours. L'écran Gestion des cours affiche les séances du jour. Repérez le cours concerné dans la liste, puis cliquez sur le bouton Cahier texte à droite de la ligne correspondante. Dans la fenêtre Cahier de texte, sélectionnez le type d'activité et décrivez le déroulé de l'activité. Comparez les blocs Date & heure prévues et Date & heure réelles. Cliquez sur Enregistrer pour valider la saisie.",
+      "category": "planete_pedagogique",
+      "language": "fr",
+      "tags": [
+        "cahier de texte",
+        "cours",
+        "séance",
+        "activité",
+        "enseignant"
+      ]
+    },
+    {
+      "id": 194,
+      "question": "Comment voir les cours du jour dans PLANETE ?",
+      "answer": "Pour suivre les cours du jour dans PLANETE : allez dans Cours, puis cliquez sur la tuile Dashboard. Le tableau de bord du module Cours affiche les indicateurs de synthèse du jour : Cours prévus, Cours terminés et Absences. La zone Cours à l'instant liste les séances du jour avec les horaires, le nom de l'enseignant, la discipline et la classe. Le panneau Cours terminés & enregistrés récapitule les dernières séances validées. Un diagramme circulaire indique le taux d'exécution global des cours.",
+      "category": "planete_pedagogique",
+      "language": "fr",
+      "tags": [
+        "cours du jour",
+        "dashboard",
+        "suivi",
+        "indicateurs",
+        "absences"
+      ]
+    },
+    {
+      "id": 195,
+      "question": "Comment enregistrer les absences des élèves dans un cours dans PLANETE ?",
+      "answer": "Pour enregistrer les absences et retards des élèves lors d'un cours dans PLANETE : allez dans Cours, sélectionnez le cours dans la liste, puis cliquez sur le bouton rond rouge situé au bout de la ligne correspondante. La fenêtre Absences élèves s'affiche avec la liste des élèves de la séance. Pour chaque élève, activez l'option Retards ou Absences selon la situation observée. Les informations sont immédiatement enregistrées.",
+      "category": "planete_eleves",
+      "language": "fr",
+      "tags": [
+        "absences",
+        "retards",
+        "cours",
+        "élèves",
+        "enregistrer"
+      ]
+    },
+    {
+      "id": 196,
+      "question": "Comment justifier une absence d'élève dans PLANETE ?",
+      "answer": "Pour justifier une absence dans PLANETE : allez dans Cours, cliquez sur la tuile Absences. En haut de l'écran, cliquez sur le bouton Justifier absence. Dans l'espace Justification absence, recherchez l'apprenant par son IEN ou son nom, puis cliquez sur Rechercher. La fiche de l'élève distingue les Absences non justifiées (à gauche) et les Absences justifiées (à droite). Activez le commutateur en face de l'absence à régulariser, renseignez les modalités de justification dans le panneau Détails justification absence, puis cliquez sur Valider pour enregistrer.",
+      "category": "planete_eleves",
+      "language": "fr",
+      "tags": [
+        "justification absence",
+        "élève",
+        "régularisation",
+        "absences"
+      ]
+    },
+    {
+      "id": 197,
+      "question": "Comment consulter les statistiques d'absences dans PLANETE ?",
+      "answer": "Pour consulter les statistiques d'absences dans PLANETE : allez dans Cours, cliquez sur la tuile Absences. L'écran présente une synthèse par mois des absences et des retards. Chaque ligne indique le nombre d'absences, le volume d'absences justifiées, le nombre de retards et le taux de justification. Vous pouvez exporter les données de chaque mois en cliquant sur le bouton Exporter en face du mois souhaité.",
+      "category": "planete_eleves",
+      "language": "fr",
+      "tags": [
+        "statistiques absences",
+        "mensuel",
+        "taux",
+        "export",
+        "retards"
+      ]
+    },
+    {
+      "id": 198,
+      "question": "Comment utiliser le rapport de fin de journée dans PLANETE ?",
+      "answer": "Le rapport de fin de journée dans PLANETE permet au chef d'établissement de renseigner les activités réalisées et les faits marquants de la journée. Pour y accéder : allez dans Rapport de fin de journée. Le Dashboard affiche les classes par niveau à gauche, les absences du personnel au centre et les incidents enregistrés à droite. Vous pouvez sélectionner une classe pour voir le rapport du jour, saisir des absences du personnel opérationnel ou déclarer des incidents survenus dans la journée.",
+      "category": "planete_pedagogique",
+      "language": "fr",
+      "tags": [
+        "rapport fin de journée",
+        "chef d'établissement",
+        "absences",
+        "incidents"
+      ]
+    },
+    {
+      "id": 199,
+      "question": "Comment déclarer une absence du personnel dans le rapport de fin de journée dans PLANETE ?",
+      "answer": "Pour déclarer une absence du personnel opérationnel dans PLANETE : allez dans Rapport de fin de journée, sélectionnez la classe concernée. Dans le rapport du jour de la classe, utilisez l'icône placée en face du cours correspondant. La fenêtre Absence personnel opérationnel s'affiche. Précisez le type d'absence, une observation, la date et la plage horaire concernée. Cliquez sur Enregistrer pour valider la saisie.",
+      "category": "planete_pedagogique",
+      "language": "fr",
+      "tags": [
+        "absence personnel",
+        "rapport fin de journée",
+        "opérationnel",
+        "enseignant absent"
+      ]
+    },
+    {
+      "id": 200,
+      "question": "Comment déclarer un incident dans PLANETE ?",
+      "answer": "Pour déclarer un incident dans PLANETE : allez dans Rapport de fin de journée, cliquez sur la classe souhaitée pour ouvrir le rapport du jour. Cliquez sur le bouton Déclarer un incident. Dans la fenêtre Déclaration d'un incident, décrivez le fait observé et associez la date du signalement. Cliquez sur Enregistrer pour archiver l'incident dans le rapport de la journée. Les incidents enregistrés sont visibles dans le tableau de bord du module.",
+      "category": "planete_pedagogique",
+      "language": "fr",
+      "tags": [
+        "incident",
+        "déclaration",
+        "rapport",
+        "signalement",
+        "journée"
+      ]
+    },
+    {
+      "id": 201,
+      "question": "Comment créer une évaluation dans PLANETE ?",
+      "answer": "Pour créer une évaluation dans PLANETE : allez dans Évaluations, sélectionnez la classe concernée, puis cliquez sur le bouton Ajouter. Dans le formulaire, renseignez le semestre, la salle, le type d'évaluation, la date, la discipline, la matière, le professeur ainsi que les heures de début et de fin. Cliquez sur Enregistrer pour valider. L'évaluation apparaît ensuite dans la liste des évaluations planifiées de la classe.",
+      "category": "planete_notes",
+      "language": "fr",
+      "tags": [
+        "évaluation",
+        "créer",
+        "planifier",
+        "discipline",
+        "semestre"
+      ]
+    },
+    {
+      "id": 202,
+      "question": "Comment voir l'état des évaluations d'une classe dans PLANETE ?",
+      "answer": "Pour consulter l'état des évaluations d'une classe dans PLANETE : allez dans Évaluations. Le Dashboard du module affiche les classes disponibles par niveau à gauche et le nombre d'évaluations planifiées au centre avec leur répartition : en attente, partielles et complètes. La zone Alerte performances signale les classes qui demandent une attention particulière. Cliquez sur une classe pour accéder à l'état détaillé de la saisie par discipline.",
+      "category": "planete_notes",
+      "language": "fr",
+      "tags": [
+        "évaluations",
+        "état",
+        "classe",
+        "dashboard",
+        "alertes"
+      ]
+    },
+    {
+      "id": 203,
+      "question": "Comment planifier un conseil de classe dans PLANETE ?",
+      "answer": "Pour planifier un conseil de classe dans PLANETE : allez dans Conseils de classes, sélectionnez la classe concernée, puis cliquez sur le bouton de planification. Renseignez la date et l'heure du conseil. Une fois planifié, le conseil apparaît dans la liste des conseils de la classe et peut être consulté à tout moment.",
+      "category": "planete_bulletins",
+      "language": "fr",
+      "tags": [
+        "conseil de classe",
+        "planifier",
+        "date",
+        "bulletin"
+      ]
+    },
+    {
+      "id": 204,
+      "question": "Comment saisir les appréciations du conseil de classe dans PLANETE ?",
+      "answer": "Pour saisir les appréciations du conseil de classe dans PLANETE : allez dans Conseils de classes, ouvrez le conseil planifié de la classe concernée. Utilisez l'icône de saisie des appréciations pour renseigner les commentaires pour chaque élève. Les appréciations saisies seront intégrées aux bulletins lors de la validation du conseil.",
+      "category": "planete_bulletins",
+      "language": "fr",
+      "tags": [
+        "appréciations",
+        "conseil de classe",
+        "bulletins",
+        "commentaires"
+      ]
+    },
+    {
+      "id": 205,
+      "question": "Comment générer les bulletins de notes dans PLANETE ?",
+      "answer": "Pour générer les bulletins dans PLANETE : allez dans Conseils de classes, sélectionnez la classe, ouvrez le conseil planifié. Après avoir saisi les notes et les appréciations, validez le conseil de classe. Une fois validé, vous pouvez accéder aux bulletins et les imprimer. PLANETE calcule automatiquement les moyennes à partir des notes saisies et des coefficients définis dans les programmes.",
+      "category": "planete_bulletins",
+      "language": "fr",
+      "tags": [
+        "bulletins",
+        "génération",
+        "conseil de classe",
+        "moyennes",
+        "impression"
+      ]
+    },
+    {
+      "id": 206,
+      "question": "Comment ajouter un utilisateur dans PLANETE ?",
+      "answer": "Pour ajouter un utilisateur dans PLANETE : allez dans Utilisateurs depuis le menu principal, cliquez sur le bouton + pour lancer l'ajout. Renseignez le profil de l'utilisateur (nom, prénom, e-mail, rôle/profil attribué), puis cliquez sur Enregistrer. L'utilisateur reçoit ses accès et peut se connecter à PLANETE avec son e-mail professionnel.",
+      "category": "planete_utilisateurs",
+      "language": "fr",
+      "tags": [
+        "utilisateur",
+        "ajouter",
+        "créer compte",
+        "profil",
+        "accès"
+      ]
+    },
+    {
+      "id": 207,
+      "question": "Comment réinitialiser le mot de passe d'un utilisateur dans PLANETE ?",
+      "answer": "Pour réinitialiser le mot de passe d'un utilisateur dans PLANETE : allez dans Utilisateurs depuis le menu principal, trouvez l'utilisateur concerné dans la liste, puis effectuez la réinitialisation depuis son profil. L'utilisateur pourra ensuite se connecter avec le nouveau mot de passe et le modifier personnellement. Cette opération est réservée au chef d'établissement ou à l'administrateur.",
+      "category": "planete_utilisateurs",
+      "language": "fr",
+      "tags": [
+        "mot de passe",
+        "réinitialiser",
+        "utilisateur",
+        "administrateur"
+      ]
+    },
+    {
+      "id": 208,
+      "question": "Comment suivre les inscriptions et les paiements dans PLANETE ?",
+      "answer": "Pour suivre les inscriptions et les paiements dans PLANETE : allez dans Élèves, cliquez sur l'icône Inscriptions depuis le tableau de bord. L'écran affiche les inscriptions du jour, le montant du jour, le total des inscrits et le montant total, ainsi que des graphiques par objet et par mode de paiement. Utilisez les filtres de date Du et Au puis cliquez sur Actualiser pour afficher les informations sur une période donnée.",
+      "category": "planete_eleves",
+      "language": "fr",
+      "tags": [
+        "inscriptions",
+        "paiements",
+        "suivi",
+        "statistiques",
+        "montants"
+      ]
+    },
+    {
+      "id": 209,
+      "question": "bonjour",
+      "answer": "Bonjour ! 👋\nJe suis votre assistant éducatif.\nQue puis-je faire pour vous ?",
+      "category": "salutation",
+      "language": "fr",
+      "tags": [
+        "bonjour",
+        "salutation",
+        "accueil"
+      ]
+    },
+    {
+      "id": 210,
+      "question": "salut",
+      "answer": "Salut ! 👋\nJe suis votre assistant éducatif.\nQue puis-je faire pour vous ?",
+      "category": "salutation",
+      "language": "fr",
+      "tags": [
+        "salut",
+        "salutation",
+        "accueil"
+      ]
+    },
+    {
+      "id": 211,
+      "question": "bonsoir",
+      "answer": "Bonsoir ! 👋\nJe suis votre assistant éducatif.\nQue puis-je faire pour vous ?",
+      "category": "salutation",
+      "language": "fr",
+      "tags": [
+        "bonsoir",
+        "salutation",
+        "accueil"
+      ]
+    }
+  ]
+}

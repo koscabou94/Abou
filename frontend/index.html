@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Assistant Expert SIMEN - Ministère de l'Éducation Nationale du Sénégal">
+    <meta name="theme-color" content="#008751">
+    <title>EduBot - Votre Assistant Éducatif</title>
+
+    <!-- Favicon: Drapeau du Sénégal -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 20'><rect width='10' height='20' fill='%2300853F'/><rect x='10' width='10' height='20' fill='%23FDEF42'/><polygon points='15,6 16.2,9.7 20,9.7 16.9,12 17.8,15.7 15,13.2 12.2,15.7 13.1,12 10,9.7 13.8,9.7' fill='%2300853F'/><rect x='20' width='10' height='20' fill='%23E31B23'/></svg>">
+
+    <!-- Fonts: Outfit (Headings), Inter (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Scripts: Marked.js (Markdown) & Lucide (Icons) -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- App Styles (v2 force cache refresh) -->
+    <link rel="stylesheet" href="static/styles.css?v=2">
+
+    <!-- Configuration -->
+    <script>window.API_URL = '/api';</script>
+</head>
+<body>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebar-overlay" onclick="document.getElementById('sidebar').classList.add('collapsed');this.classList.remove('active');"></div>
+
+    <div class="app-layout">
+
+        <!-- ============================================
+             SIDEBAR (HISTORIQUE & SUPPORT)
+             ============================================ -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <span class="sidebar-brand-name">EduBot</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebar-toggle-btn" title="Réduire" aria-label="Réduire la barre latérale">
+                    <i data-lucide="chevrons-left"></i>
+                </button>
+            </div>
+
+            <button class="new-chat-btn" id="new-chat-btn">
+                <i data-lucide="plus"></i>
+                <span>Nouveau Chat</span>
+            </button>
+
+            <nav class="sidebar-history" id="sidebar-history" role="navigation" aria-label="Historique des conversations">
+                <div class="history-empty">Aucune conversation récente</div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="https://wa.me/221776961545" target="_blank" class="support-sidebar-btn" title="Contacter le support EduBot">
+                    <div class="support-avatar">📞</div>
+                    <div class="support-info">
+                        <span class="support-title">Aide EduBot</span>
+                        <span class="support-subtitle">+221 77 696 15 45</span>
+                    </div>
+                </a>
+
+                <div class="sidebar-actions">
+                    <button class="action-btn theme-toggle" id="theme-toggle" title="Changer le thème">
+                        <i data-lucide="sun" id="theme-icon-light"></i>
+                        <i data-lucide="moon" id="theme-icon-dark" class="hidden"></i>
+                    </button>
+                    <button class="action-btn" id="settings-btn" title="Réglages">
+                        <i data-lucide="settings"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ============================================
+             MAIN CONTENT (CHAT)
+             ============================================ -->
+        <main class="main-content">
+
+            <header class="top-nav">
+                <button class="menu-btn" id="mobile-menu-btn">
+                    <i data-lucide="menu"></i>
+                </button>
+                <div class="top-nav-center">
+                    <div class="dptic-brand">
+                        <span class="dptic-nav-title">EduBot</span>
+                    </div>
+                </div>
+                <div class="language-selector">
+                    <button class="lang-pill active" data-lang="fr">FR</button>
+                </div>
+            </header>
+
+            <section class="chat-viewport" id="chat-viewport">
+
+                <div class="welcome-center" id="welcome-section">
+                    <div class="welcome-header">
+                        <h2>Bonjour, comment puis-je vous aider ?</h2>
+                        <p>Posez vos questions sur l'éducation, les carrières, les plateformes et les démarches administratives.</p>
+                    </div>
+
+                    <div class="quick-access-grid" id="quick-questions-grid">
+                        <!-- Généré par JS -->
+                    </div>
+                </div>
+
+                <div class="messages-list" id="messages-area"></div>
+
+                <div class="typing-container" id="typing-indicator">
+                    <div class="msg-icon dptic-icon-sm">
+                        <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="36" height="36" rx="8" fill="#008751"/>
+                            <path d="M18 8L6 14l12 6 12-6-12-6z" fill="#FDEF42"/>
+                            <path d="M10 17v6c0 2.5 3.6 4.5 8 4.5s8-2 8-4.5v-6l-8 4-8-4z" fill="white" opacity="0.9"/>
+                            <rect x="26" y="14" width="1.5" height="10" rx="0.75" fill="#FDEF42"/>
+                            <circle cx="26.75" cy="25" r="1.5" fill="#FDEF42"/>
+                        </svg>
+                    </div>
+                    <div class="typing-dots">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+
+            </section>
+
+            <footer class="input-container">
+                <div class="input-wrapper">
+                    <div class="input-actions-left">
+                        <button class="input-action-btn" id="attach-btn" title="Ajouter un fichier">
+                            <i data-lucide="paperclip"></i>
+                        </button>
+                        <input type="file" id="file-input" multiple accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.csv" style="display:none">
+                    </div>
+
+                    <textarea
+                        id="message-input"
+                        placeholder="Posez votre question sur PLANETE, MIRADOR ou votre carrière..."
+                        rows="1"
+                        maxlength="2000"
+                    ></textarea>
+
+                    <div class="input-actions-right">
+                        <button class="send-btn" id="send-btn" disabled>
+                            <i data-lucide="arrow-up"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="file-preview" class="file-preview hidden"></div>
+                <div class="input-footer">
+                    <span>EduBot — Ministère de l'Éducation Nationale du Sénégal</span>
+                </div>
+            </footer>
+
+        </main>
+
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Paramètres</h3>
+            <p style="color: var(--color-silver); font-size: 0.9rem; margin-bottom: 12px;">
+                EduBot — Assistant Éducatif
+            </p>
+            <p style="color: var(--color-muted); font-size: 0.8rem; line-height: 1.6;">
+                Ce chatbot utilise l'intelligence artificielle pour répondre à vos questions sur les plateformes PLANETE 3.0 et MIRADOR du Ministère de l'Éducation Nationale du Sénégal.
+            </p>
+            <div style="margin-top: 16px; padding: 12px; background: var(--color-simen-bg); border: 1px solid var(--color-simen-border); border-radius: 8px;">
+                <p style="color: var(--color-simen); font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Support technique</p>
+                <a href="https://wa.me/221776961545" target="_blank" style="color: var(--color-platinum); font-size: 0.8rem; text-decoration: none;">📞 +221 77 696 15 45 (WhatsApp)</a>
+            </div>
+            <button class="close-modal-btn">Fermer</button>
+        </div>
+    </div>
+
+    <!-- Delete Confirm Modal -->
+    <div id="delete-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Supprimer cette conversation ?</h3>
+            <p style="color: var(--color-silver); font-size: 0.85rem; line-height: 1.5;">
+                Cette action est irréversible. La conversation sera définitivement supprimée.
+            </p>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="close-modal-btn" id="delete-cancel-btn" style="flex:1; margin-top:0;">Annuler</button>
+                <button class="close-modal-btn" id="delete-confirm-btn" style="flex:1; margin-top:0; background: #E31B23; color: white; border-color: #E31B23;">Supprimer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts (v2 force cache refresh) -->
+    <script src="static/chat.js?v=2"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

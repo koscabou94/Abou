@@ -1,0 +1,492 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "source": "Ministère de l'Éducation du Sénégal",
+    "last_updated": "2024-09-01",
+    "total_faqs": 60,
+    "languages": ["fr", "wo", "ff", "ar"],
+    "categories": ["inscription", "examen", "calendrier", "orientation", "bourse", "programme", "administratif", "enseignant", "general"]
+  },
+  "faqs": [
+    {
+      "id": 1,
+      "question": "Quelles sont les dates d'inscription pour l'année scolaire 2024-2025?",
+      "answer": "Les inscriptions pour l'année scolaire 2024-2025 se déroulent généralement de juillet à septembre. Pour le préscolaire et le primaire, les inscriptions se font directement dans les établissements scolaires. Pour le moyen et le secondaire, les dates précises sont fixées par les Inspections d'Académie régionales. Renseignez-vous auprès de l'établissement le plus proche de chez vous.",
+      "category": "inscription",
+      "language": "fr",
+      "tags": ["inscription", "rentrée", "dates", "2024-2025"]
+    },
+    {
+      "id": 2,
+      "question": "Quels documents faut-il pour inscrire un enfant à l'école primaire?",
+      "answer": "Pour inscrire votre enfant à l'école primaire, vous devez fournir : 1) Un extrait d'acte de naissance ou une copie certifiée conforme, 2) Un carnet de vaccination à jour, 3) Deux photos d'identité récentes, 4) La fiche de transfert si l'enfant vient d'une autre école. L'inscription est gratuite dans les écoles publiques. Aucun frais d'inscription ne doit être demandé.",
+      "category": "inscription",
+      "language": "fr",
+      "tags": ["inscription", "primaire", "documents", "acte de naissance"]
+    },
+    {
+      "id": 3,
+      "question": "Comment inscrire un enfant au lycée ou au collège?",
+      "answer": "L'inscription au collège (CEM) se fait après l'obtention du CFEE (Certificat de Fin d'Études Élémentaires). Pour le lycée, il faut avoir le BFEM (Brevet de Fin d'Études Moyennes). Les étapes sont : 1) Retirer un dossier d'inscription à l'établissement, 2) Remplir le formulaire avec les informations de l'élève, 3) Joindre les documents requis (relevé de notes, diplôme, photos, acte de naissance), 4) Déposer le dossier avant la date limite fixée par l'établissement.",
+      "category": "inscription",
+      "language": "fr",
+      "tags": ["inscription", "collège", "lycée", "CEM", "CFEE", "BFEM"]
+    },
+    {
+      "id": 4,
+      "question": "Qu'est-ce que le CFEE et comment se préparer?",
+      "answer": "Le CFEE (Certificat de Fin d'Études Élémentaires) est l'examen de fin de cycle primaire au Sénégal. Il sanctionne la fin de la classe de CM2. Les épreuves portent sur : le français (dictée, rédaction, questions de langue), les mathématiques (calcul, problèmes), l'histoire-géographie et les sciences. Pour bien se préparer : révisez régulièrement les leçons, faites des exercices pratiques, consultez les annales des années précédentes disponibles dans les librairies ou auprès de vos enseignants.",
+      "category": "examen",
+      "language": "fr",
+      "tags": ["CFEE", "primaire", "CM2", "examen", "préparation"]
+    },
+    {
+      "id": 5,
+      "question": "Quand ont lieu les examens du BFEM en 2025?",
+      "answer": "Le BFEM (Brevet de Fin d'Études Moyennes) se déroule généralement en mai-juin. En 2025, les épreuves théoriques sont prévues en mai et les épreuves pratiques peuvent se tenir en juin. Les dates exactes sont publiées par l'Office du Baccalauréat et les Inspections d'Académie en début d'année scolaire. Suivez les annonces officielles sur le site du Ministère de l'Éducation.",
+      "category": "examen",
+      "language": "fr",
+      "tags": ["BFEM", "dates", "examen", "2025", "mai", "juin"]
+    },
+    {
+      "id": 6,
+      "question": "Comment consulter les résultats du BAC?",
+      "answer": "Les résultats du Baccalauréat sont publiés par l'Office du Baccalauréat du Sénégal. Vous pouvez les consulter : 1) Sur le site officiel de l'Office du Baccalauréat (officedubaccalaureat.sn), 2) Dans les centres d'examen où un affichage est effectué, 3) Sur les plateformes numériques officielles du Ministère de l'Éducation, 4) Via SMS en envoyant votre numéro de candidat au numéro indiqué lors des inscriptions. Les résultats sont généralement disponibles dans les 48 heures suivant les délibérations.",
+      "category": "examen",
+      "language": "fr",
+      "tags": ["BAC", "résultats", "Office du Baccalauréat", "consultation"]
+    },
+    {
+      "id": 7,
+      "question": "Quelles sont les épreuves du Baccalauréat en série S?",
+      "answer": "Le Baccalauréat série S (Scientifique) comprend les épreuves suivantes : Mathématiques (coefficient 5), Physique-Chimie (coeff. 4), Sciences de la Vie et de la Terre (coeff. 3), Français (coeff. 3), Philosophie (coeff. 2), Histoire-Géographie (coeff. 2), Anglais (coeff. 2), Langue nationale (coeff. 1), Éducation physique (coeff. 1). La note éliminatoire est de 5/20 pour certaines matières. Un total minimal de points est requis pour l'admission.",
+      "category": "examen",
+      "language": "fr",
+      "tags": ["BAC", "série S", "scientifique", "épreuves", "coefficient"]
+    },
+    {
+      "id": 8,
+      "question": "Quelle est la date de la rentrée scolaire 2024-2025?",
+      "answer": "La rentrée scolaire 2024-2025 au Sénégal est fixée au mois d'octobre pour la plupart des établissements publics. Les dates précises varient selon les régions et les niveaux : le préscolaire et le primaire reprennent généralement en début octobre, le moyen et le secondaire suivent quelques jours après. Le calendrier officiel est publié chaque année par le Ministère de l'Éducation Nationale.",
+      "category": "calendrier",
+      "language": "fr",
+      "tags": ["rentrée", "calendrier", "2024-2025", "octobre"]
+    },
+    {
+      "id": 9,
+      "question": "Quand sont les vacances scolaires au Sénégal?",
+      "answer": "L'année scolaire au Sénégal est découpée en trois trimestres avec des vacances entre chaque période : 1er trimestre (octobre-décembre) : vacances de Noël/Nouvel An de fin décembre à début janvier, 2e trimestre (janvier-mars) : vacances de mi-trimestre en février-mars, 3e trimestre (avril-juin) : fin d'année en juin-juillet. Les dates exactes sont fixées par le Ministère et peuvent varier légèrement d'une année à l'autre.",
+      "category": "calendrier",
+      "language": "fr",
+      "tags": ["vacances", "calendrier", "trimestre", "congés"]
+    },
+    {
+      "id": 10,
+      "question": "Combien de jours de cours y a-t-il dans l'année scolaire?",
+      "answer": "L'année scolaire au Sénégal compte environ 180 jours de cours effectifs, répartis sur 36 semaines. Cela inclut les cours normaux mais exclut les jours fériés, les congés et les jours d'examen. Le Ministère de l'Éducation veille au respect du volume horaire minimum pour garantir la qualité de l'enseignement.",
+      "category": "calendrier",
+      "language": "fr",
+      "tags": ["jours de cours", "volume horaire", "semaines", "calendrier"]
+    },
+    {
+      "id": 11,
+      "question": "Quelles filières choisir après le BFEM?",
+      "answer": "Après le BFEM, vous pouvez choisir parmi plusieurs filières au lycée : Sciences (Série S) pour les passionnés de sciences, Lettres-Sciences Humaines (Série L) pour ceux qui aiment le français et l'histoire, Économie-Gestion (Série G) pour les intéressés par le commerce, Sciences et Technologies (Série T) pour la technologie appliquée. Le choix doit être guidé par vos résultats, vos centres d'intérêt et votre projet professionnel futur. Parlez-en avec votre conseiller d'orientation.",
+      "category": "orientation",
+      "language": "fr",
+      "tags": ["orientation", "BFEM", "filières", "lycée", "série S", "série L"]
+    },
+    {
+      "id": 12,
+      "question": "Comment s'orienter vers l'enseignement technique et professionnel?",
+      "answer": "L'enseignement technique et professionnel (ETP) offre des formations pratiques très valorisées sur le marché du travail sénégalais. Après le BFEM, vous pouvez intégrer un lycée technique ou professionnel (CAP, BEP, BAC Pro) dans des domaines comme : l'électricité, la mécanique, l'informatique, le bâtiment, l'agriculture, la couture et les arts. Les lycées techniques sont présents dans toutes les grandes villes. Cette voie mène directement à l'emploi ou à des études supérieures techniques.",
+      "category": "orientation",
+      "language": "fr",
+      "tags": ["orientation", "technique", "professionnel", "lycée technique", "CAP", "BEP"]
+    },
+    {
+      "id": 13,
+      "question": "Y a-t-il des bourses disponibles pour les élèves méritants?",
+      "answer": "Oui, le Sénégal propose plusieurs types de bourses scolaires : 1) Bourses d'excellence du Ministère pour les meilleurs élèves des examens nationaux, 2) Bourses régionales attribuées par les Inspections d'Académie, 3) Bourses de l'OFAD (Office des Foyers et des Antennes de Développement), 4) Bourses d'organismes internationaux (UNICEF, AFD, etc.), 5) Bourses d'entreprises privées. Pour candidater, renseignez-vous auprès de votre établissement ou de l'Inspection d'Académie de votre région.",
+      "category": "bourse",
+      "language": "fr",
+      "tags": ["bourse", "aide financière", "mérite", "excellence", "OFAD"]
+    },
+    {
+      "id": 14,
+      "question": "Comment obtenir une bourse pour étudier à l'université?",
+      "answer": "Pour les études supérieures, plusieurs dispositifs existent : 1) Bourse nationale de l'OFAD : accordée aux étudiants des universités publiques selon des critères de mérite et de ressources, 2) Aide sociale de l'UCAD et des universités régionales, 3) Bourses de coopération bilatérale (France, Maroc, Chine, etc.) - renseignez-vous aux ambassades, 4) Bourses sectorielles pour des domaines prioritaires (médecine, ingénierie). Déposez vos candidatures en début d'année universitaire.",
+      "category": "bourse",
+      "language": "fr",
+      "tags": ["bourse", "université", "OFAD", "UCAD", "études supérieures"]
+    },
+    {
+      "id": 15,
+      "question": "Le programme de CM1-CM2 contient-il des changements récents?",
+      "answer": "Les programmes du primaire au Sénégal ont été révisés dans le cadre de la réforme curriculaire. Les nouvelles approches pédagogiques mettent l'accent sur l'Approche Par Compétences (APC). Les matières principales au CM1-CM2 sont : français, mathématiques, sciences, histoire-géographie, éducation civique, langue nationale (wolof ou autre). Les manuels officiels sont disponibles gratuitement dans les écoles publiques grâce au Programme de Gratuité des Manuels Scolaires.",
+      "category": "programme",
+      "language": "fr",
+      "tags": ["programme", "CM1", "CM2", "primaire", "APC", "manuels"]
+    },
+    {
+      "id": 16,
+      "question": "Quelles sont les matières enseignées au collège (6e à 3e)?",
+      "answer": "Au collège (CEM), les élèves étudient les matières suivantes : Français, Mathématiques, Histoire-Géographie, Sciences de la Vie et de la Terre (SVT), Physique-Chimie (à partir de la 4e), Anglais (LV1), Arabe ou 2e langue vivante (optionnel), Éducation physique et sportive (EPS), Éducation artistique, Informatique (selon les établissements). La progression est validée par un relevé de notes trimestriel et le BFEM en fin de 3e.",
+      "category": "programme",
+      "language": "fr",
+      "tags": ["programme", "collège", "matières", "6ème", "3ème", "CEM"]
+    },
+    {
+      "id": 17,
+      "question": "Comment obtenir une attestation de scolarité?",
+      "answer": "L'attestation de scolarité est délivrée par votre établissement scolaire. Voici la procédure : 1) Se présenter au secrétariat de l'école ou du lycée, 2) Présenter votre carte d'identité ou acte de naissance, 3) Remplir le formulaire de demande, 4) L'attestation est généralement délivrée immédiatement ou dans les 48 heures. Ce document est gratuit dans les établissements publics. Il peut être exigé pour des démarches administratives, des bourses ou des concours.",
+      "category": "administratif",
+      "language": "fr",
+      "tags": ["attestation", "scolarité", "document", "secrétariat"]
+    },
+    {
+      "id": 18,
+      "question": "Comment demander un relevé de notes officiel?",
+      "answer": "Le relevé de notes officiel s'obtient auprès du secrétariat de votre établissement ou de l'Inspection d'Académie pour les examens nationaux. Pour les examens nationaux (CFEE, BFEM, BAC) : contactez l'Office du Baccalauréat ou votre Inspection d'Académie. Munissez-vous de votre numéro de candidat et d'une pièce d'identité. Un délai de quelques jours peut être nécessaire. Des frais administratifs modiques peuvent être demandés pour les copies certifiées.",
+      "category": "administratif",
+      "language": "fr",
+      "tags": ["relevé de notes", "document", "officiel", "Office du Baccalauréat"]
+    },
+    {
+      "id": 19,
+      "question": "Comment contacter l'Inspection d'Académie de ma région?",
+      "answer": "Il existe 16 académies (IA) au Sénégal correspondant aux régions administratives. Pour trouver les coordonnées de votre IA : consultez le site du Ministère de l'Éducation (education.gouv.sn), ou rendez-vous directement au chef-lieu de votre région. Les principales IA se trouvent à Dakar, Thiès, Saint-Louis, Kaolack, Ziguinchor, Tambacounda, Louga, Fatick, Diourbel, Matam, Kaffrine, Kédougou, Sédhiou, Kolda et Podor.",
+      "category": "administratif",
+      "language": "fr",
+      "tags": ["Inspection d'Académie", "contact", "région", "IA"]
+    },
+    {
+      "id": 20,
+      "question": "Comment devenir enseignant au Sénégal?",
+      "answer": "Pour devenir enseignant dans le public, il faut passer un concours de recrutement organisé par le Ministère de l'Éducation. Selon le niveau : Enseignant du primaire : concours des Instituteurs (après le BAC + formation à la CRFPE), Professeur du secondaire : concours des professeurs (après Licence/Master + formation à la FASTEF), Professeur du technique : formation spécialisée. Les concours sont annoncés dans la presse nationale et sur le site du Ministère. La formation se fait dans les Centres Régionaux de Formation des Personnels de l'Éducation (CRFPE).",
+      "category": "enseignant",
+      "language": "fr",
+      "tags": ["enseignant", "instituteur", "concours", "CRFPE", "FASTEF", "recrutement"]
+    },
+    {
+      "id": 21,
+      "question": "Qu'est-ce que la FASTEF?",
+      "answer": "La FASTEF (Faculté des Sciences et Technologies de l'Éducation et de la Formation) est l'institution de formation des enseignants du secondaire au Sénégal. Elle est rattachée à l'Université Cheikh Anta Diop (UCAD) de Dakar. La FASTEF forme : les professeurs des lycées et collèges (PLC et PEM), les conseillers d'orientation, les inspecteurs de l'Éducation. La formation dure 2 ans après une Licence dans la discipline concernée. Les admis sont des fonctionnaires stagiaires rémunérés pendant leur formation.",
+      "category": "enseignant",
+      "language": "fr",
+      "tags": ["FASTEF", "formation enseignant", "UCAD", "secondaire", "PLC"]
+    },
+    {
+      "id": 22,
+      "question": "L'éducation est-elle gratuite au Sénégal?",
+      "answer": "Oui, l'éducation de base est gratuite et obligatoire au Sénégal de 6 à 16 ans. Le Programme de Gratuité des Manuels Scolaires fournit des livres gratuitement aux élèves du primaire et du collège dans les écoles publiques. Les frais d'inscription dans les établissements publics sont très faibles ou nuls. Cependant, certaines charges annexes (fournitures, tenues, cotisations associatives) peuvent subsister. Dans les lycées, des frais de scolarité modiques peuvent être demandés.",
+      "category": "general",
+      "language": "fr",
+      "tags": ["gratuité", "scolarité", "obligatoire", "manuels gratuits"]
+    },
+    {
+      "id": 23,
+      "question": "À quel âge un enfant doit-il commencer l'école?",
+      "answer": "Au Sénégal, la scolarité est obligatoire à partir de 6 ans. Cependant, le préscolaire accueille les enfants dès 3 ans dans les structures de la Petite Enfance (cases des tout-petits, garderies, écoles maternelles). L'entrée en classe de CI (Cours d'Initiation) se fait à 6 ans pour commencer le cycle primaire. Une inscription peut se faire à 5 ans révolus si l'enfant montre une maturité suffisante, selon l'appréciation du directeur d'école.",
+      "category": "inscription",
+      "language": "fr",
+      "tags": ["âge scolaire", "entrée à l'école", "6 ans", "obligatoire", "préscolaire"]
+    },
+    {
+      "id": 24,
+      "question": "Quels sont les examens du cycle primaire?",
+      "answer": "Le cycle primaire comporte un examen principal : le CFEE (Certificat de Fin d'Études Élémentaires) en CM2. Il valide les 6 années du primaire (CI, CP, CE1, CE2, CM1, CM2). Il existe aussi le Concours d'Entrée en 6e pour intégrer les collèges publics. Les épreuves du CFEE portent sur : Français (dictée, rédaction, questions), Mathématiques, Histoire-Géographie-Éducation civique, Sciences. La réussite au CFEE est nécessaire pour passer en 6e.",
+      "category": "examen",
+      "language": "fr",
+      "tags": ["examen primaire", "CFEE", "CM2", "concours 6ème"]
+    },
+    {
+      "id": 25,
+      "question": "Où trouver les annales des examens nationaux?",
+      "answer": "Les annales des examens nationaux (CFEE, BFEM, BAC) sont disponibles : 1) Dans les librairies scolaires des grandes villes (Dakar, Thiès, Saint-Louis, etc.), 2) Sur le site de l'Office du Baccalauréat (officedubaccalaureat.sn), 3) Auprès des établissements scolaires qui en conservent des exemplaires, 4) Dans les bibliothèques municipales, 5) Sur certains sites internet éducatifs sénégalais. Le prix des annales imprimées varie entre 500 et 2000 FCFA selon l'édition.",
+      "category": "examen",
+      "language": "fr",
+      "tags": ["annales", "CFEE", "BFEM", "BAC", "révision", "préparation"]
+    },
+    {
+      "id": 26,
+      "question": "Comment s'inscrire au BAC au Sénégal?",
+      "answer": "L'inscription au Baccalauréat suit ces étapes : 1) Votre lycée collecte les dossiers d'inscription en début d'année scolaire (octobre-novembre), 2) Remplir la fiche d'inscription fournie par l'établissement, 3) Joindre une photo d'identité et une copie de la pièce d'identité, 4) Payer les droits d'inscription (frais modiques fixés par l'Office du Bac), 5) L'établissement transmet les dossiers à l'Office du Baccalauréat. Vous recevrez votre convocation environ 2-3 semaines avant les épreuves.",
+      "category": "inscription",
+      "language": "fr",
+      "tags": ["inscription", "BAC", "Office du Bac", "dossier", "convocation"]
+    },
+    {
+      "id": 27,
+      "question": "Qu'est-ce que le programme des cases des tout-petits?",
+      "answer": "Les Cases des Tout-Petits (CTP) sont des structures de la Petite Enfance créées par le gouvernement sénégalais pour accueillir les enfants de 3 à 6 ans. Elles offrent : des activités d'éveil et d'apprentissage adaptées, une prise en charge nutritionnelle (repas), des soins de santé basiques, une préparation à l'entrée à l'école primaire. Les CTP sont présentes dans les zones rurales et péri-urbaines pour les familles les plus défavorisées. Elles sont gérées par des comités de quartier avec l'appui du Ministère.",
+      "category": "general",
+      "language": "fr",
+      "tags": ["cases des tout-petits", "CTP", "préscolaire", "petite enfance", "rural"]
+    },
+    {
+      "id": 28,
+      "question": "Puis-je m'inscrire à l'école en cours d'année?",
+      "answer": "En principe, les inscriptions se font avant la rentrée scolaire. Cependant, des inscriptions en cours d'année peuvent être acceptées dans certains cas : arrivée dans une nouvelle région ou un nouveau pays, raisons médicales documentées, situations familiales exceptionnelles. Pour une inscription tardive, présentez-vous directement à l'établissement avec les documents requis et expliquez votre situation. Le directeur évaluera si une place est disponible et si le niveau de l'élève correspond à la classe.",
+      "category": "inscription",
+      "language": "fr",
+      "tags": ["inscription tardive", "en cours d'année", "transfert"]
+    },
+    {
+      "id": 29,
+      "question": "Qu'est-ce que le système LMD et comment ça marche?",
+      "answer": "Le système LMD (Licence-Master-Doctorat) est le système d'organisation des études supérieures adopté au Sénégal, harmonisé avec les standards internationaux. Il comprend : Licence (Bac+3) : 3 ans après le BAC, 180 crédits, Master (Bac+5) : 2 ans après la Licence, 120 crédits, Doctorat (Bac+8) : 3 ans minimum après le Master. Ce système facilite la mobilité internationale des étudiants et la reconnaissance des diplômes à l'étranger. Il est appliqué dans toutes les universités publiques sénégalaises.",
+      "category": "orientation",
+      "language": "fr",
+      "tags": ["LMD", "université", "licence", "master", "doctorat", "supérieur"]
+    },
+    {
+      "id": 30,
+      "question": "Quels sont les droits d'inscription à l'université au Sénégal?",
+      "answer": "Les droits d'inscription dans les universités publiques sénégalaises sont parmi les plus bas d'Afrique : Université Cheikh Anta Diop (UCAD) : environ 5 000 à 10 000 FCFA par an selon la filière, Universités régionales (UGB, UGBM, UDA, UDZ, etc.) : tarifs similaires. Des frais annexes peuvent s'ajouter (cotisations, examens). Les étudiants boursiers voient souvent ces frais couverts par leur bourse. Les grandes écoles et universités privées ont des frais nettement plus élevés (200 000 à plusieurs millions de FCFA).",
+      "category": "bourse",
+      "language": "fr",
+      "tags": ["université", "frais d'inscription", "UCAD", "droits", "coût"]
+    },
+    {
+      "id": 31,
+      "question": "Comment se déroule le concours d'entrée en 6ème?",
+      "answer": "Le Concours d'Entrée en 6e (CEE) permet aux élèves de CM2 ayant le CFEE d'intégrer un collège public. Il se déroule généralement en juillet. Les épreuves portent sur : le Français et les Mathématiques principalement. Les candidats sont classés selon leurs résultats et affectés dans les CEM selon leur rang et les places disponibles. Les élèves non admis au concours peuvent s'inscrire dans des établissements privés ou redoubler le CM2 pour repasser le CFEE.",
+      "category": "examen",
+      "language": "fr",
+      "tags": ["concours 6ème", "CEE", "CM2", "CFEE", "collège"]
+    },
+    {
+      "id": 32,
+      "question": "Existe-t-il des cours du soir ou des classes de rattrapage?",
+      "answer": "Oui, plusieurs options existent pour les élèves qui ont besoin de soutien : 1) Cours de soutien organisés par les établissements scolaires (souvent gratuits dans le public), 2) Cours particuliers avec des enseignants privés (payants), 3) Associations de parents d'élèves qui organisent parfois des soutiens, 4) Centres de cours du soir dans certaines villes, 5) Ressources en ligne sur des plateformes éducatives africaines. Pour les adultes non scolarisés, des programmes d'alphabétisation existent dans chaque région.",
+      "category": "programme",
+      "language": "fr",
+      "tags": ["cours de soutien", "rattrapage", "soir", "cours particuliers"]
+    },
+    {
+      "id": 33,
+      "question": "L'arabe est-il enseigné dans les écoles publiques?",
+      "answer": "Oui, l'enseignement de l'arabe est présent dans le système éducatif sénégalais : Dans les écoles publiques, l'arabe est une matière optionnelle ou obligatoire selon les établissements. Les daara (écoles coraniques) proposent un enseignement principalement en arabe. Des établissements franco-arabes existent où l'enseignement est bilingue français-arabe. L'Institut Islamique de Dakar offre des formations supérieures en arabe. Le Sénégal a des accords de coopération avec des pays arabes pour l'enseignement de la langue.",
+      "category": "programme",
+      "language": "fr",
+      "tags": ["arabe", "enseignement", "franco-arabe", "daara", "islamique"]
+    },
+    {
+      "id": 34,
+      "question": "Qu'est-ce qu'un daara et comment fonctionne-t-il?",
+      "answer": "Un daara est une école coranique traditionnelle sénégalaise où l'enseignement porte principalement sur la mémorisation et la récitation du Coran en arabe. Les daara accueillent des enfants dès le bas âge et sont dirigés par un marabout (maître coranique). Le gouvernement sénégalais travaille à moderniser les daara en y intégrant un enseignement en français et en mathématiques. Des programmes de 'daara modernes' combinent enseignement islamique et programme officiel. Les talibés (élèves des daara) peuvent aussi suivre le cursus de l'école publique.",
+      "category": "general",
+      "language": "fr",
+      "tags": ["daara", "école coranique", "talibé", "marabout", "enseignement islamique"]
+    },
+    {
+      "id": 35,
+      "question": "Comment se passe la scolarisation dans les zones rurales?",
+      "answer": "La scolarisation en zone rurale au Sénégal bénéficie de programmes spéciaux : Construction de nouvelles écoles et classes dans les villages éloignés, Programme de recrutement d'enseignants pour les zones difficiles avec des primes, Distribution gratuite de manuels et de matériel scolaire, Cantines scolaires pour encourager la présence des enfants (surtout des filles), Cases des Tout-Petits pour le préscolaire rural, Programme d'alphabétisation pour les adultes. Malgré ces efforts, des défis persistent notamment pour la rétention des filles à l'école.",
+      "category": "general",
+      "language": "fr",
+      "tags": ["zone rurale", "scolarisation", "accès", "cantine", "filles"]
+    },
+    {
+      "id": 36,
+      "question": "Waaw fan lañuy jàng ci kanam bi ak inscription bi?",
+      "answer": "Ci Senegaal, diggante bi (inscription) doxal ci juillet ak septembre pour xalé yi bees yëgël ci école bi. Pour xalé ci primaire, dem ci école bi rekk, jox birth certificate bi ak vaccination yi. Pour collège, dafa soxor CFEE. Pour lycée, dafa soxor BFEM. Inscription bi amul njënd ci école yi biir gouv. Bëgg na la demm ci école yi ci kaw dëkk sa ak Inspection d'Académie bi.",
+      "category": "inscription",
+      "language": "wo",
+      "tags": ["inscription", "jàng", "école", "wolof"]
+    },
+    {
+      "id": 37,
+      "question": "BFEM bi lan la? Lan la soxor ci kanam?",
+      "answer": "BFEM (Brevet de Fin d'Études Moyennes) mooy examen bi ci diggante bi kanam, ci fin de 3ème. Bëgg na ko jëfe ngir dem lycée. Ci kanam, bëgg na: xam Français, Mathématiques, Sciences, Histoire-Géographie, Anglais. BFEM bi doxal ci mai-juin. Résultat yi ñuy wone ci établissement yi ak internet. Kan am BFEM ak bonne note, mënanu dem ci lycée général walla lycée technique.",
+      "category": "examen",
+      "language": "wo",
+      "tags": ["BFEM", "examen", "3ème", "wolof", "lycée"]
+    },
+    {
+      "id": 38,
+      "question": "Bourse yi lan ñu la? Fan ñu dem ngir bourse?",
+      "answer": "Ci Senegaal, bourse yi am ñu pour xalé yu dëkk yu baax jàng: 1) Bourses d'excellence du Ministère - pour les meilleurs élèves aux examens nationaux, 2) Bourses régionales - auprès des Inspections d'Académie, 3) Bourses OFAD pour les étudiants à l'université, 4) Bourses de coopération internationale. Ngir dox ak bourse: dem ci établissement bi walla IA bi sa région ci, wone résultats yi, remplir formulaire bi, attente décision bi.",
+      "category": "bourse",
+      "language": "wo",
+      "tags": ["bourse", "aide", "wolof", "mérite", "OFAD"]
+    },
+    {
+      "id": 39,
+      "question": "Calendrier scolaire bi lan la pour année bi?",
+      "answer": "Calendrier scolaire bi ci Senegaal doxal ndax: Rentrée bi: octobre, 1er trimestre: octobre à décembre, Vacances: décembre-janvier (fêtes), 2ème trimestre: janvier à mars, Vacances: février-mars, 3ème trimestre: avril à juin, Examens: mai à juillet. Datat yi déelaat ca Ministère de l'Education bi wax leen. Gurel informations ci site officiel walla directeur bi sa école.",
+      "category": "calendrier",
+      "language": "wo",
+      "tags": ["calendrier", "wolof", "rentrée", "vacances", "trimestre"]
+    },
+    {
+      "id": 40,
+      "question": "Hol no faawtude karal e jannde?",
+      "answer": "Ngam fawtude karal e jannde e Senegaal : 1) Inscription e collège : ɓe foti CFEE, 2) Inscription e lycée : ɓe foti BFEM, 3) Filière e lycée : Sciences (S), Lettres (L), Gestion (G), Techniques (T). Kaifal jannde e fawtude oo waawi wallitaade e kaaɗe laamu gardiiɗo oo amen e IA oo. Ngam waɗde laamu ngam fawtude, cooto e sukaaɓe fawtude wano Orientation Scolaire bi.",
+      "category": "orientation",
+      "language": "ff",
+      "tags": ["orientation", "pulaar", "filière", "jannde"]
+    },
+    {
+      "id": 41,
+      "question": "Hol no waɗde jannde e Senegaal ngam ɓiɓɓe?",
+      "answer": "Jannde e Senegaal : Préscolaire (3-6 jawɗe) : cases des tout-petits, écoles maternelles. Primaire (6-12 jawɗe) : CI haa CM2, karal CFEE. Moyen (12-16 jawɗe) : 6ème haa 3ème e CEM, karal BFEM. Secondaire (16-19 jawɗe) : 2nde haa Terminale e lycée, karal BAC. Jannde wonii fayde ngam kala sukaaɓe e Senegaal. Hol ngam inscription, cooto e école teddata wuro maa.",
+      "category": "general",
+      "language": "ff",
+      "tags": ["système éducatif", "pulaar", "primaire", "collège", "lycée"]
+    },
+    {
+      "id": 42,
+      "question": "ما هي مواعيد التسجيل في المدارس السنغالية؟",
+      "answer": "تجري عمليات التسجيل في المدارس السنغالية عادةً خلال الفترة من يوليو إلى سبتمبر من كل عام. بالنسبة للمرحلة الابتدائية، يمكن التسجيل مباشرةً في المدرسة مع تقديم شهادة الميلاد وبطاقة التطعيم. أما للمرحلة الإعدادية، فيشترط اجتياز امتحان CFEE. وللمرحلة الثانوية، يشترط اجتياز امتحان BFEM. التعليم مجاني في المدارس الحكومية. للمزيد من المعلومات، تواصل مع مديرية التعليم في منطقتك.",
+      "category": "inscription",
+      "language": "ar",
+      "tags": ["تسجيل", "مدرسة", "التعليم", "السنغال", "عربي"]
+    },
+    {
+      "id": 43,
+      "question": "ما هو امتحان الباكالوريا في السنغال وكيف يمكن التسجيل فيه؟",
+      "answer": "الباكالوريا (BAC) هي شهادة نهاية المرحلة الثانوية في السنغال. يتضمن الامتحان عدة مواد تختلف حسب الشعبة (علمية، أدبية، اقتصادية). للتسجيل: يقوم الثانوي بجمع ملفات التسجيل في بداية السنة الدراسية، ثم تُرسل إلى مكتب الباكالوريا (Office du Baccalauréat). النتائج تُعلن عبر الموقع الرسمي ومراكز الامتحانات. للاستفسار، تواصل مع إدارة مدرستك أو مكتب الباكالوريا مباشرةً.",
+      "category": "examen",
+      "language": "ar",
+      "tags": ["باكالوريا", "امتحان", "التسجيل", "عربي", "ثانوية"]
+    },
+    {
+      "id": 44,
+      "question": "هل التعليم مجاني في السنغال؟",
+      "answer": "نعم، التعليم الأساسي مجاني وإلزامي في السنغال للأطفال من سن 6 إلى 16 عاماً. تُوفر الحكومة الكتب المدرسية مجاناً للطلاب في المدارس الابتدائية والإعدادية الحكومية. رسوم التسجيل في المدارس الحكومية رمزية أو معدومة. قد تبقى بعض النفقات الجانبية مثل القرطاسية والزي المدرسي. التعليم العالي في الجامعات الحكومية بأسعار مدعومة جداً (حوالي 5000-10000 فرنك أفريقي).",
+      "category": "general",
+      "language": "ar",
+      "tags": ["مجاني", "إلزامي", "تعليم", "عربي"]
+    },
+    {
+      "id": 45,
+      "question": "كيف يمكن الحصول على منحة دراسية في السنغال؟",
+      "answer": "تتوفر عدة أنواع من المنح الدراسية في السنغال: 1) منح التميز من وزارة التعليم للطلاب المتفوقين في الامتحانات الوطنية، 2) المنح الإقليمية من مفتشيات الأكاديميات، 3) منح OFAD للطلاب الجامعيين، 4) المنح الدولية (فرنسا، المغرب، الصين، السعودية...) - تستفسر من السفارات، 5) منح التعاون الثنائي. للتقديم: تواصل مع مؤسستك التعليمية أو مفتشية الأكاديمية في منطقتك.",
+      "category": "bourse",
+      "language": "ar",
+      "tags": ["منحة", "دراسية", "OFAD", "عربي", "تمويل"]
+    },
+    {
+      "id": 46,
+      "question": "Comment s'appelle le système de notation au Sénégal?",
+      "answer": "Au Sénégal, le système de notation est basé sur une échelle de 0 à 20, comme en France. La moyenne est de 10/20. Les appréciations sont généralement : 16-20 : Très Bien (TB), 14-16 : Bien (B), 12-14 : Assez Bien (AB), 10-12 : Passable (P), moins de 10 : insuffisant. Pour les examens nationaux, la mention est accordée selon la moyenne générale. Il faut avoir au moins 10/20 de moyenne générale pour être admis à un examen.",
+      "category": "programme",
+      "language": "fr",
+      "tags": ["notation", "moyenne", "système", "mention", "évaluation"]
+    },
+    {
+      "id": 47,
+      "question": "Qu'est-ce que l'IDEN et quel est son rôle?",
+      "answer": "L'IDEN (Inspection Départementale de l'Éducation Nationale) est la structure administrative qui supervise l'éducation au niveau des départements au Sénégal. Il en existe une dans chaque département. L'IDEN est responsable de : la supervision des écoles primaires du département, le suivi pédagogique des enseignants, la gestion des examens locaux, la collecte des statistiques scolaires, la mise en œuvre des politiques éducatives. Pour toute question relative à l'éducation dans votre département, c'est votre premier interlocuteur.",
+      "category": "administratif",
+      "language": "fr",
+      "tags": ["IDEN", "département", "inspection", "administration"]
+    },
+    {
+      "id": 48,
+      "question": "Comment signaler un problème dans un établissement scolaire?",
+      "answer": "Pour signaler un problème dans un établissement scolaire (harcèlement, mauvais traitements, manque d'enseignant, état des locaux, etc.) : 1) Parlez d'abord au directeur de l'établissement, 2) Si non résolu, contactez l'Association des Parents d'Élèves (APE), 3) Saisissez l'IDEN de votre département, 4) Remontez à l'Inspection d'Académie si nécessaire, 5) Contactez le Ministère de l'Éducation pour les cas graves. Chaque établissement doit avoir un mécanisme de plaintes accessible à tous.",
+      "category": "administratif",
+      "language": "fr",
+      "tags": ["signalement", "problème", "APE", "IDEN", "plainte"]
+    },
+    {
+      "id": 49,
+      "question": "Quels sont les établissements d'enseignement supérieur au Sénégal?",
+      "answer": "Le Sénégal dispose de plusieurs universités publiques : UCAD (Université Cheikh Anta Diop) à Dakar - la plus grande, UGB (Université Gaston Berger) à Saint-Louis, UGBM à Bambey, UDA à Ziguinchor (Assane Seck), UDZ à Diourbel (Sine Saloum), UTM à Touba, UVS (Université Virtuelle du Sénégal). Il existe aussi des grandes écoles publiques : ESP (École Supérieure Polytechnique), ENSEPT, ENEA, ENCR, etc. Plus de 200 établissements privés d'enseignement supérieur sont également reconnus.",
+      "category": "orientation",
+      "language": "fr",
+      "tags": ["université", "supérieur", "UCAD", "UGB", "grandes écoles"]
+    },
+    {
+      "id": 50,
+      "question": "Qu'est-ce que l'Université Virtuelle du Sénégal (UVS)?",
+      "answer": "L'Université Virtuelle du Sénégal (UVS) est un établissement public d'enseignement supérieur à distance, créé en 2013. Elle permet à des étudiants de toutes régions du Sénégal d'accéder à l'enseignement supérieur via internet et des Espaces Numériques Ouverts (ENO) répartis dans tout le pays. L'UVS propose des licences dans de nombreuses filières à des frais très réduits. C'est une solution idéale pour les étudiants éloignés de Dakar ou ayant des contraintes de déplacement.",
+      "category": "orientation",
+      "language": "fr",
+      "tags": ["UVS", "virtuel", "distance", "e-learning", "ENO"]
+    },
+    {
+      "id": 51,
+      "question": "Comment se passe le redoublement au Sénégal?",
+      "answer": "Au Sénégal, un élève peut redoubler une classe s'il n'a pas la moyenne requise pour passer en classe supérieure. Les règles générales : une moyenne inférieure à 8/20 entraîne généralement le redoublement, un conseil de classe décide du passage ou du redoublement en fin d'année, un élève ne peut pas redoubler plus de 2 fois dans le même cycle. Le Ministère décourage le redoublement excessif et promeut des mécanismes de rattrapage. Les parents peuvent demander une révision de la décision auprès du directeur.",
+      "category": "programme",
+      "language": "fr",
+      "tags": ["redoublement", "passage", "moyenne", "conseil de classe"]
+    },
+    {
+      "id": 52,
+      "question": "Qu'est-ce que le PDEF et PAQUET-EF?",
+      "answer": "Le PDEF (Programme Décennal de l'Éducation et de la Formation) était le plan stratégique 2000-2010 du Sénégal pour améliorer son système éducatif. Il a été suivi par le PAQUET-EF (Programme d'Amélioration de la Qualité, de l'Équité et de la Transparence dans l'Éducation et la Formation) pour 2013-2025. Le PAQUET-EF vise à : améliorer l'accès à l'éducation, renforcer la qualité de l'enseignement, promouvoir l'équité (notamment pour les filles et les zones rurales), moderniser la gestion du système éducatif.",
+      "category": "general",
+      "language": "fr",
+      "tags": ["PDEF", "PAQUET-EF", "réforme", "politique éducative", "qualité"]
+    },
+    {
+      "id": 53,
+      "question": "Comment fonctionne l'affectation des élèves en classe de 6ème?",
+      "answer": "L'affectation en 6ème dans les établissements publics se fait par le biais du Concours d'Entrée en 6e (CEE) organisé par les Inspections d'Académie. Les élèves sont classés selon leurs résultats et affectés dans les collèges selon les places disponibles et la distance domicile-établissement. Les parents peuvent exprimer des vœux mais ne sont pas garantis. Les élèves non admis au concours ou n'ayant pas le CFEE peuvent s'inscrire dans le privé ou redoubler.",
+      "category": "inscription",
+      "language": "fr",
+      "tags": ["affectation", "6ème", "CEE", "collège", "CFEE"]
+    },
+    {
+      "id": 54,
+      "question": "Quelle est la procédure pour un transfert d'école?",
+      "answer": "Pour transférer votre enfant d'une école à une autre, voici la procédure : 1) Demander un certificat de radiation (ou fiche de transfert) à l'ancienne école, 2) Se présenter à la nouvelle école avec ce document, l'acte de naissance et le carnet de notes, 3) Le directeur de la nouvelle école examine le dossier et les places disponibles, 4) Si accepté, l'inscription est enregistrée. Pour un transfert entre régions, informez les deux IDEN concernées. Il n'y a pas de frais officiels pour un transfert.",
+      "category": "administratif",
+      "language": "fr",
+      "tags": ["transfert", "changement d'école", "radiation", "mutation"]
+    },
+    {
+      "id": 55,
+      "question": "Les enfants handicapés ont-ils accès à l'éducation au Sénégal?",
+      "answer": "Le Sénégal s'engage dans l'éducation inclusive pour les enfants en situation de handicap : Des Classes d'Initiation à l'Intégration Scolaire (CIIS) existent dans certaines écoles primaires, Des écoles et centres spécialisés accueillent les enfants avec des besoins particuliers (déficience visuelle, auditive, motrice, etc.), Le Plan d'Action National pour les Personnes Handicapées prévoit des mesures inclusives, L'ANPH (Agence Nationale des Personnes Handicapées) peut orienter vers les ressources disponibles. Des efforts importants restent à faire pour une inclusion complète.",
+      "category": "general",
+      "language": "fr",
+      "tags": ["handicap", "inclusion", "CIIS", "éducation inclusive", "ANPH"]
+    },
+    {
+      "id": 56,
+      "question": "Qu'est-ce que la Langue Nationale dans les programmes scolaires?",
+      "answer": "Le Sénégal a intégré les langues nationales dans son système éducatif dans le cadre de la politique de valorisation des langues africaines. Six langues nationales sont reconnues comme véhicules d'enseignement : le wolof, le pulaar, le sérère, le diola, le mandingue et le soninké. Des écoles bilingues expérimentales enseignent dans la langue nationale de la communauté et en français. Cette approche améliore les résultats des élèves notamment en zones rurales. Les langues nationales figurent au BAC comme matière optionnelle.",
+      "category": "programme",
+      "language": "fr",
+      "tags": ["langue nationale", "wolof", "pulaar", "bilingue", "diversité"]
+    },
+    {
+      "id": 57,
+      "question": "Y a-t-il des programmes d'alphabétisation pour les adultes?",
+      "answer": "Oui, le Sénégal dispose de programmes d'alphabétisation et d'Éducation Non Formelle (ENF) pour les adultes : Le Programme National d'Alphabétisation et d'Apprentissage des Métiers (PNAM), Les cours du soir dans certaines écoles publiques, Les centres d'alphabétisation gérés par des ONG et associations, Les programmes en langues nationales pour les zones rurales, Les formations professionnelles courtes dans les centres CDEPS. Pour trouver un centre près de chez vous, contactez l'IDEN ou la Direction de l'Alphabétisation du Ministère.",
+      "category": "general",
+      "language": "fr",
+      "tags": ["alphabétisation", "adultes", "ENF", "PNAM", "formation"]
+    },
+    {
+      "id": 58,
+      "question": "Comment s'inscrire au concours de l'Université Virtuelle du Sénégal?",
+      "answer": "L'inscription à l'UVS (Université Virtuelle du Sénégal) se fait en ligne sur le portail de l'université (uvs.edu.sn). Les étapes sont : 1) Créer un compte sur le portail UVS, 2) Remplir le formulaire d'inscription en ligne, 3) Télécharger les documents requis (BAC, pièce d'identité, photo), 4) Choisir votre filière et votre Espace Numérique Ouvert (ENO) de rattachement, 5) Payer les frais d'inscription (très faibles), 6) Valider l'inscription. Des ENO sont présents dans toutes les régions du Sénégal pour faciliter l'accès.",
+      "category": "inscription",
+      "language": "fr",
+      "tags": ["UVS", "inscription en ligne", "université virtuelle", "ENO"]
+    },
+    {
+      "id": 59,
+      "question": "Qu'est-ce que le Projet Sénégal Numérique pour l'éducation?",
+      "answer": "Le Sénégal développe plusieurs initiatives numériques pour moderniser son éducation : Projet USAID YEE (Youth and Education) intégrant les TIC dans les classes, Distribution de tablettes dans certaines écoles pilotes, Plateforme MENFP (menfp.sn) pour les ressources pédagogiques en ligne, Connexion internet dans les établissements prioritaires via le Programme de Connectivité Scolaire, Partenariat avec des EdTech africaines pour les contenus localisés. L'objectif est d'atteindre une école connectée dans chaque commune du Sénégal d'ici 2030.",
+      "category": "general",
+      "language": "fr",
+      "tags": ["numérique", "TIC", "tablette", "connectivité", "innovation"]
+    },
+    {
+      "id": 60,
+      "question": "Comment obtenir une équivalence de diplôme étranger au Sénégal?",
+      "answer": "Pour faire reconnaître un diplôme étranger au Sénégal, la procédure est la suivante : 1) Rassembler les documents : diplôme original + traduction officielle (si en langue étrangère), relevés de notes, programmes des cours suivis, 2) Déposer le dossier à la Direction de l'Enseignement Supérieur du Ministère ou à l'université d'accueil, 3) Une commission d'équivalence examine le dossier (délai : 1 à 3 mois), 4) En cas d'accord, une attestation d'équivalence est délivrée. Le CAMES (Conseil Africain et Malgache pour l'Enseignement Supérieur) peut aussi traiter certaines demandes.",
+      "category": "administratif",
+      "language": "fr",
+      "tags": ["équivalence", "diplôme étranger", "reconnaissance", "CAMES", "supérieur"]
+    }
+  ]
+}

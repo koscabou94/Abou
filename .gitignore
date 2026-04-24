@@ -1,0 +1,72 @@
+# ============================================================
+# Chatbot Éducatif Sénégal - .gitignore
+# ============================================================
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Environnements virtuels
+venv/
+.venv/
+env/
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+server.log
+
+# Base de données locale
+*.db
+*.sqlite3
+
+# Modèles IA (trop volumineux pour git)
+models/
+*.bin
+*.safetensors
+*.onnx
+
+# Docker
+docker-compose.override.yml
+
+# ChromaDB / données vectorielles
+chromadb/
+chroma_data/
+
+# Node
+node_modules/
+
+# Tests
+.coverage
+htmlcov/
+.pytest_cache/
+test.db
+test_out.txt
+
+# OS
+.DS_Store
+Desktop.ini
+ehthumbs.db
+
+# Secrets
+.env
+.env.local
+.env.production
+*.pem
+*.key

@@ -1,0 +1,196 @@
+# ============================================================
+# Docker Compose - Chatbot Éducatif du Ministère de l'Éducation du Sénégal
+# Stack complète : Backend + PostgreSQL + Redis + Ollama + Nginx
+# ============================================================
+
+version: '3.9'
+
+services:
+
+  # ============================================================
+  # Base de données PostgreSQL 16
+  # ============================================================
+  db:
+    image: postgres:16-alpine
+    container_name: edu_chatbot_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-edu_chatbot}
+      POSTGRES_USER: ${POSTGRES_USER:-edu_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-edu_password}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --locale=fr_FR.UTF-8"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-edu_user} -d ${POSTGRES_DB:-edu_chatbot}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    # Pas d'exposition du port à l'extérieur (sécurité)
+
+  # ============================================================
+  # Cache Redis 7
+  # ============================================================
+  redis:
+    image: redis:7-alpine
+    container_name: edu_chatbot_redis
+    restart: unless-stopped
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru --save ""
+    volumes:
+      - redis_data:/data
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+  # ============================================================
+  # Ollama - LLM Mistral 7B
+  # ============================================================
+  ollama:
+    image: ollama/ollama:latest
+    container_name: edu_chatbot_ollama
+    restart: unless-stopped
+    volumes:
+      - ollama_models:/root/.ollama
+    networks:
+      - internal
+    # Décommenter pour GPU NVIDIA
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:11434/api/tags || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+
+  # ============================================================
+  # Téléchargement du modèle Ollama (job unique)
+  # ============================================================
+  ollama-pull:
+    image: ollama/ollama:latest
+    container_name: edu_chatbot_ollama_pull
+    restart: "no"
+    depends_on:
+      ollama:
+        condition: service_healthy
+    volumes:
+      - ollama_models:/root/.ollama
+    networks:
+      - internal
+    entrypoint: ["ollama", "pull", "mistral"]
+    environment:
+      - OLLAMA_HOST=ollama:11434
+
+  # ============================================================
+  # Backend FastAPI
+  # ============================================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        SKIP_MODEL_DOWNLOAD: "0"
+    container_name: edu_chatbot_backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-edu_user}:${POSTGRES_PASSWORD:-edu_password}@db:5432/${POSTGRES_DB:-edu_chatbot}
+      REDIS_URL: redis://redis:6379/0
+      OLLAMA_URL: http://ollama:11434
+    volumes:
+      # Données persistantes
+      - ./data:/app/data:ro
+      # Modèles pré-téléchargés
+      - model_cache:/app/models
+      # Frontend pour être servi statiquement
+      - ./frontend:/app/frontend:ro
+      # Logs
+      - backend_logs:/app/logs
+    networks:
+      - internal
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8000/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 90s
+
+  # ============================================================
+  # Nginx - Reverse Proxy
+  # ============================================================
+  nginx:
+    image: nginx:alpine
+    container_name: edu_chatbot_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./frontend:/usr/share/nginx/html:ro
+      # Pour SSL Let's Encrypt (production)
+      # - /etc/letsencrypt:/etc/letsencrypt:ro
+    networks:
+      - internal
+      - external
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost/nginx-health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+# ============================================================
+# Volumes persistants
+# ============================================================
+volumes:
+  postgres_data:
+    driver: local
+    name: edu_chatbot_postgres_data
+  redis_data:
+    driver: local
+    name: edu_chatbot_redis_data
+  ollama_models:
+    driver: local
+    name: edu_chatbot_ollama_models
+  model_cache:
+    driver: local
+    name: edu_chatbot_model_cache
+  backend_logs:
+    driver: local
+    name: edu_chatbot_backend_logs
+
+# ============================================================
+# Réseaux
+# ============================================================
+networks:
+  internal:
+    driver: bridge
+    name: edu_chatbot_internal
+    internal: true
+  external:
+    driver: bridge
+    name: edu_chatbot_external

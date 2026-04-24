@@ -1,0 +1,2290 @@
+[
+  {
+    "section": "General",
+    "text": "Ministère de l’Éducation nationale"
+  },
+  {
+    "section": "General",
+    "text": "Système d’Information et de Management de l’Éducation nationale"
+  },
+  {
+    "section": "General",
+    "text": "Division de la Promotion des Technologies de l’Information et de la Communication (DPTIC)"
+  },
+  {
+    "section": "General",
+    "text": "Version 1.0 | 2 avril 2026"
+  },
+  {
+    "section": "SOMMAIRE",
+    "text": "SOMMAIRE"
+  },
+  {
+    "section": "Introduction",
+    "text": "Introduction"
+  },
+  {
+    "section": "Introduction",
+    "text": "Dans le contexte actuel de transformation numérique du système éducatif sénégalais, le Ministère de l’Éducation nationale a engagé une réforme ambitieuse visant à moderniser la gestion des établissements scolaires et à améliorer la qualité du service éducatif. Cette dynamique s’inscrit dans le cadre de la Stratégie numérique pour l’éducation (2025-2029), dont PLANETE constitue une composante centrale. Pensée comme une solution intégrée, la plateforme PLANETE 3.0 offre un environnement unifié permettant de gérer, au quotidien, les activités administratives, pédagogiques et le suivi des élèves, tout en facilitant la circulation de l’information entre les différents niveaux du système éducatif."
+  },
+  {
+    "section": "Introduction",
+    "text": "Le déploiement national de PLANETE, amorcé à partir d’octobre 2025, marque une étape décisive dans cette modernisation. Dans les établissements, cette évolution se traduit par des usages concrets et immédiats : un chef d’établissement peut suivre en temps réel les absences, un enseignant peut renseigner son cahier de texte depuis la salle de classe, et un parent peut consulter les résultats de son enfant sans se déplacer. Une telle transformation suppose toutefois une appropriation progressive par l’ensemble des acteurs (chefs d’établissement, enseignants, personnels administratifs et référents numériques) soutenue par des actions de formation et des dispositifs d’accompagnement de proximité portés par les IA et les IEF."
+  },
+  {
+    "section": "Introduction",
+    "text": "A cet effet, le présent guide d’utilisation répond à un besoin simple mais essentiel : aider chaque utilisateur à prendre en main la plateforme de manière concrète, progressive et directement exploitable dans le travail quotidien. Face à la richesse fonctionnelle de PLANETE (gestion des élèves, emplois du temps, cours, évaluations, rapports et pilotage des activités) il est indispensable de disposer d’un support clair, structuré et opérationnel. Ce guide ne se limite donc pas à décrire des fonctionnalités : il accompagne les usages, s’appuie sur des situations proches de la réalité des établissements et vise à sécuriser les pratiques tout en faisant gagner du temps aux équipes."
+  },
+  {
+    "section": "Introduction",
+    "text": "En mettant à disposition un référentiel commun d’utilisation, ce document contribue enfin à harmoniser les pratiques à l’échelle nationale. Il soutient l’organisation des équipes, renforce la qualité des données produites et participe, plus largement, à l’installation d’une gouvernance éducative plus transparente, plus réactive et mieux informée. Ainsi, PLANETE ne constitue pas seulement un outil de gestion : elle devient un levier de pilotage, de coordination et d’amélioration continue au service des établissements scolaires sénégalais."
+  },
+  {
+    "section": "Introduction",
+    "text": "Suivi en temps réel des absences par le chef d’établissement"
+  },
+  {
+    "section": "Introduction",
+    "text": "Saisie des cahiers de texte par les enseignants depuis la salle de classe"
+  },
+  {
+    "section": "Introduction",
+    "text": "Consultation des résultats des élèves par les parents sans déplacement"
+  },
+  {
+    "section": "Introduction",
+    "text": "Garantie de traçabilité pour toutes les opérations (inscriptions, transferts, saisies de notes)"
+  },
+  {
+    "section": "Présentation de PLANETE",
+    "text": "Présentation de PLANETE"
+  },
+  {
+    "section": "Evolution de la plateforme PLANETE",
+    "text": "Evolution de la plateforme PLANETE"
+  },
+  {
+    "section": "Evolution de la plateforme PLANETE",
+    "text": "PLANETE s’inscrit dans le cadre du Système d’Information du Ministère de l’Education nationale (SIMEN), comme solution intégrée de gestion scolaire au service des établissements et du pilotage du système éducatif."
+  },
+  {
+    "section": "Des premières bases de numérisation à la version 2",
+    "text": "Des premières bases de numérisation à la version 2"
+  },
+  {
+    "section": "Des premières bases de numérisation à la version 2",
+    "text": "La première version de la plateforme a posé les bases de la numérisation des établissements, avec une informatisation centrée sur les opérations administratives. Elle a permis de structurer les données scolaires et d’amorcer l’abandon progressif des supports papier."
+  },
+  {
+    "section": "Des premières bases de numérisation à la version 2",
+    "text": "La version 2 a élargi le périmètre fonctionnel en intégrant les dimensions pédagogiques. Les établissements ont commencé à gérer, dans un même environnement, les classes, les emplois du temps, les évaluations et le suivi des élèves. Cette étape a favorisé une meilleure organisation interne et une circulation plus fluide de l’information."
+  },
+  {
+    "section": "Le passage à PLANETE 3",
+    "text": "Le passage à PLANETE 3"
+  },
+  {
+    "section": "Le passage à PLANETE 3",
+    "text": "Avec PLANETE 3, la plateforme change d’échelle. Elle devient un système unifié, intercon- necté et aligné avec l’architecture globale du SIMEN. Elle relie désormais les établissements aux inspections (IEF), aux académies (IA) et au niveau central, permettant un pilotage cohé- rent et fondé sur des données partagées. Cette évolution renforce la fiabilité de l’information et la capacité de suivi du système éducatif dans son ensemble."
+  },
+  {
+    "section": "Nouvelles fonctionnalités de PLANETE 3",
+    "text": "Nouvelles fonctionnalités de PLANETE 3"
+  },
+  {
+    "section": "Nouvelles fonctionnalités de PLANETE 3",
+    "text": "PLANETE 3 introduit une transformation concrète des pratiques à travers la généralisa- tion de la dématérialisation et l’ouverture des accès."
+  },
+  {
+    "section": "Dématérialisation des procédures",
+    "text": "Dématérialisation des procédures"
+  },
+  {
+    "section": "Dématérialisation des procédures",
+    "text": "La plateforme permet désormais une dématérialisation complète des procédures adminis- tratives et pédagogiques. Les opérations telles que la gestion des élèves, l’organisation des classes, le suivi des absences, la planification des évaluations, la saisie des notes et l’édition des bulletins sont réalisées directement en ligne."
+  },
+  {
+    "section": "Inscriptions et transferts d’élèves",
+    "text": "Inscriptions et transferts d’élèves"
+  },
+  {
+    "section": "Inscriptions et transferts d’élèves",
+    "text": "A cela s’ajoutent deux évolutions majeures : la dématérialisation des inscriptions et celle des transferts d’élèves. Un établissement peut inscrire un nouvel élève ou traiter une demande de transfert sans recourir à des dossiers physiques, avec une traçabilité claire et un traitement plus rapide. Cette organisation réduit les erreurs, limite les pertes d’information et sécurise les données."
+  },
+  {
+    "section": "Inscriptions et transferts d’élèves",
+    "text": "Ministère de l’Éducation nationale"
+  },
+  {
+    "section": "Ouverture des accès aux différents acteurs",
+    "text": "Ouverture des accès aux différents acteurs"
+  },
+  {
+    "section": "Ouverture des accès aux différents acteurs",
+    "text": "Par ailleurs, PLANETE 3 élargit les usages grâce à un accès étendu à l’ensemble des acteurs du système éducatif. Chefs d’établissement, enseignants, élèves, parents, mais aussi autorités académiques et centrales disposent d’interfaces adaptées à leurs rôles. Cette ouverture facilite la circulation de l’information, renforce la transparence et améliore la coordination entre les différents niveaux du système."
+  },
+  {
+    "section": "Tableaux de bord et outils de suivi",
+    "text": "Tableaux de bord et outils de suivi"
+  },
+  {
+    "section": "Tableaux de bord et outils de suivi",
+    "text": "Enfin, la plateforme intègre des tableaux de bord et des outils de suivi qui offrent une lecture claire des indicateurs clés. Les responsables peuvent ainsi suivre les performances, anticiper les difficultés et orienter leurs décisions sur la base de données fiables."
+  },
+  {
+    "section": "Connexion",
+    "text": "Connexion"
+  },
+  {
+    "section": "Connexion",
+    "text": "La connexion à PLANETE constitue la première étape pour accéder aux services nu- mériques de gestion scolaire. Elle repose sur l’utilisation de l’adresse e-mail professionnelle fournie par le Ministère et d’un mot de passe personnel."
+  },
+  {
+    "section": "Accès à PLANETE",
+    "text": "Accès à PLANETE"
+  },
+  {
+    "section": "Accès à PLANETE",
+    "text": "Ouvrez la plateforme PLANETE à l’adresse suivante : https://planete3.education. sn."
+  },
+  {
+    "section": "Accès à PLANETE",
+    "text": "Lorsque la page d’accueil s’affiche avec le formulaire de connexion, renseignez votre"
+  },
+  {
+    "section": "Accès à PLANETE",
+    "text": "e-mail professionnel dans le champ prévu à cet effet."
+  },
+  {
+    "section": "Accès à PLANETE",
+    "text": "Dans un établissement, il s’agit généralement de l’adresse utilisée pour les communications officielles, par exemple prenom.nom@education.sn."
+  },
+  {
+    "section": "Accès à PLANETE",
+    "text": "Après avoir saisi correctement votre adresse, cliquez sur le bouton Continuer."
+  },
+  {
+    "section": "Accès à PLANETE",
+    "text": "Ce premier écran permet au système d’identifier votre profil et de préparer l’accès sécurisé à votre espace."
+  },
+  {
+    "section": "Accès à PLANETE",
+    "text": "Une fois l’adresse validée, un second écran apparaît et vous invite à saisir votre mot de passe."
+  },
+  {
+    "section": "Accès à PLANETE",
+    "text": "Entrez le mot de passe associé à votre compte, puis cliquez sur Connexion pour accéder à la plateforme."
+  },
+  {
+    "section": "Accès à PLANETE",
+    "text": "Figure 3.1 – Ecran de saisie de l’adresse e-mail professionnelle"
+  },
+  {
+    "section": "Accès à PLANETE",
+    "text": "Ministère de l’Éducation nationale"
+  },
+  {
+    "section": "Accès à PLANETE",
+    "text": "Figure 3.2 – Ecran de saisie du mot de passe"
+  },
+  {
+    "section": "Accès à PLANETE",
+    "text": "Ce processus simple permet à chaque acteur du système éducatif d’accéder à un espace sécurisé et adapté à ses responsabilités."
+  },
+  {
+    "section": "Tableau de bord",
+    "text": "Tableau de bord"
+  },
+  {
+    "section": "Tableau de bord",
+    "text": "Le tableau de bord donne une vue rapide de la situation de l’établissement et facilite le suivi quotidien."
+  },
+  {
+    "section": "Fonction du tableau de bord",
+    "text": "Fonction du tableau de bord"
+  },
+  {
+    "section": "Fonction du tableau de bord",
+    "text": "Le tableau de bord permet au chef d’établissement et aux personnels autorisés de consulter rapidement les informations essentielles. Il aide à organiser la journée, à repérer les situations importantes et à agir plus vite."
+  },
+  {
+    "section": "Fonction du tableau de bord",
+    "text": "Les données du tableau de bord évoluent au fil de la journée. On peut y voir les absences, les cours prévus, les évaluations, les demandes de transfert, les messages reçus et d’autres informations de suivi."
+  },
+  {
+    "section": "Fonction du tableau de bord",
+    "text": "Les principaux indicateurs visibles concernent notamment les effectifs, les classes, les absences, les activités récentes et les raccourcis vers les fonctions utiles."
+  },
+  {
+    "section": "Fonction du tableau de bord",
+    "text": "Figure 4.1 – Vue d’ensemble du tableau de bord PLANETE"
+  },
+  {
+    "section": "Fonction du tableau de bord",
+    "text": "Ministère de l’Éducation nationale"
+  },
+  {
+    "section": "Fonction du tableau de bord",
+    "text": "Figure 4.2 – Indicateurs et informations de suivi du tableau de bord"
+  },
+  {
+    "section": "Etablissement",
+    "text": "Etablissement"
+  },
+  {
+    "section": "Etablissement",
+    "text": "Dans PLANETE, la rubrique Établissement permet de consulter et de mettre à jour les informations administratives et structurelles de l’école ou du lycée. Cette fiche influence notamment l’affichage des cycles, des classes et de certaines fonctions pédagogiques."
+  },
+  {
+    "section": "Accéder à la fiche établissement",
+    "text": "Accéder à la fiche établissement"
+  },
+  {
+    "section": "Accéder à la fiche établissement",
+    "text": "Après la connexion, ouvrez le menu de gauche puis cliquez sur Établissement. La fiche s’affiche automatiquement."
+  },
+  {
+    "section": "Accéder à la fiche établissement",
+    "text": "Elle regroupe les informations essentielles de la structure : adresse, contacts, infrastruc- tures, classes et effectifs. En début d’année ou après un changement administratif, cette vérification permet de s’assurer que les données sont correctes."
+  },
+  {
+    "section": "Accéder à la fiche établissement",
+    "text": "Figure 5.1 – Accès à la fiche établissement"
+  },
+  {
+    "section": "Mettre à jour le cycle de l’établissement",
+    "text": "Mettre à jour le cycle de l’établissement"
+  },
+  {
+    "section": "Mettre à jour le cycle de l’établissement",
+    "text": "En cas de changement de cycle, c’est-à-dire le passage d’un collège à un lycée de cycle long (moyen-secondaire), le bouton Mise à jour permet d’actualiser le cycle de l’établissement et de faire apparaître les niveaux du secondaire (Seconde, Première, Terminale)."
+  },
+  {
+    "section": "Mettre à jour le cycle de l’établissement",
+    "text": "Cette mise à jour doit être effectuée lorsque l’établissement change effectivement de statut ou de cycle."
+  },
+  {
+    "section": "Mettre à jour le cycle de l’établissement",
+    "text": "Figure 5.2 – Mise à jour des informations de l’établissement"
+  },
+  {
+    "section": "Mise à jour des informations de l’établissement",
+    "text": "Mise à jour des informations de l’établissement"
+  },
+  {
+    "section": "Mise à jour des informations de l’établissement",
+    "text": "Pour mettre à jour les informations de l’établissement, cliquez sur le bouton Editer fiche. Les champs modifiables s’affichent alors à l’écran."
+  },
+  {
+    "section": "Mise à jour des informations de l’établissement",
+    "text": "Après avoir saisi ou corrigé les informations, cliquez sur Enregistrer pour valider la mise à jour."
+  },
+  {
+    "section": "Mise à jour des informations de l’établissement",
+    "text": "Figure 5.3 – Bouton Editer fiche"
+  },
+  {
+    "section": "Mise à jour des informations de l’établissement",
+    "text": "Figure 5.4 – Enregistrement des informations avec le bouton Enregistrer"
+  },
+  {
+    "section": "Polarisation Bloc scientifique et technologique (BST)",
+    "text": "Polarisation Bloc scientifique et technologique (BST)"
+  },
+  {
+    "section": "Polarisation Bloc scientifique et technologique (BST)",
+    "text": "Les collèges d’enseignement moyen polarisés par des BST, auxquels ils envoient leurs élèves des niveaux quatrième et troisième, doivent le déclarer au niveau de la fiche"
+  },
+  {
+    "section": "Polarisation Bloc scientifique et technologique (BST)",
+    "text": "d’établissement."
+  },
+  {
+    "section": "Polarisation Bloc scientifique et technologique (BST)",
+    "text": "Dans la fiche d’établissement, choisissez d’abord Oui pour indiquer que l’établissement est concerné par cette polarisation."
+  },
+  {
+    "section": "Polarisation Bloc scientifique et technologique (BST)",
+    "text": "Ensuite, à partir de la liste nationale des BST, sélectionnez l’établissement polarisateur correspondant."
+  },
+  {
+    "section": "Polarisation Bloc scientifique et technologique (BST)",
+    "text": "Figure 5.5 – Choisir Oui pour déclarer la polarisation BST"
+  },
+  {
+    "section": "Polarisation Bloc scientifique et technologique (BST)",
+    "text": "Figure 5.6 – Sélection du BST polarisateur dans la liste nationale"
+  },
+  {
+    "section": "Configuration",
+    "text": "Configuration"
+  },
+  {
+    "section": "Configuration",
+    "text": "La rubrique Configuration est l’espace où l’on paramètre l’environnement physique et pédagogique de l’établissement. Elle permet d’organiser les espaces, les structures péda- gogiques et certaines données administratives indispensables au bon fonctionnement de la plateforme."
+  },
+  {
+    "section": "Configuration",
+    "text": "Cette rubrique regroupe les principaux paramétrages nécessaires au fonctionnement de l’établissement."
+  },
+  {
+    "section": "Configuration",
+    "text": "Les paramétrages que l’on peut y effectuer sont les suivants :"
+  },
+  {
+    "section": "Configuration",
+    "text": "Bâtiments"
+  },
+  {
+    "section": "Configuration",
+    "text": "Salles"
+  },
+  {
+    "section": "Configuration",
+    "text": "Programmes"
+  },
+  {
+    "section": "Configuration",
+    "text": "Classes pédagogiques"
+  },
+  {
+    "section": "Configuration",
+    "text": "Groupage de classes"
+  },
+  {
+    "section": "Configuration",
+    "text": "Gestion des semestres"
+  },
+  {
+    "section": "Configuration",
+    "text": "Compte bancaire"
+  },
+  {
+    "section": "Configuration",
+    "text": "Scolarité"
+  },
+  {
+    "section": "Configuration",
+    "text": "Figure 6.1 – Rubrique Configuration dans PLANETE"
+  },
+  {
+    "section": "Bâtiments",
+    "text": "Bâtiments"
+  },
+  {
+    "section": "Bâtiments",
+    "text": "Pour créer les bâtiments de l’établissement, cliquez sur Bâtiments."
+  },
+  {
+    "section": "Bâtiments",
+    "text": "Ensuite, cliquez sur Ajouter pour ajouter le type de bâtiment."
+  },
+  {
+    "section": "Bâtiments",
+    "text": "Figure 6.2 – Accès à la rubrique Bâtiments"
+  },
+  {
+    "section": "Bâtiments",
+    "text": "Figure 6.3 – Bouton Ajouter pour renseigner le type de bâtiment"
+  },
+  {
+    "section": "Bâtiments",
+    "text": "Après avoir cliqué sur Ajouter, le formulaire de création de bâtiment s’ouvre."
+  },
+  {
+    "section": "Bâtiments",
+    "text": "Il faut alors renseigner le type de bâtiment (virtuel, physique ou aire de jeu), le nom du bâtiment ainsi que les coordonnées du bâtiment. Cette dernière information est facultative. Une fois les informations saisies, cliquez sur Enregistrer."
+  },
+  {
+    "section": "Bâtiments",
+    "text": "Une fois le bâtiment créé, il apparaît dans une liste où il peut être modifié ou supprimé."
+  },
+  {
+    "section": "Bâtiments",
+    "text": "Figure 6.4 – Formulaire de création d’un bâtiment"
+  },
+  {
+    "section": "Bâtiments",
+    "text": "Figure 6.5 – Liste des bâtiments créés avec actions de modification et de suppression"
+  },
+  {
+    "section": "Salle",
+    "text": "Salle"
+  },
+  {
+    "section": "Salle",
+    "text": "L’onglet Salle permet de créer des salles au sein des bâtiments de l’établissement."
+  },
+  {
+    "section": "Salle",
+    "text": "Une fois les bâtiments créés, cliquez sur Salle pour afficher la zone de configuration des salles."
+  },
+  {
+    "section": "Salle",
+    "text": "Cliquez sur le bouton Ajouter pour afficher le formulaire de création de salle."
+  },
+  {
+    "section": "Salle",
+    "text": "Figure 6.6 – Zone de configuration des salles"
+  },
+  {
+    "section": "Salle",
+    "text": "Figure 6.7 – Bouton Ajouter pour créer une salle"
+  },
+  {
+    "section": "Salle",
+    "text": "Dans le formulaire de création de salle, renseignez le bâtiment dans lequel se trouve la salle, le type de salle (salle de classe, laboratoire, bureau, etc.), le nom de la salle ainsi que ses dimensions (longueur et largeur), puis cliquez sur Enregistrer."
+  },
+  {
+    "section": "Salle",
+    "text": "Une fois la salle créée, elle apparaît dans une liste. Il est alors possible d’indiquer le type d’équipement existant dans la salle, de la modifier ou de la supprimer."
+  },
+  {
+    "section": "Salle",
+    "text": "Figure 6.8 – Formulaire de création d’une salle"
+  },
+  {
+    "section": "Salle",
+    "text": "Figure 6.9 – Liste des salles avec gestion des équipements, modification et suppression"
+  },
+  {
+    "section": "Programme",
+    "text": "Programme"
+  },
+  {
+    "section": "Programme",
+    "text": "L’onglet Programme permet d’afficher les programmes qui existent dans le cycle d’enseignement de l’établissement ainsi que les disciplines qui leur sont associées."
+  },
+  {
+    "section": "Programme",
+    "text": "Cliquez sur l’onglet Programme pour afficher les programmes disponibles dans le cycle d’enseignement de l’établissement."
+  },
+  {
+    "section": "Programme",
+    "text": "Cliquez ensuite sur Discipline pour faire apparaître les disciplines avec les coefficients et les crédits horaires pré-programmés."
+  },
+  {
+    "section": "Programme",
+    "text": "Figure 6.10 – Affichage des programmes du cycle d’enseignement"
+  },
+  {
+    "section": "Programme",
+    "text": "Figure 6.11 – Affichage des disciplines avec coefficients et crédits horaires"
+  },
+  {
+    "section": "Programme",
+    "text": "Il existe deux blocs de disciplines :"
+  },
+  {
+    "section": "Programme",
+    "text": "Les disciplines obligatoires qui, une fois cochées, sont affectées à tous les élèves."
+  },
+  {
+    "section": "Programme",
+    "text": "Les disciplines optionnelles qui, après avoir été cochées, doivent être affectées aux élèves qui les ont choisies dans le cadre des options de disciplines."
+  },
+  {
+    "section": "Programme",
+    "text": "Figure 6.12 – Bloc des disciplines obligatoires"
+  },
+  {
+    "section": "Programme",
+    "text": "Figure 6.13 – Bloc des disciplines optionnelles"
+  },
+  {
+    "section": "Classe pédagogique",
+    "text": "Classe pédagogique"
+  },
+  {
+    "section": "Classe pédagogique",
+    "text": "L’onglet Classe pédagogique permet de créer les classes pédagogiques de l’établissement."
+  },
+  {
+    "section": "Classe pédagogique",
+    "text": "Pour créer une classe pédagogique, cliquez sur l’onglet Classe pédagogique."
+  },
+  {
+    "section": "Classe pédagogique",
+    "text": "Dans l’espace de configuration qui s’affiche, cliquez sur le bouton Ajouter pour faire apparaître le formulaire de création d’une classe pédagogique."
+  },
+  {
+    "section": "Classe pédagogique",
+    "text": "Dans le formulaire de création d’une classe pédagogique, renseignez le niveau de la classe, la série, le nom de la classe ainsi que la salle occupée par la classe."
+  },
+  {
+    "section": "Classe pédagogique",
+    "text": "L’indication de la salle n’est pas obligatoire, une classe pédagogique pouvant être fixe ou"
+  },
+  {
+    "section": "nomade.",
+    "text": "nomade."
+  },
+  {
+    "section": "nomade.",
+    "text": "Figure 6.14 – Espace de configuration des classes pédagogiques avec le bouton Ajouter"
+  },
+  {
+    "section": "nomade.",
+    "text": "Figure 6.15 – Formulaire de création d’une classe pédagogique"
+  },
+  {
+    "section": "nomade.",
+    "text": "Une fois la classe créée, il est possible de modifier les informations du formulaire de création."
+  },
+  {
+    "section": "nomade.",
+    "text": "Il est également possible de supprimer une classe. La suppression d’une classe entraîne celle des affectations des élèves, des professeurs ainsi que de l’emploi du temps, et cette action est irréversible."
+  },
+  {
+    "section": "nomade.",
+    "text": "Après avoir créé une classe, il faut procéder à l’affectation des professeurs qui tiennent la classe, du surveillant de classe ainsi qu’à la désignation de l’élève responsable de la classe."
+  },
+  {
+    "section": "nomade.",
+    "text": "Figure 6.16 – Suppression d’une classe pédagogique"
+  },
+  {
+    "section": "nomade.",
+    "text": "Figure 6.17 – Affectation des professeurs, du surveillant et de l’élève responsable"
+  },
+  {
+    "section": "Groupage de classe",
+    "text": "Groupage de classe"
+  },
+  {
+    "section": "Groupage de classe",
+    "text": "Le groupage de classe permet de regrouper deux classes pédagogiques tenues par un même professeur dans une seule salle durant la même heure. C’est une pratique courante pour les disciplines optionnelles comme les LV2 et pour les classes de séries ou de programmes d’enseignement différents qui ont des disciplines en commun, comme le français et le franco-arabe ou encore les séries S1 et S2."
+  },
+  {
+    "section": "Groupage de classe",
+    "text": "Pour grouper des classes, cliquez sur l’onglet Groupage classe, puis sur le bouton plus."
+  },
+  {
+    "section": "Groupage de classe",
+    "text": "Ensuite, remplissez le formulaire en renseignant le libellé du groupage, le niveau, la"
+  },
+  {
+    "section": "Groupage de classe",
+    "text": "discipline ainsi que le professeur."
+  },
+  {
+    "section": "Groupage de classe",
+    "text": "Figure 6.18 – Accès à l’onglet Groupage classe et au bouton plus"
+  },
+  {
+    "section": "Groupage de classe",
+    "text": "Figure 6.19 – Formulaire de création d’un groupage de classes"
+  },
+  {
+    "section": "Groupage de classe",
+    "text": "– Une fois le groupage créé, il faut lier les classes."
+  },
+  {
+    "section": "Groupage de classe",
+    "text": "Figure 6.20 – Liaison des classes dans un groupage"
+  },
+  {
+    "section": "Gestion des semestres",
+    "text": "Gestion des semestres"
+  },
+  {
+    "section": "Gestion des semestres",
+    "text": "La rubrique Gestion des semestres permet d’activer et de paramétrer le second semestre de l’établissement."
+  },
+  {
+    "section": "Gestion des semestres",
+    "text": "Le premier semestre est activé par défaut."
+  },
+  {
+    "section": "Gestion des semestres",
+    "text": "Pour activer le second semestre, cliquez sur la carte Second Semestre, puis sur le bouton Activer. Il faut ensuite préciser la date de début du second semestre."
+  },
+  {
+    "section": "Gestion des semestres",
+    "text": "En cas de modification de la date du second semestre, il faut d’abord purger la date du début du second semestre en cliquant sur le bouton Purger."
+  },
+  {
+    "section": "Gestion des semestres",
+    "text": "Figure 6.21 – Activation du second semestre et saisie de sa date de début"
+  },
+  {
+    "section": "Gestion des semestres",
+    "text": "Figure 6.22 – Purge de la date de début du second semestre"
+  },
+  {
+    "section": "Compte bancaire",
+    "text": "Compte bancaire"
+  },
+  {
+    "section": "Compte bancaire",
+    "text": "Chaque établissement dispose d’un compte bancaire, d’un code établissement et d’un identifiant unique appelé IEN (Identifiant de l’éducation nationale) pour chaque élève."
+  },
+  {
+    "section": "Compte bancaire",
+    "text": "Pour ajouter le code bancaire, cliquez sur l’onglet Compte bancaire, puis sur Ajouter"
+  },
+  {
+    "section": "Compte bancaire",
+    "text": "pour afficher le formulaire de renseignement du compte bancaire."
+  },
+  {
+    "section": "Compte bancaire",
+    "text": "Ensuite, renseignez les informations demandées (code banque, code guichet, numéro compte, RIB, nom banque), puis cliquez sur Enregistrer."
+  },
+  {
+    "section": "Compte bancaire",
+    "text": "Figure 6.23 – Accès à la rubrique Compte bancaire"
+  },
+  {
+    "section": "Compte bancaire",
+    "text": "Figure 6.24 – Formulaire de saisie des informations bancaires"
+  },
+  {
+    "section": "Paramétrage scolarité",
+    "text": "Paramétrage scolarité"
+  },
+  {
+    "section": "Paramétrage scolarité",
+    "text": "Cliquez sur Paramétrage scolarité, puis sur Ajouter pour afficher le formulaire de paramétrage."
+  },
+  {
+    "section": "Paramétrage scolarité",
+    "text": "Pour paramétrer le paiement des frais de scolarité, plusieurs possibilités s’offrent au chef d’établissement :"
+  },
+  {
+    "section": "Paramétrage scolarité",
+    "text": "facturer le paiement par rubrique de frais de scolarité (tenue, GOSCO, IME, Examen, etc.) ;"
+  },
+  {
+    "section": "Paramétrage scolarité",
+    "text": "facturer le paiement à l’aide d’un montant unique (Inscription)."
+  },
+  {
+    "section": "Paramétrage scolarité",
+    "text": "Après avoir choisi le mode de facturation, il faut fixer le montant à payer et les échéances de paiement (Paiement à la rentrée ou paiement différé)."
+  },
+  {
+    "section": "Paramétrage scolarité",
+    "text": "Il est également possible de facturer par niveau en cochant le niveau (6e, 5e, 4e, 3e, 2nde, 1ère, Tle) ou par cycle sans cocher de niveau."
+  },
+  {
+    "section": "Paramétrage scolarité",
+    "text": "Figure 6.25 – Paramétrage des frais de scolarité par rubrique"
+  },
+  {
+    "section": "Paramétrage scolarité",
+    "text": "Figure 6.26 – Fixation du montant et des échéances de paiement"
+  },
+  {
+    "section": "Personnel",
+    "text": "Personnel"
+  },
+  {
+    "section": "Personnel",
+    "text": "Le module Personnel permet de gérer le personnel de l’établissement. PLANETE distingue deux catégories de personnels : les agents titulaires et les compléments horaires."
+  },
+  {
+    "section": "Import du personnel",
+    "text": "Import du personnel"
+  },
+  {
+    "section": "Import du personnel",
+    "text": "Les agents titulaires affectés à l’établissement sont directement importés de MIRADOR"
+  },
+  {
+    "section": "Import du personnel",
+    "text": "par le bouton Mis à Jour Personnel."
+  },
+  {
+    "section": "Import du personnel",
+    "text": "Les compléments horaires, qui viennent d’autres établissements pour compléter leur service dans l’établissement, sont importés via le bouton Complément horaire."
+  },
+  {
+    "section": "Import du personnel",
+    "text": "Figure 7.1 – Importation des agents titulaires depuis MIRADOR"
+  },
+  {
+    "section": "Import du personnel",
+    "text": "Figure 7.2 – Importation des compléments horaires"
+  },
+  {
+    "section": "Import du personnel",
+    "text": "Après avoir cliqué sur Complément horaire, saisissez l’IEN ou l’e-mail de l’agent concerné."
+  },
+  {
+    "section": "Import du personnel",
+    "text": "Dans le dossier de l’agent qui s’affiche, complétez le numéro de l’OS, sa date, ainsi que la date de prise de service."
+  },
+  {
+    "section": "Import du personnel",
+    "text": "Une fois le personnel de l’établissement mis à jour, vous pouvez consulter la liste du personnel en cliquant sur le chiffre du nombre d’agents."
+  },
+  {
+    "section": "Import du personnel",
+    "text": "Figure 7.3 – Recherche d’un agent complément horaire par IEN ou par mail"
+  },
+  {
+    "section": "Import du personnel",
+    "text": "Figure 7.4 – Consultation de la liste du personnel après mise à jour"
+  },
+  {
+    "section": "Pointage du personnel",
+    "text": "Pointage du personnel"
+  },
+  {
+    "section": "Pointage du personnel",
+    "text": "Une fois la liste des agents affichée, il faut procéder au pointage du personnel en cliquant sur le bouton Pointage et en indiquant la date de leur prise de service au début de chaque année scolaire."
+  },
+  {
+    "section": "Pointage du personnel",
+    "text": "Figure 7.5 – Accès au bouton Pointage dans la liste des agents"
+  },
+  {
+    "section": "Pointage du personnel",
+    "text": "Figure 7.6 – Pointage du personnel"
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "Dossier de l’agent"
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "Après l’importation et le pointage, il est possible d’accéder au dossier personnel de chaque agent pour consulter sa fiche, suivre ses informations administratives et accéder à ses différentes rubriques de travail."
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "Depuis la liste du personnel, utilisez la zone Rechercher pour retrouver rapidement l’agent concerné."
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "Une fois l’agent repéré, cliquez sur son nom pour ouvrir son dossier personnel et afficher sa fiche détaillée."
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "Figure 7.7 – Recherche d’un agent dans la liste du personnel"
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "Le bouton Mettre à jour permet de synchroniser ou d’actualiser les informations de l’agent avec les données de son dossier dans MIRADOR."
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "Le bouton Edition permet d’accéder à la modification des informations du dossier lorsque cela est autorisé."
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "Les boutons Précédent et Suivant facilitent la navigation rapide entre les dossiers des agents."
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "Le bouton Archiver permet de retirer un agent de la liste active lorsqu’il n’est plus en service dans l’établissement."
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "Figure 7.8 – Bouton Mettre à jour dans le dossier de l’agent"
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "Figure 7.9 – Bouton Edition dans le dossier de l’agent"
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "Figure 7.10 – Navigation entre les dossiers avec les boutons Précédent et Suivant"
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "Figure 7.11 – Accès au bouton Archiver dans le dossier de l’agent"
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "Pour archiver un agent, ouvrez d’abord son dossier personnel puis cliquez sur le bouton"
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "Archiver situé en haut à droite de l’écran."
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "Une fenêtre d’Archivage personnel s’affiche ensuite avec les principales informations de l’agent concerné."
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "Dans cette fenêtre, choisissez le type de sortie correspondant à la situation de l’agent dans la liste proposée."
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "Figure 7.12 – Choix du type de sortie lors de l’archivage d’un agent"
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "Après avoir sélectionné le type de sortie, renseignez la date de sortie de l’agent."
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "Ajoutez au besoin une observation pour préciser le contexte de l’archivage."
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "Cliquez enfin sur Enregistrer pour valider l’archivage. L’agent est alors retiré de la liste active du personnel."
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "Figure 7.13 – Validation de l’archivage d’un agent"
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "Dans la colonne de gauche du dossier, on retrouve les informations d’identification et de"
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "contact de l’agent."
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "La partie centrale présente la fiche agent avec les données administratives essentielles : date et lieu de naissance, fonction, spécialité, diplômes, corps, grade, adresse, téléphone, email, etc."
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "Le bloc Dossier donne accès aux principales rubriques de suivi de l’agent."
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "En bas de page, la zone Emploi du temps permet de visualiser les heures de cours affectées à l’agent."
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "Figure 7.14 – Zone d’identification et de contact dans le dossier de l’agent"
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "Figure 7.15 – Rubriques disponibles dans le dossier de l’agent"
+  },
+  {
+    "section": "Dossier de l’agent",
+    "text": "Figure 7.16 – Consultation de l’emploi du temps dans le dossier de l’agent"
+  },
+  {
+    "section": "Elèves",
+    "text": "Elèves"
+  },
+  {
+    "section": "Elèves",
+    "text": "La rubrique Elèves permet d’inscrire de nouveaux apprenants et de mettre à jour leurs informations administratives."
+  },
+  {
+    "section": "Elèves",
+    "text": "Elle sert à gérer les transferts, à suivre les absences et à consulter les résultats scolaires."
+  },
+  {
+    "section": "Tableau de bord du module Elèves",
+    "text": "Tableau de bord du module Elèves"
+  },
+  {
+    "section": "Tableau de bord du module Elèves",
+    "text": "Le tableau de bord de la rubrique Elèves centralise les principales opérations relatives à la gestion des apprenants. Il donne accès, selon le profil de l’utilisateur, aux fonctions de transfert entrant, transfert sortant, inscriptions, affectation des élèves, import, reprise de scolarité, élèves archivés, statistiques et état civil. La partie droite de l’écran affiche également des indicateurs utiles sur les effectifs, les redoublants et les élèves sans acte d’état civil."
+  },
+  {
+    "section": "Tableau de bord du module Elèves",
+    "text": "Figure 8.1 – Tableau de bord de la rubrique Elèves"
+  },
+  {
+    "section": "Dossier élève",
+    "text": "Dossier élève"
+  },
+  {
+    "section": "Dossier élève",
+    "text": "Le dossier élève permet de consulter la fiche individuelle d’un apprenant, d’accéder à ses informations scolaires et administratives, puis de naviguer entre les différents dossiers d’une même classe."
+  },
+  {
+    "section": "Dossier élève",
+    "text": "— Depuis le tableau de bord du module Elèves, cliquez sur la classe voulue pour afficher la liste des élèves correspondants."
+  },
+  {
+    "section": "Dossier élève",
+    "text": "Figure 8.2 – Accès à une liste d’élèves depuis une classe"
+  },
+  {
+    "section": "Dossier élève",
+    "text": "L’écran Liste Elèves affiche les apprenants de la classe sélectionnée."
+  },
+  {
+    "section": "Dossier élève",
+    "text": "La partie supérieure rappelle l’effectif total, la répartition entre filles et garçons, ainsi que les options d’exportation de la liste des élèves en PDF et en Excel."
+  },
+  {
+    "section": "Dossier élève",
+    "text": "Vous pouvez utiliser la zone Rechercher pour retrouver rapidement un élève."
+  },
+  {
+    "section": "Dossier élève",
+    "text": "Figure 8.3 – Liste des élèves d’une classe"
+  },
+  {
+    "section": "Dossier élève",
+    "text": "Le commutateur Affectation options permet d’affecter les disciplines optionnelles lors- qu’elles sont disponibles, notamment la LV1, la LV2, la PC et la SVT."
+  },
+  {
+    "section": "Dossier élève",
+    "text": "Figure 8.4 – Commutateur Affectation options dans la liste des élèves"
+  },
+  {
+    "section": "Dossier élève",
+    "text": "La colonne Documents administratifs donne un accès rapide aux pièces disponibles pour chaque élève, notamment le certificat de scolarité, le quitus bibliothèque et l’autorisation d’absence."
+  },
+  {
+    "section": "Dossier élève",
+    "text": "Figure 8.5 – Documents administratifs disponibles depuis la liste des élèves"
+  },
+  {
+    "section": "Dossier élève",
+    "text": "Cliquez sur le nom ou la ligne d’un élève pour ouvrir son dossier."
+  },
+  {
+    "section": "Dossier élève",
+    "text": "Figure 8.6 – Ouverture du dossier d’un élève depuis la liste"
+  },
+  {
+    "section": "Dossier élève",
+    "text": "Le dossier affiche l’identité de l’élève, sa fiche élève et plusieurs raccourcis de documents en tête."
+  },
+  {
+    "section": "Dossier élève",
+    "text": "Les boutons Certificat scolarité, Quitus bibliothèque et Autorisation absence sont accessibles directement depuis cette page."
+  },
+  {
+    "section": "Dossier élève",
+    "text": "Figure 8.7 – Présentation générale du dossier élève"
+  },
+  {
+    "section": "Dossier élève",
+    "text": "Les boutons Edition, Précédent et Suivant permettent respectivement de modifier le dossier courant ou de parcourir les dossiers des autres élèves de la classe."
+  },
+  {
+    "section": "Dossier élève",
+    "text": "Figure 8.8 – Boutons d’action du dossier élève"
+  },
+  {
+    "section": "Dossier élève",
+    "text": "Le bloc Détails dossier donne accès aux rubriques complémentaires, notamment Filia- tion, Changer classe, Emploi du temps, Documents scolaires, Parcours élève, Régularisation, Mot de passe et Rapport Performances."
+  },
+  {
+    "section": "Dossier élève",
+    "text": "Figure 8.9 – Menu des détails du dossier élève"
+  },
+  {
+    "section": "Dossier élève",
+    "text": "Cliquez sur le bouton Edition pour ouvrir le formulaire Mise à jour informations élève."
+  },
+  {
+    "section": "Dossier élève",
+    "text": "Ce formulaire permet de modifier les informations générales de l’élève, notamment l’identité, la date et le lieu de naissance, le sexe, les contacts, la nationalité et les informations d’état civil."
+  },
+  {
+    "section": "Dossier élève",
+    "text": "Après les corrections nécessaires, cliquez sur Enregistrer pour valider les modifications."
+  },
+  {
+    "section": "Dossier élève",
+    "text": "Figure 8.10 – Formulaire de mise à jour des informations de l’élève"
+  },
+  {
+    "section": "Dossier élève",
+    "text": "Le champ Exemption EPS permet d’indiquer si l’élève bénéficie ou non d’une dispense pour l’éducation physique et sportive."
+  },
+  {
+    "section": "Dossier élève",
+    "text": "Figure 8.11 – Champ Exemption EPS dans le dossier élève"
+  },
+  {
+    "section": "Dossier élève",
+    "text": "Les champs Année de déclaration, Dernier redoublement et Année redoublement servent à renseigner les informations administratives liées à la déclaration à l’état civil de l’élève ainsi qu’à son historique de redoublement."
+  },
+  {
+    "section": "Dossier élève",
+    "text": "Figure 8.12 – Informations de déclaration et de redoublement"
+  },
+  {
+    "section": "Dossier élève",
+    "text": "Les champs Handicap et Orphelin permettent de compléter la situation particulière de l’élève lorsque ces informations sont disponibles."
+  },
+  {
+    "section": "Dossier élève",
+    "text": "Figure 8.13 – Champs Handicap et Orphelin dans le dossier élève"
+  },
+  {
+    "section": "Transfert des élèves",
+    "text": "Transfert des élèves"
+  },
+  {
+    "section": "Transfert des élèves",
+    "text": "La gestion des transferts d’élèves s’effectue depuis la rubrique Elèves. Elle distingue les demandes de transfert entrant, pour les élèves qui rejoignent l’établissement, et les demandes de transfert sortant, pour les élèves qui quittent l’établissement."
+  },
+  {
+    "section": "Transfert entrant",
+    "text": "Transfert entrant"
+  },
+  {
+    "section": "Transfert entrant",
+    "text": "Depuis le tableau de bord du module Elèves, cliquez sur l’icône Transfert entrant."
+  },
+  {
+    "section": "Transfert entrant",
+    "text": "Cette fonction ouvre la liste des demandes de transfert adressées à l’établissement"
+  },
+  {
+    "section": "Transfert entrant",
+    "text": "d’accueil."
+  },
+  {
+    "section": "Transfert entrant",
+    "text": "Figure 8.14 – Accès à la fonction Transfert entrant"
+  },
+  {
+    "section": "Transfert entrant",
+    "text": "Dans l’écran des Demandes de transfert entrant, chaque ligne affiche l’identification de l’élève, sa date de naissance, l’établissement demandé et l’état des avis en cours."
+  },
+  {
+    "section": "Transfert entrant",
+    "text": "Utilisez la zone Rechercher pour retrouver rapidement une demande, puis cliquez sur le nom de l’élève concerné pour ouvrir le détail du dossier."
+  },
+  {
+    "section": "Transfert entrant",
+    "text": "Figure 8.15 – Liste des demandes de transfert entrant"
+  },
+  {
+    "section": "Transfert entrant",
+    "text": "Le détail de la demande présente le profil de l’élève, son établissement d’origine, le"
+  },
+  {
+    "section": "Transfert entrant",
+    "text": "motif du transfert, ses performances scolaires ainsi que le circuit de validation."
+  },
+  {
+    "section": "Transfert entrant",
+    "text": "La colonne de droite permet de suivre les avis de l’établissement d’origine, de l’IA d’origine, de l’IA d’accueil et de l’établissement d’accueil."
+  },
+  {
+    "section": "Transfert entrant",
+    "text": "Lorsque la demande est examinée par l’établissement d’accueil, utilisez les boutons Rejeter transfert ou Accepter transfert pour rendre la décision."
+  },
+  {
+    "section": "Transfert entrant",
+    "text": "Figure 8.16 – Traitement d’une demande de transfert entrant"
+  },
+  {
+    "section": "Transfert sortant",
+    "text": "Transfert sortant"
+  },
+  {
+    "section": "Transfert sortant",
+    "text": "Depuis le tableau de bord du module Elèves, cliquez sur l’icône Transfert sortant."
+  },
+  {
+    "section": "Transfert sortant",
+    "text": "Cette fonction permet d’initier une nouvelle demande de transfert et de suivre les demandes déjà envoyées par l’établissement."
+  },
+  {
+    "section": "Transfert sortant",
+    "text": "Figure 8.17 – Accès à la fonction Transfert sortant"
+  },
+  {
+    "section": "Transfert sortant",
+    "text": "Dans l’écran des Demandes de transfert sortant, le bouton plus permet de créer une nouvelle demande."
+  },
+  {
+    "section": "Transfert sortant",
+    "text": "La liste affichée permet de consulter les demandes existantes et de suivre l’état des avis de l’établissement d’origine et de l’établissement d’accueil."
+  },
+  {
+    "section": "Transfert sortant",
+    "text": "Figure 8.18 – Gestion des demandes de transfert sortant"
+  },
+  {
+    "section": "Transfert sortant",
+    "text": "Après avoir cliqué sur le bouton plus, saisissez l’IEN de l’élève à transférer dans l’espace"
+  },
+  {
+    "section": "Transfert sortant",
+    "text": "Recherche élève à transférer, puis cliquez sur Rechercher."
+  },
+  {
+    "section": "Transfert sortant",
+    "text": "Figure 8.19 – Recherche d’un élève à transférer par IEN"
+  },
+  {
+    "section": "Transfert sortant",
+    "text": "Une fois l’élève retrouvé, le système affiche ses informations d’identification."
+  },
+  {
+    "section": "Transfert sortant",
+    "text": "Renseignez ensuite l’IA d’accueil, l’IEF d’accueil, l’établissement d’accueil et le"
+  },
+  {
+    "section": "motif du transfert.",
+    "text": "motif du transfert."
+  },
+  {
+    "section": "motif du transfert.",
+    "text": "Ajoutez, si nécessaire, un commentaire pour accompagner la demande avant validation."
+  },
+  {
+    "section": "motif du transfert.",
+    "text": "Figure 8.20 – Renseignement des informations de transfert sortant"
+  },
+  {
+    "section": "Affectation des élèves",
+    "text": "Affectation des élèves"
+  },
+  {
+    "section": "Affectation des élèves",
+    "text": "La fonction Affectation élèves permet de rattacher à une classe les apprenants qui apparaissent comme non affectés dans le système."
+  },
+  {
+    "section": "Affectation des élèves",
+    "text": "— Depuis le tableau de bord du module Elèves, cliquez sur l’icône Affectation Elèves."
+  },
+  {
+    "section": "Affectation des élèves",
+    "text": "Figure 8.21 – Accès à la fonction Affectation élèves"
+  },
+  {
+    "section": "Affectation des élèves",
+    "text": "L’écran d’affectation indique le nombre total d’élèves non affectés."
+  },
+  {
+    "section": "Affectation des élèves",
+    "text": "Les effectifs non affectés sont ensuite répartis par niveau (6e, 5e, 4e, 3e, 2nde, 1ere, Tle)."
+  },
+  {
+    "section": "Affectation des élèves",
+    "text": "Cliquez sur le niveau concerné pour afficher la liste des élèves à affecter."
+  },
+  {
+    "section": "Affectation des élèves",
+    "text": "Figure 8.22 – Choix du niveau pour afficher les élèves non affectés"
+  },
+  {
+    "section": "Affectation des élèves",
+    "text": "Dans la liste affichée, cochez le ou les élèves à affecter."
+  },
+  {
+    "section": "Affectation des élèves",
+    "text": "Sélectionnez ensuite la classe d’accueil dans la liste déroulante."
+  },
+  {
+    "section": "Affectation des élèves",
+    "text": "Cliquez enfin sur le bouton Affecter pour valider l’affectation des élèves sélectionnés."
+  },
+  {
+    "section": "Importation des élèves",
+    "text": "Importation des élèves"
+  },
+  {
+    "section": "Importation des élèves",
+    "text": "La fonction Import eleves permet d’intégrer plusieurs apprenants dans PLANETE à partir d’un fichier Excel conforme au modèle fourni par la plateforme."
+  },
+  {
+    "section": "Télécharger le template d’import",
+    "text": "Télécharger le template d’import"
+  },
+  {
+    "section": "Télécharger le template d’import",
+    "text": "Depuis le tableau de bord du module Elèves, cliquez sur l’icône Template xlsx."
+  },
+  {
+    "section": "Télécharger le template d’import",
+    "text": "Cette action permet d’ouvrir le modèle Excel à utiliser pour préparer les données d’im- portation."
+  },
+  {
+    "section": "Télécharger le template d’import",
+    "text": "Figure 8.23 – Accès au template xlsx d’importation des élèves"
+  },
+  {
+    "section": "Télécharger le template d’import",
+    "text": "– Dans la fenêtre d’aperçu du fichier, utilisez l’option Télécharger le fichier pour récupérer le modèle sur votre poste, ou Modifier une copie si vous souhaitez le renseigner en ligne avant enregistrement."
+  },
+  {
+    "section": "Télécharger le template d’import",
+    "text": "Figure 8.24 – Ouverture du template Excel d’importation"
+  },
+  {
+    "section": "Charger le fichier d’import",
+    "text": "Charger le fichier d’import"
+  },
+  {
+    "section": "Charger le fichier d’import",
+    "text": "Après avoir préparé le fichier Excel, revenez dans PLANETE puis cliquez sur l’icône"
+  },
+  {
+    "section": "Charger le fichier d’import",
+    "text": "Import eleves depuis le tableau de bord du module Elèves."
+  },
+  {
+    "section": "Charger le fichier d’import",
+    "text": "Figure 8.25 – Accès à la fonction Import eleves"
+  },
+  {
+    "section": "Charger le fichier d’import",
+    "text": "Dans l’écran Import élèves, sélectionnez d’abord le niveau puis la classe concernée."
+  },
+  {
+    "section": "Charger le fichier d’import",
+    "text": "Choisissez ensuite le fichier Excel préparé à partir du template, puis cliquez sur Charger."
+  },
+  {
+    "section": "Charger le fichier d’import",
+    "text": "Figure 8.26 – Sélection du niveau, de la classe et du fichier d’import"
+  },
+  {
+    "section": "Vérifier et compléter les données importées",
+    "text": "Vérifier et compléter les données importées"
+  },
+  {
+    "section": "Vérifier et compléter les données importées",
+    "text": "Une fois le fichier chargé, les informations de l’élève s’affichent dans le formulaire d’import."
+  },
+  {
+    "section": "Vérifier et compléter les données importées",
+    "text": "Contrôlez les champs affichés (IEN, nom, prénom, date et lieu de naissance, motif d’entrée, nationalité, statut, etc.)."
+  },
+  {
+    "section": "Vérifier et compléter les données importées",
+    "text": "Utilisez le bouton 1/1 : Enregistrer & Continuer pour valider l’opération après vérification."
+  },
+  {
+    "section": "Vérifier et compléter les données importées",
+    "text": "Figure 8.27 – Vérification des données chargées avant enregistrement"
+  },
+  {
+    "section": "Vérifier et compléter les données importées",
+    "text": "Si nécessaire, activez la zone Informations supplémentaires pour renseigner les infor- mations du père, de la mère et du tuteur."
+  },
+  {
+    "section": "Vérifier et compléter les données importées",
+    "text": "Cette étape permet de compléter le dossier administratif de l’élève avant la validation finale."
+  },
+  {
+    "section": "Vérifier et compléter les données importées",
+    "text": "Figure 8.28 – Renseignement des informations supplémentaires lors de l’import"
+  },
+  {
+    "section": "Examen d’entrée",
+    "text": "Examen d’entrée"
+  },
+  {
+    "section": "Examen d’entrée",
+    "text": "La fonction Examen d’entrée permet de rechercher un élève afin d’instruire sa demande d’inscription dans l’établissement par la procédure prévue pour les candidats soumis à l’examen d’entrée."
+  },
+  {
+    "section": "Examen d’entrée",
+    "text": "— Depuis le tableau de bord du module Elèves, cliquez sur l’icône Examen d’entrée."
+  },
+  {
+    "section": "Examen d’entrée",
+    "text": "Figure 8.29 – Accès à la fonction Examen d’entrée"
+  },
+  {
+    "section": "Examen d’entrée",
+    "text": "Dans l’écran Examen d’entrée, renseignez l’IEN ou l’identifiant de l’élève dans la zone de recherche."
+  },
+  {
+    "section": "Examen d’entrée",
+    "text": "Cliquez ensuite sur Rechercher pour afficher le dossier de l’élève concerné et poursuivre le traitement de la demande."
+  },
+  {
+    "section": "Examen d’entrée",
+    "text": "Figure 8.30 – Recherche d’un élève dans la fonction Examen d’entrée"
+  },
+  {
+    "section": "Reprise de scolarité",
+    "text": "Reprise de scolarité"
+  },
+  {
+    "section": "Reprise de scolarité",
+    "text": "La fonction Reprise de scolarité permet de retrouver l’élève concerné afin de l’accom- pagner dans sa réinscription au titre de la reprise des études."
+  },
+  {
+    "section": "Reprise de scolarité",
+    "text": "— Depuis le tableau de bord du module Elèves, cliquez sur l’icône Reprise Scolarité."
+  },
+  {
+    "section": "Reprise de scolarité",
+    "text": "Figure 8.31 – Accès à la fonction Reprise de scolarité"
+  },
+  {
+    "section": "Reprise de scolarité",
+    "text": "Dans l’écran Reprise de scolarité, recherchez l’élève à l’aide de son IEN."
+  },
+  {
+    "section": "Reprise de scolarité",
+    "text": "Cliquez sur Rechercher pour afficher son dossier et engager la procédure de reprise de scolarité."
+  },
+  {
+    "section": "Reprise de scolarité",
+    "text": "Figure 8.32 – Recherche d’un élève pour une reprise de scolarité"
+  },
+  {
+    "section": "Élèves BST",
+    "text": "Élèves BST"
+  },
+  {
+    "section": "Élèves BST",
+    "text": "La rubrique Élèves BST permet de déclarer les apprenants concernés par le BST à partir de la liste des élèves d’une classe."
+  },
+  {
+    "section": "Élèves BST",
+    "text": "— Depuis le tableau de bord du module Elèves, cliquez sur l’icône Elèves BST."
+  },
+  {
+    "section": "Élèves BST",
+    "text": "Figure 8.33 – Accès à la rubrique Elèves BST"
+  },
+  {
+    "section": "Élèves BST",
+    "text": "Dans l’écran Déclarer élève BST, sélectionnez le niveau puis la classe concernés."
+  },
+  {
+    "section": "Élèves BST",
+    "text": "Cliquez sur Afficher pour charger la liste des élèves de la classe choisie."
+  },
+  {
+    "section": "Élèves BST",
+    "text": "Activez ensuite le bouton de sélection en face de chaque élève à déclarer pour le BST."
+  },
+  {
+    "section": "Élèves BST",
+    "text": "Figure 8.34 – Déclaration des élèves pour le BST"
+  },
+  {
+    "section": "Candidats BFEM",
+    "text": "Candidats BFEM"
+  },
+  {
+    "section": "Candidats BFEM",
+    "text": "La rubrique Candidats BFEM donne accès aux opérations relatives aux élèves concernés par l’examen du BFEM dans l’établissement."
+  },
+  {
+    "section": "Candidats BFEM",
+    "text": "— Depuis le tableau de bord du module Elèves, cliquez sur l’icône Candidats BFEM"
+  },
+  {
+    "section": "Candidats BFEM",
+    "text": "pour ouvrir cette fonctionnalité."
+  },
+  {
+    "section": "Candidats BFEM",
+    "text": "Figure 8.35 – Accès à la rubrique Candidats BFEM"
+  },
+  {
+    "section": "Inscriptions",
+    "text": "Inscriptions"
+  },
+  {
+    "section": "Inscriptions",
+    "text": "La rubrique Inscriptions permet de suivre les opérations d’inscription et les montants enregistrés sur une période donnée. L’écran met en avant les inscriptions du jour, le montant du jour, le total des inscrits, le montant total ainsi que des répartitions graphiques par objet et par mode de paiement."
+  },
+  {
+    "section": "Inscriptions",
+    "text": "Depuis le tableau de bord du module Elèves, cliquez sur l’icône Inscriptions."
+  },
+  {
+    "section": "Inscriptions",
+    "text": "Figure 8.36 – Accès à la rubrique Inscriptions"
+  },
+  {
+    "section": "Inscriptions",
+    "text": "Dans l’espace Inscriptions, utilisez au besoin les filtres de date Du et Au, puis cliquez sur Actualiser pour afficher les informations de la période souhaitée."
+  },
+  {
+    "section": "Inscriptions",
+    "text": "Pour enregistrer une nouvelle opération, cliquez sur le bouton Ajouter une inscription."
+  },
+  {
+    "section": "Inscriptions",
+    "text": "Figure 8.37 – Bouton d’ajout d’une nouvelle inscription"
+  },
+  {
+    "section": "Inscriptions",
+    "text": "La fenêtre Nouvelle inscription permet de saisir l’IEN élève puis de lancer la recherche avec le bouton Rechercher."
+  },
+  {
+    "section": "Inscriptions",
+    "text": "Renseignez ensuite le montant à payer, le mode de paiement et la date de paiement."
+  },
+  {
+    "section": "Inscriptions",
+    "text": "Une fois les informations contrôlées, cliquez sur Enregistrer pour valider l’inscription."
+  },
+  {
+    "section": "Inscriptions",
+    "text": "Figure 8.38 – Fenêtre de création d’une nouvelle inscription"
+  },
+  {
+    "section": "Emploi du temps",
+    "text": "Emploi du temps"
+  },
+  {
+    "section": "Emploi du temps",
+    "text": "La rubrique Emploi du temps permet de construire, ajuster et enregistrer l’organisation hebdomadaire des cours pour chaque classe."
+  },
+  {
+    "section": "Emploi du temps",
+    "text": "Elle donne accès à la grille horaire, à la liste des enseignants de la classe, aux options d’exportation et à la génération automatique des emplois du temps."
+  },
+  {
+    "section": "Vue d’ensemble de l’écran",
+    "text": "Vue d’ensemble de l’écran"
+  },
+  {
+    "section": "Vue d’ensemble de l’écran",
+    "text": "L’écran Emploi du temps affiche la grille hebdomadaire de la classe sélectionnée, avec les jours de la semaine en colonnes et les heures de début en lignes."
+  },
+  {
+    "section": "Vue d’ensemble de l’écran",
+    "text": "Depuis le menu principal, cliquez sur la rubrique Emploi du temps pour ouvrir l’espace de construction de l’emploi du temps."
+  },
+  {
+    "section": "Vue d’ensemble de l’écran",
+    "text": "Utilisez la liste de sélection en haut de l’écran pour choisir la classe concernée."
+  },
+  {
+    "section": "Vue d’ensemble de l’écran",
+    "text": "Figure 9.1 – Vue générale de la rubrique Emploi du temps"
+  },
+  {
+    "section": "Vue d’ensemble de l’écran",
+    "text": "Le panneau Enseignants de la classe présente les professeurs disponibles par discipline."
+  },
+  {
+    "section": "Vue d’ensemble de l’écran",
+    "text": "Le sélecteur de durée permet de préciser si le cours doit occuper 1h ou 2h."
+  },
+  {
+    "section": "Vue d’ensemble de l’écran",
+    "text": "La zone Astuces rappelle les principales manipulations à utiliser dans la grille."
+  },
+  {
+    "section": "Vue d’ensemble de l’écran",
+    "text": "Figure 9.2 – Enseignants de la classe et consignes d’utilisation"
+  },
+  {
+    "section": "Construction de l’emploi du temps",
+    "text": "Construction de l’emploi du temps"
+  },
+  {
+    "section": "Construction de l’emploi du temps",
+    "text": "Faites glisser un enseignant depuis le panneau latéral vers une cellule de la grille pour positionner un cours."
+  },
+  {
+    "section": "Construction de l’emploi du temps",
+    "text": "Double-cliquez sur un cours déjà placé pour le supprimer."
+  },
+  {
+    "section": "Construction de l’emploi du temps",
+    "text": "Cliquez sur le nom de l’enseignant placé dans une cellule pour ajuster la durée du cours de 1h à 2h."
+  },
+  {
+    "section": "Construction de l’emploi du temps",
+    "text": "Une fois la grille renseignée, cliquez sur le bouton Enregistrer pour sauvegarder l’emploi du temps de la classe."
+  },
+  {
+    "section": "Construction de l’emploi du temps",
+    "text": "Figure 9.3 – Enregistrement de l’emploi du temps"
+  },
+  {
+    "section": "Construction de l’emploi du temps",
+    "text": "Les boutons Export EDT et Export cours permettent d’extraire respectivement l’emploi du temps complet ou les cours saisis pour la classe affichée."
+  },
+  {
+    "section": "Construction de l’emploi du temps",
+    "text": "Figure 9.4 – Exportation de l’emploi du temps et des cours"
+  },
+  {
+    "section": "Génération automatique de l’emploi du temps",
+    "text": "Génération automatique de l’emploi du temps"
+  },
+  {
+    "section": "Génération automatique de l’emploi du temps",
+    "text": "— Cliquez sur le bouton Générer EDT pour accéder à l’espace de génération automatique des emplois du temps."
+  },
+  {
+    "section": "Génération automatique de l’emploi du temps",
+    "text": "Figure 9.5 – Accès à la génération automatique de l’emploi du temps"
+  },
+  {
+    "section": "Génération automatique de l’emploi du temps",
+    "text": "L’écran Génération emploi du temps affiche les niveaux de l’établissement, de la"
+  },
+  {
+    "section": "Génération automatique de l’emploi du temps",
+    "text": "Sixième à la Terminale."
+  },
+  {
+    "section": "Génération automatique de l’emploi du temps",
+    "text": "Cliquez sur l’un des niveaux proposés pour visualiser ou lancer le traitement correspondant."
+  },
+  {
+    "section": "Génération automatique de l’emploi du temps",
+    "text": "Figure 9.6 – Sélection d’un niveau pour la génération automatique de l’emploi du temps"
+  },
+  {
+    "section": "Cours",
+    "text": "Cours"
+  },
+  {
+    "section": "Cours",
+    "text": "La rubrique Cours permet de renseigner les cahiers de texte et de suivre la progression pédagogique."
+  },
+  {
+    "section": "Cours",
+    "text": "Elle donne accès à un tableau de bord de suivi, à la liste des cours et au suivi des absences liées aux séances."
+  },
+  {
+    "section": "Cours",
+    "text": "Les captures ci-dessous présentent l’accès au module et la lecture des principaux indica- teurs disponibles dans le Dashboard."
+  },
+  {
+    "section": "Cours",
+    "text": "Figure 10.1 – Accès à la rubrique Cours depuis le menu latéral"
+  },
+  {
+    "section": "Dashboard",
+    "text": "Dashboard"
+  },
+  {
+    "section": "Dashboard",
+    "text": "Le Dashboard du module Cours offre une vue d’ensemble des activités pédagogiques du jour. Il permet d’identifier rapidement les cours programmés, les séances terminées, les absences signalées et les cours récemment enregistrés."
+  },
+  {
+    "section": "Dashboard",
+    "text": "— Depuis la rubrique Cours, cliquez sur la tuile Dashboard pour afficher le tableau de bord du module."
+  },
+  {
+    "section": "Dashboard",
+    "text": "Figure 10.2 – Accès à la section Dashboard du module Cours"
+  },
+  {
+    "section": "Dashboard",
+    "text": "La partie supérieure du tableau de bord affiche les indicateurs de synthèse du jour."
+  },
+  {
+    "section": "Dashboard",
+    "text": "Les cartes Cours prévus, Cours terminés et Absences donnent un aperçu immédiat de la situation."
+  },
+  {
+    "section": "Dashboard",
+    "text": "Le diagramme circulaire à droite met en évidence le taux d’exécution global des cours enregistrés."
+  },
+  {
+    "section": "Dashboard",
+    "text": "Figure 10.3 – Indicateurs de synthèse du Dashboard Cours"
+  },
+  {
+    "section": "Dashboard",
+    "text": "La zone Cours à l’instant liste les séances du jour avec les horaires, le nom de l’enseignant, la discipline et la classe concernée."
+  },
+  {
+    "section": "Dashboard",
+    "text": "Les repères Retards et Absences aident à suivre rapidement les incidents associés aux cours affichés."
+  },
+  {
+    "section": "Dashboard",
+    "text": "Le panneau de droite Cours terminés & enregistrés récapitule les dernières séances validées ou les situations particulières signalées."
+  },
+  {
+    "section": "Dashboard",
+    "text": "Figure 10.4 – Suivi des cours du jour et des enregistrements récents"
+  },
+  {
+    "section": "Dashboard",
+    "text": "Le panneau latéral droit peut être lu comme un espace de synthèse rapide."
+  },
+  {
+    "section": "Dashboard",
+    "text": "Il regroupe le taux global affiché par le diagramme circulaire ainsi que la liste des cours terminés, des absences signalées et des cours reportés."
+  },
+  {
+    "section": "Dashboard",
+    "text": "Figure 10.5 – Détail du panneau latéral de synthèse du Dashboard Cours"
+  },
+  {
+    "section": "Cours",
+    "text": "Cours"
+  },
+  {
+    "section": "Cours",
+    "text": "La section Cours permet de consulter les séances programmées, d’ouvrir le cahier de texte associé à chaque cours et d’enregistrer les retards ou les absences des élèves concernés."
+  },
+  {
+    "section": "Cours",
+    "text": "— Depuis le module Cours, cliquez sur la tuile Cours pour afficher l’espace de gestion des séances."
+  },
+  {
+    "section": "Cours",
+    "text": "Figure 10.6 – Accès à la section Cours dans le module"
+  },
+  {
+    "section": "Cours",
+    "text": "La partie supérieure de l’écran Gestion des cours propose une frise par mois et par"
+  },
+  {
+    "section": "jours.",
+    "text": "jours."
+  },
+  {
+    "section": "jours.",
+    "text": "Cette frise permet de repérer rapidement la période de travail et de consulter les cours enregistrés pour la date affichée."
+  },
+  {
+    "section": "jours.",
+    "text": "Figure 10.7 – Repérage de la période dans la frise des cours"
+  },
+  {
+    "section": "jours.",
+    "text": "La zone Liste des cours enregistrés présente les séances du jour."
+  },
+  {
+    "section": "jours.",
+    "text": "Chaque ligne affiche notamment l’horaire, l’enseignant, la discipline, la classe et l’état du cahier de texte."
+  },
+  {
+    "section": "jours.",
+    "text": "Figure 10.8 – Lecture d’une ligne de cours dans la liste journalière"
+  },
+  {
+    "section": "jours.",
+    "text": "Pour renseigner le contenu d’une séance, cliquez sur le bouton Cahier texte placé à droite de la ligne correspondante."
+  },
+  {
+    "section": "jours.",
+    "text": "Figure 10.9 – Accès au cahier de texte depuis une ligne de cours"
+  },
+  {
+    "section": "jours.",
+    "text": "La fenêtre Cahier de texte permet de sélectionner le type d’activité et de décrire le"
+  },
+  {
+    "section": "déroulé de l’activité.",
+    "text": "déroulé de l’activité."
+  },
+  {
+    "section": "déroulé de l’activité.",
+    "text": "Les blocs Date & heure prévues et Date & heure réelles servent à comparer le planning initial avec le déroulement effectif du cours."
+  },
+  {
+    "section": "déroulé de l’activité.",
+    "text": "Cliquez sur Enregistrer pour valider la saisie."
+  },
+  {
+    "section": "déroulé de l’activité.",
+    "text": "Figure 10.10 – Saisie du cahier de texte d’une séance"
+  },
+  {
+    "section": "déroulé de l’activité.",
+    "text": "Le bouton rond rouge situé au bout de la ligne permet d’ouvrir la gestion des absences"
+  },
+  {
+    "section": "déroulé de l’activité.",
+    "text": "et des retards des élèves."
+  },
+  {
+    "section": "déroulé de l’activité.",
+    "text": "Figure 10.11 – Accès à la saisie des absences et retards"
+  },
+  {
+    "section": "déroulé de l’activité.",
+    "text": "La fenêtre Absences élèves affiche l’effectif concerné par la séance."
+  },
+  {
+    "section": "déroulé de l’activité.",
+    "text": "Pour chaque élève, vous pouvez activer l’option Retards ou Absences selon la situation observée."
+  },
+  {
+    "section": "déroulé de l’activité.",
+    "text": "Figure 10.12 – Enregistrement des retards et absences des élèves"
+  },
+  {
+    "section": "Absences",
+    "text": "Absences"
+  },
+  {
+    "section": "Absences",
+    "text": "La section Absences centralise le suivi des absences et des retards signalés dans les cours. Elle permet de consulter les statistiques mensuelles, d’exporter les données et de procéder à la justification des absences enregistrées."
+  },
+  {
+    "section": "Absences",
+    "text": "— Depuis le module Cours, cliquez sur la tuile Absences pour ouvrir l’espace de suivi correspondant."
+  },
+  {
+    "section": "Absences",
+    "text": "Figure 10.13 – Accès à la section Absences du module Cours"
+  },
+  {
+    "section": "Absences",
+    "text": "L’écran présente une synthèse par mois des absences et des retards."
+  },
+  {
+    "section": "Absences",
+    "text": "Chaque ligne indique le nombre d’absences, le volume des absences justifiées, le nombre de retards ainsi que le taux de justification affiché dans la colonne Stats."
+  },
+  {
+    "section": "Absences",
+    "text": "Figure 10.14 – Lecture d’une ligne mensuelle dans le suivi des absences"
+  },
+  {
+    "section": "Absences",
+    "text": "Le bouton Exporter disponible en face de chaque mois permet d’extraire les données correspondantes."
+  },
+  {
+    "section": "Absences",
+    "text": "Figure 10.15 – Exportation des données d’absences par mois"
+  },
+  {
+    "section": "Absences",
+    "text": "Pour régulariser une situation, cliquez sur le bouton Justifier absence placé en haut de l’écran."
+  },
+  {
+    "section": "Absences",
+    "text": "Figure 10.16 – Accès à l’espace de justification des absences"
+  },
+  {
+    "section": "Absences",
+    "text": "L’espace Justification absence permet de rechercher un apprenant à partir de son IEN."
+  },
+  {
+    "section": "Absences",
+    "text": "Saisissez l’identifiant ou le nom de l’élève dans la zone de recherche, puis cliquez sur"
+  },
+  {
+    "section": "Rechercher.",
+    "text": "Rechercher."
+  },
+  {
+    "section": "Rechercher.",
+    "text": "Figure 10.17 – Recherche d’un élève pour justifier une absence"
+  },
+  {
+    "section": "Rechercher.",
+    "text": "La fiche de l’élève sélectionné distingue les Absences non justifiées à gauche et les"
+  },
+  {
+    "section": "Rechercher.",
+    "text": "Absences justifiées à droite."
+  },
+  {
+    "section": "Rechercher.",
+    "text": "Activez le commutateur placé en face d’une absence non justifiée pour lancer sa régularisa- tion."
+  },
+  {
+    "section": "Rechercher.",
+    "text": "Figure 10.18 – Sélection d’une absence à justifier dans le dossier de l’élève"
+  },
+  {
+    "section": "Rechercher.",
+    "text": "Le panneau Détails justification absence permet de saisir les modalités de justification."
+  },
+  {
+    "section": "Rechercher.",
+    "text": "Cliquez sur Valider pour enregistrer la justification et faire basculer l’absence dans la liste des absences justifiées."
+  },
+  {
+    "section": "Rechercher.",
+    "text": "Figure 10.19 – Validation d’une justification d’absence"
+  },
+  {
+    "section": "Rapport de fin de journée",
+    "text": "Rapport de fin de journée"
+  },
+  {
+    "section": "Rapport de fin de journée",
+    "text": "La rubrique Rapport de fin de journée permet de renseigner les activités réalisées et les faits marquants de la journée."
+  },
+  {
+    "section": "Rapport de fin de journée",
+    "text": "Elle offre une vue d’ensemble des classes suivies, des absences du personnel et des incidents enregistrés."
+  },
+  {
+    "section": "Rapport de fin de journée",
+    "text": "Elle permet également de déclarer une absence du personnel opérationnel ou de signaler un incident pour une classe donnée."
+  },
+  {
+    "section": "Rapport de fin de journée",
+    "text": "Figure 11.1 – Accès au module Rapport de fin de journée"
+  },
+  {
+    "section": "Dashboard",
+    "text": "Dashboard"
+  },
+  {
+    "section": "Dashboard",
+    "text": "Le Dashboard du module Rapport de fin de journée centralise les classes disponibles et les principaux indicateurs de la journée. Il permet d’accéder rapidement au détail d’une classe et de visualiser les absences du personnel ainsi que les incidents déjà saisis."
+  },
+  {
+    "section": "Dashboard",
+    "text": "La colonne de gauche présente les blocs de classes par niveau."
+  },
+  {
+    "section": "Dashboard",
+    "text": "La zone centrale Absence personnel affiche un récapitulatif du nombre d’absences signalées sur la période."
+  },
+  {
+    "section": "Dashboard",
+    "text": "Le panneau Incidents enregistrés liste les incidents déjà déclarés."
+  },
+  {
+    "section": "Dashboard",
+    "text": "Figure 11.2 – Sélection d’une classe depuis le Dashboard du module"
+  },
+  {
+    "section": "Saisie d’une absence",
+    "text": "Saisie d’une absence"
+  },
+  {
+    "section": "Saisie d’une absence",
+    "text": "— Depuis le rapport du jour de la classe, utilisez l’icône placée en face d’un cours pour signaler une absence du personnel opérationnel."
+  },
+  {
+    "section": "Saisie d’une absence",
+    "text": "Les lignes du rapport du jour affichent les horaires et les disciplines de la journée."
+  },
+  {
+    "section": "Saisie d’une absence",
+    "text": "Les icônes associées aux cours servent à enregistrer les absences du personnel opérationnel."
+  },
+  {
+    "section": "Saisie d’une absence",
+    "text": "Figure 11.3 – Saisie d’une absence du personnel opérationnel"
+  },
+  {
+    "section": "Saisie d’une absence",
+    "text": "La fenêtre Absence personnel opérationnel permet de préciser le type d’absence, une observation, la date et la plage horaire concernée."
+  },
+  {
+    "section": "Saisie d’une absence",
+    "text": "Cliquez sur Enregistrer pour valider la saisie."
+  },
+  {
+    "section": "Déclaration d’incidents",
+    "text": "Déclaration d’incidents"
+  },
+  {
+    "section": "Déclaration d’incidents",
+    "text": "— Cliquez sur la classe souhaitée pour ouvrir le rapport du jour correspondant."
+  },
+  {
+    "section": "Déclaration d’incidents",
+    "text": "Figure 11.4 – Accès au rapport du jour d’une classe"
+  },
+  {
+    "section": "Déclaration d’incidents",
+    "text": "L’écran rappelle la classe, la date et la liste des cours prévus dans la journée."
+  },
+  {
+    "section": "Déclaration d’incidents",
+    "text": "Le bouton Déclarer un incident permet de signaler un fait marquant lié à la journée."
+  },
+  {
+    "section": "Déclaration d’incidents",
+    "text": "Figure 11.5 – Déclaration d’un incident dans le rapport du jour"
+  },
+  {
+    "section": "Déclaration d’incidents",
+    "text": "La fenêtre Déclaration d’un incident permet de décrire le fait observé et d’associer la date du signalement."
+  },
+  {
+    "section": "Déclaration d’incidents",
+    "text": "Cliquez sur Enregistrer pour archiver l’incident dans le rapport de la journée."
+  },
+  {
+    "section": "Evaluations",
+    "text": "Evaluations"
+  },
+  {
+    "section": "Evaluations",
+    "text": "La rubrique Evaluations permet de planifier les évaluations d’une classe, de suivre leur avancement et de saisir les notes des élèves."
+  },
+  {
+    "section": "Evaluations",
+    "text": "Elle centralise les statistiques de saisie, les alertes de performance et les actions liées à chaque évaluation."
+  },
+  {
+    "section": "Evaluations",
+    "text": "Elle facilite enfin le suivi des absences et des exemptions pendant les opérations de notation."
+  },
+  {
+    "section": "Evaluations",
+    "text": "Figure 12.1 – Accès au module Evaluations"
+  },
+  {
+    "section": "Dashboard",
+    "text": "Dashboard"
+  },
+  {
+    "section": "Dashboard",
+    "text": "Le Dashboard du module Evaluations regroupe les classes disponibles, les indicateurs de saisie et les alertes de performance. Il permet d’identifier rapidement une classe et de consulter l’état général des évaluations programmées."
+  },
+  {
+    "section": "Dashboard",
+    "text": "La colonne de gauche présente les classes disponibles par niveau."
+  },
+  {
+    "section": "Dashboard",
+    "text": "Le panneau central affiche le nombre d’évaluations planifiées ainsi que leur répartition entre en attente, partielles et complètes."
+  },
+  {
+    "section": "Dashboard",
+    "text": "La zone Alerte performances signale les classes ou situations qui demandent une attention particulière."
+  },
+  {
+    "section": "Ajout d’une évaluation",
+    "text": "Ajout d’une évaluation"
+  },
+  {
+    "section": "Ajout d’une évaluation",
+    "text": "— Commencez par sélectionner la classe concernée, puis cliquez sur le bouton Ajouter."
+  },
+  {
+    "section": "Ajout d’une évaluation",
+    "text": "Figure 12.2 – Sélection d’une classe et accès à l’ajout d’une évaluation"
+  },
+  {
+    "section": "Ajout d’une évaluation",
+    "text": "Le tableau de bord de la classe affiche le nombre d’évaluations et l’état de saisie par discipline."
+  },
+  {
+    "section": "Ajout d’une évaluation",
+    "text": "Le bouton Ajouter ouvre la fiche de création d’une nouvelle évaluation."
+  },
+  {
+    "section": "Ajout d’une évaluation",
+    "text": "Figure 12.3 – Formulaire d’ajout d’une évaluation"
+  },
+  {
+    "section": "Ajout d’une évaluation",
+    "text": "Renseignez le semestre, la salle, le type d’évaluation, la date, la discipline, la"
+  },
+  {
+    "section": "Ajout d’une évaluation",
+    "text": "matière, le professeur ainsi que les heures de début et de fin."
+  },
+  {
+    "section": "Ajout d’une évaluation",
+    "text": "Cliquez sur Enregistrer pour planifier l’évaluation dans la classe sélectionnée."
+  },
+  {
+    "section": "Liste des évaluations",
+    "text": "Liste des évaluations"
+  },
+  {
+    "section": "Liste des évaluations",
+    "text": "Figure 12.4 – Affichage d’une évaluation enregistrée dans la liste"
+  },
+  {
+    "section": "Liste des évaluations",
+    "text": "La liste des évaluations présente la date, la discipline, le nom de l’enseignant, le"
+  },
+  {
+    "section": "Liste des évaluations",
+    "text": "semestre et les statistiques associées à chaque ligne."
+  },
+  {
+    "section": "Liste des évaluations",
+    "text": "Le bouton Notation permet d’ouvrir directement la fenêtre de saisie des notes."
+  },
+  {
+    "section": "Liste des évaluations",
+    "text": "Les compteurs de gauche récapitulent l’état de saisie par discipline et facilitent le suivi de l’avancement."
+  },
+  {
+    "section": "Liste des évaluations",
+    "text": "Figure 12.5 – Boutons de verrouillage, de modification et de suppression d’une évaluation"
+  },
+  {
+    "section": "Liste des évaluations",
+    "text": "Après la création d’une évaluation, chaque ligne affiche des boutons de verrouillage, de"
+  },
+  {
+    "section": "Liste des évaluations",
+    "text": "modification et de suppression."
+  },
+  {
+    "section": "Liste des évaluations",
+    "text": "Utilisez ces commandes pour sécuriser une évaluation, corriger ses informations ou la retirer de la liste si nécessaire."
+  },
+  {
+    "section": "Notation",
+    "text": "Notation"
+  },
+  {
+    "section": "Notation",
+    "text": "— Cliquez sur Notation depuis la liste des évaluations pour ouvrir la fenêtre de saisie des notes des élèves."
+  },
+  {
+    "section": "Notation",
+    "text": "Figure 12.6 – Saisie des notes des élèves pour une évaluation"
+  },
+  {
+    "section": "Notation",
+    "text": "La fenêtre de Notation affiche l’effectif concerné ainsi que la liste des élèves."
+  },
+  {
+    "section": "Notation",
+    "text": "Saisissez la note de chaque apprenant dans le champ correspondant."
+  },
+  {
+    "section": "Notation",
+    "text": "Figure 12.7 – Gestion des exemptions et des absences lors de la notation"
+  },
+  {
+    "section": "Notation",
+    "text": "Les colonnes Exemption et Absences permettent d’indiquer les cas particuliers pour chaque élève."
+  },
+  {
+    "section": "Notation",
+    "text": "Après la saisie des notes et l’activation éventuelle des options nécessaires, validez l’opération pour enregistrer la notation."
+  },
+  {
+    "section": "Conseils de classes",
+    "text": "Conseils de classes"
+  },
+  {
+    "section": "Conseils de classes",
+    "text": "La rubrique Conseils de classes permet de planifier les conseils par classe, de saisir les appréciations individuelles et de produire les documents associés à la fin du processus."
+  },
+  {
+    "section": "Accès au module",
+    "text": "Accès au module"
+  },
+  {
+    "section": "Accès au module",
+    "text": "Depuis le menu latéral, cliquez sur Conseils classes pour ouvrir le tableau de bord du module."
+  },
+  {
+    "section": "Accès au module",
+    "text": "L’écran d’accueil présente les classes par niveau ainsi qu’un ensemble d’indicateurs :"
+  },
+  {
+    "section": "conseils planifiés, conseils tenus, conseils en attente et conseils archivés.",
+    "text": "conseils planifiés, conseils tenus, conseils en attente et conseils archivés."
+  },
+  {
+    "section": "conseils planifiés, conseils tenus, conseils en attente et conseils archivés.",
+    "text": "La partie droite de l’écran affiche également les statistiques générales et la répartition des appréciations."
+  },
+  {
+    "section": "conseils planifiés, conseils tenus, conseils en attente et conseils archivés.",
+    "text": "Figure 13.1 – Accès au module Conseils de classes et vue d’ensemble du tableau de bord"
+  },
+  {
+    "section": "Planification d’un conseil",
+    "text": "Planification d’un conseil"
+  },
+  {
+    "section": "Planification d’un conseil",
+    "text": "Sélectionnez d’abord la classe concernée dans la colonne de gauche."
+  },
+  {
+    "section": "Planification d’un conseil",
+    "text": "Cliquez ensuite sur le bouton Ajouter pour planifier un nouveau conseil pour cette classe."
+  },
+  {
+    "section": "Planification d’un conseil",
+    "text": "Lorsque aucun conseil n’a encore été enregistré pour la période, le module indique qu’aucun conseil n’est planifié."
+  },
+  {
+    "section": "Planification d’un conseil",
+    "text": "Figure 13.2 – Sélection d’une classe et utilisation du bouton Ajouter pour planifier un conseil"
+  },
+  {
+    "section": "Planification d’un conseil",
+    "text": "Dans la fenêtre de planification, choisissez le semestre, puis renseignez la date de génération du conseil et la date de tenue du conseil."
+  },
+  {
+    "section": "Planification d’un conseil",
+    "text": "La date de génération doit être supérieure ou égale à la date du jour."
+  },
+  {
+    "section": "Planification d’un conseil",
+    "text": "La date de tenue du conseil doit être supérieure à la date de génération."
+  },
+  {
+    "section": "Planification d’un conseil",
+    "text": "Après avoir renseigné les informations demandées, cliquez sur Enregistrer."
+  },
+  {
+    "section": "Planification d’un conseil",
+    "text": "Figure 13.3 – Formulaire de planification d’un conseil de classe"
+  },
+  {
+    "section": "Consultation d’un conseil planifié",
+    "text": "Consultation d’un conseil planifié"
+  },
+  {
+    "section": "Consultation d’un conseil planifié",
+    "text": "Une fois le conseil enregistré, le bloc du semestre correspondant affiche la date de génération, la date de tenue et plusieurs actions disponibles."
+  },
+  {
+    "section": "Consultation d’un conseil planifié",
+    "text": "Les principales actions proposées sont : Conseil, Bulletins, Statistiques, Régénérer, Archiver et Supprimer."
+  },
+  {
+    "section": "Consultation d’un conseil planifié",
+    "text": "Le second semestre continue d’afficher un message d’absence de planification tant qu’aucun conseil n’y est créé."
+  },
+  {
+    "section": "Consultation d’un conseil planifié",
+    "text": "Figure 13.4 – Affichage d’un conseil planifié avec les actions disponibles"
+  },
+  {
+    "section": "Saisie des appréciations",
+    "text": "Saisie des appréciations"
+  },
+  {
+    "section": "Saisie des appréciations",
+    "text": "Cliquez sur l’icône Conseil pour ouvrir la fiche individuelle d’un élève."
+  },
+  {
+    "section": "Saisie des appréciations",
+    "text": "Pour chaque apprenant, le module affiche l’identité, les moyennes, le rang, les absences, les retards et le tableau détaillé des disciplines."
+  },
+  {
+    "section": "Saisie des appréciations",
+    "text": "Dans la zone Appréciations & Observations, choisissez l’appréciation retenue puis saisissez l’observation correspondante si nécessaire."
+  },
+  {
+    "section": "Saisie des appréciations",
+    "text": "Une appréciation globale du travail de l’élève peut également être sélectionnée en bas de la fiche."
+  },
+  {
+    "section": "Saisie des appréciations",
+    "text": "Figure 13.5 – Accès à la fiche Conseil pour renseigner les appréciations d’un élève"
+  },
+  {
+    "section": "Saisie des appréciations",
+    "text": "Utilisez les boutons Précédent et Suivant pour passer d’un élève à l’autre."
+  },
+  {
+    "section": "Saisie des appréciations",
+    "text": "Le compteur affiché en haut à droite indique la progression dans l’effectif de la classe."
+  },
+  {
+    "section": "Saisie des appréciations",
+    "text": "Figure 13.6 – Saisie des appréciations et navigation entre les élèves du conseil"
+  },
+  {
+    "section": "Validation du conseil",
+    "text": "Validation du conseil"
+  },
+  {
+    "section": "Validation du conseil",
+    "text": "Une fois la saisie terminée pour le dernier élève, cliquez sur Valider conseil."
+  },
+  {
+    "section": "Validation du conseil",
+    "text": "Cette action permet de clore la saisie du conseil pour la classe et de finaliser le traitement du semestre concerné."
+  },
+  {
+    "section": "Validation du conseil",
+    "text": "Figure 13.7 – Validation finale du conseil de classe après saisie des appréciations"
+  },
+  {
+    "section": "Utilisateurs",
+    "text": "Utilisateurs"
+  },
+  {
+    "section": "Utilisateurs",
+    "text": "La rubrique Utilisateurs permet de consulter la liste des comptes rattachés à l’établisse- ment et d’ajouter de nouveaux profils autorisés à accéder à la plateforme."
+  },
+  {
+    "section": "Accès à la liste des utilisateurs",
+    "text": "Accès à la liste des utilisateurs"
+  },
+  {
+    "section": "Accès à la liste des utilisateurs",
+    "text": "Depuis le menu latéral, cliquez sur Utilisateurs."
+  },
+  {
+    "section": "Accès à la liste des utilisateurs",
+    "text": "L’écran Gestion des utilisateurs affiche la liste des comptes existants avec les infor- mations d’identification, le profil, l’adresse e-mail professionnelle et le statut du compte."
+  },
+  {
+    "section": "Accès à la liste des utilisateurs",
+    "text": "La zone Rechercher permet de retrouver rapidement un utilisateur déjà enregistré."
+  },
+  {
+    "section": "Accès à la liste des utilisateurs",
+    "text": "Figure 14.1 – Accès à la rubrique Utilisateurs et consultation de la liste"
+  },
+  {
+    "section": "Lancer l’ajout d’un utilisateur",
+    "text": "Lancer l’ajout d’un utilisateur"
+  },
+  {
+    "section": "Lancer l’ajout d’un utilisateur",
+    "text": "Pour créer un nouveau compte, cliquez sur le bouton Ajouter représenté par l’icône +."
+  },
+  {
+    "section": "Lancer l’ajout d’un utilisateur",
+    "text": "Une fenêtre Ajout utilisateur s’ouvre et propose un champ de recherche par IEN / E-mail pro."
+  },
+  {
+    "section": "Lancer l’ajout d’un utilisateur",
+    "text": "Saisissez l’IEN ou l’adresse e-mail professionnelle de l’agent concerné, puis cliquez sur le bouton IEN / Email pro."
+  },
+  {
+    "section": "Lancer l’ajout d’un utilisateur",
+    "text": "Figure 14.2 – Ouverture de la fenêtre d’ajout d’un utilisateur"
+  },
+  {
+    "section": "Lancer l’ajout d’un utilisateur",
+    "text": "Ministère de l’Éducation nationale"
+  },
+  {
+    "section": "Renseigner et enregistrer le profil",
+    "text": "Renseigner et enregistrer le profil"
+  },
+  {
+    "section": "Renseigner et enregistrer le profil",
+    "text": "Après l’identification de l’agent, le formulaire affiche automatiquement plusieurs infor- mations personnelles : matricule, prénom, nom, date et lieu de naissance, sexe, téléphone, e-mail professionnel et structure."
+  },
+  {
+    "section": "Renseigner et enregistrer le profil",
+    "text": "Sélectionnez ensuite le profil à attribuer à l’utilisateur."
+  },
+  {
+    "section": "Renseigner et enregistrer le profil",
+    "text": "Renseignez le mot de passe initial qui sera associé au compte."
+  },
+  {
+    "section": "Renseigner et enregistrer le profil",
+    "text": "Si l’utilisateur dépend d’une autre entité, activez l’option Autre structure lorsque cela est nécessaire."
+  },
+  {
+    "section": "Renseigner et enregistrer le profil",
+    "text": "Cliquez enfin sur Enregistrer pour créer le compte."
+  },
+  {
+    "section": "Renseigner et enregistrer le profil",
+    "text": "Figure 14.3 – Formulaire complet d’ajout d’un utilisateur avec choix du profil et enregistrement"
+  },
+  {
+    "section": "Conclusion",
+    "text": "Conclusion"
+  },
+  {
+    "section": "Conclusion",
+    "text": "Ce guide d’utilisation a été conçu pour accompagner les acteurs des établissements moyen-secondaires dans la prise en main progressive de la plateforme PLANETE. En réunissant dans un même document les principales procédures administratives, pédagogiques et organisationnelles, il vise à faciliter les usages quotidiens et à renforcer l’autonomie des utilisateurs."
+  },
+  {
+    "section": "Conclusion",
+    "text": "Au-delà de la maîtrise technique des fonctionnalités, l’utilisation rigoureuse de PLANETE contribue à améliorer la qualité des données scolaires, à sécuriser les opérations et à soutenir un meilleur pilotage des établissements. Chaque information saisie, chaque mise à jour effectuée et chaque action validée participe ainsi à une gouvernance plus efficace, plus transparente et mieux coordonnée."
+  },
+  {
+    "section": "Conclusion",
+    "text": "Il est recommandé aux chefs d’établissement, aux personnels administratifs, aux ensei- gnants et aux référents numériques de s’appuyer sur ce guide comme référence de travail, tout en veillant à la fiabilité des informations enregistrées et au respect des procédures. En cas de difficulté, le recours à l’accompagnement de proximité, aux responsables hiérarchiques et aux services techniques compétents reste essentiel pour garantir une utilisation harmonisée de la plateforme sur l’ensemble du territoire."
+  },
+  {
+    "section": "Conclusion",
+    "text": "Ainsi, PLANETE s’affirme comme un outil central de modernisation du système éducatif sénégalais, au service de l’efficacité administrative, du suivi pédagogique et de l’amélioration continue des performances des établissements."
+  }
+]

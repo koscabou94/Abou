@@ -1,0 +1,44 @@
+{
+  "platforms": {
+    "planete": {
+      "name": "PLANETE 3.0",
+      "full_name": "Plateforme Nationale d'Education et de Tutorat - Système d’Information et de Management de l’Éducation nationale",
+      "url": "https://planete3.education.sn",
+      "access": "Utilisez votre adresse e-mail professionnelle (prenom.nom@education.sn) et votre mot de passe personnel.",
+      "modules": {
+        "dashboard": "Suivi en temps réel des absences, cours prévus, évaluations et demandes de transfert.",
+        "etablissement": "Gestion des informations administratives, cycles (Moyen/Secondaire) et polarisation BST.",
+        "configuration": "Paramétrage des bâtiments, salles, programmes (disciplines obligatoires/optionnelles) et classes pédagogiques.",
+        "personnel": "Gestion des agents titulaires (importés de MIRADOR) et des compléments horaires. Nécessite le 'Pointage' annuel.",
+        "classes": "Création de classes pédagogiques (fixes ou nomades) et groupage de classes pour les disciplines communes."
+      },
+      "common_tasks": {
+        "login": "Rendez-vous sur https://planete3.education.sn, saisissez votre e-mail professionnel, cliquez sur Continuer, puis saisissez votre mot de passe.",
+        "saisie_notes": "Les évaluations et la saisie des notes se font directement via l'interface pédagogique après configuration des semestres.",
+        "absences": "Le suivi des absences peut être réalisé en temps réel par les enseignants et chefs d'établissement.",
+        "synchronisation_personnel": "Utilisez le bouton 'Mis à Jour Personnel' dans le module Personnel pour importer les agents depuis MIRADOR."
+      }
+    },
+    "mirador": {
+      "name": "MIRADOR",
+      "full_name": "Management de l'Identification, du Recrutement, de l'Affectation et du Déploiement dans l'Organisation des Ressources",
+      "purpose": "Gestion globale des ressources humaines du Ministère de l'Éducation nationale (enseignants et personnels administratifs).",
+      "features": [
+        "Consultation du dossier administratif et de carrière",
+        "Demandes de mutation (transferts)",
+        "Gestion des affectations et des mises à disposition",
+        "Suivi de l'avancement (échelon, grade)",
+        "Consultation des bulletins de solde (via l'intégration avec le système de solde)"
+      ],
+      "actions": {
+        "check_solde": "Consultez votre dossier sur MIRADOR pour accéder aux liens vers vos bulletins de solde ou contactez votre IEF/IA.",
+        "mutation": "Les campagnes de mutation sont généralement annoncées annuellement sur le portail MIRADOR."
+      }
+    }
+  },
+  "organization": {
+    "simen": "Système d'Information et de Management de l'Éducation Nationale du Sénégal.",
+    "dptic": "Division de la Promotion des Technologies de l'Information et de la Communication.",
+    "authorities": ["IA (Inspection d'Académie)", "IEF (Inspection de l'Éducation et de la Formation)", "MEN (Ministère de l'Éducation Nationale)"]
+  }
+}

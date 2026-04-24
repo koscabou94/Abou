@@ -1,0 +1,43 @@
+# ============================================================
+# EduBot Sénégal - Configuration Render.com
+# ============================================================
+
+services:
+  - type: web
+    name: edubot-senegal
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: .
+    plan: free
+    region: frankfurt
+
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
+
+      - key: DATABASE_URL
+        sync: false
+
+      - key: REDIS_URL
+        value: ""
+
+      - key: SECRET_KEY
+        generateValue: true
+
+      - key: API_KEY
+        generateValue: true
+
+      - key: LLM_MODEL
+        value: llama-3.3-70b-versatile
+
+      - key: MAX_TOKENS
+        value: "512"
+
+      - key: USE_LIGHTWEIGHT_MODE
+        value: "true"
+
+      - key: DEBUG
+        value: "false"
+
+      - key: LOG_LEVEL
+        value: INFO

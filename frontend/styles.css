@@ -358,13 +358,16 @@ h1, h2, h3, h4 {
 }
 .home-btn i, .home-btn svg { width: 15px; height: 15px; }
 
-/* Centrage absolu du titre DPTIC */
+/* Centrage du titre — flexbox (pas absolu) pour que les boutons restent cliquables */
 .top-nav-center {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    flex: 1;
     display: flex;
+    justify-content: center;
     align-items: center;
+    pointer-events: none; /* laisse passer les clics vers les boutons derrière */
+}
+.top-nav-center * {
+    pointer-events: auto;
 }
 
 .dptic-brand {
@@ -641,6 +644,30 @@ h1, h2, h3, h4 {
 }
 .msg-action-btn:hover { color: var(--color-platinum); border-color: var(--color-border-active); background: var(--color-bg-hover); }
 
+/* Bouton télécharger PDF */
+.download-pdf-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
+    padding: 6px 14px;
+    background: var(--color-simen-bg);
+    border: 1px solid var(--color-simen-border);
+    border-radius: 20px;
+    color: var(--color-simen);
+    font-size: 0.78rem;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: var(--transition-elite);
+}
+.download-pdf-btn:hover {
+    background: var(--color-simen);
+    color: #fff;
+    border-color: var(--color-simen);
+}
+.download-pdf-btn i, .download-pdf-btn svg { width: 14px; height: 14px; }
+
 /* === MARKDOWN CONTENT STYLING === */
 .msg-bubble p { margin-bottom: 0.75em; }
 .msg-bubble *:last-child { margin-bottom: 0; }
@@ -719,27 +746,21 @@ h1, h2, h3, h4 {
 .msg-bubble h1, .msg-bubble h2, .msg-bubble h3 {
     display: block;
     width: 100%;
-    margin-top: 1.2em;
-    margin-bottom: 0.5em;
+    margin-top: 1em;
+    margin-bottom: 0.4em;
     line-height: 1.4;
-}
-.msg-bubble h1 { font-size: 1.25em; color: var(--color-simen); }
-.msg-bubble h2 { font-size: 1.1em; color: var(--color-simen); }
-.msg-bubble h3 {
-    font-size: 1em;
     color: var(--color-platinum);
-    background: var(--color-simen-bg);
-    border-left: 3px solid var(--color-simen);
-    padding: 6px 12px;
-    border-radius: 0 6px 6px 0;
-    margin-top: 0.8em;
+    font-weight: 600;
 }
+.msg-bubble h1 { font-size: 1.15em; }
+.msg-bubble h2 { font-size: 1.05em; }
+.msg-bubble h3 { font-size: 1em; }
 
 /* Séparateur --- entre exercices */
 .msg-bubble hr {
     border: none;
     border-top: 1px solid var(--color-border);
-    margin: 14px 0;
+    margin: 12px 0;
 }
 
 .msg-bubble a {

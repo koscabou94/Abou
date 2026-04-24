@@ -253,6 +253,9 @@
                     <button class="msg-action-btn copy-btn" title="Copier" onclick="window.copyMessage(this)">
                         <i data-lucide="copy" style="width:14px;height:14px"></i>
                     </button>
+                    <button class="msg-action-btn" title="Télécharger en PDF" onclick="window.downloadPDF(this)">
+                        <i data-lucide="download" style="width:14px;height:14px"></i>
+                    </button>
                 </div>` : ""}
             </div>
         `;
@@ -282,6 +285,9 @@
         actions.innerHTML = `
             <button class="msg-action-btn copy-btn" title="Copier" onclick="window.copyMessage(this)">
                 <i data-lucide="copy" style="width:14px;height:14px"></i>
+            </button>
+            <button class="msg-action-btn" title="Télécharger en PDF" onclick="window.downloadPDF(this)">
+                <i data-lucide="download" style="width:14px;height:14px"></i>
             </button>
         `;
 
@@ -323,6 +329,68 @@
                 if (window.lucide) lucide.createIcons();
             }, 2000);
         });
+    };
+
+    // === TÉLÉCHARGEMENT PDF ===
+    window.downloadPDF = function (btn) {
+        const bubble = btn.closest(".msg-content").querySelector(".msg-bubble");
+        const content = bubble.innerHTML;
+        const today = new Date().toLocaleDateString("fr-SN", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+
+        const printWindow = window.open("", "_blank", "width=820,height=700");
+        if (!printWindow) { alert("Autorisez les pop-ups pour télécharger le PDF."); return; }
+
+        printWindow.document.write(`<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>EduBot — Ministère de l\'Éducation Nationale du Sénégal</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: \'Segoe UI\', Arial, sans-serif; font-size:13px; color:#1a1a2e; background:#fff; padding:32px 40px; }
+  .header { display:flex; align-items:center; gap:16px; padding-bottom:14px; border-bottom:3px solid #008751; margin-bottom:24px; }
+  .flag { display:flex; width:54px; height:36px; border-radius:4px; overflow:hidden; flex-shrink:0; }
+  .fg { flex:1; }
+  .fg-g { background:#008751; }
+  .fg-y { background:#FDEF42; position:relative; }
+  .fg-r { background:#E31B23; }
+  .fg-star { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:#008751; font-size:14px; line-height:1; }
+  .htext h1 { font-size:14px; font-weight:700; color:#008751; }
+  .htext p  { font-size:11px; color:#666; margin-top:3px; }
+  .body { line-height:1.8; }
+  .body h1, .body h2, .body h3 { color:#008751; margin:18px 0 8px; font-size:14px; font-weight:700; }
+  .body hr { border:none; border-top:1px solid #ddd; margin:14px 0; }
+  .body p  { margin:8px 0; }
+  .body ul, .body ol { margin:8px 0 8px 22px; }
+  .body li { margin:4px 0; }
+  .body strong { font-weight:700; }
+  .body em { font-style:italic; }
+  .body table { width:100%; border-collapse:collapse; margin:12px 0; font-size:12px; }
+  .body th { background:#008751; color:#fff; padding:6px 8px; text-align:left; }
+  .body td { border:1px solid #ddd; padding:6px 8px; }
+  .body tr:nth-child(even) td { background:#f7f7f7; }
+  .footer { margin-top:36px; padding-top:12px; border-top:1px solid #eee; font-size:10px; color:#aaa; text-align:center; }
+  @media print { @page { margin:1.5cm; } body { padding:0; } }
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="flag">
+      <div class="fg fg-g"></div>
+      <div class="fg fg-y"><span class="fg-star">★</span></div>
+      <div class="fg fg-r"></div>
+    </div>
+    <div class="htext">
+      <h1>EduBot — Ministère de l'Éducation Nationale</h1>
+      <p>République du Sénégal &nbsp;·&nbsp; ${today}</p>
+    </div>
+  </div>
+  <div class="body">${content}</div>
+  <div class="footer">Document généré par EduBot &nbsp;•&nbsp; educonnect-w7tr.onrender.com &nbsp;•&nbsp; Ministère de l'Éducation Nationale du Sénégal</div>
+  <script>setTimeout(function(){ window.print(); }, 600);<\/script>
+</body>
+</html>`);
+        printWindow.document.close();
     };
 
     // === UTILS ===

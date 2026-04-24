@@ -83,6 +83,59 @@ RÈGLES DE FORMAT EXERCICES :
 
 ---
 
+GÉNÉRATION DE FICHES PÉDAGOGIQUES :
+Quand un enseignant demande une fiche de préparation, une fiche de cours, une fiche pédagogique ou une fiche de leçon, génère-la DIRECTEMENT avec ce format :
+
+### 📋 Fiche Pédagogique — [Matière] — [Niveau]
+
+**Discipline :** [Matière]
+**Niveau :** [Classe]
+**Durée :** [ex. 45 minutes]
+**Compétence visée :** [Objectif général]
+
+---
+
+### 🎯 Objectifs spécifiques
+
+À la fin de la séance, l'élève sera capable de :
+1. [Objectif 1]
+2. [Objectif 2]
+3. [Objectif 3]
+
+---
+
+### 📚 Contenu / Notions clés
+
+[Corps du cours : définitions, règles, exemples concrets avec des références sénégalaises]
+
+---
+
+### 🏫 Déroulement de la séance
+
+| Phase | Activités du maître | Activités des élèves | Durée |
+|-------|---------------------|----------------------|-------|
+| Introduction | Poser une question de mise en situation | Répondre et participer | 5 min |
+| Développement | Expliquer et illustrer au tableau | Écouter, noter, poser des questions | 30 min |
+| Application | Proposer des exercices | Résoudre les exercices | 10 min |
+
+---
+
+### ✅ Évaluation formative
+
+[2 à 3 questions ou exercices courts pour vérifier la compréhension]
+
+---
+
+*Fiche générée par EduBot — Ministère de l'Éducation Nationale du Sénégal*
+
+RÈGLES FICHES :
+- Si le niveau ou la matière n'est pas précisé, demande-le avant de générer.
+- Adapte le contenu au programme officiel du Sénégal.
+- Utilise des exemples locaux sénégalais (marchés, agriculture, histoire, géographie du Sénégal).
+- Génère toujours la fiche complète, jamais de réponse vague.
+
+---
+
 COMMENT RÉPONDRE (GÉNÉRAL) :
 - Va directement à la réponse. La première phrase répond à la question.
 - Pour les exercices : génère-les immédiatement avec un beau format.
@@ -165,7 +218,14 @@ RÈGLE ABSOLUE : Ne jamais refuser de générer des exercices. Ne jamais donner 
             "mathématiques", "mathematiques", "maths", "français", "francais",
             "physique", "chimie", "svt", "histoire", "géographie", "anglais",
             "philosophie", "calcul", "géométrie", "geometrie", "algèbre",
-            "mon enfant", "mon fils", "ma fille", "mon élève", "niveau"
+            "mon enfant", "mon fils", "ma fille", "mon élève", "niveau",
+            "fiche", "fiches", "fiche pédagogique", "fiche pedagogique",
+            "fiche de cours", "fiche de préparation", "fiche de preparation",
+            "fiche de leçon", "fiche de lecon", "fiche d'enseignant",
+            "préparation de cours", "preparation de cours",
+            "plan de leçon", "plan de cours", "séance", "seance",
+            "objectifs pédagogiques", "objectifs pedagogiques",
+            "déroulement", "deroulement", "compétence", "competence"
         ],
     }
 
@@ -292,7 +352,12 @@ RÈGLE ABSOLUE : Ne jamais refuser de générer des exercices. Ne jamais donner 
             }
             if intent in intent_labels:
                 if intent == "exercice":
-                    system_content += f"\n⚡ L'utilisateur demande des exercices ou de la remédiation. GÉNÈRE-LES DIRECTEMENT avec un format clair et numéroté. N'attends pas de permission supplémentaire."
+                    msg_lower = message.lower()
+                    is_fiche = any(w in msg_lower for w in ["fiche", "préparation de cours", "preparation de cours", "plan de leçon", "plan de cours", "séance", "seance", "objectifs pédagogiques"])
+                    if is_fiche:
+                        system_content += f"\n⚡ L'utilisateur demande une FICHE PÉDAGOGIQUE. Génère-la DIRECTEMENT et COMPLÈTEMENT avec le format structuré prévu (objectifs, contenu, déroulement en tableau, évaluation). N'attends pas de permission supplémentaire."
+                    else:
+                        system_content += f"\n⚡ L'utilisateur demande des exercices ou de la remédiation. GÉNÈRE-LES DIRECTEMENT avec un format clair et numéroté. N'attends pas de permission supplémentaire."
                 else:
                     system_content += f"\nL'utilisateur pose une question {intent_labels[intent]}."
         if knowledge_context:
@@ -305,7 +370,7 @@ RÈGLE ABSOLUE : Ne jamais refuser de générer des exercices. Ne jamais donner 
             content = msg.get("content", "")
             if role in ("user", "assistant") and content:
                 messages.append({"role": role, "content": content})
-        # Pour les exercices, on donne plus de liberté
+        # Pour les exercices et fiches, on donne plus de liberté (pas de contrainte de longueur)
         if intent == "exercice":
             messages.append({"role": "user", "content": message})
         else:

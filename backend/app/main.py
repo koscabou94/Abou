@@ -106,8 +106,12 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
     #    (garantit que les nouvelles FAQ sont toujours prises en compte)
     logger.info("Rechargement des FAQ depuis le fichier JSON...")
     try:
-        from app.database.connection import AsyncSessionLocal
+        from app.database.connection import AsyncSessionLocal, check_db_connection
         from sqlalchemy import select, func, delete
+
+        db_ok = await check_db_connection()
+        if not db_ok:
+            raise Exception("BD inaccessible")
 
         async with AsyncSessionLocal() as db:
             # Compter les FAQ existantes
@@ -151,7 +155,13 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
                 await app.state.faq_service.load_faqs(db)
 
     except Exception as exc:
-        logger.error("Erreur lors du chargement des FAQ", error=str(exc))
+        logger.warning("BD inaccessible, chargement FAQ depuis JSON", error=str(exc))
+        try:
+            faq_count = await app.state.faq_service.load_from_json_direct(settings.FAQ_DATA_PATH)
+            if faq_count > 0:
+                logger.info("FAQ chargées depuis JSON (fallback BD)", count=faq_count)
+        except Exception as exc2:
+            logger.error("Erreur lors du chargement des FAQ", error=str(exc2))
 
     # 5. Initialiser la base de connaissances
     logger.info("Chargement de la base de connaissances...")

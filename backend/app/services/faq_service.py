@@ -187,3 +187,40 @@ class FAQService:
         except Exception as exc:
             logger.error("Erreur récupération FAQ", error=str(exc))
             return None
+
+    async def load_from_json_direct(self, json_path: str) -> int:
+        """
+        Charge les FAQ directement depuis le JSON en mémoire, sans passer par la BD.
+        Utilisé comme fallback si la BD est inaccessible.
+        """
+        import os
+        try:
+            if not os.path.exists(json_path):
+                logger.warning("Fichier FAQ introuvable", path=json_path)
+                return 0
+
+            with open(json_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+
+            faqs_data = data.get("faqs", [])
+            self._faq_cache = [
+                {
+                    "id": i + 1,
+                    "question": f.get("question", ""),
+                    "answer": f.get("answer", ""),
+                    "category": f.get("category", "general"),
+                    "keywords": f.get("keywords", []),
+                }
+                for i, f in enumerate(faqs_data)
+                if f.get("question") and f.get("answer")
+            ]
+
+            await self._ensure_model_loaded()
+            loop = asyncio.get_event_loop()
+            await loop.run_in_executor(None, self._fit_faqs)
+
+            logger.info("FAQ chargées depuis JSON (fallback)", count=len(self._faq_cache))
+            return len(self._faq_cache)
+        except Exception as exc:
+            logger.error("Erreur chargement FAQ JSON direct", error=str(exc))
+            return 0

@@ -12,7 +12,6 @@ from app.config import settings
 
 logger = structlog.get_logger(__name__)
 
-# Configuration du moteur selon le type de base de données
 engine_args = {
     "echo": settings.DEBUG,
     "pool_pre_ping": True,
@@ -21,11 +20,15 @@ engine_args = {
 if "sqlite" in settings.DATABASE_URL:
     engine_args["poolclass"] = NullPool
 else:
-    # PostgreSQL / Supabase : pool réduit pour le plan gratuit + SSL obligatoire
-    engine_args["pool_size"] = 5
+    # PostgreSQL / Supabase pooler (transaction mode, port 6543)
+    # statement_cache_size=0 obligatoire avec le pooler Supabase
+    engine_args["pool_size"] = 3
     engine_args["max_overflow"] = 2
-    engine_args["pool_recycle"] = 3600
-    engine_args["connect_args"] = {"ssl": "require"}
+    engine_args["pool_recycle"] = 300
+    engine_args["connect_args"] = {
+        "ssl": "require",
+        "statement_cache_size": 0,
+    }
 
 engine = create_async_engine(settings.DATABASE_URL, **engine_args)
 
@@ -57,13 +60,6 @@ async def create_tables() -> None:
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
     logger.info("Tables créées avec succès")
-
-
-async def drop_tables() -> None:
-    from app.database.models import Base
-    logger.warning("Suppression de toutes les tables !")
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
 
 
 async def check_db_connection() -> bool:

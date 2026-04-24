@@ -182,20 +182,24 @@
 
     // === MESSAGING LOGIC ===
     async function sendMessage(text = null) {
-        const message = text || elements.messageInput.value.trim();
+        let message = text || elements.messageInput.value.trim();
         if ((!message && state.attachedFiles.length === 0) || state.isTyping) return;
 
-        // Si une clarification est en attente, enrichir le message avec le contexte
+        // Garder l'affichage court (ce que l'utilisateur a tapé/cliqué)
+        const userDisplayText = message;
+
+        // Si une clarification est en attente, enrichir le message ENVOYÉ À L'API avec le contexte complet
+        // L'affichage dans le chat reste court (ex: "CM2" ou "Mathématiques")
         if (state.pendingClarificationContext && message) {
             message = state.pendingClarificationContext + " — " + message;
             state.pendingClarificationContext = null;
         }
 
-        // Build display message with file names
-        let displayMsg = message;
+        // Build display message with file names (affichage seulement, pas pour l'API)
+        let displayMsg = userDisplayText;
         if (state.attachedFiles.length > 0) {
             const fileNames = state.attachedFiles.map(f => `📎 ${f.name}`).join("\n");
-            displayMsg = message ? `${message}\n\n${fileNames}` : fileNames;
+            displayMsg = userDisplayText ? `${userDisplayText}\n\n${fileNames}` : fileNames;
         }
 
         // Reset UI

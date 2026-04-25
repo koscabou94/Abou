@@ -242,7 +242,10 @@ class ChatService:
                 and any(m in _msg_lower_check for m in _general_knowledge_markers)
             )
 
-            faq_match = None if _is_general_knowledge else await self.faq_service.find_best_match(fr_message, "fr")
+            # Pour l'intent "exercice", bypass total de la FAQ → aller directement au LLM
+            # (sinon les FAQs sur les programmes/curricula court-circuitent la génération d'exercices)
+            _skip_faq = _is_general_knowledge or (intent == "exercice")
+            faq_match = None if _skip_faq else await self.faq_service.find_best_match(fr_message, "fr")
             source = "llm"
             fr_response = None
 

@@ -710,8 +710,28 @@ class ChatService:
         if has_fiche:
             return None
 
-        # Si le message est très court (1-2 mots), c'est probablement une réponse à une clarification
+        # Cas spécial : message très court (1-2 mots)
         if word_count <= 2:
+            # Si c'est un niveau seul (ex: "CM2", "6ème") → demander la matière
+            if has_level and not has_subject:
+                level_display = message.strip().upper()
+                return {
+                    "message": f"Parfait pour le **{level_display}** ! Dans quelle matière souhaitez-vous des exercices ?",
+                    "options": ["Mathématiques", "Français", "Sciences", "Histoire-Géographie", "Anglais", "Physique-Chimie", "Toutes les matières"]
+                }
+            # Si c'est une matière seule (ex: "maths") → demander le niveau
+            if has_subject and not has_level:
+                return {
+                    "message": "Quel est le niveau scolaire pour ces exercices ?",
+                    "options": ["CP", "CE1", "CE2", "CM1", "CM2", "6ème", "5ème", "4ème", "3ème", "2nde", "1ère", "Terminale"]
+                }
+            # Sinon (ex: "exercice", "devoir") → demander le niveau
+            if not has_level:
+                return {
+                    "message": "Pour vous proposer des exercices adaptés, j'ai besoin de connaître le niveau scolaire. Quel est le niveau ?",
+                    "options": ["CP", "CE1", "CE2", "CM1", "CM2", "6ème", "5ème", "4ème", "3ème", "2nde", "1ère", "Terminale"]
+                }
+            # Niveau + matière déjà dans le message court → laisser le LLM gérer
             return None
 
         if not has_level:

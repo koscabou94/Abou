@@ -287,6 +287,21 @@ RÈGLE ABSOLUE : Ne jamais refuser de générer des exercices. Ne jamais donner 
     def _clean_llm_response(text: str) -> str:
         for tag in ["<<SYS>>", "<</SYS>>", "[INST]", "[/INST]", "</s>", "<s>"]:
             text = text.replace(tag, "")
+
+        # Supprimer le gras (**...**) du texte des énoncés d'exercices.
+        # On garde les titres (### Exercice X) mais on retire les ** des corps de texte.
+        # On traite ligne par ligne : si une ligne est un titre (###), on la laisse intacte.
+        cleaned_lines = []
+        for line in text.split("\n"):
+            stripped = line.strip()
+            if stripped.startswith("#"):
+                # Titre de section → garder tel quel
+                cleaned_lines.append(line)
+            else:
+                # Corps de texte → supprimer les marqueurs gras ** tout en gardant le contenu
+                cleaned_lines.append(re.sub(r'\*\*(.+?)\*\*', r'\1', line))
+        text = "\n".join(cleaned_lines)
+
         lines = [l for l in text.split("\n") if l.strip()]
         text = "\n".join(lines).strip()
         paragraphs = text.split("\n\n")

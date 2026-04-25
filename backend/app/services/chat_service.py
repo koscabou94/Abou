@@ -256,8 +256,12 @@ class ChatService:
                 conversation_history = await self._get_conversation_history(session_id, db)
 
                 # === ÉTAPE 5b : Recherche dans la base de connaissances ===
+                # Pour l'intent "exercice", on bypasse aussi le KB :
+                # les documents KB sont souvent des fiches curriculum qui
+                # parasitent le contexte LLM et font répondre sur les programmes
+                # au lieu de générer des exercices.
                 kb_context = ""
-                if self.knowledge_service and self.knowledge_service.is_available:
+                if self.knowledge_service and self.knowledge_service.is_available and intent != "exercice":
                     try:
                         kb_docs = await self.knowledge_service.search(
                             fr_message, limit=1, category=None

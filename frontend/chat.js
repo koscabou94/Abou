@@ -237,10 +237,9 @@
                 const data = await response.json();
                 await appendBotMessageStreaming(data.response);
                 // Si le serveur renvoie des options de clarification, les afficher
+                // On passe `message` (le message complet envoyé à l'API) comme contexte capturé
                 if (data.clarification && data.clarification.options && data.clarification.options.length > 0) {
-                    // Stocker le message orignal (sans le contexte déjà ajouté)
-                    state.pendingClarificationContext = message;
-                    showClarificationOptions(data.clarification.options);
+                    showClarificationOptions(data.clarification.options, message);
                 }
                 addToHistory(message, data.response);
             } else {
@@ -336,7 +335,12 @@
     }
 
     // === CLARIFICATION AVEC OPTIONS CLIQUABLES ===
-    function showClarificationOptions(options) {
+    // apiContext : le message COMPLET déjà envoyé à l'API (avec tout le contexte précédent)
+    // Chaque bouton capture apiContext en closure — pas de dépendance à l'état global
+    function showClarificationOptions(options, apiContext) {
+        // Mettre à jour pendingClarificationContext pour le cas où l'utilisateur tape au lieu de cliquer
+        state.pendingClarificationContext = apiContext || null;
+
         // Trouver le dernier message du bot
         const allBotMessages = elements.messagesArea.querySelectorAll(".message-node.bot");
         const lastBotMessage = allBotMessages[allBotMessages.length - 1];
@@ -357,14 +361,21 @@
             btn.className = "clarification-btn";
             btn.textContent = opt;
             btn.onclick = () => {
-                // Désactiver tous les boutons après clic
+                // Désactiver tous les boutons pour éviter double-clic
                 optionsDiv.querySelectorAll(".clarification-btn").forEach(b => {
                     b.disabled = true;
                     b.classList.remove("selected");
                 });
                 btn.classList.add("selected");
-                // Envoyer directement le choix (le contexte est dans state.pendingClarificationContext)
-                sendMessage(opt);
+
+                // Construire le message API complet avec le contexte capturé en closure
+                const fullApiMessage = apiContext ? `${apiContext} — ${opt}` : opt;
+
+                // Vider le pendingClarificationContext (on gère ici directement)
+                state.pendingClarificationContext = null;
+
+                // Envoyer : afficher `opt` dans le chat, mais envoyer `fullApiMessage` à l'API
+                sendClarifiedMessage(opt, fullApiMessage);
             };
             optionsDiv.appendChild(btn);
         });
@@ -377,6 +388,53 @@
             msgContent.appendChild(optionsDiv);
         }
         scrollToBottom();
+    }
+
+    // Envoie un message de clarification : affiche displayText dans le chat, envoie apiMessage à l'API
+    async function sendClarifiedMessage(displayText, apiMessage) {
+        if (state.isTyping) return;
+
+        elements.welcomeSection.style.display = "none";
+        if (elements.homeBtn) elements.homeBtn.classList.remove("hidden");
+
+        // Afficher le choix de l'utilisateur proprement
+        appendMessage("user", displayText);
+
+        state.isTyping = true;
+        elements.typingIndicator.style.display = "flex";
+        scrollToBottom();
+
+        try {
+            const response = await fetch(`${CONFIG.API_URL}/chat`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    message: apiMessage,
+                    language: state.lang,
+                    session_id: state.currentSessionId
+                })
+            });
+
+            elements.typingIndicator.style.display = "none";
+
+            if (response.ok) {
+                const data = await response.json();
+                await appendBotMessageStreaming(data.response);
+                // Nouvelle clarification ? Passer apiMessage comme nouveau contexte
+                if (data.clarification && data.clarification.options && data.clarification.options.length > 0) {
+                    showClarificationOptions(data.clarification.options, apiMessage);
+                }
+                addToHistory(displayText, data.response);
+            } else {
+                appendMessage("bot", I18N.fr.errorServer);
+            }
+        } catch (err) {
+            elements.typingIndicator.style.display = "none";
+            appendMessage("bot", I18N.fr.errorNetwork);
+        } finally {
+            state.isTyping = false;
+            elements.sendBtn.disabled = (elements.messageInput.value.trim().length === 0 && state.attachedFiles.length === 0);
+        }
     }
 
     // === COPY TO CLIPBOARD ===

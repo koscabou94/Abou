@@ -188,6 +188,45 @@ class ChatService:
                     "timestamp": datetime.utcnow().isoformat(),
                 }
 
+            # === REFORMULATION EXERCICE CASCADE ===
+            # Quand le message est issu d'une cascade de clarification (format "X — Y — Z"),
+            # le transformer en requête d'exercices claire et directe pour le LLM
+            if intent == "exercice" and " — " in fr_message:
+                parts = [p.strip() for p in fr_message.split(" — ") if p.strip()]
+                # Chercher le niveau et la matière dans les parties
+                LEVEL_KW = ["cp","ce1","ce2","cm1","cm2","primaire","6ème","6eme","5ème","5eme",
+                            "4ème","4eme","3ème","3eme","seconde","2nde","première","premiere",
+                            "1ère","1ere","terminale","lycée","lycee","college","collège"]
+                SUBJECT_KW = ["mathématiques","mathematiques","maths","math","français","francais",
+                              "sciences","svt","physique","chimie","histoire","géographie","geographie",
+                              "anglais","philosophie","calcul","géométrie","geometrie","toutes les matières",
+                              "toutes les matieres"]
+                found_level = None
+                found_subject = None
+                for part in parts:
+                    pl = part.lower()
+                    if not found_level and any(kw in pl for kw in LEVEL_KW):
+                        found_level = part
+                    if not found_subject and any(kw in pl for kw in SUBJECT_KW):
+                        found_subject = part
+                if found_level and found_subject:
+                    fr_message = (
+                        f"Génère 3 exercices complets de {found_subject} adaptés au niveau {found_level}. "
+                        f"Utilise des contextes sénégalais dans les énoncés. "
+                        f"Suis exactement le format avec les séparateurs --- entre chaque exercice."
+                    )
+                elif found_level:
+                    fr_message = (
+                        f"Génère 3 exercices scolaires pour le niveau {found_level}. "
+                        f"Suis le format avec les séparateurs --- entre chaque exercice."
+                    )
+                elif found_subject:
+                    fr_message = (
+                        f"Génère 3 exercices de {found_subject}. "
+                        f"Suis le format avec les séparateurs --- entre chaque exercice."
+                    )
+                logger.debug("Message cascade reformulé pour le LLM", original=message_clean, reformulated=fr_message)
+
             # === ÉTAPE 4 : Recherche dans les FAQ (chemin rapide) ===
             # Détecter les questions de culture générale (géographie, histoire...)
             # qui ne doivent PAS être répondues par la FAQ éducative

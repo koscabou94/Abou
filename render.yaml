@@ -30,6 +30,9 @@ services:
       - key: LLM_MODEL
         value: llama-3.3-70b-versatile
 
+      - key: LLM_FAST_MODEL
+        value: llama-3.1-8b-instant
+
       - key: MAX_TOKENS
         value: "2000"
 

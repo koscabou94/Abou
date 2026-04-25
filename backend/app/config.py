@@ -45,11 +45,15 @@ class Settings(BaseSettings):
     )
     LLM_MODEL: str = Field(
         default="llama-3.3-70b-versatile",
-        description="Modèle Groq à utiliser"
+        description="Modèle Groq principal"
+    )
+    LLM_FAST_MODEL: str = Field(
+        default="llama-3.1-8b-instant",
+        description="Modèle Groq rapide pour le retry (faible latence)"
     )
 
     # === Paramètres LLM ===
-    MAX_TOKENS: int = Field(default=1500)
+    MAX_TOKENS: int = Field(default=2000)
     TEMPERATURE: float = Field(default=0.3)
     CONTEXT_WINDOW: int = Field(default=5)
 

@@ -335,29 +335,40 @@ RÈGLE ABSOLUE : Ne jamais refuser de générer des exercices. Ne jamais donner 
         except Exception as exc:
             logger.warning("Groq indisponible (premier essai)", error=str(exc))
 
-        # Retry pour les exercices : prompt simplifié, timeout plus court
+        # Retry pour les exercices : modèle rapide llama-3.1-8b-instant
         if intent == "exercice":
             try:
                 await asyncio.sleep(1)
-                # Extraire niveau + matière du message reformulé pour retry minimal
-                retry_msg = message
                 simple_messages = [
                     {"role": "system", "content": (
-                        "Tu es EduBot, assistant éducatif du Sénégal. "
+                        "Tu es EduBot, assistant éducatif sénégalais. "
                         "Génère exactement 3 exercices numérotés pour le niveau et la matière demandés. "
-                        "Format : ### Exercice 1\n[énoncé]\n---\n### Exercice 2\n..."
-                        "N'utilise jamais le gras dans les énoncés."
+                        "Utilise des contextes sénégalais dans les énoncés. "
+                        "N'utilise JAMAIS le gras (**...**) dans les énoncés. "
+                        "Format : ### Exercice 1\n[énoncé]\n---\n### Exercice 2\n[énoncé]\n---\n### Exercice 3\n[énoncé]"
                     )},
-                    {"role": "user", "content": retry_msg}
+                    {"role": "user", "content": message}
                 ]
-                text = await self._call_groq(simple_messages, 1500, timeout=45.0)
+                # Utiliser le modèle rapide pour le retry
+                fast_model = settings.LLM_FAST_MODEL
+                client = await self._ensure_client()
+                resp = await asyncio.wait_for(
+                    client.chat.completions.create(
+                        model=fast_model,
+                        messages=simple_messages,
+                        max_tokens=1500,
+                        temperature=0.4,
+                    ),
+                    timeout=40.0
+                )
+                text = resp.choices[0].message.content.strip()
                 if text:
-                    logger.info("Groq réussi au retry exercice")
+                    logger.info("Groq retry réussi (modèle rapide)", model=fast_model)
                     return self._clean_llm_response(text)
             except asyncio.TimeoutError:
-                logger.warning("Groq timeout (retry exercice)")
+                logger.warning("Groq timeout (retry modèle rapide)")
             except Exception as exc:
-                logger.warning("Groq indisponible (retry exercice)", error=str(exc))
+                logger.warning("Groq indisponible (retry modèle rapide)", error=str(exc))
 
         if knowledge_context:
             return self._build_lightweight_response(message, knowledge_context, intent)

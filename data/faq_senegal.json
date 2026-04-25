@@ -1560,7 +1560,7 @@
     {
       "id": 151,
       "question": "C'est quoi PLANETE ?",
-      "answer": "PLANETE 3.0 est la plateforme officielle de gestion scolaire du Ministère de l'Éducation Nationale du Sénégal. C'est une solution intégrée qui permet de gérer, au quotidien, toutes les activités d'un établissement scolaire : inscriptions et suivi des élèves, emplois du temps, cours, évaluations, notes, bulletins, gestion du personnel, rapports et pilotage. Elle est accessible à l'adresse https://planete3.education.sn.",
+      "answer": "PLANETE, Paquet de Logiciels Académiques Normalisés pour les Établissements et Écoles, est une plateforme de gestion des établissements et écoles.\n\nPLANETE permet de gérer :\n- Environnement physique\n- Environnement pédagogique\n- Vie scolaire\n- Communication entre acteurs\n\nElle facilite aussi la collecte et le traitement des données statistiques.",
       "category": "planete_general",
       "language": "fr",
       "tags": [

@@ -296,15 +296,15 @@
     },
     {
       "id": "simen_planete_01",
-      "title": "Présentation de PLANETE 3.0",
+      "title": "Présentation de PLANETE",
       "category": "planete",
       "language": "fr",
-      "content": "Plateforme Nationale d'Education et de Tutorat - Système d’Information et de Management de l’Éducation nationale. URL: https://planete3.education.sn. Utilisez votre adresse e-mail professionnelle (prenom.nom@education.sn) et votre mot de passe personnel.",
+      "content": "PLANETE, Paquet de Logiciels Académiques Normalisés pour les Établissements et Écoles, est une plateforme de gestion des établissements et écoles. PLANETE permet de gérer : l’environnement physique, l’environnement pédagogique, la Vie scolaire, la Communication entre acteurs. Elle facilite aussi la collecte et le traitement des données statistiques.",
       "tags": [
-        "simen",
         "planete",
-        "connexion",
-        "url"
+        "présentation",
+        "définition",
+        "gestion"
       ]
     },
     {

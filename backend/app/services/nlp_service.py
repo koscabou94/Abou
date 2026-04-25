@@ -299,6 +299,20 @@ RÈGLE ABSOLUE : Ne jamais refuser de générer des exercices. Ne jamais donner 
                 unique.append(p)
         return "\n\n".join(unique).strip()
 
+    async def _call_groq(self, chat_messages: list, max_tokens: int, timeout: float) -> str:
+        """Appel Groq unique — retourne le texte ou lève une exception."""
+        client = await self._ensure_client()
+        response = await asyncio.wait_for(
+            client.chat.completions.create(
+                model=settings.LLM_MODEL,
+                messages=chat_messages,
+                max_tokens=max_tokens,
+                temperature=settings.TEMPERATURE,
+            ),
+            timeout=timeout
+        )
+        return response.choices[0].message.content.strip()
+
     async def generate_response(
         self,
         message: str,
@@ -311,24 +325,39 @@ RÈGLE ABSOLUE : Ne jamais refuser de générer des exercices. Ne jamais donner 
 
         chat_messages = self._build_chat_messages(message, context, intent, knowledge_context)
 
+        # Premier essai
         try:
-            client = await self._ensure_client()
-            response = await asyncio.wait_for(
-                client.chat.completions.create(
-                    model=settings.LLM_MODEL,
-                    messages=chat_messages,
-                    max_tokens=settings.MAX_TOKENS,
-                    temperature=settings.TEMPERATURE,
-                ),
-                timeout=30.0
-            )
-            text = response.choices[0].message.content.strip()
+            text = await self._call_groq(chat_messages, settings.MAX_TOKENS, timeout=45.0)
             if text:
                 return self._clean_llm_response(text)
         except asyncio.TimeoutError:
-            logger.warning("Groq timeout, fallback")
+            logger.warning("Groq timeout (premier essai)")
         except Exception as exc:
-            logger.warning("Groq indisponible", error=str(exc))
+            logger.warning("Groq indisponible (premier essai)", error=str(exc))
+
+        # Retry pour les exercices : prompt simplifié, timeout plus court
+        if intent == "exercice":
+            try:
+                await asyncio.sleep(1)
+                # Extraire niveau + matière du message reformulé pour retry minimal
+                retry_msg = message
+                simple_messages = [
+                    {"role": "system", "content": (
+                        "Tu es EduBot, assistant éducatif du Sénégal. "
+                        "Génère exactement 3 exercices numérotés pour le niveau et la matière demandés. "
+                        "Format : ### Exercice 1\n[énoncé]\n---\n### Exercice 2\n..."
+                        "N'utilise jamais le gras dans les énoncés."
+                    )},
+                    {"role": "user", "content": retry_msg}
+                ]
+                text = await self._call_groq(simple_messages, 1500, timeout=45.0)
+                if text:
+                    logger.info("Groq réussi au retry exercice")
+                    return self._clean_llm_response(text)
+            except asyncio.TimeoutError:
+                logger.warning("Groq timeout (retry exercice)")
+            except Exception as exc:
+                logger.warning("Groq indisponible (retry exercice)", error=str(exc))
 
         if knowledge_context:
             return self._build_lightweight_response(message, knowledge_context, intent)

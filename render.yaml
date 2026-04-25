@@ -31,7 +31,7 @@ services:
         value: llama-3.3-70b-versatile
 
       - key: MAX_TOKENS
-        value: "512"
+        value: "2000"
 
       - key: USE_LIGHTWEIGHT_MODE
         value: "true"

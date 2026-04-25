@@ -80,6 +80,7 @@ RÈGLES DE FORMAT EXERCICES :
 - Mets TOUJOURS --- entre chaque exercice (séparateur)
 - Laisse une ligne vide entre le titre de l'exercice et son énoncé
 - Ne mets JAMAIS le titre et l'énoncé sur la même ligne
+- INTERDIT : N'utilise JAMAIS le gras (**...**) dans le texte des énoncés d'exercices. Le texte des questions doit être en texte normal, sans aucun formatage gras. Seuls les titres ### sont autorisés.
 
 ---
 

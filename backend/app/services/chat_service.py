@@ -188,12 +188,10 @@ class ChatService:
                     "timestamp": datetime.utcnow().isoformat(),
                 }
 
-            # === REFORMULATION EXERCICE CASCADE ===
-            # Quand le message est issu d'une cascade de clarification (format "X — Y — Z"),
-            # le transformer en requête d'exercices claire et directe pour le LLM
-            if intent == "exercice" and " — " in fr_message:
-                parts = [p.strip() for p in fr_message.split(" — ") if p.strip()]
-                # Chercher le niveau et la matière dans les parties
+            # === REFORMULATION EXERCICE (cascade ET message direct complet) ===
+            # Quand le message exercice contient niveau + matière (quelle que soit la forme),
+            # on le reformule en instruction claire pour le LLM pour garantir la génération.
+            if intent == "exercice":
                 LEVEL_KW = ["cp","ce1","ce2","cm1","cm2","primaire","6ème","6eme","5ème","5eme",
                             "4ème","4eme","3ème","3eme","seconde","2nde","première","premiere",
                             "1ère","1ere","terminale","lycée","lycee","college","collège"]
@@ -201,31 +199,21 @@ class ChatService:
                               "sciences","svt","physique","chimie","histoire","géographie","geographie",
                               "anglais","philosophie","calcul","géométrie","geometrie","toutes les matières",
                               "toutes les matieres"]
-                found_level = None
-                found_subject = None
-                for part in parts:
-                    pl = part.lower()
-                    if not found_level and any(kw in pl for kw in LEVEL_KW):
-                        found_level = part
-                    if not found_subject and any(kw in pl for kw in SUBJECT_KW):
-                        found_subject = part
+                msg_lower_ex = fr_message.lower()
+                found_level = next((kw for kw in LEVEL_KW if kw in msg_lower_ex), None)
+                found_subject = next((kw for kw in SUBJECT_KW if kw in msg_lower_ex), None)
+
                 if found_level and found_subject:
+                    # Niveau ET matière présents → reformuler en instruction directe
+                    subject_display = found_subject.capitalize()
+                    level_display = found_level.upper()
                     fr_message = (
-                        f"Génère 3 exercices complets de {found_subject} adaptés au niveau {found_level}. "
-                        f"Utilise des contextes sénégalais dans les énoncés. "
+                        f"Génère 3 exercices complets de {subject_display} adaptés au niveau {level_display}. "
+                        f"Utilise des contextes sénégalais dans les énoncés (marchés, agriculture, villes du Sénégal). "
+                        f"N'utilise PAS de gras dans les énoncés. "
                         f"Suis exactement le format avec les séparateurs --- entre chaque exercice."
                     )
-                elif found_level:
-                    fr_message = (
-                        f"Génère 3 exercices scolaires pour le niveau {found_level}. "
-                        f"Suis le format avec les séparateurs --- entre chaque exercice."
-                    )
-                elif found_subject:
-                    fr_message = (
-                        f"Génère 3 exercices de {found_subject}. "
-                        f"Suis le format avec les séparateurs --- entre chaque exercice."
-                    )
-                logger.debug("Message cascade reformulé pour le LLM", original=message_clean, reformulated=fr_message)
+                    logger.debug("Message exercice reformulé (niveau+matière)", reformulated=fr_message[:80])
 
             # === ÉTAPE 4 : Recherche dans les FAQ (chemin rapide) ===
             # Détecter les questions de culture générale (géographie, histoire...)

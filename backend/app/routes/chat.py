@@ -69,6 +69,11 @@ class ChatRequest(BaseModel):
         }
 
 
+class ClarificationData(BaseModel):
+    """Données de clarification renvoyées au frontend pour afficher des boutons de choix."""
+    options: list[str] = Field(..., description="Liste des options proposées à l'utilisateur")
+
+
 class ChatResponse(BaseModel):
     """Modèle de réponse de l'endpoint de chat."""
 
@@ -80,6 +85,10 @@ class ChatResponse(BaseModel):
     source: str = Field(..., description="Source de la réponse : 'faq' ou 'llm'")
     response_time_ms: int = Field(..., description="Temps de traitement en millisecondes")
     timestamp: str = Field(..., description="Horodatage de la réponse (ISO 8601)")
+    clarification: Optional[ClarificationData] = Field(
+        None,
+        description="Options de clarification à afficher comme boutons cliquables (si besoin)"
+    )
 
     class Config:
         json_schema_extra = {
@@ -91,7 +100,8 @@ class ChatResponse(BaseModel):
                 "confidence": 0.85,
                 "source": "faq",
                 "response_time_ms": 245,
-                "timestamp": "2024-09-01T10:30:00Z"
+                "timestamp": "2024-09-01T10:30:00Z",
+                "clarification": None
             }
         }
 
@@ -174,6 +184,12 @@ async def send_message(
     if result.get("intent") == "error":
         logger.warning("Erreur de traitement", session_id=chat_request.session_id[:8])
 
+    # Construire la clarification si présente (boutons de choix pour le frontend)
+    clarification_data = None
+    raw_clarification = result.get("clarification")
+    if raw_clarification and raw_clarification.get("options"):
+        clarification_data = ClarificationData(options=raw_clarification["options"])
+
     return ChatResponse(
         response=result["response"],
         session_id=result["session_id"],
@@ -183,6 +199,7 @@ async def send_message(
         source=result["source"],
         response_time_ms=result.get("response_time_ms", 0),
         timestamp=result["timestamp"],
+        clarification=clarification_data,
     )
 
 

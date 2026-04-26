@@ -847,11 +847,21 @@ class ChatService:
 
         # Demande de corrections/corrigés d'exercices déjà donnés → ne pas déclencher la clarification
         CORRECTION_FOLLOWUP = [
-            "les corrections", "le corrigé", "les corrigés", "les corriges", "le corrige",
-            "donne moi les corrections", "donne les corrections", "donne moi le corrigé",
-            "les réponses", "les reponses", "correction des exercices", "corrigé des exercices"
+            "la correction", "les corrections", "le corrigé", "les corrigés",
+            "les corriges", "le corrige", "les corriges",
+            "donne moi les corrections", "donne les corrections",
+            "donne moi le corrigé", "donne moi la correction",
+            "donne la correction", "correction de ces", "correction des exercices",
+            "corrigé des exercices", "corrigé de ces", "corriger ces",
+            "les réponses", "les reponses", "les solutions",
         ]
-        if any(kw in msg_lower for kw in CORRECTION_FOLLOWUP):
+        # Cas plus générique : "correction" dans le message sans demande de NOUVEAUX exercices
+        WANTS_NEW = ["donne moi des exercices", "génère des exercices", "je veux des exercices",
+                     "nouveaux exercices", "d'autres exercices", "autres exercices"]
+        has_correction_word = any(kw in msg_lower for kw in ["correction", "corrigé", "corrige", "corriger"])
+        is_new_exercise_request = any(kw in msg_lower for kw in WANTS_NEW)
+        if (any(kw in msg_lower for kw in CORRECTION_FOLLOWUP)
+                or (has_correction_word and not is_new_exercise_request and word_count <= 12)):
             return None  # Le LLM a le contexte — il génère les corrections
 
         has_fiche = any(w in msg_lower for w in [

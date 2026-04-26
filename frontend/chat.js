@@ -266,7 +266,7 @@
         const html = `
             ${role === "bot" ? dpticIcon : ""}
             <div class="msg-content">
-                <div class="msg-bubble">${role === "bot" ? marked.parse(text) : escapeHTML(text)}</div>
+                <div class="msg-bubble">${role === "bot" ? marked.parse(stripBold(text)) : escapeHTML(text)}</div>
                 ${role === "bot" ? `
                 <div class="msg-actions">
                     <button class="msg-action-btn copy-btn" title="Copier" onclick="window.copyMessage(this)">
@@ -322,13 +322,13 @@
 
         for (let i = 0; i < words.length; i++) {
             displayedText += words[i] + " ";
-            bubble.innerHTML = marked.parse(displayedText);
+            bubble.innerHTML = marked.parse(stripBold(displayedText));
             scrollToBottom();
             await new Promise(r => setTimeout(r, CONFIG.STREAM_SPEED));
         }
 
         // Final render with full text for correct markdown
-        bubble.innerHTML = marked.parse(fullText);
+        bubble.innerHTML = marked.parse(stripBold(fullText));
         if (window.lucide) lucide.createIcons();
     }
 
@@ -582,6 +582,24 @@
     };
 
     // === UTILS ===
+
+    /**
+     * Supprime TOUT le gras Markdown (**...**) avant le rendu.
+     * Règle absolue : zéro gras dans les réponses du bot.
+     */
+    function stripBold(text) {
+        if (!text) return text;
+        // 1. Gras+italique ***...***
+        text = text.replace(/\*\*\*([^*]+?)\*\*\*/gs, '$1');
+        // 2. Gras **...** (avec ou sans espaces intérieurs)
+        text = text.replace(/\*\*\s*([\s\S]+?)\s*\*\*/g, '$1');
+        // 3. ** orphelins restants
+        text = text.replace(/\*\*/g, '');
+        // 4. Gras __...__ (format alternatif)
+        text = text.replace(/__\s*([\s\S]+?)\s*__/g, '$1');
+        return text;
+    }
+
     function escapeHTML(str) {
         const div = document.createElement("div");
         div.textContent = str;

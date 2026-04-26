@@ -227,12 +227,39 @@ class ChatService:
                 found_subject = found_subjects[0] if found_subjects else None
                 multi_subject = len(found_subjects) > 1
 
+                # Sous-matières français : grammaire, conjugaison, etc.
+                FRENCH_SUBTOPICS_LIST = [
+                    "grammaire", "conjugaison", "orthographe", "dictée", "dictee",
+                    "lecture", "écriture", "ecriture", "expression écrite", "expression ecrite",
+                    "vocabulaire", "rédaction", "redaction", "compréhension", "comprehension",
+                    "production écrite", "production ecrite"
+                ]
+                # Si une sous-matière français est détectée, l'ajouter à found_subjects
+                french_subtopic = next((kw for kw in FRENCH_SUBTOPICS_LIST if kw in msg_lower_ex), None)
+                if french_subtopic and not found_subject:
+                    found_subject = french_subtopic
+                    found_subjects = [french_subtopic]
+
+                # Détection "avec corrigé"
+                CORRIGE_KW = [
+                    "avec corrigé", "avec corrige", "avec les corrections", "avec correction",
+                    "et corrigé", "et les corrections", "corrigés inclus", "corriges inclus",
+                    "avec les corrigés", "et les corrigés"
+                ]
+                wants_corrige = any(kw in msg_lower_ex for kw in CORRIGE_KW)
+
                 if found_level and found_subject:
                     level_display = found_level.upper()
 
                     # Extraire la quantité demandée (ex: "3 exercices", "5 questions")
                     qty_match = _re.search(r'\b(\d+)\s*(exercice|devoir|question|problème|probleme)', msg_lower_ex)
                     quantity = qty_match.group(1) if qty_match else "3"
+
+                    corrige_instruction = (
+                        " Inclus le corrigé complet après tous les exercices, dans une section ### Corrigés."
+                        if wants_corrige else
+                        " Ne mets PAS le corrigé, seulement les exercices."
+                    )
 
                     # Instruction spéciale pour les matières-langues (anglais, espagnol...)
                     LANG_SUBJECTS = ["anglais","english","espagnol","arabe"]
@@ -244,7 +271,7 @@ class ChatService:
                             f"{fr_message}\n\n"
                             f"[INSTRUCTION] Respecte EXACTEMENT la demande : génère les exercices "
                             f"pour chaque matière demandée avec les quantités exactes mentionnées. "
-                            f"Niveau : {level_display}. N'utilise PAS de gras."
+                            f"Niveau : {level_display}.{corrige_instruction} N'utilise PAS de gras."
                         )
                     elif is_lang_subject:
                         # Matière langue → les exercices doivent être dans cette langue
@@ -254,7 +281,16 @@ class ChatService:
                             f"IMPORTANT : les exercices doivent être rédigés EN {lang_display.upper()} "
                             f"(textes, questions et réponses en {lang_display}). "
                             f"Adapte au niveau {level_display} du programme sénégalais. "
-                            f"N'utilise PAS de gras. Séparateurs --- entre chaque exercice."
+                            f"N'utilise PAS de gras. Séparateurs --- entre chaque exercice.{corrige_instruction}"
+                        )
+                    elif french_subtopic:
+                        # Sous-matière français (grammaire, conjugaison, etc.)
+                        subtopic_display = french_subtopic.capitalize()
+                        fr_message = (
+                            f"Génère {quantity} exercices de {subtopic_display} (Français) "
+                            f"pour le niveau {level_display}. "
+                            f"Adapte au programme officiel sénégalais de Français niveau {level_display}. "
+                            f"N'utilise PAS de gras. Séparateurs --- entre chaque exercice.{corrige_instruction}"
                         )
                     else:
                         # Matière standard → instruction claire
@@ -263,10 +299,11 @@ class ChatService:
                             f"Génère {quantity} exercices complets de {subject_display} "
                             f"pour le niveau {level_display}. "
                             f"Utilise des contextes sénégalais dans les énoncés. "
-                            f"N'utilise PAS de gras. Séparateurs --- entre chaque exercice."
+                            f"N'utilise PAS de gras. Séparateurs --- entre chaque exercice.{corrige_instruction}"
                         )
                     logger.debug("Exercice reformulé", level=level_display,
-                                 subject=found_subject, multi=multi_subject, qty=quantity)
+                                 subject=found_subject, multi=multi_subject, qty=quantity,
+                                 corrige=wants_corrige)
 
             # === ÉTAPE 4 : Recherche dans les FAQ (chemin rapide) ===
             # Détecter les questions de culture générale (géographie, histoire...)
@@ -797,6 +834,26 @@ class ChatService:
 
         has_level = any(kw in msg_lower for kw in LEVEL_KEYWORDS)
         has_subject = any(kw in msg_lower for kw in SUBJECT_KEYWORDS)
+
+        # Sous-matières du français : grammaire, conjugaison, etc. = Français
+        FRENCH_SUBTOPICS = [
+            "grammaire", "conjugaison", "orthographe", "dictée", "dictee",
+            "lecture", "écriture", "ecriture", "expression écrite", "expression ecrite",
+            "vocabulaire", "rédaction", "redaction", "compréhension", "comprehension",
+            "production écrite", "production ecrite"
+        ]
+        if any(kw in msg_lower for kw in FRENCH_SUBTOPICS):
+            has_subject = True  # c'est du Français
+
+        # Demande de corrections/corrigés d'exercices déjà donnés → ne pas déclencher la clarification
+        CORRECTION_FOLLOWUP = [
+            "les corrections", "le corrigé", "les corrigés", "les corriges", "le corrige",
+            "donne moi les corrections", "donne les corrections", "donne moi le corrigé",
+            "les réponses", "les reponses", "correction des exercices", "corrigé des exercices"
+        ]
+        if any(kw in msg_lower for kw in CORRECTION_FOLLOWUP):
+            return None  # Le LLM a le contexte — il génère les corrections
+
         has_fiche = any(w in msg_lower for w in [
             "fiche", "préparation", "preparation", "plan de leçon", "plan de cours",
             "séance", "seance", "fiche pédagogique", "fiche pedagogique",

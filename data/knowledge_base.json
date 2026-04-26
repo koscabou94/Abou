@@ -323,939 +323,355 @@
       ]
     },
     {
-      "id": "planete_guide_02",
-      "title": "PLANETE : Introduction",
+      "id": "planete_guide_01",
+      "title": "PLANETE : Présentation générale",
       "category": "planete",
       "language": "fr",
-      "content": "Dans le contexte actuel de transformation numérique du système éducatif sénégalais, le Ministère de l’Éducation nationale a engagé une réforme ambitieuse visant à moderniser la gestion des établissements scolaires et à améliorer la qualité du service éducatif. Cette dynamique s’inscrit dans le cadre de la Stratégie numérique pour l’éducation (2025-2029), dont PLANETE constitue une composante centrale. Pensée comme une solution intégrée, la plateforme PLANETE 3.0 offre un environnement unifié permettant de gérer, au quotidien, les activités administratives, pédagogiques et le suivi des élèves, tout en facilitant la circulation de l’information entre les différents niveaux du système éducatif. Le déploiement national de PLANETE, amorcé à partir d’octobre 2025, marque une étape décisive dans cette modernisation. Dans les établissements, cette évolution se traduit par des usages concrets et immédiats : un chef d’établissement peut suivre en temps réel les absences, un enseignant peut renseigner son cahier de texte depuis la salle de classe, et un parent peut consulter les résultats de son enfant sans se déplacer. Une telle transformation suppose toutefois une appropriation progressive par l’ensemble des acteurs (chefs d’établissement, enseignants, personnels administratifs et référents numériques) soutenue par des actions de formation et des dispositifs d’accompagnement de proximité portés par les IA et les IEF. A cet effet, le présent guide d’utilisation répond à un besoin simple mais essentiel : aider chaque utilisateur à prendre en main la plateforme de manière concrète, progressive et directement exploitable dans le travail quotidien. Face à la richesse fonctionnelle de PLANETE (gestion des élèves, emplois du temps, cours, évaluations, rapports et pilotage des activités) il est indispensable de disposer d’un support clair, structuré et opérationnel. Ce guide ne se limite donc pas à décrire des fonctionnalités : il accompagne les usages, s’appuie sur des",
+      "content": "PLANETE (Paquet de Logiciels Académiques Normalisés pour les Établissements et Écoles) est la plateforme officielle de gestion scolaire, administrative et pédagogique du Ministère de l'Éducation nationale du Sénégal. Elle s'inscrit dans le cadre du Système d'Information du Ministère de l'Éducation nationale (SIMEN).\n\nVersions : La version 1 a posé les bases de la numérisation administrative. La version 2 a ajouté les dimensions pédagogiques (classes, emplois du temps, évaluations). PLANETE 3 (2026) couvre le préscolaire, l'élémentaire et le moyen-secondaire.\n\nNouvelles fonctionnalités de PLANETE 3 :\n- Dématérialisation des procédures (inscriptions, transferts en ligne)\n- Ouverture à tous les acteurs : chefs d'établissement, enseignants, élèves, parents, autorités académiques (IEF, IA)\n- Tableaux de bord et indicateurs de pilotage\n- Gestion intégrée : scolarité, inscriptions, absences, évaluations\n\nAccès : https://planete3.education.sn avec votre e-mail professionnel (prenom.nom@education.sn).\n\nPLANETE 3 et PLANETE3 désignent la même chose — PLANETE 3 est la version actuelle de PLANETE (depuis 2026).",
       "tags": [
         "planete",
-        "guide",
-        "introduction"
+        "présentation",
+        "simen",
+        "version"
+      ]
+    },
+    {
+      "id": "planete_guide_02",
+      "title": "PLANETE : Connexion à la plateforme",
+      "category": "planete",
+      "language": "fr",
+      "content": "Pour se connecter à PLANETE :\n1. Ouvrez https://planete3.education.sn dans votre navigateur.\n2. Renseignez votre e-mail professionnel (ex. prenom.nom@education.sn) dans le champ prévu.\n3. Cliquez sur Continuer — le système identifie votre profil.\n4. Saisissez votre mot de passe personnel sur l'écran suivant.\n5. Cliquez sur Se connecter pour accéder à votre espace.\n\nConseils importants :\n- Si la connexion échoue, vérifiez que l'adresse e-mail est correcte et que le mot de passe respecte les majuscules et minuscules.\n- En cas d'oubli du mot de passe, rapprochez-vous du référent numérique de votre établissement ou du chef d'établissement.\n- Ne partagez pas vos identifiants : chaque action dans PLANETE (inscription, transfert, saisie de notes) est tracée et liée à votre compte.\n- L'adresse e-mail professionnelle est fournie par le Ministère de l'Éducation nationale.",
+      "tags": [
+        "planete",
+        "connexion",
+        "mot de passe",
+        "accès",
+        "identifiant"
+      ]
+    },
+    {
+      "id": "planete_guide_03",
+      "title": "PLANETE : Tableau de bord",
+      "category": "planete",
+      "language": "fr",
+      "content": "Le tableau de bord de PLANETE donne une vue rapide de la situation de l'établissement et facilite le suivi quotidien.\n\nFonctions du tableau de bord :\n- Permet au chef d'établissement et aux personnels autorisés de consulter rapidement les informations essentielles.\n- Les données évoluent en temps réel : absences, cours prévus, évaluations, demandes de transfert, messages reçus.\n- Indicateurs visibles : effectifs, classes, absences, activités récentes, raccourcis vers les fonctions utiles.\n- Aide à organiser la journée, repérer les situations importantes et agir rapidement.",
+      "tags": [
+        "planete",
+        "tableau de bord",
+        "dashboard",
+        "suivi"
       ]
     },
     {
       "id": "planete_guide_04",
-      "title": "PLANETE : Evolution de la plateforme PLANETE",
+      "title": "PLANETE : Fiche établissement",
       "category": "planete",
       "language": "fr",
-      "content": "PLANETE s’inscrit dans le cadre du Système d’Information du Ministère de l’Education nationale (SIMEN), comme solution intégrée de gestion scolaire au service des établissements et du pilotage du système éducatif.",
+      "content": "La rubrique Établissement permet de consulter et mettre à jour les informations administratives et structurelles de l'école ou du lycée.\n\nAccéder à la fiche établissement :\n- Après la connexion, ouvrez le menu de gauche puis cliquez sur Établissement.\n- La fiche regroupe : adresse, contacts, infrastructures, classes, effectifs.\n\nMettre à jour les informations :\n1. Cliquez sur le bouton Editer fiche.\n2. Modifiez les champs nécessaires.\n3. Cliquez sur Enregistrer pour valider.\nAttention : Avant toute mise à jour, s'assurer que le Planificateur de l'IA ou de l'IEF a mis à jour les informations dans CODECO.\n\nMettre à jour le cycle de l'établissement :\n- En cas de changement de cycle, mettre à jour la fiche établissement pour que les classes et fonctions pédagogiques s'affichent correctement.\n\nPolarisation BST (Bloc Scientifique et Technologique) :\n- Les collèges qui envoient leurs élèves de 4e et 3e vers un BST doivent déclarer cette polarisation.\n- Dans la fiche, choisir Oui pour déclarer la polarisation, puis sélectionner le BST polarisateur dans la liste nationale.",
       "tags": [
         "planete",
-        "guide",
-        "evolution de la plateforme planete"
+        "établissement",
+        "fiche",
+        "cycle",
+        "bst",
+        "codeco"
       ]
     },
     {
       "id": "planete_guide_05",
-      "title": "PLANETE : Des premières bases de numérisation à la version 2",
+      "title": "PLANETE : Configuration — vue d'ensemble",
       "category": "planete",
       "language": "fr",
-      "content": "La première version de la plateforme a posé les bases de la numérisation des établissements, avec une informatisation centrée sur les opérations administratives. Elle a permis de structurer les données scolaires et d’amorcer l’abandon progressif des supports papier. La version 2 a élargi le périmètre fonctionnel en intégrant les dimensions pédagogiques. Les établissements ont commencé à gérer, dans un même environnement, les classes, les emplois du temps, les évaluations et le suivi des élèves. Cette étape a favorisé une meilleure organisation interne et une circulation plus fluide de l’information.",
+      "content": "La rubrique Configuration est l'espace où l'on paramètre l'environnement physique et pédagogique de l'établissement. Elle permet d'organiser les espaces, les structures pédagogiques et certaines données administratives.\n\nLes paramétrages disponibles dans Configuration :\n1. Bâtiments — créer les bâtiments de l'établissement\n2. Salles — créer les salles dans les bâtiments\n3. Programmes — afficher les programmes et disciplines du cycle\n4. Classes pédagogiques — créer et gérer les classes\n5. Groupage de classes — regrouper deux classes pour un même enseignant\n6. Gestion des semestres — activer et paramétrer le second semestre\n7. Compte bancaire — enregistrer le compte bancaire de l'établissement\n8. Paramétrage scolarité — configurer les frais de scolarité\n\nPour accéder à Configuration : ouvrez le menu de gauche dans PLANETE, puis cliquez sur Configuration.",
       "tags": [
         "planete",
-        "guide",
-        "des premières bases de numérisation à la version 2"
+        "configuration",
+        "paramétrage",
+        "environnement physique"
       ]
     },
     {
       "id": "planete_guide_06",
-      "title": "PLANETE : Le passage à PLANETE 3",
+      "title": "PLANETE : Configuration des bâtiments",
       "category": "planete",
       "language": "fr",
-      "content": "Avec PLANETE 3, la plateforme change d’échelle. Elle devient un système unifié, intercon- necté et aligné avec l’architecture globale du SIMEN. Elle relie désormais les établissements aux inspections (IEF), aux académies (IA) et au niveau central, permettant un pilotage cohé- rent et fondé sur des données partagées. Cette évolution renforce la fiabilité de l’information et la capacité de suivi du système éducatif dans son ensemble.",
+      "content": "Pour créer les bâtiments de l'établissement dans PLANETE :\n1. Allez dans Configuration, puis cliquez sur l'onglet Bâtiments.\n2. Cliquez sur Ajouter.\n3. Renseignez : le type de bâtiment, le nom du bâtiment, et les coordonnées (facultatif).\n4. Cliquez sur Enregistrer. Le bâtiment apparaît dans la liste où il peut être modifié ou supprimé.\n\nTypes de bâtiments :\n- Virtuel : constructions provisoires ne faisant pas partie du patrimoine (abris provisoires, emprunts).\n- Physique : constructions appartenant à l'établissement et respectant les normes de construction.\n- Aire de jeux : espaces dédiés aux activités sportives (terrain de football, basket, gymnase).",
       "tags": [
         "planete",
-        "guide",
-        "le passage à planete 3"
+        "bâtiments",
+        "configuration",
+        "infrastructure"
       ]
     },
     {
       "id": "planete_guide_07",
-      "title": "PLANETE : Nouvelles fonctionnalités de PLANETE 3",
+      "title": "PLANETE : Configuration des salles",
       "category": "planete",
       "language": "fr",
-      "content": "PLANETE 3 introduit une transformation concrète des pratiques à travers la généralisa- tion de la dématérialisation et l’ouverture des accès.",
+      "content": "Pour créer des salles dans PLANETE :\n1. Allez dans Configuration, puis cliquez sur l'onglet Salle.\n2. Cliquez sur le bouton Ajouter.\n3. Renseignez dans le formulaire : le bâtiment dans lequel se trouve la salle, le type de salle (salle de classe, laboratoire, bureau, etc.), le nom de la salle, les dimensions (longueur et largeur).\n4. Cliquez sur Enregistrer.\n5. Une fois la salle créée, vous pouvez indiquer le type d'équipement, la modifier ou la supprimer.\n\nConseils : Il est fortement conseillé de renseigner les dimensions, la capacité et l'équipement de chaque salle. Ces informations alimentent les tableaux de bord des autorités académiques (Cabinet, Secrétariat général, Directions pédagogiques).",
       "tags": [
         "planete",
-        "guide",
-        "nouvelles fonctionnalités de planete 3"
+        "salles",
+        "configuration",
+        "infrastructure"
       ]
     },
     {
       "id": "planete_guide_08",
-      "title": "PLANETE : Dématérialisation des procédures",
+      "title": "PLANETE : Configuration des programmes et disciplines",
       "category": "planete",
       "language": "fr",
-      "content": "La plateforme permet désormais une dématérialisation complète des procédures adminis- tratives et pédagogiques. Les opérations telles que la gestion des élèves, l’organisation des classes, le suivi des absences, la planification des évaluations, la saisie des notes et l’édition des bulletins sont réalisées directement en ligne.",
+      "content": "L'onglet Programme dans Configuration permet d'afficher les programmes du cycle d'enseignement et leurs disciplines.\n\nComment accéder aux programmes :\n1. Allez dans Configuration, puis cliquez sur l'onglet Programme.\n2. Les programmes disponibles dans le cycle s'affichent.\n3. Cliquez sur Discipline pour voir les disciplines avec leurs coefficients et crédits horaires.\n\nRègles importantes :\n- Les coefficients des disciplines sont fixes.\n- Les crédits horaires sont modifiables.\n- Il existe deux types de disciplines : les disciplines obligatoires (affectées à tous les élèves) et les disciplines optionnelles (affectées seulement aux élèves qui les choisissent).\n- Pour les niveaux 4e et 3e, les disciplines du BST (économie familiale et sociale, technologie) doivent être cochées comme obligatoires sans affecter de professeur.\n- Pour le français (programme français et franco-arabe), les matières TSQ, Orthographe et Rédaction doivent avoir un total de coefficients égal au coefficient de la discipline Français. Même règle pour l'Arabe.",
       "tags": [
         "planete",
-        "guide",
-        "dématérialisation des procédures"
-      ]
-    },
-    {
-      "id": "planete_guide_09",
-      "title": "PLANETE : Inscriptions et transferts d’élèves",
-      "category": "planete",
-      "language": "fr",
-      "content": "A cela s’ajoutent deux évolutions majeures : la dématérialisation des inscriptions et celle des transferts d’élèves. Un établissement peut inscrire un nouvel élève ou traiter une demande de transfert sans recourir à des dossiers physiques, avec une traçabilité claire et un traitement plus rapide. Cette organisation réduit les erreurs, limite les pertes d’information et sécurise les données. Ministère de l’Éducation nationale",
-      "tags": [
-        "planete",
-        "guide",
-        "inscriptions et transferts d’élèves"
-      ]
-    },
-    {
-      "id": "planete_guide_10",
-      "title": "PLANETE : Ouverture des accès aux différents acteurs",
-      "category": "planete",
-      "language": "fr",
-      "content": "Par ailleurs, PLANETE 3 élargit les usages grâce à un accès étendu à l’ensemble des acteurs du système éducatif. Chefs d’établissement, enseignants, élèves, parents, mais aussi autorités académiques et centrales disposent d’interfaces adaptées à leurs rôles. Cette ouverture facilite la circulation de l’information, renforce la transparence et améliore la coordination entre les différents niveaux du système.",
-      "tags": [
-        "planete",
-        "guide",
-        "ouverture des accès aux différents acteurs"
-      ]
-    },
-    {
-      "id": "planete_guide_11",
-      "title": "PLANETE : Tableaux de bord et outils de suivi",
-      "category": "planete",
-      "language": "fr",
-      "content": "Enfin, la plateforme intègre des tableaux de bord et des outils de suivi qui offrent une lecture claire des indicateurs clés. Les responsables peuvent ainsi suivre les performances, anticiper les difficultés et orienter leurs décisions sur la base de données fiables.",
-      "tags": [
-        "planete",
-        "guide",
-        "tableaux de bord et outils de suivi"
-      ]
-    },
-    {
-      "id": "planete_guide_12",
-      "title": "PLANETE : Connexion",
-      "category": "planete",
-      "language": "fr",
-      "content": "La connexion à PLANETE constitue la première étape pour accéder aux services nu- mériques de gestion scolaire. Elle repose sur l’utilisation de l’adresse e-mail professionnelle fournie par le Ministère et d’un mot de passe personnel.",
-      "tags": [
-        "planete",
-        "guide",
-        "connexion"
-      ]
-    },
-    {
-      "id": "planete_guide_13",
-      "title": "PLANETE : Accès à PLANETE",
-      "category": "planete",
-      "language": "fr",
-      "content": "Ouvrez la plateforme PLANETE à l’adresse suivante : https://planete3.education. sn. Lorsque la page d’accueil s’affiche avec le formulaire de connexion, renseignez votre e-mail professionnel dans le champ prévu à cet effet. Dans un établissement, il s’agit généralement de l’adresse utilisée pour les communications officielles, par exemple prenom.nom@education.sn. Après avoir saisi correctement votre adresse, cliquez sur le bouton Continuer. Ce premier écran permet au système d’identifier votre profil et de préparer l’accès sécurisé à votre espace. Une fois l’adresse validée, un second écran apparaît et vous invite à saisir votre mot de passe. Entrez le mot de passe associé à votre compte, puis cliquez sur Connexion pour accéder à la plateforme.",
-      "tags": [
-        "planete",
-        "guide",
-        "accès à planete"
-      ]
-    },
-    {
-      "id": "planete_guide_14",
-      "title": "PLANETE : Tableau de bord",
-      "category": "planete",
-      "language": "fr",
-      "content": "Le tableau de bord donne une vue rapide de la situation de l’établissement et facilite le suivi quotidien.",
-      "tags": [
-        "planete",
-        "guide",
-        "tableau de bord"
-      ]
-    },
-    {
-      "id": "planete_guide_15",
-      "title": "PLANETE : Fonction du tableau de bord",
-      "category": "planete",
-      "language": "fr",
-      "content": "Le tableau de bord permet au chef d’établissement et aux personnels autorisés de consulter rapidement les informations essentielles. Il aide à organiser la journée, à repérer les situations importantes et à agir plus vite. Les données du tableau de bord évoluent au fil de la journée. On peut y voir les absences, les cours prévus, les évaluations, les demandes de transfert, les messages reçus et d’autres informations de suivi. Les principaux indicateurs visibles concernent notamment les effectifs, les classes, les absences, les activités récentes et les raccourcis vers les fonctions utiles.",
-      "tags": [
-        "planete",
-        "guide",
-        "fonction du tableau de bord"
-      ]
-    },
-    {
-      "id": "planete_guide_16",
-      "title": "PLANETE : Etablissement",
-      "category": "planete",
-      "language": "fr",
-      "content": "Dans PLANETE, la rubrique Établissement permet de consulter et de mettre à jour les informations administratives et structurelles de l’école ou du lycée. Cette fiche influence notamment l’affichage des cycles, des classes et de certaines fonctions pédagogiques.",
-      "tags": [
-        "planete",
-        "guide",
-        "etablissement"
-      ]
-    },
-    {
-      "id": "planete_guide_17",
-      "title": "PLANETE : Accéder à la fiche établissement",
-      "category": "planete",
-      "language": "fr",
-      "content": "Après la connexion, ouvrez le menu de gauche puis cliquez sur Établissement. La fiche s’affiche automatiquement. Elle regroupe les informations essentielles de la structure : adresse, contacts, infrastruc- tures, classes et effectifs. En début d’année ou après un changement administratif, cette vérification permet de s’assurer que les données sont correctes.",
-      "tags": [
-        "planete",
-        "guide",
-        "accéder à la fiche établissement"
-      ]
-    },
-    {
-      "id": "planete_guide_18",
-      "title": "PLANETE : Mettre à jour le cycle de l’établissement",
-      "category": "planete",
-      "language": "fr",
-      "content": "En cas de changement de cycle, c’est-à-dire le passage d’un collège à un lycée de cycle long (moyen-secondaire), le bouton Mise à jour permet d’actualiser le cycle de l’établissement et de faire apparaître les niveaux du secondaire (Seconde, Première, Terminale). Cette mise à jour doit être effectuée lorsque l’établissement change effectivement de statut ou de cycle.",
-      "tags": [
-        "planete",
-        "guide",
-        "mettre à jour le cycle de l’établissement"
-      ]
-    },
-    {
-      "id": "planete_guide_19",
-      "title": "PLANETE : Mise à jour des informations de l’établissement",
-      "category": "planete",
-      "language": "fr",
-      "content": "Pour mettre à jour les informations de l’établissement, cliquez sur le bouton Editer fiche. Les champs modifiables s’affichent alors à l’écran. Après avoir saisi ou corrigé les informations, cliquez sur Enregistrer pour valider la mise à jour.",
-      "tags": [
-        "planete",
-        "guide",
-        "mise à jour des informations de l’établissement"
-      ]
-    },
-    {
-      "id": "planete_guide_20",
-      "title": "PLANETE : Polarisation Bloc scientifique et technologique (BST)",
-      "category": "planete",
-      "language": "fr",
-      "content": "Les collèges d’enseignement moyen polarisés par des BST, auxquels ils envoient leurs élèves des niveaux quatrième et troisième, doivent le déclarer au niveau de la fiche d’établissement. Dans la fiche d’établissement, choisissez d’abord Oui pour indiquer que l’établissement est concerné par cette polarisation. Ensuite, à partir de la liste nationale des BST, sélectionnez l’établissement polarisateur correspondant.",
-      "tags": [
-        "planete",
-        "guide",
-        "polarisation bloc scientifique et technologique (bst)"
-      ]
-    },
-    {
-      "id": "planete_guide_21",
-      "title": "PLANETE : Configuration",
-      "category": "planete",
-      "language": "fr",
-      "content": "La rubrique Configuration est l’espace où l’on paramètre l’environnement physique et pédagogique de l’établissement. Elle permet d’organiser les espaces, les structures péda- gogiques et certaines données administratives indispensables au bon fonctionnement de la plateforme. Cette rubrique regroupe les principaux paramétrages nécessaires au fonctionnement de l’établissement. Les paramétrages que l’on peut y effectuer sont les suivants : Bâtiments Salles Programmes Classes pédagogiques Groupage de classes Gestion des semestres Compte bancaire Scolarité",
-      "tags": [
-        "planete",
-        "guide",
+        "programme",
+        "disciplines",
+        "coefficient",
+        "bst",
         "configuration"
       ]
     },
     {
-      "id": "planete_guide_22",
-      "title": "PLANETE : Bâtiments",
+      "id": "planete_guide_09",
+      "title": "PLANETE : Configuration des classes pédagogiques",
       "category": "planete",
       "language": "fr",
-      "content": "Pour créer les bâtiments de l’établissement, cliquez sur Bâtiments. Ensuite, cliquez sur Ajouter pour ajouter le type de bâtiment.",
+      "content": "Pour créer une classe pédagogique dans PLANETE :\n1. Allez dans Configuration, puis cliquez sur l'onglet Classe pédagogique.\n2. Cliquez sur le bouton Ajouter.\n3. Renseignez : le niveau de la classe, la série, le nom de la classe, et la salle occupée (facultatif).\n4. Cliquez sur Enregistrer.\n\nAprès la création :\n- Il est possible de modifier les informations ou de supprimer la classe.\n- Attention : la suppression d'une classe est irréversible — elle entraîne la suppression des affectations des élèves, des professeurs et de l'emploi du temps.\n- Il faut ensuite affecter les professeurs qui tiennent la classe, désigner le surveillant de classe et l'élève responsable.",
       "tags": [
         "planete",
-        "guide",
-        "bâtiments"
+        "classes",
+        "pédagogique",
+        "configuration",
+        "niveau"
       ]
     },
     {
-      "id": "planete_guide_23",
-      "title": "PLANETE : Salle",
+      "id": "planete_guide_10",
+      "title": "PLANETE : Configuration du groupage de classes",
       "category": "planete",
       "language": "fr",
-      "content": "L’onglet Salle permet de créer des salles au sein des bâtiments de l’établissement. Une fois les bâtiments créés, cliquez sur Salle pour afficher la zone de configuration des salles. Cliquez sur le bouton Ajouter pour afficher le formulaire de création de salle.",
+      "content": "Le groupage de classe permet de regrouper deux classes pédagogiques tenues par un même professeur dans une seule salle durant la même heure. C'est une pratique courante pour les disciplines optionnelles (LV2) et pour des classes de séries différentes ayant des disciplines en commun (ex. français/franco-arabe, S1 et S2).\n\nComment créer un groupage :\n1. Allez dans Configuration, puis cliquez sur l'onglet Groupage classe.\n2. Cliquez sur le bouton plus.\n3. Renseignez : le libellé du groupage, le niveau, la discipline, et le professeur.\n4. Enregistrez puis liez les classes au groupage créé.",
       "tags": [
         "planete",
-        "guide",
-        "salle"
+        "groupage",
+        "classes",
+        "lv2",
+        "configuration"
       ]
     },
     {
-      "id": "planete_guide_24",
-      "title": "PLANETE : Programme",
-      "category": "planete",
-      "language": "fr",
-      "content": "L’onglet Programme permet d’afficher les programmes qui existent dans le cycle d’enseignement de l’établissement ainsi que les disciplines qui leur sont associées. Cliquez sur l’onglet Programme pour afficher les programmes disponibles dans le cycle d’enseignement de l’établissement. Cliquez ensuite sur Discipline pour faire apparaître les disciplines avec les coefficients et les crédits horaires pré-programmés.",
-      "tags": [
-        "planete",
-        "guide",
-        "programme"
-      ]
-    },
-    {
-      "id": "planete_guide_25",
-      "title": "PLANETE : Classe pédagogique",
-      "category": "planete",
-      "language": "fr",
-      "content": "L’onglet Classe pédagogique permet de créer les classes pédagogiques de l’établissement. Pour créer une classe pédagogique, cliquez sur l’onglet Classe pédagogique. Dans l’espace de configuration qui s’affiche, cliquez sur le bouton Ajouter pour faire apparaître le formulaire de création d’une classe pédagogique. Dans le formulaire de création d’une classe pédagogique, renseignez le niveau de la classe, la série, le nom de la classe ainsi que la salle occupée par la classe. L’indication de la salle n’est pas obligatoire, une classe pédagogique pouvant être fixe ou",
-      "tags": [
-        "planete",
-        "guide",
-        "classe pédagogique"
-      ]
-    },
-    {
-      "id": "planete_guide_26",
-      "title": "PLANETE : Classes pédagogiques (mode nomade)",
-      "category": "planete",
-      "language": "fr",
-      "content": "nomade.",
-      "tags": [
-        "planete",
-        "guide",
-        "nomade."
-      ]
-    },
-    {
-      "id": "planete_guide_27",
-      "title": "PLANETE : Groupage de classe",
-      "category": "planete",
-      "language": "fr",
-      "content": "Le groupage de classe permet de regrouper deux classes pédagogiques tenues par un même professeur dans une seule salle durant la même heure. C’est une pratique courante pour les disciplines optionnelles comme les LV2 et pour les classes de séries ou de programmes d’enseignement différents qui ont des disciplines en commun, comme le français et le franco-arabe ou encore les séries S1 et S2. Pour grouper des classes, cliquez sur l’onglet Groupage classe, puis sur le bouton plus. Ensuite, remplissez le formulaire en renseignant le libellé du groupage, le niveau, la discipline ainsi que le professeur.",
-      "tags": [
-        "planete",
-        "guide",
-        "groupage de classe"
-      ]
-    },
-    {
-      "id": "planete_guide_28",
+      "id": "planete_guide_11",
       "title": "PLANETE : Gestion des semestres",
       "category": "planete",
       "language": "fr",
-      "content": "La rubrique Gestion des semestres permet d’activer et de paramétrer le second semestre de l’établissement. Le premier semestre est activé par défaut. Pour activer le second semestre, cliquez sur la carte Second Semestre, puis sur le bouton Activer. Il faut ensuite préciser la date de début du second semestre. En cas de modification de la date du second semestre, il faut d’abord purger la date du début du second semestre en cliquant sur le bouton Purger.",
+      "content": "La rubrique Gestion des semestres dans Configuration permet d'activer et paramétrer le second semestre.\n\n- Le premier semestre est activé par défaut dès le démarrage de PLANETE.\n- Pour activer le second semestre : cliquez sur la carte Second Semestre, puis sur le bouton Activer. Précisez ensuite la date de début du second semestre.\n- En cas de modification de la date : cliquez d'abord sur Purger pour effacer la date existante, puis saisissez la nouvelle date.\n\nImportant : la date du second semestre est utilisée pour déterminer le début du décompte des retards et des absences du second semestre.",
       "tags": [
         "planete",
-        "guide",
-        "gestion des semestres"
+        "semestre",
+        "configuration",
+        "calendrier scolaire"
       ]
     },
     {
-      "id": "planete_guide_29",
-      "title": "PLANETE : Compte bancaire",
+      "id": "planete_guide_12",
+      "title": "PLANETE : Compte bancaire et paramétrage scolarité",
       "category": "planete",
       "language": "fr",
-      "content": "Chaque établissement dispose d’un compte bancaire, d’un code établissement et d’un identifiant unique appelé IEN (Identifiant de l’éducation nationale) pour chaque élève. Pour ajouter le code bancaire, cliquez sur l’onglet Compte bancaire, puis sur Ajouter pour afficher le formulaire de renseignement du compte bancaire. Ensuite, renseignez les informations demandées (code banque, code guichet, numéro compte, RIB, nom banque), puis cliquez sur Enregistrer.",
+      "content": "Compte bancaire :\n- Chaque établissement dispose d'un compte bancaire et d'un code établissement. Les élèves ont chacun un IEN (Identifiant de l'Éducation Nationale).\n- Pour ajouter le compte bancaire : allez dans Configuration, cliquez sur l'onglet Compte bancaire, puis sur Ajouter.\n- Renseignez : code banque, code guichet, numéro compte, RIB, nom banque. Puis cliquez sur Enregistrer.\n\nParamétrage scolarité :\n- Allez dans Configuration, puis Paramétrage scolarité, puis Ajouter.\n- Deux modes de facturation disponibles :\n  1. Par rubrique (tenue, GOSCO, IME, Examen, etc.)\n  2. Montant unique (Inscription)\n- Après le choix du mode, fixez le montant et les échéances (paiement à la rentrée ou paiement différé).\n- Il est possible de facturer par niveau (6e, 5e, 4e, 3e, 2nde, 1ère, Tle) ou par cycle.",
       "tags": [
         "planete",
-        "guide",
-        "compte bancaire"
+        "compte bancaire",
+        "scolarité",
+        "frais",
+        "ien",
+        "configuration"
       ]
     },
     {
-      "id": "planete_guide_30",
-      "title": "PLANETE : Paramétrage scolarité",
+      "id": "planete_guide_13",
+      "title": "PLANETE : Gestion du personnel",
       "category": "planete",
       "language": "fr",
-      "content": "Cliquez sur Paramétrage scolarité, puis sur Ajouter pour afficher le formulaire de paramétrage. Pour paramétrer le paiement des frais de scolarité, plusieurs possibilités s’offrent au chef d’établissement : facturer le paiement par rubrique de frais de scolarité (tenue, GOSCO, IME, Examen, etc.) ; facturer le paiement à l’aide d’un montant unique (Inscription). Après avoir choisi le mode de facturation, il faut fixer le montant à payer et les échéances de paiement (Paiement à la rentrée ou paiement différé). Il est également possible de facturer par niveau en cochant le niveau (6e, 5e, 4e, 3e, 2nde, 1ère, Tle) ou par cycle sans cocher de niveau.",
+      "content": "Le module Personnel dans PLANETE permet de gérer le personnel de l'établissement. PLANETE distingue deux catégories : les agents titulaires et les compléments horaires.\n\nImportation du personnel :\n- Agents titulaires : ils sont importés directement depuis MIRADOR en cliquant sur Mis à Jour Personnel.\n- Compléments horaires (venant d'autres établissements) : cliquez sur Complément horaire, saisissez l'IEN ou l'e-mail de l'agent, complétez le numéro de l'OS, sa date et la date de prise de service.\n- Après l'importation, consultez la liste du personnel en cliquant sur le chiffre du nombre d'agents.\n\nPointage du personnel :\n- Dans la liste des agents, cliquez sur le bouton Pointage et indiquez la date de prise de service au début de chaque année scolaire.\n\nDossier de l'agent :\n- Depuis la liste, utilisez la zone Rechercher pour retrouver l'agent, puis cliquez sur son nom pour ouvrir son dossier.\n- Boutons disponibles : Mettre à jour (synchronise avec MIRADOR), Edition (modifier les infos), Précédent/Suivant (navigation), Archiver (retirer de la liste active).\n- Le dossier affiche : date et lieu de naissance, fonction, spécialité, diplômes, corps, grade, contacts, emploi du temps.",
       "tags": [
         "planete",
-        "guide",
-        "paramétrage scolarité"
+        "personnel",
+        "agent",
+        "mirador",
+        "pointage",
+        "titulaire",
+        "complement horaire"
       ]
     },
     {
-      "id": "planete_guide_31",
-      "title": "PLANETE : Personnel",
+      "id": "planete_guide_14",
+      "title": "PLANETE : Archivage d'un agent",
       "category": "planete",
       "language": "fr",
-      "content": "Le module Personnel permet de gérer le personnel de l’établissement. PLANETE distingue deux catégories de personnels : les agents titulaires et les compléments horaires.",
+      "content": "Pour archiver un agent dans PLANETE (le retirer de la liste active) :\n1. Ouvrez le dossier de l'agent depuis la liste du personnel.\n2. Cliquez sur le bouton Archiver en haut à droite.\n3. Dans la fenêtre d'archivage, choisissez le type de sortie correspondant à la situation de l'agent.\n4. Renseignez la date de sortie.\n5. Ajoutez une observation si nécessaire.\n6. Cliquez sur Enregistrer pour valider. L'agent est retiré de la liste active.",
       "tags": [
         "planete",
-        "guide",
+        "archiver",
+        "agent",
         "personnel"
       ]
     },
     {
-      "id": "planete_guide_32",
-      "title": "PLANETE : Import du personnel",
+      "id": "planete_guide_15",
+      "title": "PLANETE : Module Élèves — tableau de bord",
       "category": "planete",
       "language": "fr",
-      "content": "Les agents titulaires affectés à l’établissement sont directement importés de MIRADOR par le bouton Mis à Jour Personnel. Les compléments horaires, qui viennent d’autres établissements pour compléter leur service dans l’établissement, sont importés via le bouton Complément horaire.",
+      "content": "La rubrique Élèves dans PLANETE permet d'inscrire de nouveaux apprenants, mettre à jour leurs informations, gérer les transferts, suivre les absences et consulter les résultats scolaires.\n\nTableau de bord du module Élèves :\nCentralise toutes les opérations de gestion des apprenants. Selon le profil de l'utilisateur, donne accès à :\n- Transfert entrant (élèves rejoignant l'établissement)\n- Transfert sortant (élèves quittant l'établissement)\n- Inscriptions\n- Affectation des élèves\n- Import d'élèves\n- Reprise de scolarité\n- Élèves archivés\n- Statistiques et état civil\n- Indicateurs : effectifs, redoublants, élèves sans acte d'état civil",
       "tags": [
         "planete",
-        "guide",
-        "import du personnel"
+        "élèves",
+        "tableau de bord",
+        "gestion apprenants"
       ]
     },
     {
-      "id": "planete_guide_33",
-      "title": "PLANETE : Pointage du personnel",
-      "category": "planete",
-      "language": "fr",
-      "content": "Une fois la liste des agents affichée, il faut procéder au pointage du personnel en cliquant sur le bouton Pointage et en indiquant la date de leur prise de service au début de chaque année scolaire.",
-      "tags": [
-        "planete",
-        "guide",
-        "pointage du personnel"
-      ]
-    },
-    {
-      "id": "planete_guide_34",
-      "title": "PLANETE : Dossier de l’agent",
-      "category": "planete",
-      "language": "fr",
-      "content": "Après l’importation et le pointage, il est possible d’accéder au dossier personnel de chaque agent pour consulter sa fiche, suivre ses informations administratives et accéder à ses différentes rubriques de travail. Depuis la liste du personnel, utilisez la zone Rechercher pour retrouver rapidement l’agent concerné. Une fois l’agent repéré, cliquez sur son nom pour ouvrir son dossier personnel et afficher sa fiche détaillée.",
-      "tags": [
-        "planete",
-        "guide",
-        "dossier de l’agent"
-      ]
-    },
-    {
-      "id": "planete_guide_35",
-      "title": "PLANETE : Elèves",
-      "category": "planete",
-      "language": "fr",
-      "content": "La rubrique Elèves permet d’inscrire de nouveaux apprenants et de mettre à jour leurs informations administratives. Elle sert à gérer les transferts, à suivre les absences et à consulter les résultats scolaires.",
-      "tags": [
-        "planete",
-        "guide",
-        "elèves"
-      ]
-    },
-    {
-      "id": "planete_guide_36",
-      "title": "PLANETE : Tableau de bord du module Elèves",
-      "category": "planete",
-      "language": "fr",
-      "content": "Le tableau de bord de la rubrique Elèves centralise les principales opérations relatives à la gestion des apprenants. Il donne accès, selon le profil de l’utilisateur, aux fonctions de transfert entrant, transfert sortant, inscriptions, affectation des élèves, import, reprise de scolarité, élèves archivés, statistiques et état civil. La partie droite de l’écran affiche également des indicateurs utiles sur les effectifs, les redoublants et les élèves sans acte d’état civil.",
-      "tags": [
-        "planete",
-        "guide",
-        "tableau de bord du module elèves"
-      ]
-    },
-    {
-      "id": "planete_guide_37",
+      "id": "planete_guide_16",
       "title": "PLANETE : Dossier élève",
       "category": "planete",
       "language": "fr",
-      "content": "Le dossier élève permet de consulter la fiche individuelle d’un apprenant, d’accéder à ses informations scolaires et administratives, puis de naviguer entre les différents dossiers d’une même classe. — Depuis le tableau de bord du module Elèves, cliquez sur la classe voulue pour afficher la liste des élèves correspondants.",
+      "content": "Pour accéder au dossier d'un élève dans PLANETE :\n1. Depuis le tableau de bord du module Élèves, cliquez sur la classe pour afficher la liste.\n2. Utilisez la zone Rechercher pour trouver rapidement un élève.\n3. Cliquez sur le nom de l'élève pour ouvrir son dossier.\n\nLe dossier affiche :\n- Identité de l'élève, fiche élève, raccourcis vers les documents.\n- Boutons : Certificat scolarité, Quitus bibliothèque, Autorisation absence.\n- Boutons Edition, Précédent, Suivant.\n- Bloc Détails dossier : Filiation, Changer classe, Emploi du temps, Documents scolaires, Parcours élève, Régularisation, Mot de passe, Rapport Performances.\n\nModifier le dossier :\n- Cliquez sur Edition pour modifier l'identité, date/lieu de naissance, sexe, contacts, nationalité.\n- Champs spéciaux : Exemption EPS, Année de déclaration, Dernier redoublement, Handicap, Orphelin.\n- Cliquez sur Enregistrer pour valider.\n\nOptions supplémentaires dans la liste des élèves :\n- Affectation options : affecter les disciplines optionnelles (LV1, LV2, PC, SVT).\n- Documents administratifs : accès aux pièces (certificat de scolarité, quitus, autorisation absence).",
       "tags": [
         "planete",
-        "guide",
-        "dossier élève"
+        "dossier élève",
+        "inscription",
+        "identité"
       ]
     },
     {
-      "id": "planete_guide_38",
+      "id": "planete_guide_17",
       "title": "PLANETE : Transfert des élèves",
       "category": "planete",
       "language": "fr",
-      "content": "La gestion des transferts d’élèves s’effectue depuis la rubrique Elèves. Elle distingue les demandes de transfert entrant, pour les élèves qui rejoignent l’établissement, et les demandes de transfert sortant, pour les élèves qui quittent l’établissement.",
+      "content": "PLANETE permet de gérer les transferts d'élèves entrants et sortants.\n\nTransfert entrant (élève qui rejoint l'établissement) :\n1. Depuis le tableau de bord Élèves, cliquez sur l'icône Transfert entrant.\n2. La liste des demandes en cours s'affiche avec : identité de l'élève, date de naissance, établissement demandé, état des avis.\n3. Cliquez sur le nom de l'élève pour ouvrir le dossier de demande.\n4. Le dossier présente le profil, l'établissement d'origine, le motif, les performances scolaires et le circuit de validation (avis de l'établissement d'origine, de l'IA d'origine, de l'IA d'accueil, de l'établissement d'accueil).\n5. Utilisez les boutons Rejeter transfert ou Accepter transfert pour rendre la décision.\n\nTransfert sortant (élève qui quitte l'établissement) :\n1. Depuis le tableau de bord Élèves, cliquez sur l'icône Transfert sortant.\n2. Cliquez sur le bouton plus pour créer une nouvelle demande.\n3. Saisissez l'IEN de l'élève à transférer dans l'espace de recherche, puis cliquez sur Rechercher.\n4. Renseignez : l'IA d'accueil, l'IEF d'accueil, l'établissement d'accueil, le motif du transfert.\n5. Ajoutez un commentaire si nécessaire, puis validez.",
       "tags": [
         "planete",
-        "guide",
-        "transfert des élèves"
+        "transfert",
+        "élèves",
+        "entrant",
+        "sortant"
       ]
     },
     {
-      "id": "planete_guide_39",
-      "title": "PLANETE : Transfert entrant",
+      "id": "planete_guide_18",
+      "title": "PLANETE : Affectation et importation des élèves",
       "category": "planete",
       "language": "fr",
-      "content": "Depuis le tableau de bord du module Elèves, cliquez sur l’icône Transfert entrant. Cette fonction ouvre la liste des demandes de transfert adressées à l’établissement d’accueil.",
+      "content": "Affectation des élèves :\nLa fonction Affectation élèves rattache à une classe les apprenants non affectés dans le système (principalement les élèves de 6e et de 2nde, les redoublants, et les élèves dont la classe a été supprimée).\n1. Depuis le tableau de bord Élèves, cliquez sur l'icône Affectation Elèves.\n2. L'écran indique le nombre d'élèves non affectés, répartis par niveau.\n3. Cliquez sur le niveau concerné, cochez les élèves, sélectionnez la classe d'accueil, puis cliquez sur Affecter.\n\nImportation des élèves (en masse) :\n1. Téléchargez le template : depuis le tableau de bord Élèves, cliquez sur l'icône Template xlsx pour obtenir le modèle Excel.\n2. Préparez le fichier en renseignant les colonnes obligatoires : Prenom(s), Nom, Date de Naissance, Lieu de Naissance, Sexe, Nationalité, Existence extrait, Motif d'entrée, Statut.\n3. Importez : cliquez sur Import eleves, sélectionnez le niveau et la classe, choisissez le fichier Excel, puis cliquez sur Charger.\n4. Vérifiez les informations affichées, complétez les Informations supplémentaires (père, mère, tuteur) si nécessaire.\n5. Cliquez sur Enregistrer & Continuer pour valider.",
       "tags": [
         "planete",
-        "guide",
-        "transfert entrant"
+        "affectation",
+        "import",
+        "élèves",
+        "excel",
+        "template"
       ]
     },
     {
-      "id": "planete_guide_40",
-      "title": "PLANETE : Transfert sortant",
+      "id": "planete_guide_19",
+      "title": "PLANETE : Inscriptions des élèves",
       "category": "planete",
       "language": "fr",
-      "content": "Depuis le tableau de bord du module Elèves, cliquez sur l’icône Transfert sortant. Cette fonction permet d’initier une nouvelle demande de transfert et de suivre les demandes déjà envoyées par l’établissement.",
+      "content": "La rubrique Inscriptions dans le module Élèves permet de suivre les opérations d'inscription et les montants enregistrés.\n\nL'écran affiche : inscriptions du jour, montant du jour, total des inscrits, montant total, répartitions par objet et par mode de paiement.\n\nPour enregistrer une nouvelle inscription :\n1. Depuis le tableau de bord Élèves, cliquez sur l'icône Inscriptions.\n2. Utilisez les filtres de date Du/Au pour la période souhaitée, puis cliquez sur Actualiser.\n3. Cliquez sur Ajouter une inscription.\n4. Dans la fenêtre Nouvelle inscription, saisissez l'IEN de l'élève, puis cliquez sur Rechercher.\n5. Renseignez le montant à payer, le mode de paiement et la date de paiement.\n6. Cliquez sur Enregistrer pour valider.\n\nAutres fonctions du module Élèves :\n- Examen d'entrée : pour instruire les demandes d'inscription des candidats soumis à l'examen d'entrée. Rechercher l'élève par IEN.\n- Reprise de scolarité : pour les élèves qui ont arrêté leur scolarité en cours d'année et souhaitent reprendre. Rechercher par IEN.\n- Élèves BST : déclarer les apprenants concernés par le BST depuis la liste de classe.\n- Candidats BFEM : accéder aux opérations relatives aux élèves concernés par le BFEM.",
       "tags": [
         "planete",
-        "guide",
-        "transfert sortant"
+        "inscriptions",
+        "frais scolarité",
+        "bst",
+        "bfem",
+        "reprise",
+        "examen entrée"
       ]
     },
     {
-      "id": "planete_guide_41",
-      "title": "PLANETE : Validation du transfert sortant",
-      "category": "planete",
-      "language": "fr",
-      "content": "motif du transfert. Ajoutez, si nécessaire, un commentaire pour accompagner la demande avant validation.",
-      "tags": [
-        "planete",
-        "guide",
-        "motif du transfert."
-      ]
-    },
-    {
-      "id": "planete_guide_42",
-      "title": "PLANETE : Affectation des élèves",
-      "category": "planete",
-      "language": "fr",
-      "content": "La fonction Affectation élèves permet de rattacher à une classe les apprenants qui apparaissent comme non affectés dans le système. — Depuis le tableau de bord du module Elèves, cliquez sur l’icône Affectation Elèves.",
-      "tags": [
-        "planete",
-        "guide",
-        "affectation des élèves"
-      ]
-    },
-    {
-      "id": "planete_guide_43",
-      "title": "PLANETE : Importation des élèves",
-      "category": "planete",
-      "language": "fr",
-      "content": "La fonction Import eleves permet d’intégrer plusieurs apprenants dans PLANETE à partir d’un fichier Excel conforme au modèle fourni par la plateforme.",
-      "tags": [
-        "planete",
-        "guide",
-        "importation des élèves"
-      ]
-    },
-    {
-      "id": "planete_guide_44",
-      "title": "PLANETE : Télécharger le template d’import",
-      "category": "planete",
-      "language": "fr",
-      "content": "Depuis le tableau de bord du module Elèves, cliquez sur l’icône Template xlsx. Cette action permet d’ouvrir le modèle Excel à utiliser pour préparer les données d’im- portation.",
-      "tags": [
-        "planete",
-        "guide",
-        "télécharger le template d’import"
-      ]
-    },
-    {
-      "id": "planete_guide_45",
-      "title": "PLANETE : Charger le fichier d’import",
-      "category": "planete",
-      "language": "fr",
-      "content": "Après avoir préparé le fichier Excel, revenez dans PLANETE puis cliquez sur l’icône Import eleves depuis le tableau de bord du module Elèves.",
-      "tags": [
-        "planete",
-        "guide",
-        "charger le fichier d’import"
-      ]
-    },
-    {
-      "id": "planete_guide_46",
-      "title": "PLANETE : Vérifier et compléter les données importées",
-      "category": "planete",
-      "language": "fr",
-      "content": "Une fois le fichier chargé, les informations de l’élève s’affichent dans le formulaire d’import. Contrôlez les champs affichés (IEN, nom, prénom, date et lieu de naissance, motif d’entrée, nationalité, statut, etc.). Utilisez le bouton 1/1 : Enregistrer & Continuer pour valider l’opération après vérification.",
-      "tags": [
-        "planete",
-        "guide",
-        "vérifier et compléter les données importées"
-      ]
-    },
-    {
-      "id": "planete_guide_47",
-      "title": "PLANETE : Examen d’entrée",
-      "category": "planete",
-      "language": "fr",
-      "content": "La fonction Examen d’entrée permet de rechercher un élève afin d’instruire sa demande d’inscription dans l’établissement par la procédure prévue pour les candidats soumis à l’examen d’entrée. — Depuis le tableau de bord du module Elèves, cliquez sur l’icône Examen d’entrée.",
-      "tags": [
-        "planete",
-        "guide",
-        "examen d’entrée"
-      ]
-    },
-    {
-      "id": "planete_guide_48",
-      "title": "PLANETE : Reprise de scolarité",
-      "category": "planete",
-      "language": "fr",
-      "content": "La fonction Reprise de scolarité permet de retrouver l’élève concerné afin de l’accom- pagner dans sa réinscription au titre de la reprise des études. — Depuis le tableau de bord du module Elèves, cliquez sur l’icône Reprise Scolarité.",
-      "tags": [
-        "planete",
-        "guide",
-        "reprise de scolarité"
-      ]
-    },
-    {
-      "id": "planete_guide_49",
-      "title": "PLANETE : Élèves BST",
-      "category": "planete",
-      "language": "fr",
-      "content": "La rubrique Élèves BST permet de déclarer les apprenants concernés par le BST à partir de la liste des élèves d’une classe. — Depuis le tableau de bord du module Elèves, cliquez sur l’icône Elèves BST.",
-      "tags": [
-        "planete",
-        "guide",
-        "élèves bst"
-      ]
-    },
-    {
-      "id": "planete_guide_50",
-      "title": "PLANETE : Candidats BFEM",
-      "category": "planete",
-      "language": "fr",
-      "content": "La rubrique Candidats BFEM donne accès aux opérations relatives aux élèves concernés par l’examen du BFEM dans l’établissement. — Depuis le tableau de bord du module Elèves, cliquez sur l’icône Candidats BFEM pour ouvrir cette fonctionnalité.",
-      "tags": [
-        "planete",
-        "guide",
-        "candidats bfem"
-      ]
-    },
-    {
-      "id": "planete_guide_51",
-      "title": "PLANETE : Inscriptions",
-      "category": "planete",
-      "language": "fr",
-      "content": "La rubrique Inscriptions permet de suivre les opérations d’inscription et les montants enregistrés sur une période donnée. L’écran met en avant les inscriptions du jour, le montant du jour, le total des inscrits, le montant total ainsi que des répartitions graphiques par objet et par mode de paiement. Depuis le tableau de bord du module Elèves, cliquez sur l’icône Inscriptions.",
-      "tags": [
-        "planete",
-        "guide",
-        "inscriptions"
-      ]
-    },
-    {
-      "id": "planete_guide_52",
+      "id": "planete_guide_20",
       "title": "PLANETE : Emploi du temps",
       "category": "planete",
       "language": "fr",
-      "content": "La rubrique Emploi du temps permet de construire, ajuster et enregistrer l’organisation hebdomadaire des cours pour chaque classe. Elle donne accès à la grille horaire, à la liste des enseignants de la classe, aux options d’exportation et à la génération automatique des emplois du temps.",
+      "content": "La rubrique Emploi du temps permet de construire, ajuster et enregistrer l'organisation hebdomadaire des cours pour chaque classe.\n\nAccéder à l'emploi du temps :\n1. Depuis le menu principal, cliquez sur Emploi du temps.\n2. Utilisez la liste de sélection en haut pour choisir la classe concernée.\n3. La grille hebdomadaire s'affiche avec les jours en colonnes et les heures en lignes.\n\nConstruction manuelle :\n1. Faites glisser un enseignant depuis le panneau latéral vers une cellule de la grille pour placer un cours.\n2. Double-cliquez sur un cours déjà placé pour le supprimer.\n3. Cliquez sur le nom de l'enseignant dans une cellule pour ajuster la durée (1h ou 2h).\n4. Cliquez sur Enregistrer pour sauvegarder.\n5. Utilisez Export EDT pour exporter l'emploi du temps complet, ou Export cours pour exporter les cours saisis.\n\nGénération automatique :\n1. Cliquez sur le bouton Générer EDT.\n2. L'écran affiche les niveaux de l'établissement (6e à Terminale).\n3. Cliquez sur un niveau pour visualiser ou lancer la génération automatique.",
       "tags": [
         "planete",
-        "guide",
-        "emploi du temps"
+        "emploi du temps",
+        "horaire",
+        "cours",
+        "enseignant"
       ]
     },
     {
-      "id": "planete_guide_53",
-      "title": "PLANETE : Vue d’ensemble de l’écran",
+      "id": "planete_guide_21",
+      "title": "PLANETE : Cours et cahier de texte",
       "category": "planete",
       "language": "fr",
-      "content": "L’écran Emploi du temps affiche la grille hebdomadaire de la classe sélectionnée, avec les jours de la semaine en colonnes et les heures de début en lignes. Depuis le menu principal, cliquez sur la rubrique Emploi du temps pour ouvrir l’espace de construction de l’emploi du temps. Utilisez la liste de sélection en haut de l’écran pour choisir la classe concernée.",
+      "content": "La rubrique Cours dans PLANETE permet de renseigner les cahiers de texte et de suivre la progression pédagogique.\n\nDashboard Cours :\nOffre une vue d'ensemble des activités pédagogiques du jour : cours programmés, séances terminées, absences signalées, taux d'exécution global des cours.\n\nComment renseigner le cahier de texte :\n1. Depuis la rubrique Cours, cliquez sur la tuile Cours.\n2. La frise par mois/jours permet de sélectionner la période et la date.\n3. Chaque ligne affiche un cours. Cliquez sur le bouton Cahier texte à droite.\n4. Dans la fenêtre Cahier de texte : sélectionnez le type d'activité, décrivez le déroulé, renseignez les dates/heures prévues et réelles.\n5. Cliquez sur Enregistrer pour valider la saisie.\n\nSaisie des absences depuis un cours :\n1. Depuis la ligne du cours, cliquez sur le bouton rond rouge pour accéder aux absences.\n2. La fenêtre Absences élèves affiche l'effectif.\n3. Pour chaque élève, activez l'option Retards ou Absences selon la situation.\n\nSuivi des absences :\nDans la section Absences, l'écran présente une synthèse mensuelle : nombre d'absences, absences justifiées, nombre de retards, taux de justification.\n- Bouton Exporter pour extraire les données par mois.\n- Bouton Justifier absence pour régulariser : recherchez l'élève par IEN, activez le commutateur en face de l'absence non justifiée, saisissez les modalités, validez.",
       "tags": [
         "planete",
-        "guide",
-        "vue d’ensemble de l’écran"
+        "cours",
+        "cahier de texte",
+        "absences",
+        "retards",
+        "progression pédagogique"
       ]
     },
     {
-      "id": "planete_guide_54",
-      "title": "PLANETE : Construction de l’emploi du temps",
-      "category": "planete",
-      "language": "fr",
-      "content": "Faites glisser un enseignant depuis le panneau latéral vers une cellule de la grille pour positionner un cours. Double-cliquez sur un cours déjà placé pour le supprimer. Cliquez sur le nom de l’enseignant placé dans une cellule pour ajuster la durée du cours de 1h à 2h. Une fois la grille renseignée, cliquez sur le bouton Enregistrer pour sauvegarder l’emploi du temps de la classe.",
-      "tags": [
-        "planete",
-        "guide",
-        "construction de l’emploi du temps"
-      ]
-    },
-    {
-      "id": "planete_guide_55",
-      "title": "PLANETE : Génération automatique de l’emploi du temps",
-      "category": "planete",
-      "language": "fr",
-      "content": "— Cliquez sur le bouton Générer EDT pour accéder à l’espace de génération automatique des emplois du temps.",
-      "tags": [
-        "planete",
-        "guide",
-        "génération automatique de l’emploi du temps"
-      ]
-    },
-    {
-      "id": "planete_guide_56",
-      "title": "PLANETE : Cours",
-      "category": "planete",
-      "language": "fr",
-      "content": "La rubrique Cours permet de renseigner les cahiers de texte et de suivre la progression pédagogique. Elle donne accès à un tableau de bord de suivi, à la liste des cours et au suivi des absences liées aux séances. Les captures ci-dessous présentent l’accès au module et la lecture des principaux indica- teurs disponibles dans le Dashboard.",
-      "tags": [
-        "planete",
-        "guide",
-        "cours"
-      ]
-    },
-    {
-      "id": "planete_guide_57",
-      "title": "PLANETE : Dashboard",
-      "category": "planete",
-      "language": "fr",
-      "content": "Le Dashboard du module Cours offre une vue d’ensemble des activités pédagogiques du jour. Il permet d’identifier rapidement les cours programmés, les séances terminées, les absences signalées et les cours récemment enregistrés. — Depuis la rubrique Cours, cliquez sur la tuile Dashboard pour afficher le tableau de bord du module.",
-      "tags": [
-        "planete",
-        "guide",
-        "dashboard"
-      ]
-    },
-    {
-      "id": "planete_guide_58",
-      "title": "PLANETE : Navigation dans le calendrier des cours",
-      "category": "planete",
-      "language": "fr",
-      "content": "jours. Cette frise permet de repérer rapidement la période de travail et de consulter les cours enregistrés pour la date affichée.",
-      "tags": [
-        "planete",
-        "guide",
-        "jours."
-      ]
-    },
-    {
-      "id": "planete_guide_59",
-      "title": "PLANETE : Saisie du déroulé d'un cours",
-      "category": "planete",
-      "language": "fr",
-      "content": "déroulé de l’activité. Les blocs Date & heure prévues et Date & heure réelles servent à comparer le planning initial avec le déroulement effectif du cours. Cliquez sur Enregistrer pour valider la saisie.",
-      "tags": [
-        "planete",
-        "guide",
-        "déroulé de l’activité."
-      ]
-    },
-    {
-      "id": "planete_guide_60",
-      "title": "PLANETE : Absences",
-      "category": "planete",
-      "language": "fr",
-      "content": "La section Absences centralise le suivi des absences et des retards signalés dans les cours. Elle permet de consulter les statistiques mensuelles, d’exporter les données et de procéder à la justification des absences enregistrées. — Depuis le module Cours, cliquez sur la tuile Absences pour ouvrir l’espace de suivi correspondant.",
-      "tags": [
-        "planete",
-        "guide",
-        "absences"
-      ]
-    },
-    {
-      "id": "planete_guide_61",
-      "title": "PLANETE : Recherche d'un élève pour les absences",
-      "category": "planete",
-      "language": "fr",
-      "content": "Rechercher.",
-      "tags": [
-        "planete",
-        "guide",
-        "rechercher."
-      ]
-    },
-    {
-      "id": "planete_guide_62",
+      "id": "planete_guide_22",
       "title": "PLANETE : Rapport de fin de journée",
       "category": "planete",
       "language": "fr",
-      "content": "La rubrique Rapport de fin de journée permet de renseigner les activités réalisées et les faits marquants de la journée. Elle offre une vue d’ensemble des classes suivies, des absences du personnel et des incidents enregistrés. Elle permet également de déclarer une absence du personnel opérationnel ou de signaler un incident pour une classe donnée.",
+      "content": "La rubrique Rapport de fin de journée permet de renseigner les activités réalisées et les faits marquants de la journée scolaire.\n\nFonctionnalités :\n- Vue d'ensemble des classes suivies, absences du personnel, incidents enregistrés.\n- Déclarer une absence du personnel opérationnel pour une séance donnée.\n- Signaler un incident pour une classe.\n\nComment saisir une absence du personnel :\n1. Depuis le Dashboard du module, sélectionnez la classe.\n2. Cliquez sur l'icône en face du cours concerné.\n3. Dans la fenêtre, précisez le type d'absence, une observation, la date et la plage horaire.\n4. Cliquez sur Enregistrer.\n\nComment déclarer un incident :\n1. Dans le rapport du jour de la classe, cliquez sur Déclarer un incident.\n2. Décrivez le fait observé et associez la date du signalement.\n3. Cliquez sur Enregistrer pour archiver l'incident.",
       "tags": [
         "planete",
-        "guide",
-        "rapport de fin de journée"
+        "rapport journée",
+        "incident",
+        "absence personnel",
+        "suivi"
       ]
     },
     {
-      "id": "planete_guide_63",
-      "title": "PLANETE : Saisie d’une absence",
+      "id": "planete_guide_23",
+      "title": "PLANETE : Évaluations et saisie des notes",
       "category": "planete",
       "language": "fr",
-      "content": "— Depuis le rapport du jour de la classe, utilisez l’icône placée en face d’un cours pour signaler une absence du personnel opérationnel. Les lignes du rapport du jour affichent les horaires et les disciplines de la journée. Les icônes associées aux cours servent à enregistrer les absences du personnel opérationnel.",
+      "content": "La rubrique Évaluations dans PLANETE permet de planifier les évaluations, suivre leur avancement et saisir les notes.\n\nAccéder aux évaluations :\n- Depuis le menu latéral, cliquez sur Evaluations.\n- Le Dashboard présente les classes, l'état des évaluations planifiées et les alertes de performance.\n\nAjouter une évaluation :\n1. Sélectionnez la classe concernée, puis cliquez sur Ajouter.\n2. Renseignez : le semestre, la salle, le type d'évaluation, la date, la discipline, la matière, le professeur, les heures de début et de fin.\n3. Cliquez sur Enregistrer pour planifier l'évaluation.\n\nSaisir les notes :\n1. Dans la liste des évaluations, cliquez sur le bouton Notation en face de l'évaluation.\n2. La fenêtre affiche l'effectif et la liste des élèves.\n3. Saisissez la note de chaque apprenant dans le champ correspondant.\n4. Utilisez les colonnes Exemption et Absences pour les cas particuliers.\n5. Validez pour enregistrer les notes.\n\nGestion des évaluations :\n- Chaque évaluation peut être verrouillée, modifiée ou supprimée.\n- Les compteurs récapitulent l'état de saisie par discipline.",
       "tags": [
         "planete",
-        "guide",
-        "saisie d’une absence"
+        "évaluations",
+        "notes",
+        "saisie",
+        "notation",
+        "discipline"
       ]
     },
     {
-      "id": "planete_guide_64",
-      "title": "PLANETE : Déclaration d’incidents",
-      "category": "planete",
-      "language": "fr",
-      "content": "— Cliquez sur la classe souhaitée pour ouvrir le rapport du jour correspondant.",
-      "tags": [
-        "planete",
-        "guide",
-        "déclaration d’incidents"
-      ]
-    },
-    {
-      "id": "planete_guide_65",
-      "title": "PLANETE : Evaluations",
-      "category": "planete",
-      "language": "fr",
-      "content": "La rubrique Evaluations permet de planifier les évaluations d’une classe, de suivre leur avancement et de saisir les notes des élèves. Elle centralise les statistiques de saisie, les alertes de performance et les actions liées à chaque évaluation. Elle facilite enfin le suivi des absences et des exemptions pendant les opérations de notation.",
-      "tags": [
-        "planete",
-        "guide",
-        "evaluations"
-      ]
-    },
-    {
-      "id": "planete_guide_66",
-      "title": "PLANETE : Ajout d’une évaluation",
-      "category": "planete",
-      "language": "fr",
-      "content": "— Commencez par sélectionner la classe concernée, puis cliquez sur le bouton Ajouter.",
-      "tags": [
-        "planete",
-        "guide",
-        "ajout d’une évaluation"
-      ]
-    },
-    {
-      "id": "planete_guide_67",
-      "title": "PLANETE : Liste des évaluations",
-      "category": "planete",
-      "language": "fr",
-      "content": "",
-      "tags": [
-        "planete",
-        "guide",
-        "liste des évaluations"
-      ]
-    },
-    {
-      "id": "planete_guide_68",
-      "title": "PLANETE : Notation",
-      "category": "planete",
-      "language": "fr",
-      "content": "— Cliquez sur Notation depuis la liste des évaluations pour ouvrir la fenêtre de saisie des notes des élèves.",
-      "tags": [
-        "planete",
-        "guide",
-        "notation"
-      ]
-    },
-    {
-      "id": "planete_guide_69",
+      "id": "planete_guide_24",
       "title": "PLANETE : Conseils de classes",
       "category": "planete",
       "language": "fr",
-      "content": "La rubrique Conseils de classes permet de planifier les conseils par classe, de saisir les appréciations individuelles et de produire les documents associés à la fin du processus.",
+      "content": "La rubrique Conseils de classes permet de planifier les conseils par classe, saisir les appréciations individuelles et produire les documents associés.\n\nAccéder aux conseils :\n- Depuis le menu latéral, cliquez sur Conseils classes.\n- L'écran présente les classes par niveau et les indicateurs : conseils planifiés, tenus, en attente, archivés.\n\nPlanifier un conseil :\n1. Sélectionnez la classe, puis cliquez sur Ajouter.\n2. Choisissez le semestre, la date de génération du conseil (doit être >= date du jour) et la date de tenue du conseil (doit être > date de génération).\n3. Cliquez sur Enregistrer.\n\nSaisir les appréciations :\n1. Une fois le conseil enregistré, cliquez sur l'icône Conseil pour ouvrir la fiche individuelle.\n2. Pour chaque élève : le module affiche l'identité, les moyennes, le rang, les absences, les retards et le tableau des disciplines.\n3. Dans la zone Appréciations & Observations, choisissez l'appréciation et saisissez l'observation.\n4. Naviguez entre les élèves, puis cliquez sur Valider conseil pour finaliser la saisie.\n\nAttention : les actions Régénérer, Archiver et Supprimer modifient l'état du conseil enregistré — les utiliser avec précaution.",
       "tags": [
         "planete",
-        "guide",
-        "conseils de classes"
+        "conseils de classe",
+        "appréciations",
+        "bulletin",
+        "semestre"
       ]
     },
     {
-      "id": "planete_guide_70",
-      "title": "PLANETE : Accès au module",
+      "id": "planete_guide_25",
+      "title": "PLANETE : Gestion des utilisateurs",
       "category": "planete",
       "language": "fr",
-      "content": "Depuis le menu latéral, cliquez sur Conseils classes pour ouvrir le tableau de bord du module. L’écran d’accueil présente les classes par niveau ainsi qu’un ensemble d’indicateurs :",
+      "content": "La rubrique Utilisateurs dans PLANETE permet de consulter les comptes rattachés à l'établissement et d'ajouter de nouveaux profils.\n\nConsulter la liste des utilisateurs :\n1. Depuis le menu latéral, cliquez sur Utilisateurs.\n2. L'écran affiche : informations d'identification, profil, e-mail professionnel, statut du compte.\n3. Utilisez la zone Rechercher pour trouver un utilisateur.\n\nAjouter un utilisateur :\n1. Cliquez sur le bouton Ajouter (ou le bouton plus).\n2. Saisissez l'IEN ou l'e-mail de l'agent à ajouter, puis cliquez sur Rechercher.\n3. Le formulaire affiche automatiquement les informations de l'agent : matricule, prénom, nom, date/lieu de naissance, sexe, téléphone, e-mail professionnel, structure.\n4. Sélectionnez le profil à attribuer.\n5. Renseignez le mot de passe initial.\n6. Si l'utilisateur dépend d'une autre entité, activez l'option Autre structure.\n7. Cliquez sur Enregistrer pour créer le compte.",
       "tags": [
         "planete",
-        "guide",
-        "accès au module"
-      ]
-    },
-    {
-      "id": "planete_guide_71",
-      "title": "PLANETE : Statistiques des conseils de classes",
-      "category": "planete",
-      "language": "fr",
-      "content": "conseils planifiés, conseils tenus, conseils en attente et conseils archivés. La partie droite de l’écran affiche également les statistiques générales et la répartition des appréciations.",
-      "tags": [
-        "planete",
-        "guide",
-        "conseils planifiés, conseils tenus, conseils en attente et conseils archivés."
-      ]
-    },
-    {
-      "id": "planete_guide_72",
-      "title": "PLANETE : Planification d’un conseil",
-      "category": "planete",
-      "language": "fr",
-      "content": "Sélectionnez d’abord la classe concernée dans la colonne de gauche. Cliquez ensuite sur le bouton Ajouter pour planifier un nouveau conseil pour cette classe. Lorsque aucun conseil n’a encore été enregistré pour la période, le module indique qu’aucun conseil n’est planifié.",
-      "tags": [
-        "planete",
-        "guide",
-        "planification d’un conseil"
-      ]
-    },
-    {
-      "id": "planete_guide_73",
-      "title": "PLANETE : Consultation d’un conseil planifié",
-      "category": "planete",
-      "language": "fr",
-      "content": "Une fois le conseil enregistré, le bloc du semestre correspondant affiche la date de génération, la date de tenue et plusieurs actions disponibles. Les principales actions proposées sont : Conseil, Bulletins, Statistiques, Régénérer, Archiver et Supprimer. Le second semestre continue d’afficher un message d’absence de planification tant qu’aucun conseil n’y est créé.",
-      "tags": [
-        "planete",
-        "guide",
-        "consultation d’un conseil planifié"
-      ]
-    },
-    {
-      "id": "planete_guide_74",
-      "title": "PLANETE : Saisie des appréciations",
-      "category": "planete",
-      "language": "fr",
-      "content": "Cliquez sur l’icône Conseil pour ouvrir la fiche individuelle d’un élève. Pour chaque apprenant, le module affiche l’identité, les moyennes, le rang, les absences, les retards et le tableau détaillé des disciplines. Dans la zone Appréciations & Observations, choisissez l’appréciation retenue puis saisissez l’observation correspondante si nécessaire. Une appréciation globale du travail de l’élève peut également être sélectionnée en bas de la fiche.",
-      "tags": [
-        "planete",
-        "guide",
-        "saisie des appréciations"
-      ]
-    },
-    {
-      "id": "planete_guide_75",
-      "title": "PLANETE : Validation du conseil",
-      "category": "planete",
-      "language": "fr",
-      "content": "Une fois la saisie terminée pour le dernier élève, cliquez sur Valider conseil. Cette action permet de clore la saisie du conseil pour la classe et de finaliser le traitement du semestre concerné.",
-      "tags": [
-        "planete",
-        "guide",
-        "validation du conseil"
-      ]
-    },
-    {
-      "id": "planete_guide_76",
-      "title": "PLANETE : Utilisateurs",
-      "category": "planete",
-      "language": "fr",
-      "content": "La rubrique Utilisateurs permet de consulter la liste des comptes rattachés à l’établisse- ment et d’ajouter de nouveaux profils autorisés à accéder à la plateforme.",
-      "tags": [
-        "planete",
-        "guide",
-        "utilisateurs"
-      ]
-    },
-    {
-      "id": "planete_guide_77",
-      "title": "PLANETE : Accès à la liste des utilisateurs",
-      "category": "planete",
-      "language": "fr",
-      "content": "Depuis le menu latéral, cliquez sur Utilisateurs. L’écran Gestion des utilisateurs affiche la liste des comptes existants avec les infor- mations d’identification, le profil, l’adresse e-mail professionnelle et le statut du compte. La zone Rechercher permet de retrouver rapidement un utilisateur déjà enregistré.",
-      "tags": [
-        "planete",
-        "guide",
-        "accès à la liste des utilisateurs"
-      ]
-    },
-    {
-      "id": "planete_guide_78",
-      "title": "PLANETE : Lancer l’ajout d’un utilisateur",
-      "category": "planete",
-      "language": "fr",
-      "content": "Pour créer un nouveau compte, cliquez sur le bouton Ajouter représenté par l’icône +. Une fenêtre Ajout utilisateur s’ouvre et propose un champ de recherche par IEN / E-mail pro. Saisissez l’IEN ou l’adresse e-mail professionnelle de l’agent concerné, puis cliquez sur le bouton IEN / Email pro.",
-      "tags": [
-        "planete",
-        "guide",
-        "lancer l’ajout d’un utilisateur"
-      ]
-    },
-    {
-      "id": "planete_guide_79",
-      "title": "PLANETE : Renseigner et enregistrer le profil",
-      "category": "planete",
-      "language": "fr",
-      "content": "Après l’identification de l’agent, le formulaire affiche automatiquement plusieurs infor- mations personnelles : matricule, prénom, nom, date et lieu de naissance, sexe, téléphone, e-mail professionnel et structure. Sélectionnez ensuite le profil à attribuer à l’utilisateur. Renseignez le mot de passe initial qui sera associé au compte. Si l’utilisateur dépend d’une autre entité, activez l’option Autre structure lorsque cela est nécessaire. Cliquez enfin sur Enregistrer pour créer le compte.",
-      "tags": [
-        "planete",
-        "guide",
-        "renseigner et enregistrer le profil"
-      ]
-    },
-    {
-      "id": "planete_guide_80",
-      "title": "PLANETE : Conclusion",
-      "category": "planete",
-      "language": "fr",
-      "content": "Ce guide d’utilisation a été conçu pour accompagner les acteurs des établissements moyen-secondaires dans la prise en main progressive de la plateforme PLANETE. En réunissant dans un même document les principales procédures administratives, pédagogiques et organisationnelles, il vise à faciliter les usages quotidiens et à renforcer l’autonomie des utilisateurs. Au-delà de la maîtrise technique des fonctionnalités, l’utilisation rigoureuse de PLANETE contribue à améliorer la qualité des données scolaires, à sécuriser les opérations et à soutenir un meilleur pilotage des établissements. Chaque information saisie, chaque mise à jour effectuée et chaque action validée participe ainsi à une gouvernance plus efficace, plus transparente et mieux coordonnée. Il est recommandé aux chefs d’établissement, aux personnels administratifs, aux ensei- gnants et aux référents numériques de s’appuyer sur ce guide comme référence de travail, tout en veillant à la fiabilité des informations enregistrées et au respect des procédures. En cas de difficulté, le recours à l’accompagnement de proximité, aux responsables hiérarchiques et aux services techniques compétents reste essentiel pour garantir une utilisation harmonisée de la plateforme sur l’ensemble du territoire. Ainsi, PLANETE s’affirme comme un outil central de modernisation du système éducatif sénégalais, au service de l’efficacité administrative, du suivi pédagogique et de l’amélioration continue des performances des établissements.",
-      "tags": [
-        "planete",
-        "guide",
-        "conclusion"
+        "utilisateurs",
+        "compte",
+        "profil",
+        "accès",
+        "mot de passe"
       ]
     }
   ]

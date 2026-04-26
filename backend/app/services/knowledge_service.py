@@ -79,12 +79,17 @@ class KnowledgeService:
         for entry in entries:
             content = entry.get("content", "")
             if content:
+                # Inclure les mots-clés explicites dans le texte de recherche
+                # pour améliorer la précision du TF-IDF
+                keywords = entry.get("keywords", "")
+                tags_text = " ".join(entry.get("tags", []))
+                search_text = f"{entry.get('title', '')} {keywords} {tags_text} {content}"
                 documents.append({
                     "title": entry.get("title", ""),
                     "content": content,
                     "category": entry.get("category", "general"),
                     "tags": entry.get("tags", []),
-                    "search_text": f"{entry.get('title', '')} {content}",
+                    "search_text": search_text,
                 })
         return documents
 

@@ -189,9 +189,16 @@ class ChatService:
                 }
 
             # === REFORMULATION EXERCICE (cascade ET message direct complet) ===
-            # Quand le message exercice contient niveau + matière (quelle que soit la forme),
-            # on le reformule en instruction claire pour le LLM pour garantir la génération.
-            if intent == "exercice":
+            # Reformule uniquement les EXERCICES (pas les fiches pédagogiques).
+            # Quand le message contient niveau + matière, on envoie une instruction claire au LLM.
+            FICHE_KW = ["fiche", "préparation", "preparation", "plan de leçon", "plan de cours",
+                        "séance", "seance", "fiche pédagogique", "fiche pedagogique",
+                        "fiche de cours", "fiche de leçon", "fiche d'enseignant",
+                        "objectifs pédagogiques", "déroulement", "deroulement"]
+            msg_lower_fiche_check = fr_message.lower()
+            is_fiche_request = any(kw in msg_lower_fiche_check for kw in FICHE_KW)
+
+            if intent == "exercice" and not is_fiche_request:
                 LEVEL_KW = ["cp","ce1","ce2","cm1","cm2","primaire","6ème","6eme","5ème","5eme",
                             "4ème","4eme","3ème","3eme","seconde","2nde","première","premiere",
                             "1ère","1ere","terminale","lycée","lycee","college","collège"]
@@ -204,7 +211,7 @@ class ChatService:
                 found_subject = next((kw for kw in SUBJECT_KW if kw in msg_lower_ex), None)
 
                 if found_level and found_subject:
-                    # Niveau ET matière présents → reformuler en instruction directe
+                    # Niveau ET matière présents → reformuler en instruction directe exercice
                     subject_display = found_subject.capitalize()
                     level_display = found_level.upper()
                     fr_message = (
@@ -738,46 +745,62 @@ class ChatService:
 
         has_level = any(kw in msg_lower for kw in LEVEL_KEYWORDS)
         has_subject = any(kw in msg_lower for kw in SUBJECT_KEYWORDS)
-        has_fiche = any(w in msg_lower for w in ["fiche", "préparation", "preparation", "plan de leçon", "plan de cours", "séance", "seance"])
+        has_fiche = any(w in msg_lower for w in [
+            "fiche", "préparation", "preparation", "plan de leçon", "plan de cours",
+            "séance", "seance", "fiche pédagogique", "fiche pedagogique",
+            "fiche de cours", "fiche de leçon", "objectifs pédagogiques", "déroulement"
+        ])
 
-        # Pour les fiches pédagogiques, on n'interrompt pas avec la clarification
+        LEVEL_OPTIONS = ["CP", "CE1", "CE2", "CM1", "CM2", "6ème", "5ème", "4ème", "3ème", "2nde", "1ère", "Terminale"]
+        SUBJECT_OPTIONS = ["Mathématiques", "Français", "Sciences", "Histoire-Géographie", "Anglais", "Physique-Chimie"]
+
+        # === FICHES PÉDAGOGIQUES : clarification avec boutons ===
         if has_fiche:
+            if not has_level:
+                return {
+                    "message": "Pour quelle classe souhaitez-vous cette fiche pédagogique ?",
+                    "options": LEVEL_OPTIONS
+                }
+            if has_level and not has_subject:
+                level_found = next((kw for kw in LEVEL_KEYWORDS if kw in msg_lower), "")
+                return {
+                    "message": f"Parfait ! Dans quelle matière pour le {level_found.upper()} ?",
+                    "options": SUBJECT_OPTIONS
+                }
+            # Niveau + matière présents → laisser le LLM générer la fiche
             return None
 
+        # === EXERCICES : clarification avec boutons ===
         # Cas spécial : message très court (1-2 mots)
         if word_count <= 2:
-            # Si c'est un niveau seul (ex: "CM2", "6ème") → demander la matière
             if has_level and not has_subject:
                 level_display = message.strip().upper()
                 return {
-                    "message": f"Parfait pour le **{level_display}** ! Dans quelle matière souhaitez-vous des exercices ?",
-                    "options": ["Mathématiques", "Français", "Sciences", "Histoire-Géographie", "Anglais", "Physique-Chimie", "Toutes les matières"]
+                    "message": f"Parfait pour le {level_display} ! Dans quelle matière souhaitez-vous des exercices ?",
+                    "options": SUBJECT_OPTIONS + ["Toutes les matières"]
                 }
-            # Si c'est une matière seule (ex: "maths") → demander le niveau
             if has_subject and not has_level:
                 return {
                     "message": "Quel est le niveau scolaire pour ces exercices ?",
-                    "options": ["CP", "CE1", "CE2", "CM1", "CM2", "6ème", "5ème", "4ème", "3ème", "2nde", "1ère", "Terminale"]
+                    "options": LEVEL_OPTIONS
                 }
-            # Sinon (ex: "exercice", "devoir") → demander le niveau
             if not has_level:
                 return {
                     "message": "Pour vous proposer des exercices adaptés, j'ai besoin de connaître le niveau scolaire. Quel est le niveau ?",
-                    "options": ["CP", "CE1", "CE2", "CM1", "CM2", "6ème", "5ème", "4ème", "3ème", "2nde", "1ère", "Terminale"]
+                    "options": LEVEL_OPTIONS
                 }
-            # Niveau + matière déjà dans le message court → laisser le LLM gérer
             return None
 
         if not has_level:
             return {
                 "message": "Pour vous proposer des exercices parfaitement adaptés, j'ai besoin de connaître le niveau scolaire. Quel est le niveau ?",
-                "options": ["CP", "CE1", "CE2", "CM1", "CM2", "6ème", "5ème", "4ème", "3ème", "2nde", "1ère", "Terminale"]
+                "options": LEVEL_OPTIONS
             }
 
         if has_level and not has_subject:
             return {
                 "message": "Super ! Dans quelle matière souhaitez-vous des exercices ?",
-                "options": ["Mathématiques", "Français", "Sciences", "Histoire-Géographie", "Anglais", "Physique-Chimie", "Toutes les matières"]
+                "options": SUBJECT_OPTIONS + ["Toutes les matières"]
             }
 
         return None

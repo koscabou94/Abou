@@ -299,12 +299,14 @@
       "title": "Présentation de PLANETE",
       "category": "planete",
       "language": "fr",
-      "content": "PLANETE, Paquet de Logiciels Académiques Normalisés pour les Établissements et Écoles, est une plateforme de gestion des établissements et écoles. PLANETE permet de gérer : l’environnement physique, l’environnement pédagogique, la Vie scolaire, la Communication entre acteurs. Elle facilite aussi la collecte et le traitement des données statistiques.",
+      "content": "PLANETE, Paquet de Logiciels Académiques Normalisés pour les Établissements et Écoles, est une plateforme de gestion des établissements et écoles. PLANETE permet de gérer : l’environnement physique, l’environnement pédagogique, la vie scolaire et la communication entre acteurs. Elle facilite aussi la collecte et le traitement des données statistiques. PLANETE et PLANETE3 désignent la même solution — PLANETE3 est la version actuelle (2026) de PLANETE. Versions : PLANETE 1 (2012-2017) pour le moyen secondaire, PLANETE 2 (2018-2025) avec accès élèves et parents, PLANETE 3 (2026) couvre le préscolaire, l’élémentaire et le moyen secondaire avec introduction mobile et desktop. Accès : https://planete3.education.sn avec e-mail professionnel prenom.nom@education.sn.",
       "tags": [
         "planete",
+        "planete3",
         "présentation",
         "définition",
-        "gestion"
+        "gestion",
+        "versions"
       ]
     },
     {

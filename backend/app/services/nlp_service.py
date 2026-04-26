@@ -248,9 +248,56 @@ RÈGLE ABSOLUE : Ne jamais refuser de générer des exercices ou des fiches. Ne 
             "formation", "recrutement", "concours enseignant", "FASTEF", "CRFPE"
         ],
         "planete": [
-            "planete", "planète", "gestion scolaire", "cahier de texte", "bulletin",
-            "nomade", "polarisation", "bst", "salle", "bâtiment",
-            "établissement", "fiche établissement", "cycle"
+            # Termes explicites
+            "planete", "planète", "planete3", "planète3", "planete 3", "planète 3",
+            "simen", "education.sn", "@education.sn", "planete3.education.sn",
+            # Concepts métier (détection implicite — l'utilisateur ne dit pas "PLANETE"
+            # mais parle de la plateforme)
+            "gestion scolaire", "tableau de bord", "fiche établissement", "fiche etablissement",
+            "polarisation", "bst", "polarisateur",
+            # Configuration
+            "configurer", "configuration", "paramétrer", "parametrer",
+            "environnement physique", "environnement pédagogique", "environnement pedagogique",
+            "bâtiment", "batiment", "bâtiments", "batiments",
+            "salle de classe", "classe pédagogique", "classe pedagogique",
+            "groupage", "groupage de classes",
+            "second semestre", "frais de scolarité", "frais de scolarite",
+            "compte bancaire",
+            # Personnel
+            "complément horaire", "complement horaire",
+            "pointage", "prise de service", "archiver agent", "archivage agent",
+            "ien", "import personnel", "mise à jour personnel",
+            # Élèves
+            "inscription élève", "inscription eleve", "inscrire un élève", "inscrire un eleve",
+            "affectation élève", "affectation eleve", "affecter un élève", "affecter un eleve",
+            "transfert entrant", "transfert sortant", "import élèves", "import eleves",
+            "reprise scolarité", "reprise scolarite",
+            "bfem", "candidat bfem", "élève bst", "eleve bst",
+            # Emploi du temps
+            "emploi du temps", "edt", "génération automatique edt", "generer edt",
+            "export edt",
+            # Cours / absences
+            "cahier de texte", "cahier texte",
+            "justifier absence", "absence justifiée", "absence justifiee",
+            "saisir absences", "saisir les absences", "consulter absences",
+            # Rapport journalier
+            "rapport de fin de journée", "rapport de fin de journee", "rapport journalier",
+            "déclarer un incident", "declarer un incident",
+            # Évaluations
+            "planifier évaluation", "planifier evaluation",
+            "saisir les notes", "saisir notes", "notation",
+            "verrouiller évaluation", "verrouiller evaluation",
+            # Conseils
+            "conseil de classe", "conseils de classe", "conseil classe",
+            "saisir appréciations", "saisir appreciations",
+            "valider conseil", "validation conseil",
+            # Utilisateurs
+            "ajouter utilisateur", "attribuer profil", "rechercher utilisateur",
+            "chef d'établissement", "chef etablissement",
+            # Versions
+            "planete 1", "planete 2", "planete v3", "planete v1", "planete v2",
+            # Cycle / établissement
+            "nomade", "cycle", "polarisation bst",
         ],
         "mirador": [
             "mirador", "carrière", "mutation", "mouvement", "affectation",
@@ -339,6 +386,32 @@ RÈGLE ABSOLUE : Ne jamais refuser de générer des exercices ou des fiches. Ne 
                         score += 1
             if score > 0:
                 scores[intent] = score
+
+        # ── BOOST PLANETE ──
+        # Quand PLANETE a au moins 1 hit, on considère que la question
+        # PARLE de PLANETE même si d'autres intents matchent. C'est crucial
+        # pour les questions implicites du type "comment configurer
+        # l'environnement physique", "comment créer un bâtiment", etc.
+        # La FAQ_PLANETE3 contient les réponses détaillées et doit être
+        # consultée en priorité.
+        if scores.get("planete", 0) >= 1:
+            # Donne à PLANETE un score artificiellement élevé pour qu'il
+            # remporte le tri. On garde le score original pour le calcul
+            # de confiance afin de refléter la réalité du texte.
+            original_planete_score = scores["planete"]
+            # Si PLANETE est déjà le max, rien à faire. Sinon, on l'élève
+            # au-dessus du max actuel (sauf si une autre intent très
+            # spécifique a beaucoup plus de hits — seuil > 3).
+            current_max = max(scores.values())
+            other_max = max(
+                (v for k, v in scores.items() if k != "planete"),
+                default=0,
+            )
+            # PLANETE l'emporte sauf si une autre intent a 3+ hits ET
+            # 2× plus de hits que PLANETE (cas limite)
+            if other_max < 3 or other_max < 2 * original_planete_score:
+                scores["planete"] = max(current_max + 1, original_planete_score)
+
         if not scores:
             return ("general", 0.5)
         best_intent = max(scores, key=scores.__getitem__)
@@ -374,12 +447,18 @@ RÈGLE ABSOLUE : Ne jamais refuser de générer des exercices ou des fiches. Ne 
                 unique.append(p)
         return "\n\n".join(unique).strip()
 
-    async def _call_groq(self, chat_messages: list, max_tokens: int, timeout: float) -> str:
+    async def _call_groq(
+        self,
+        chat_messages: list,
+        max_tokens: int,
+        timeout: float,
+        model: Optional[str] = None,
+    ) -> str:
         """Appel Groq unique — retourne le texte ou lève une exception."""
         client = await self._ensure_client()
         response = await asyncio.wait_for(
             client.chat.completions.create(
-                model=settings.LLM_MODEL,
+                model=model or settings.LLM_MODEL,
                 messages=chat_messages,
                 max_tokens=max_tokens,
                 temperature=settings.TEMPERATURE,
@@ -387,6 +466,61 @@ RÈGLE ABSOLUE : Ne jamais refuser de générer des exercices ou des fiches. Ne 
             timeout=timeout
         )
         return response.choices[0].message.content.strip()
+
+    async def _call_groq_with_retry(
+        self,
+        chat_messages: list,
+        max_tokens: int,
+        timeout: float = 45.0,
+        max_attempts: int = 2,
+    ) -> Optional[str]:
+        """Appel Groq avec retry exponentiel sur erreurs transitoires.
+        Bascule sur le modèle rapide au dernier essai si le principal échoue."""
+        delay = 0.5
+        for attempt in range(1, max_attempts + 1):
+            model_to_use = (
+                settings.LLM_MODEL
+                if attempt < max_attempts
+                else settings.LLM_FAST_MODEL  # Dernier essai → modèle rapide
+            )
+            try:
+                text = await self._call_groq(
+                    chat_messages, max_tokens, timeout=timeout, model=model_to_use
+                )
+                if text:
+                    if attempt > 1:
+                        logger.info(
+                            "Groq réussi après retry",
+                            attempt=attempt,
+                            model=model_to_use,
+                        )
+                    return text
+            except asyncio.TimeoutError:
+                logger.warning(
+                    "Groq timeout",
+                    attempt=attempt,
+                    model=model_to_use,
+                    timeout=timeout,
+                )
+            except Exception as exc:
+                err_msg = str(exc).lower()
+                # Erreurs non-récupérables : auth, quota épuisé → on n'insiste pas
+                if any(k in err_msg for k in ("api key", "unauthorized", "401", "403")):
+                    logger.error(
+                        "Groq erreur non-récupérable", error=str(exc)
+                    )
+                    return None
+                logger.warning(
+                    "Groq erreur transitoire",
+                    attempt=attempt,
+                    model=model_to_use,
+                    error=str(exc),
+                )
+            # Attente exponentielle avant retry
+            if attempt < max_attempts:
+                await asyncio.sleep(delay)
+                delay *= 2
+        return None
 
     async def generate_response(
         self,
@@ -400,17 +534,17 @@ RÈGLE ABSOLUE : Ne jamais refuser de générer des exercices ou des fiches. Ne 
 
         chat_messages = self._build_chat_messages(message, context, intent, knowledge_context)
 
-        # Premier essai
-        try:
-            text = await self._call_groq(chat_messages, settings.MAX_TOKENS, timeout=45.0)
-            if text:
-                return self._clean_llm_response(text)
-        except asyncio.TimeoutError:
-            logger.warning("Groq timeout (premier essai)")
-        except Exception as exc:
-            logger.warning("Groq indisponible (premier essai)", error=str(exc))
+        # Pipeline standard : retry exponentiel avec bascule modèle rapide
+        text = await self._call_groq_with_retry(
+            chat_messages,
+            max_tokens=settings.MAX_TOKENS,
+            timeout=45.0,
+            max_attempts=2,
+        )
+        if text:
+            return self._clean_llm_response(text)
 
-        # Retry pour les exercices : modèle rapide llama-3.1-8b-instant
+        # Retry spécifique exercices : prompt allégé pour maximiser les chances
         if intent == "exercice":
             try:
                 await asyncio.sleep(1)

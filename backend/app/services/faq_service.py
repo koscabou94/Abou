@@ -1,7 +1,7 @@
 """
 Service de gestion des FAQ avec recherche sémantique.
 - Avec JINA_API_KEY : embeddings Jina AI (recherche par sens, multilingue)
-- Sans clé : TF-IDF scikit-learn (fallback)
+- Sans clé : TF-IDF scikit-learn (fallback) + normalisation + synonymes + fuzzy
 """
 
 import json
@@ -10,6 +10,11 @@ from typing import Optional
 import structlog
 
 from app.config import settings
+# Réutilise les utilitaires de PlaneteFAQService pour la cohérence
+from app.services.planete_faq_service import (
+    normalize_text,
+    expand_query_with_synonyms,
+)
 
 logger = structlog.get_logger(__name__)
 
@@ -49,12 +54,17 @@ class FAQService:
     def _fit_faqs(self) -> None:
         if not self._faq_cache or self._vectorizer is None:
             return
-        questions = [
-            faq.get("question", "") + " " + " ".join(faq.get("keywords", []))
-            for faq in self._faq_cache
-        ]
+        # On indexe les questions enrichies : question + keywords + synonymes,
+        # le tout normalisé (sans accents, minuscules) pour matcher les
+        # reformulations utilisateurs de manière robuste.
+        questions = []
+        for faq in self._faq_cache:
+            base = faq.get("question", "") + " " + " ".join(faq.get("keywords", []))
+            normalized = normalize_text(base)
+            expanded = expand_query_with_synonyms(normalized)
+            questions.append(expanded)
         self._tfidf_matrix = self._vectorizer.fit_transform(questions)
-        logger.info("TF-IDF entraîné", faq_count=len(self._faq_cache))
+        logger.info("TF-IDF entraîné (normalisé + synonymes)", faq_count=len(self._faq_cache))
 
     async def _ensure_model_loaded(self) -> bool:
         if self._model_loaded:
@@ -239,7 +249,7 @@ class FAQService:
             return await self._find_match_tfidf(query)
 
     async def _find_match_tfidf(self, query: str) -> Optional[dict]:
-        """Recherche TF-IDF classique (fallback)."""
+        """Recherche TF-IDF avec normalisation + synonymes + fuzzy."""
         if self._tfidf_matrix is None:
             return None
         try:
@@ -250,20 +260,59 @@ class FAQService:
             if not model_ok or self._vectorizer is None:
                 return None
 
-            query_vec = self._vectorizer.transform([query])
-            scores = cosine_similarity(query_vec, self._tfidf_matrix).flatten()
-            best_idx = int(np.argmax(scores))
-            best_score = float(scores[best_idx])
+            # Normaliser et étendre la requête avec les synonymes (les
+            # questions FAQ sont elles-mêmes indexées avec ce traitement).
+            q_expanded = expand_query_with_synonyms(query)
+            query_vec = self._vectorizer.transform([q_expanded])
+            tfidf_scores = cosine_similarity(query_vec, self._tfidf_matrix).flatten()
+
+            # Fuzzy matching question vs requête (rattrape les fautes de frappe)
+            fuzzy_scores = self._compute_fuzzy_scores(query)
+
+            # Combinaison : 75% TF-IDF + 25% fuzzy
+            combined = 0.75 * tfidf_scores + 0.25 * fuzzy_scores
+
+            best_idx = int(np.argmax(combined))
+            best_score = float(combined[best_idx])
 
             if best_score < settings.FAQ_MATCH_THRESHOLD:
                 return None
 
             faq = self._faq_cache[best_idx]
-            logger.debug("FAQ match TF-IDF", score=best_score, faq_id=faq.get("id"))
+            logger.debug(
+                "FAQ match TF-IDF",
+                score=round(best_score, 3),
+                tfidf=round(float(tfidf_scores[best_idx]), 3),
+                fuzzy=round(float(fuzzy_scores[best_idx]), 3),
+                faq_id=faq.get("id"),
+            )
             return {**faq, "score": best_score}
         except Exception as exc:
             logger.error("Erreur recherche FAQ TF-IDF", error=str(exc))
             return None
+
+    def _compute_fuzzy_scores(self, query: str):
+        """Calcule un score fuzzy [0..1] entre la requête et chaque FAQ.
+        Utilise rapidfuzz si dispo, sinon fallback Jaccard sur les mots."""
+        import numpy as np
+        q_norm = normalize_text(query)
+        scores = np.zeros(len(self._faq_cache), dtype=float)
+
+        try:
+            from rapidfuzz import fuzz
+            for i, faq in enumerate(self._faq_cache):
+                qn = normalize_text(faq.get("question", ""))
+                scores[i] = fuzz.token_set_ratio(q_norm, qn) / 100.0
+        except ImportError:
+            q_words = set(q_norm.split())
+            for i, faq in enumerate(self._faq_cache):
+                w = set(normalize_text(faq.get("question", "")).split())
+                if not q_words or not w:
+                    continue
+                inter = len(q_words & w)
+                union = len(q_words | w)
+                scores[i] = inter / union if union else 0.0
+        return scores
 
     # ─────────────────────────────────────────────────────────────────
     # UTILITAIRES

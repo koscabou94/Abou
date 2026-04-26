@@ -6,6 +6,8 @@ la recherche FAQ et la génération de réponses LLM.
 
 import time
 import uuid
+import hashlib
+from collections import OrderedDict
 from datetime import datetime
 from typing import Optional
 import structlog
@@ -17,8 +19,42 @@ from app.services.translation_service import TranslationService
 from app.services.nlp_service import NLPService
 from app.services.faq_service import FAQService
 from app.services.knowledge_service import KnowledgeService
+from app.services.planete_faq_service import (
+    PlaneteFAQService,
+    is_planete_question,
+)
 
 logger = structlog.get_logger(__name__)
+
+
+# ============================================================
+# Cache LRU des réponses du LLM
+# ============================================================
+# Cache simple en mémoire pour économiser le quota Groq sur les questions
+# fréquentes. Clé = hash(message normalisé + intent). TTL implicite : tant
+# que le process tourne (Render free dort après 15min d'inactivité, ce qui
+# vide naturellement le cache).
+class _LRUCache:
+    def __init__(self, max_size: int = 200) -> None:
+        self._store: OrderedDict[str, str] = OrderedDict()
+        self._max_size = max_size
+        self.hits = 0
+        self.misses = 0
+
+    def get(self, key: str) -> Optional[str]:
+        if key in self._store:
+            self._store.move_to_end(key)
+            self.hits += 1
+            return self._store[key]
+        self.misses += 1
+        return None
+
+    def put(self, key: str, value: str) -> None:
+        if key in self._store:
+            self._store.move_to_end(key)
+        self._store[key] = value
+        if len(self._store) > self._max_size:
+            self._store.popitem(last=False)
 
 
 class ChatService:
@@ -35,6 +71,7 @@ class ChatService:
         nlp_service: NLPService,
         faq_service: FAQService,
         knowledge_service: Optional["KnowledgeService"] = None,
+        planete_faq_service: Optional["PlaneteFAQService"] = None,
     ) -> None:
         """
         Initialise le service de chat avec ses dépendances.
@@ -45,16 +82,69 @@ class ChatService:
             nlp_service: Service LLM pour la génération de réponses
             faq_service: Service de recherche dans les FAQ
             knowledge_service: Service de recherche dans la base de connaissances
+            planete_faq_service: Service FAQ dédié PLANETE (FAQ_PLANETE3.json)
         """
         self.language_service = language_service
         self.translation_service = translation_service
         self.nlp_service = nlp_service
         self.faq_service = faq_service
         self.knowledge_service = knowledge_service
+        self.planete_faq_service = planete_faq_service
+
+        # Cache LRU des réponses LLM (200 entrées max)
+        self._llm_cache = _LRUCache(max_size=200)
+
+        # Mémoire conversationnelle légère par session : dernière intention,
+        # dernier sujet PLANETE, dernier niveau/matière. Utilisée pour
+        # désambiguïser les références implicites ("et une salle ?").
+        self._session_state: dict[str, dict] = {}
+
         logger.info(
             "Service de chat initialisé avec succès",
-            knowledge_available=knowledge_service is not None
+            knowledge_available=knowledge_service is not None,
+            planete_available=planete_faq_service is not None,
         )
+
+    # ---------------------------------------------------------
+    # MÉMOIRE DE SESSION
+    # ---------------------------------------------------------
+    def _get_session_state(self, session_id: str) -> dict:
+        """Récupère ou crée l'état conversationnel d'une session."""
+        if session_id not in self._session_state:
+            self._session_state[session_id] = {
+                "last_intent": None,
+                "last_planete_topic": None,
+                "last_level": None,
+                "last_subject": None,
+            }
+        return self._session_state[session_id]
+
+    def _update_session_state(
+        self,
+        session_id: str,
+        intent: Optional[str] = None,
+        planete_topic: Optional[str] = None,
+        level: Optional[str] = None,
+        subject: Optional[str] = None,
+    ) -> None:
+        """Met à jour l'état d'une session — sans écraser avec None."""
+        state = self._get_session_state(session_id)
+        if intent:
+            state["last_intent"] = intent
+        if planete_topic:
+            state["last_planete_topic"] = planete_topic
+        if level:
+            state["last_level"] = level
+        if subject:
+            state["last_subject"] = subject
+
+    # ---------------------------------------------------------
+    # CACHE LLM
+    # ---------------------------------------------------------
+    @staticmethod
+    def _cache_key(message: str, intent: str) -> str:
+        norm = message.lower().strip()
+        return hashlib.md5(f"{intent}|{norm}".encode("utf-8")).hexdigest()
 
     async def process_message(
         self,
@@ -125,6 +215,98 @@ class ChatService:
             # === ÉTAPE 3 : Classification de l'intention ===
             intent, confidence = self.nlp_service.classify_intent(fr_message)
             logger.debug("Intention classifiée", intent=intent, confidence=confidence)
+
+            # === Détection PLANETE renforcée (lexique métier) ===
+            # Même si la classification d'intention n'a pas attribué "planete",
+            # on inspecte le lexique pour repérer les questions implicitement
+            # PLANETE ("comment configurer l'environnement physique" → planete).
+            is_planete_implicit, planete_kw_count = is_planete_question(fr_message)
+
+            # On considère la question comme PLANETE si :
+            # - l'intent est explicitement "planete", OU
+            # - au moins 1 mot-clé du lexique métier PLANETE est présent
+            is_planete_q = (intent == "planete") or is_planete_implicit
+
+            # Réutiliser le contexte de la conversation : si la dernière
+            # question était PLANETE et que le message actuel est court
+            # (< 8 mots, possible suivi du type "et une salle ?"), on
+            # propage l'intention PLANETE.
+            session_state = self._get_session_state(session_id)
+            if (
+                not is_planete_q
+                and session_state.get("last_intent") == "planete"
+                and len(fr_message.split()) <= 7
+                and intent in ("general", "salutation")
+            ):
+                # Mots-clés "suite logique"
+                _continuation_markers = [
+                    "et", "ensuite", "puis", "après", "apres", "de même",
+                    "pareil", "aussi", "et pour", "et une", "et un",
+                ]
+                if any(fr_message.lower().startswith(m) or m in fr_message.lower()
+                       for m in _continuation_markers):
+                    is_planete_q = True
+                    intent = "planete"
+                    logger.debug("Intent PLANETE propagé depuis l'historique")
+
+            if is_planete_q and intent != "planete":
+                # Forcer l'intention pour les downstream consumers
+                intent = "planete"
+
+            # === CHEMIN PRIORITAIRE : FAQ PLANETE (FAQ_PLANETE3.json) ===
+            if (
+                is_planete_q
+                and self.planete_faq_service
+                and self.planete_faq_service.is_available
+            ):
+                planete_match = await self.planete_faq_service.find_best_match(
+                    fr_message
+                )
+                if planete_match:
+                    fr_response = planete_match["answer"]
+                    self._update_session_state(
+                        session_id,
+                        intent="planete",
+                        planete_topic=planete_match.get("category"),
+                    )
+
+                    # Pas besoin de traduction (français uniquement)
+                    final_response = fr_response
+
+                    # Sauvegarde + retour
+                    await self._save_message(
+                        session_id=session_id,
+                        user_message=message_clean,
+                        assistant_response=fr_response,
+                        detected_lang=detected_lang,
+                        intent="planete",
+                        confidence=confidence,
+                        source="planete_faq",
+                        db=db,
+                    )
+
+                    response_time_ms = int((time.time() - start_time) * 1000)
+                    logger.info(
+                        "Réponse PLANETE FAQ servie",
+                        session_id=session_id,
+                        score=round(planete_match["score"], 3),
+                        response_time_ms=response_time_ms,
+                    )
+                    return {
+                        "response": final_response,
+                        "session_id": session_id,
+                        "language": detected_lang,
+                        "intent": "planete",
+                        "confidence": confidence,
+                        "source": "planete_faq",
+                        "response_time_ms": response_time_ms,
+                        "timestamp": datetime.utcnow().isoformat(),
+                        "planete_category": planete_match.get("category"),
+                    }
+                else:
+                    logger.debug(
+                        "Pas de match PLANETE FAQ, fallback vers le pipeline standard"
+                    )
 
             # === CHEMIN RAPIDE : Clarification exercice ===
             clarification = self._check_needs_clarification(fr_message, intent)
@@ -327,7 +509,27 @@ class ChatService:
             source = "llm"
             fr_response = None
 
-            if faq_match and faq_match.get("score", 0) >= settings.FAQ_HIGH_CONFIDENCE_THRESHOLD:
+            # === CACHE LRU : éviter de regénérer une réponse identique ===
+            # Pour les questions hors-FAQ (LLM), on regarde si la même
+            # question a déjà été répondue. Économise quota Groq + latence.
+            # Le cache est désactivé pour les exercices (réponses doivent
+            # rester variées) et la culture générale.
+            cache_key = self._cache_key(fr_message, intent or "general")
+            if intent != "exercice" and not _is_general_knowledge:
+                cached = self._llm_cache.get(cache_key)
+                if cached:
+                    logger.info(
+                        "Réponse servie depuis le cache",
+                        cache_hits=self._llm_cache.hits,
+                        cache_misses=self._llm_cache.misses,
+                    )
+                    fr_response = cached
+                    source = "cache"
+
+            if fr_response and source == "cache":
+                # Réponse récupérée du cache, on saute la suite
+                pass
+            elif faq_match and faq_match.get("score", 0) >= settings.FAQ_HIGH_CONFIDENCE_THRESHOLD:
                 # Haute confiance : utiliser directement la réponse FAQ
                 fr_response = faq_match["answer"]
                 source = "faq"
@@ -385,6 +587,17 @@ class ChatService:
                         score=faq_match["score"]
                     )
 
+                # Mémoriser la réponse LLM dans le cache LRU pour les
+                # prochaines questions identiques (sauf exercices et
+                # culture générale, déjà filtrés en amont).
+                if (
+                    fr_response
+                    and intent != "exercice"
+                    and not _is_general_knowledge
+                    and source in ("llm", "knowledge")
+                ):
+                    self._llm_cache.put(cache_key, fr_response)
+
             # === ÉTAPE 7 : Traduction de la réponse vers la langue de l'utilisateur ===
             if detected_lang != settings.PIVOT_LANGUAGE:
                 logger.debug("Traduction de la réponse", target=detected_lang)
@@ -405,6 +618,9 @@ class ChatService:
                 source=source,
                 db=db
             )
+
+            # Mémoire de session : tracker la dernière intention
+            self._update_session_state(session_id, intent=intent)
 
             # Calcul du temps de réponse
             response_time_ms = int((time.time() - start_time) * 1000)

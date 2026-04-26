@@ -1,0 +1,894 @@
+{
+  "titre": "FAQ COMPLÈTE ET DÉTAILLÉE — PLANETE / PLANETE 3",
+  "description": "Guide de référence officiel — Ministère de l'Éducation Nationale du Sénégal",
+  "sources": [
+    "Guide d'utilisation de PLANETE 3.0",
+    "PLANETE V3"
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "titre": "PRÉSENTATION GÉNÉRALE DE LA PLATEFORME",
+      "questions": [
+        {
+          "id": 1,
+          "question": "Qu'est-ce que PLANETE ?",
+          "reponse": "PLANETE est l'acronyme de Paquet de Logiciels Académiques Normalisés pour les Établissements et Écoles. Il s'agit de la plateforme officielle de gestion scolaire mise en place par le Ministère de l'Éducation Nationale du Sénégal (MEN), dans le cadre du Système d'Information et de Management de l'Éducation Nationale (SIMEN).",
+          "details": [
+            "La gestion administrative des élèves (inscriptions, transferts, dossiers, affectations)",
+            "La gestion pédagogique (emplois du temps, cours, évaluations, conseils de classe)",
+            "La gestion de la vie scolaire (absences, retards, incidents, rapports journaliers)",
+            "La gestion du personnel enseignant et administratif",
+            "La communication entre les différents acteurs du système éducatif",
+            "La production de statistiques, d'indicateurs et de rapports institutionnels"
+          ],
+          "note": "PLANETE est la colonne vertébrale numérique du système éducatif sénégalais. Son déploiement vise à standardiser et à moderniser la gestion de l'éducation à l'échelle nationale."
+        },
+        {
+          "id": 2,
+          "question": "Qu'est-ce que PLANETE 3 ?",
+          "reponse": "PLANETE 3 est la version la plus récente, la plus complète et la plus avancée de la plateforme.",
+          "details": [
+            "Dématérialisation complète des procédures administratives (plus besoin de formulaires papier)",
+            "Inscriptions et transferts d'élèves entièrement réalisés en ligne",
+            "Tableaux de bord interactifs et actualisés en temps réel pour les décideurs",
+            "Accès multi-acteurs avec des profils distincts selon les rôles (direction, enseignant, IEF, IA, etc.)",
+            "Interconnexion nationale permettant un suivi centralisé de tous les établissements du pays",
+            "Meilleure ergonomie et interface simplifiée pour une adoption plus facile"
+          ],
+          "info": "PLANETE 3 est accessible via l'URL nationale : https://planete3.education.sn"
+        },
+        {
+          "id": 3,
+          "question": "Quelle est la différence entre PLANETE et PLANETE 3 ?",
+          "reponse": "PLANETE désigne la plateforme globale, le programme national de gestion scolaire numérique du MEN. C'est le nom générique du système, quelle que soit sa version. PLANETE 3 désigne la version actuelle de cette plateforme, c'est-à-dire la troisième génération du logiciel, déployée à partir de 2026. En d'autres termes, PLANETE est le nom du programme, et PLANETE 3 est sa version actuelle en production.",
+          "details": [
+            "PLANETE : nom générique du programme national de gestion scolaire numérique",
+            "PLANETE 3 : version actuelle (3ème génération), déployée depuis 2026"
+          ]
+        },
+        {
+          "id": 4,
+          "question": "Quelles sont les différentes versions de PLANETE ?",
+          "reponse": "La plateforme PLANETE a évolué en trois générations successives.",
+          "versions": [
+            {
+              "nom": "PLANETE 1",
+              "periode": "2012–2017",
+              "description": "Première version du système, déployée à titre expérimental dans un nombre limité d'établissements pilotes. Fonctionnalités de base, interface rudimentaire."
+            },
+            {
+              "nom": "PLANETE 2",
+              "periode": "2018–2025",
+              "description": "Version intermédiaire enrichie, plus largement déployée à l'échelle nationale. Introduction de nouvelles fonctionnalités de gestion pédagogique et amélioration de la stabilité."
+            },
+            {
+              "nom": "PLANETE 3",
+              "periode": "2026 – en cours",
+              "description": "Version actuelle, entièrement dématérialisée, interconnectée, multi-acteurs et temps réel. C'est la version utilisée dans tous les établissements du Sénégal à ce jour."
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "question": "À quoi sert concrètement PLANETE ?",
+          "reponse": "PLANETE couvre l'ensemble du cycle de vie administratif et pédagogique d'un établissement scolaire.",
+          "fonctions": [
+            "Gestion des élèves : inscription, réinscription, affectation à une classe, transferts entrants et sortants, reprise de scolarité",
+            "Gestion du personnel : importation depuis MIRADOR, pointage, archivage, gestion des compléments horaires",
+            "Gestion des classes et emplois du temps : création de classes, bâtiments, salles, groupages, génération automatique des emplois du temps",
+            "Suivi des cours : cahier de texte numérique, enregistrement des absences et retards, justificatifs",
+            "Évaluations : planification, saisie des notes, verrouillage",
+            "Conseils de classe : planification, saisie des appréciations, validation",
+            "Rapports quotidiens : rapport de fin de journée, déclaration d'incidents, absences du personnel",
+            "Gestion financière : configuration des frais de scolarité, compte bancaire, modes de paiement",
+            "Statistiques et rapports : tableaux de bord, indicateurs nationaux, exportations de données"
+          ]
+        },
+        {
+          "id": 6,
+          "question": "Qui peut utiliser PLANETE ?",
+          "reponse": "PLANETE est une plateforme multi-acteurs. Elle est accessible à tous les intervenants du système éducatif sénégalais, avec des droits et des vues adaptés à chaque profil.",
+          "acteurs": [
+            "Chefs d'établissement et directeurs : accès complet à la gestion de leur établissement",
+            "Enseignants : accès au cahier de texte, à la gestion des absences, aux évaluations et au conseil de classe",
+            "Personnel administratif : gestion des inscriptions, des dossiers élèves, des frais de scolarité",
+            "Élèves et parents : consultation des notes, des absences, des emplois du temps (accès limité)",
+            "Inspecteurs de l'Éducation et de la Formation (IEF) : suivi des établissements de leur circonscription",
+            "Inspections d'Académie (IA) : pilotage régional",
+            "Inspecteurs pédagogiques et directions pédagogiques centrales : suivi des programmes et des indicateurs",
+            "Autorités centrales du MEN : accès aux statistiques nationales et aux tableaux de bord nationaux"
+          ],
+          "info": "Chaque profil dispose d'un accès personnalisé : certaines rubriques sont visibles ou modifiables selon le rôle attribué à l'utilisateur."
+        },
+        {
+          "id": 7,
+          "question": "Quelle est l'adresse (URL) pour accéder à PLANETE 3 ?",
+          "reponse": "La plateforme PLANETE 3 est accessible depuis n'importe quel navigateur web à l'adresse suivante :",
+          "url": "https://planete3.education.sn",
+          "note": "Il est recommandé de ne pas utiliser Internet Explorer. Privilégiez Chrome ou Firefox pour une meilleure compatibilité."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "titre": "CONNEXION ET AUTHENTIFICATION",
+      "questions": [
+        {
+          "id": 8,
+          "question": "Comment se connecter à PLANETE 3 ?",
+          "reponse": "La connexion à PLANETE 3 se fait en plusieurs étapes simples.",
+          "etapes": [
+            "Ouvrez votre navigateur web et tapez l'adresse : https://planete3.education.sn",
+            "Sur la page d'accueil, saisissez votre adresse e-mail professionnelle dans le champ prévu.",
+            "Cliquez sur le bouton « Continuer ». La page se rechargera pour afficher le champ du mot de passe.",
+            "Saisissez votre mot de passe dans le champ correspondant.",
+            "Cliquez sur le bouton « Connexion ». Si vos identifiants sont corrects, vous serez automatiquement redirigé vers votre tableau de bord personnel."
+          ],
+          "note": "Ne partagez jamais votre mot de passe avec un collègue. Chaque utilisateur doit se connecter avec ses propres identifiants."
+        },
+        {
+          "id": 9,
+          "question": "Quelle adresse e-mail dois-je utiliser pour me connecter ?",
+          "reponse": "Pour vous connecter à PLANETE 3, vous devez obligatoirement utiliser votre adresse e-mail professionnelle du Ministère de l'Éducation Nationale.",
+          "format_email": "prenom.nom@education.sn",
+          "exemples": [
+            "amadou.diallo@education.sn",
+            "fatou.ndiaye@education.sn"
+          ],
+          "note": "N'utilisez jamais une adresse Gmail, Yahoo ou autre adresse personnelle. Seules les adresses @education.sn sont autorisées sur la plateforme."
+        },
+        {
+          "id": 10,
+          "question": "Que faire si j'ai oublié mon mot de passe ?",
+          "reponse": "Si vous avez oublié votre mot de passe, vous ne pouvez pas le réinitialiser vous-même depuis la page de connexion.",
+          "etapes": [
+            "Contactez le référent numérique de votre établissement. C'est la première personne à contacter.",
+            "Si le référent numérique n'est pas disponible, contactez directement le chef d'établissement.",
+            "L'un ou l'autre pourra initier la procédure de réinitialisation de votre mot de passe via les outils de gestion des utilisateurs."
+          ],
+          "info": "Il est fortement conseillé de noter votre mot de passe dans un endroit sécurisé dès la première connexion, afin d'éviter ce type de situation."
+        },
+        {
+          "id": 11,
+          "question": "Pourquoi ma connexion échoue-t-elle ?",
+          "reponse": "Si vous n'arrivez pas à vous connecter, plusieurs causes sont possibles.",
+          "causes": [
+            "Erreur dans l'adresse e-mail saisie : vérifiez l'orthographe exacte de votre adresse (prénom, nom, sans accent, sans espace).",
+            "Mot de passe incorrect : attention aux majuscules/minuscules et aux caractères spéciaux. Le mot de passe est sensible à la casse.",
+            "Mauvais compte utilisé : si vous avez plusieurs comptes, vérifiez que vous utilisez le bon identifiant.",
+            "Compte non encore créé ou non mis à jour : si votre compte vient d'être créé ou modifié, il est possible qu'il ne soit pas encore actif.",
+            "Problème de connexion internet : vérifiez que vous avez une connexion active et stable."
+          ],
+          "note": "En cas de doute persistant, contactez votre référent numérique ou le chef d'établissement pour vérifier l'état de votre compte."
+        },
+        {
+          "id": 12,
+          "question": "Comment réinitialiser mon mot de passe ?",
+          "reponse": "La réinitialisation du mot de passe ne peut pas être effectuée directement par l'utilisateur depuis la page de connexion. Elle doit être initiée par un administrateur habilité.",
+          "etapes": [
+            "Identifiez le référent numérique de votre établissement.",
+            "Formulez votre demande de réinitialisation, en précisant votre nom, prénom et adresse e-mail professionnelle.",
+            "Le référent numérique ou le chef d'établissement effectue la réinitialisation dans le module de gestion des utilisateurs.",
+            "Un nouveau mot de passe provisoire vous sera communiqué. Changez-le dès la première connexion."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "titre": "TABLEAU DE BORD",
+      "questions": [
+        {
+          "id": 13,
+          "question": "Comment accéder au tableau de bord ?",
+          "reponse": "Le tableau de bord est la page centrale de PLANETE 3. Il est accessible automatiquement dès que vous vous connectez avec succès à la plateforme. Si vous vous trouvez sur une autre page, cliquez sur le logo PLANETE ou sur le lien « Accueil » dans le menu de navigation principal.",
+          "info": "Le tableau de bord est personnalisé en fonction de votre profil. Un chef d'établissement n'y verra pas les mêmes informations qu'un enseignant ou qu'un inspecteur."
+        },
+        {
+          "id": 14,
+          "question": "Quelles informations sont visibles sur le tableau de bord ?",
+          "reponse": "Le tableau de bord offre une vue synthétique et actualisée de la situation de l'établissement.",
+          "informations_visibles": [
+            "Les effectifs globaux de l'établissement (nombre total d'élèves inscrits, répartition par classe et par niveau)",
+            "La liste des classes avec leurs informations essentielles",
+            "Les absences du jour : élèves absents, cours non tenus, personnels absents",
+            "Les cours prévus dans la journée avec leur statut (planifié, en cours, terminé)",
+            "Les évaluations programmées à venir",
+            "Les demandes de transfert en attente de traitement",
+            "Les messages non lus et les notifications importantes",
+            "Un historique des activités récentes réalisées dans le système",
+            "Des raccourcis vers les fonctionnalités les plus utilisées"
+          ],
+          "info": "Le tableau de bord est mis à jour en temps réel. Les informations reflètent l'état actuel de l'établissement sans avoir besoin de rafraîchir la page."
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "titre": "FICHE ÉTABLISSEMENT",
+      "questions": [
+        {
+          "id": 15,
+          "question": "Comment mettre à jour la fiche de l'établissement ?",
+          "reponse": "La fiche établissement contient toutes les informations officielles relatives à votre école ou lycée.",
+          "etapes": [
+            "Dans le menu principal, cliquez sur la rubrique « Établissement ».",
+            "Sélectionnez l'option « Editer fiche » (ou « Modifier »).",
+            "La fiche s'affiche sous forme de formulaire. Modifiez les champs que vous souhaitez mettre à jour.",
+            "Une fois les modifications effectuées, cliquez sur « Enregistrer » pour valider les changements."
+          ],
+          "note": "Toute modification de la fiche établissement est enregistrée et peut être consultée par les autorités de tutelle (IEF, IA, MEN). Assurez-vous que les informations saisies sont exactes et officielles."
+        },
+        {
+          "id": 16,
+          "question": "Comment modifier le cycle de l'établissement ?",
+          "reponse": "Si votre établissement change de cycle (par exemple, passage d'un collège à un lycée moyen-secondaire), vous pouvez mettre à jour cette information directement dans la fiche établissement.",
+          "etapes": [
+            "Accédez à la fiche établissement via le menu « Établissement ».",
+            "Cliquez sur « Mise à jour » pour activer le mode modification.",
+            "Localisez le champ correspondant au cycle et sélectionnez la nouvelle valeur dans le menu déroulant.",
+            "Enregistrez les modifications."
+          ],
+          "note": "Cette modification peut avoir des implications sur les niveaux de classes disponibles et les programmes affichés. Consultez votre IEF ou votre IA avant d'effectuer ce type de changement."
+        },
+        {
+          "id": 17,
+          "question": "Comment déclarer la polarisation BST de l'établissement ?",
+          "reponse": "La polarisation BST (Bureau de Suivi et de Tutelle) est une configuration qui lie votre établissement à un établissement polarisateur.",
+          "etapes": [
+            "Accédez à la fiche établissement via le menu « Établissement ».",
+            "Repérez le champ dédié à la polarisation BST.",
+            "Sélectionnez « Oui » pour indiquer que votre établissement est polarisé.",
+            "Une liste des établissements BST polarisateurs disponibles au niveau national s'affiche. Sélectionnez le BST polarisateur correspondant à votre établissement.",
+            "Enregistrez les modifications."
+          ],
+          "info": "Cette configuration est importante car elle détermine les flux de données entre votre établissement et son BST de référence dans le cadre du suivi pédagogique national."
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "titre": "CONFIGURATION DE L'ÉTABLISSEMENT",
+      "questions": [
+        {
+          "id": 18,
+          "question": "Comment configurer l'environnement physique de l'établissement ?",
+          "reponse": "La configuration de l'environnement physique permet de renseigner toutes les ressources matérielles et organisationnelles de votre établissement. Elle se fait depuis la rubrique « Configuration » du menu principal.",
+          "elements_a_configurer": [
+            "Bâtiments : déclaration de tous les bâtiments de l'établissement (physiques, virtuels, aires de jeux)",
+            "Salles : création et paramétrage de chaque salle (type, capacité, dimensions)",
+            "Programmes et disciplines : affichage et vérification des curricula assignés à l'établissement",
+            "Classes pédagogiques : création des classes avec niveau, série et salle associée",
+            "Groupages de classes : regroupement de classes pour des enseignements communs",
+            "Semestres : activation du second semestre avec sa date de début",
+            "Compte bancaire : renseignement des coordonnées bancaires de l'établissement",
+            "Scolarité : paramétrage des frais de scolarité, modes de paiement et échéances"
+          ],
+          "info": "Il est recommandé de réaliser l'intégralité de cette configuration en début d'année scolaire, avant de procéder aux inscriptions et aux affectations."
+        },
+        {
+          "id": 19,
+          "question": "Comment créer un bâtiment dans PLANETE 3 ?",
+          "reponse": "Pour déclarer un bâtiment dans votre établissement, suivez ces étapes.",
+          "etapes": [
+            "Dans le menu principal, accédez à « Configuration », puis à la sous-rubrique « Bâtiments ».",
+            "Cliquez sur le bouton « Ajouter » (ou le bouton « + »).",
+            "Renseignez le type de bâtiment (Virtuel, Physique ou Aire de jeu).",
+            "Saisissez le nom du bâtiment (ex. : Bloc A, Bloc administratif, Couloir principal...).",
+            "Cliquez sur « Enregistrer » pour sauvegarder."
+          ]
+        },
+        {
+          "id": 20,
+          "question": "Quels sont les types de bâtiments disponibles ?",
+          "reponse": "Trois types de bâtiments sont disponibles dans PLANETE 3.",
+          "types": [
+            {
+              "type": "Virtuel",
+              "description": "Désigne un espace organisationnel non physique, utilisé pour regrouper des ressources ou des classes de manière logique (ex. : enseignement à distance, espaces administratifs)."
+            },
+            {
+              "type": "Physique",
+              "description": "Désigne un bâtiment réel et construit, disposant de salles de classe, de bureaux ou de laboratoires."
+            },
+            {
+              "type": "Aire de jeu",
+              "description": "Désigne un espace extérieur dédié aux activités sportives et récréatives."
+            }
+          ]
+        },
+        {
+          "id": 21,
+          "question": "Comment créer une salle de classe ou un espace ?",
+          "reponse": "Chaque salle ou espace utilisé dans l'établissement doit être déclaré individuellement.",
+          "etapes": [
+            "Accédez à « Configuration » → « Salle ».",
+            "Cliquez sur « Ajouter ».",
+            "Choisissez le bâtiment auquel appartient la salle (parmi ceux déjà créés).",
+            "Sélectionnez le type de salle (salle de classe, laboratoire, salle informatique, bureau, etc.).",
+            "Saisissez le nom ou le numéro de la salle (ex. : Salle 01, Labo Chimie, Salle des professeurs...).",
+            "Indiquez les dimensions si demandées (largeur, longueur, capacité d'accueil en nombre d'élèves).",
+            "Cliquez sur « Enregistrer »."
+          ]
+        },
+        {
+          "id": 22,
+          "question": "Comment créer une classe pédagogique ?",
+          "reponse": "Une classe pédagogique est le groupe d'élèves qui suivent ensemble les mêmes enseignements.",
+          "etapes": [
+            "Accédez à « Configuration » → « Classe pédagogique ».",
+            "Cliquez sur « Ajouter ».",
+            "Sélectionnez le niveau scolaire (ex. : 6ème, 5ème, Terminale...).",
+            "Sélectionnez la série si applicable (ex. : S, L, G...).",
+            "Saisissez le nom de la classe (ex. : 6ème A, Terminale S2...).",
+            "Associez la salle dans laquelle cette classe étudie habituellement.",
+            "Enregistrez la classe."
+          ],
+          "note": "Vous devez créer autant de classes pédagogiques que l'établissement en compte réellement. Chaque classe sera ensuite utilisée pour les affectations d'élèves et la création d'emplois du temps."
+        },
+        {
+          "id": 23,
+          "question": "Comment supprimer une classe pédagogique ?",
+          "reponse": "La suppression d'une classe se fait depuis la liste des classes dans le module de configuration.",
+          "etapes": [
+            "Accédez à la liste des classes dans « Configuration » → « Classe pédagogique ».",
+            "Repérez la classe à supprimer dans la liste.",
+            "Cliquez sur le bouton « Supprimer » correspondant à cette classe.",
+            "Confirmez la suppression si une demande de confirmation apparaît."
+          ],
+          "note": "ATTENTION : La suppression d'une classe est irréversible. Toutes les données liées à cette classe (affectations, emplois du temps, notes) seront perdues. Ne supprimez une classe que si vous êtes certain qu'elle n'est plus utilisée."
+        },
+        {
+          "id": 24,
+          "question": "Comment créer un groupage de classes ?",
+          "reponse": "Un groupage de classes permet de regrouper plusieurs classes pour un même cours dispensé par un seul enseignant (exemple : cours d'EPS ou de musique avec deux classes en même temps).",
+          "etapes": [
+            "Accédez à « Configuration » → « Groupage classe ».",
+            "Cliquez sur le bouton « + » pour créer un nouveau groupage.",
+            "Renseignez un libellé pour ce groupage (ex. : Groupe EPS Niveau 3ème).",
+            "Sélectionnez le niveau concerné.",
+            "Choisissez la discipline pour laquelle ce groupage est créé.",
+            "Sélectionnez le professeur qui assurera cet enseignement.",
+            "Liez les classes concernées en les sélectionnant dans la liste disponible.",
+            "Enregistrez le groupage."
+          ]
+        },
+        {
+          "id": 25,
+          "question": "Comment afficher les programmes et disciplines disponibles ?",
+          "reponse": "Les programmes et disciplines sont prédéfinis par le MEN et attribués à votre établissement en fonction de son type et de son cycle.",
+          "etapes": [
+            "Accédez à « Configuration » → « Programme ».",
+            "La liste des programmes associés à votre établissement s'affiche.",
+            "Cliquez sur un programme pour voir les disciplines associées via la rubrique « Discipline »."
+          ]
+        },
+        {
+          "id": 26,
+          "question": "Comment activer le second semestre ?",
+          "reponse": "L'activation du second semestre se fait depuis la rubrique de gestion des semestres.",
+          "etapes": [
+            "Accédez à la rubrique « Gestion des semestres » dans le menu Configuration.",
+            "Repérez la ligne correspondant au « Second semestre ».",
+            "Cliquez sur le bouton « Activer ».",
+            "Saisissez la date de début du second semestre dans le champ prévu.",
+            "Enregistrez."
+          ],
+          "note": "L'activation du second semestre débloque les fonctionnalités liées à cette période (saisie des notes, évaluations, conseils de classe du second semestre). Ne l'activez pas avant la date officielle fixée par les autorités académiques."
+        },
+        {
+          "id": 27,
+          "question": "Comment configurer les frais de scolarité ?",
+          "reponse": "Le paramétrage des frais de scolarité permet de définir les montants, les modes et les échéances de paiement.",
+          "etapes": [
+            "Accédez à « Configuration » → « Paramétrage scolarité ».",
+            "Cliquez sur « Ajouter ».",
+            "Choisissez le mode de facturation (annuel, trimestriel, mensuel, etc.).",
+            "Saisissez le montant correspondant.",
+            "Définissez les échéances de paiement (dates limites pour chaque versement).",
+            "Enregistrez la configuration."
+          ],
+          "info": "Une bonne configuration des frais de scolarité permet de suivre en temps réel les paiements effectués par les élèves et d'identifier les impayés."
+        },
+        {
+          "id": 28,
+          "question": "Comment ajouter le compte bancaire de l'établissement ?",
+          "reponse": "Les coordonnées bancaires de l'établissement sont nécessaires pour les paiements et transferts officiels.",
+          "etapes": [
+            "Accédez à « Configuration » → « Compte bancaire ».",
+            "Cliquez sur « Ajouter ».",
+            "Renseignez les informations suivantes : code banque, code guichet, numéro de compte, clé RIB, nom de la banque.",
+            "Enregistrez les informations."
+          ],
+          "note": "Ces informations sont utilisées pour les paiements officiels et les transferts financiers liés à la gestion de l'établissement. Assurez-vous qu'elles sont exactes."
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "titre": "GESTION DU PERSONNEL",
+      "questions": [
+        {
+          "id": 29,
+          "question": "Comment importer le personnel depuis MIRADOR ?",
+          "reponse": "MIRADOR est la base de données nationale du personnel enseignant titulaire du MEN. PLANETE 3 est interconnecté avec cette base pour faciliter l'import des agents.",
+          "etapes": [
+            "Accédez à la rubrique de gestion du personnel.",
+            "Cliquez sur le bouton « Mise à jour Personnel ». Ce bouton déclenche une synchronisation avec la base MIRADOR.",
+            "La liste des personnels titulaires affectés à votre établissement selon MIRADOR est automatiquement importée.",
+            "Vérifiez la liste et complétez les informations manquantes si nécessaire."
+          ],
+          "info": "Seul le personnel titulaire est importé depuis MIRADOR. Les vacataires et les personnels à complément horaire doivent être ajoutés manuellement."
+        },
+        {
+          "id": 30,
+          "question": "Comment ajouter un enseignant en complément horaire ?",
+          "reponse": "Les enseignants en complément horaire ne figurent pas dans MIRADOR. Ils doivent être ajoutés manuellement dans PLANETE 3.",
+          "etapes": [
+            "Accédez à la rubrique de gestion du personnel.",
+            "Cliquez sur le bouton « Complément horaire ».",
+            "Saisissez l'IEN (Identifiant de l'Éducation Nationale) de l'enseignant ou son adresse e-mail professionnelle.",
+            "Complétez son dossier avec les informations requises (spécialité, horaire hebdomadaire, etc.).",
+            "Enregistrez."
+          ]
+        },
+        {
+          "id": 31,
+          "question": "Comment effectuer le pointage du personnel ?",
+          "reponse": "Le pointage permet de confirmer la date de prise de service effective de chaque agent. C'est une étape obligatoire en début d'année scolaire.",
+          "etapes": [
+            "Accédez à la liste des agents dans le module de gestion du personnel.",
+            "Pour chaque agent, cliquez sur l'action « Pointage ».",
+            "Saisissez la date à laquelle l'agent a effectivement pris son service.",
+            "Enregistrez le pointage."
+          ],
+          "note": "Le pointage est distinct de la simple présence journalière. Il s'agit ici de la prise de service officielle en début de période. Ce pointage est transmis aux autorités académiques."
+        },
+        {
+          "id": 32,
+          "question": "Comment accéder au dossier d'un agent ?",
+          "reponse": "L'accès au dossier d'un agent se fait depuis la liste du personnel.",
+          "etapes": [
+            "Accédez au module de gestion du personnel.",
+            "Utilisez la zone de recherche pour trouver l'agent par son nom, prénom ou IEN.",
+            "Cliquez sur le nom de l'agent dans les résultats pour ouvrir son dossier complet."
+          ],
+          "contenu_dossier": [
+            "Informations personnelles",
+            "Spécialités et disciplines enseignées",
+            "Heures effectuées",
+            "Historique du pointage",
+            "Historique des affectations"
+          ]
+        },
+        {
+          "id": 33,
+          "question": "Comment archiver un agent qui quitte l'établissement ?",
+          "reponse": "Lorsqu'un agent quitte définitivement l'établissement (mutation, retraite, décès, fin de contrat, etc.), son dossier doit être archivé.",
+          "etapes": [
+            "Ouvrez le dossier de l'agent concerné.",
+            "Cliquez sur le bouton « Archiver ».",
+            "Sélectionnez le type de sortie dans le menu déroulant (ex. : mutation, retraite, décès, fin de contrat...).",
+            "Indiquez la date effective de sortie.",
+            "Ajoutez une observation si nécessaire (commentaire libre).",
+            "Enregistrez."
+          ],
+          "note": "L'archivage ne supprime pas définitivement le dossier de l'agent : ses données restent conservées dans le système à des fins statistiques et historiques, mais il n'apparaîtra plus dans la liste active du personnel."
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "titre": "GESTION DES ÉLÈVES",
+      "questions": [
+        {
+          "id": 34,
+          "question": "Comment inscrire un élève dans l'établissement ?",
+          "reponse": "L'inscription d'un élève se fait depuis le module dédié aux inscriptions.",
+          "etapes": [
+            "Accédez à « Élèves » → « Inscriptions ».",
+            "Cliquez sur « Ajouter une inscription ».",
+            "Saisissez l'IEN (Identifiant de l'Éducation Nationale) de l'élève. Si l'élève est déjà dans le système national, ses informations de base seront préremplies.",
+            "Vérifiez et complétez les informations du dossier (informations personnelles, contacts des parents/tuteurs, documents).",
+            "Saisissez le montant de la scolarité à payer et indiquez le mode de paiement utilisé.",
+            "Cliquez sur « Enregistrer » pour finaliser l'inscription."
+          ],
+          "info": "Si l'élève n'a pas encore d'IEN, il faut d'abord en faire la demande auprès des services compétents de la DAPRE ou de l'IEF avant de procéder à l'inscription."
+        },
+        {
+          "id": 35,
+          "question": "Comment modifier le dossier d'un élève ?",
+          "reponse": "La modification du dossier d'un élève se fait depuis la liste des élèves.",
+          "etapes": [
+            "Accédez à la liste des élèves et recherchez l'élève concerné par son nom, prénom ou IEN.",
+            "Cliquez sur son nom pour ouvrir son dossier.",
+            "Cliquez sur le bouton « Edition » ou « Modifier ».",
+            "Apportez les modifications souhaitées dans les champs concernés.",
+            "Cliquez sur « Enregistrer » pour sauvegarder les changements."
+          ],
+          "note": "Certaines informations (comme l'IEN ou la date de naissance) peuvent être verrouillées et non modifiables directement. Dans ce cas, contactez votre IEF."
+        },
+        {
+          "id": 36,
+          "question": "Comment affecter un élève à une classe ?",
+          "reponse": "L'affectation est l'opération qui consiste à placer un élève inscrit dans une classe pédagogique précise.",
+          "etapes": [
+            "Accédez à « Élèves » → « Affectation élèves ».",
+            "Sélectionnez le niveau scolaire souhaité.",
+            "La liste des élèves inscrits à ce niveau mais non encore affectés s'affiche. Sélectionnez les élèves à affecter.",
+            "Choisissez la classe de destination dans le menu déroulant.",
+            "Cliquez sur « Affecter » pour confirmer l'affectation."
+          ],
+          "info": "Un élève ne peut pas apparaître dans les emplois du temps ou dans les relevés de notes tant qu'il n'a pas été affecté à une classe."
+        },
+        {
+          "id": 37,
+          "question": "Comment importer des élèves en masse via un fichier Excel ?",
+          "reponse": "Lorsque vous avez un grand nombre d'élèves à inscrire, l'import en masse est plus rapide que la saisie individuelle.",
+          "etapes": [
+            "Accédez à « Élèves » → « Import élèves ».",
+            "Téléchargez le fichier modèle au format .xlsx fourni par la plateforme. Ce modèle contient les colonnes obligatoires à renseigner.",
+            "Ouvrez ce fichier dans Excel ou LibreOffice et remplissez-le avec les données des élèves à inscrire (IEN, nom, prénom, date de naissance, sexe, classe, etc.).",
+            "Revenez sur PLANETE 3 et chargez le fichier rempli en cliquant sur « Choisir un fichier » ou « Parcourir ».",
+            "Le système affiche une prévisualisation des données importées. Vérifiez que toutes les informations sont correctes.",
+            "Confirmez l'import en cliquant sur « Enregistrer » ou « Valider l'import »."
+          ]
+        },
+        {
+          "id": 38,
+          "question": "Comment traiter un transfert entrant (élève arrivant d'un autre établissement) ?",
+          "reponse": "Un transfert entrant est initié par l'établissement d'origine de l'élève. Votre rôle est de traiter cette demande.",
+          "etapes": [
+            "Accédez à « Élèves » → « Transfert entrant ».",
+            "La liste des demandes de transfert en attente s'affiche.",
+            "Ouvrez la demande concernée en cliquant dessus.",
+            "Consultez les informations de l'élève et vérifiez la disponibilité dans votre établissement.",
+            "Cliquez sur « Accepter le transfert » si vous accueillez l'élève, ou sur « Rejeter le transfert » si vous refusez (avec motif obligatoire)."
+          ],
+          "info": "Une fois le transfert accepté, l'élève est automatiquement intégré dans votre liste d'élèves. Il devra ensuite être affecté à une classe."
+        },
+        {
+          "id": 39,
+          "question": "Comment initier un transfert sortant (élève qui quitte l'établissement) ?",
+          "reponse": "Le transfert sortant permet de libérer officiellement un élève pour qu'il puisse s'inscrire dans un autre établissement.",
+          "etapes": [
+            "Accédez à « Élèves » → « Transfert sortant ».",
+            "Cliquez sur le bouton « + » pour créer une nouvelle demande.",
+            "Saisissez l'IEN de l'élève concerné.",
+            "Renseignez les informations de destination : établissement d'accueil, région, motif du transfert.",
+            "Validez la demande. Elle sera transmise à l'établissement de destination pour traitement."
+          ]
+        },
+        {
+          "id": 40,
+          "question": "Comment gérer la reprise de scolarité d'un ancien élève ?",
+          "reponse": "La reprise de scolarité concerne un élève qui était inscrit dans votre établissement lors d'une année antérieure, qui en est sorti, et qui souhaite y revenir.",
+          "etapes": [
+            "Accédez à « Élèves » → « Reprise Scolarité ».",
+            "Recherchez l'élève en saisissant son IEN.",
+            "Les informations de l'élève s'affichent depuis son historique dans le système.",
+            "Vérifiez et mettez à jour les informations si nécessaire.",
+            "Poursuivez la procédure de réinscription en renseignant la classe, les frais et le mode de paiement.",
+            "Enregistrez."
+          ]
+        },
+        {
+          "id": 41,
+          "question": "Comment déclarer les élèves BST ?",
+          "reponse": "La déclaration des élèves BST se fait depuis le module dédié.",
+          "etapes": [
+            "Accédez à « Élèves » → « Élèves BST ».",
+            "Sélectionnez le niveau concerné dans le menu déroulant.",
+            "Sélectionnez la classe correspondante.",
+            "Cliquez sur « Afficher » pour faire apparaître la liste des élèves de cette classe.",
+            "Activez la sélection pour chaque élève concerné par le BST."
+          ]
+        },
+        {
+          "id": 42,
+          "question": "Comment gérer les candidats au BFEM ?",
+          "reponse": "La gestion des candidats au BFEM (Brevet de Fin d'Études Moyennes) se fait via le module dédié.",
+          "etapes": [
+            "Accédez à « Élèves » → « Candidats BFEM ».",
+            "La liste des élèves éligibles s'affiche (généralement les élèves de 3ème).",
+            "Vérifiez les informations de chaque candidat (état civil, classe, dossier).",
+            "Validez les inscriptions au BFEM selon les procédures officielles de l'Office du Baccalauréat."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "titre": "EMPLOI DU TEMPS",
+      "questions": [
+        {
+          "id": 43,
+          "question": "Comment créer manuellement un emploi du temps ?",
+          "reponse": "La création manuelle d'un emploi du temps se fait par glisser-déposer dans une grille hebdomadaire.",
+          "etapes": [
+            "Accédez au module « Emploi du temps » depuis le menu principal.",
+            "Sélectionnez la classe pour laquelle vous souhaitez créer l'emploi du temps.",
+            "La grille hebdomadaire s'affiche avec les jours et les créneaux horaires.",
+            "Glissez-déposez l'enseignant (ou la discipline) depuis le panneau latéral vers le créneau souhaité dans la grille.",
+            "Répétez l'opération pour tous les créneaux et toutes les disciplines.",
+            "Cliquez sur « Enregistrer » pour sauvegarder l'emploi du temps."
+          ]
+        },
+        {
+          "id": 44,
+          "question": "Comment générer automatiquement les emplois du temps ?",
+          "reponse": "PLANETE 3 dispose d'un module de génération automatique des emplois du temps qui prend en compte les disponibilités des enseignants, les contraintes de salles et les programmes définis.",
+          "etapes": [
+            "Assurez-vous que toutes les classes, disciplines, enseignants et salles sont correctement configurés.",
+            "Cliquez sur le bouton « Générer EDT ».",
+            "Sélectionnez le niveau ou l'ensemble des niveaux pour lesquels vous souhaitez générer les emplois du temps.",
+            "Lancez le traitement. Le système calcule automatiquement les emplois du temps optimisés.",
+            "Vérifiez le résultat généré et apportez les ajustements manuels si nécessaire."
+          ]
+        },
+        {
+          "id": 45,
+          "question": "Comment exporter les emplois du temps ?",
+          "reponse": "PLANETE 3 permet d'exporter les emplois du temps dans différents formats pour les afficher ou les distribuer.",
+          "options_export": [
+            "Bouton « Export EDT » : télécharger l'emploi du temps complet d'une classe sous forme de fichier (PDF ou Excel).",
+            "Bouton « Export cours » : exporter uniquement la liste des cours planifiés."
+          ],
+          "info": "Ces exports peuvent être imprimés et affichés dans les salles de classe, ou envoyés aux enseignants et aux parents."
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "titre": "COURS ET ABSENCES",
+      "questions": [
+        {
+          "id": 46,
+          "question": "Comment renseigner le cahier de texte numérique ?",
+          "reponse": "Le cahier de texte numérique permet à chaque enseignant de tracer les activités réalisées lors de chaque cours. Il remplace le cahier de texte papier traditionnel.",
+          "etapes": [
+            "Accédez au module « Cours ».",
+            "Repérez le cours concerné dans la liste (identifié par la classe, la discipline et la date).",
+            "Cliquez sur le bouton « Cahier texte » correspondant à ce cours.",
+            "Saisissez le contenu de la séance : thème abordé, activités réalisées, devoirs donnés, observations particulières.",
+            "Cliquez sur « Enregistrer » pour valider."
+          ],
+          "note": "Le cahier de texte numérique est consultable par la direction et les inspecteurs. Il est important de le renseigner régulièrement et avec précision."
+        },
+        {
+          "id": 47,
+          "question": "Comment saisir les absences des élèves lors d'un cours ?",
+          "reponse": "La saisie des absences se fait directement depuis la ligne du cours concerné.",
+          "etapes": [
+            "Accédez au module « Cours ».",
+            "Repérez la ligne du cours en question dans la liste.",
+            "Cliquez sur le bouton rouge (icône d'absence) correspondant à ce cours.",
+            "La liste des élèves de la classe s'affiche. Pour chaque élève absent ou en retard : activez « Absence » s'il est absent, ou « Retard » s'il est arrivé après le début du cours.",
+            "Enregistrez les absences."
+          ]
+        },
+        {
+          "id": 48,
+          "question": "Comment justifier une absence d'élève ?",
+          "reponse": "La justification d'une absence permet de la distinguer d'une absence non justifiée dans les statistiques.",
+          "etapes": [
+            "Accédez à « Cours » → « Absences ».",
+            "Cliquez sur « Justifier absence ».",
+            "Recherchez l'élève concerné en saisissant son nom ou son IEN.",
+            "Sélectionnez l'absence ou le groupe d'absences à justifier.",
+            "Saisissez le motif de la justification (maladie, événement familial, convocation officielle, etc.) et, si possible, joignez un justificatif numérique.",
+            "Validez la justification."
+          ],
+          "info": "Une absence justifiée est distinguée d'une absence non justifiée dans les statistiques et dans les rapports. Elle peut influencer les décisions du conseil de classe."
+        },
+        {
+          "id": 49,
+          "question": "Comment consulter les statistiques d'absences ?",
+          "reponse": "Les statistiques d'absences sont consultables depuis le module Cours.",
+          "etapes": [
+            "Accédez à « Cours » → « Absences ».",
+            "La lecture mensuelle vous permet de visualiser, mois par mois, l'évolution des absences de chaque élève.",
+            "Consultez la colonne « Stats » pour obtenir les indicateurs synthétiques (nombre d'absences justifiées, non justifiées, taux d'absentéisme)."
+          ],
+          "info": "Ces statistiques peuvent être utilisées lors des conseils de classe pour appuyer les décisions concernant les élèves absentéistes."
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "titre": "RAPPORT DE FIN DE JOURNÉE",
+      "questions": [
+        {
+          "id": 50,
+          "question": "Comment renseigner le rapport de fin de journée ?",
+          "reponse": "Le rapport de fin de journée est un outil essentiel pour le suivi quotidien de la vie de l'établissement. Il est généralement rempli par le responsable de permanence ou le chef d'établissement.",
+          "etapes": [
+            "Accédez au module dédié au rapport de fin de journée depuis le menu principal.",
+            "Sélectionnez la classe ou l'entité concernée.",
+            "Complétez toutes les informations du jour : cours tenus, cours non tenus, présences/absences du personnel, incidents, observations générales.",
+            "Enregistrez le rapport."
+          ]
+        },
+        {
+          "id": 51,
+          "question": "Comment déclarer une absence du personnel dans le rapport journalier ?",
+          "reponse": "La déclaration d'absence d'un membre du personnel se fait depuis le rapport de fin de journée.",
+          "etapes": [
+            "Ouvrez le rapport de fin de journée pour la date concernée.",
+            "Cliquez sur l'icône « Absence » correspondant au membre du personnel.",
+            "Renseignez le type d'absence (maladie, mission, absence injustifiée, etc.).",
+            "Saisissez une observation si nécessaire.",
+            "Indiquez les horaires de l'absence (début et fin).",
+            "Cliquez sur « Enregistrer »."
+          ]
+        },
+        {
+          "id": 52,
+          "question": "Comment déclarer un incident dans le rapport journalier ?",
+          "reponse": "La déclaration d'un incident se fait depuis le rapport de fin de journée.",
+          "etapes": [
+            "Depuis le rapport de fin de journée, cliquez sur le bouton « Déclarer un incident ».",
+            "Décrivez l'incident de manière précise et factuelle : nature de l'incident, personnes impliquées, heure et lieu.",
+            "Cliquez sur « Enregistrer »."
+          ],
+          "note": "Les incidents déclarés sont archivés et peuvent être consultés par la direction et les inspecteurs. Utilisez un langage neutre et factuel dans vos descriptions."
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "titre": "ÉVALUATIONS",
+      "questions": [
+        {
+          "id": 53,
+          "question": "Comment planifier une évaluation ?",
+          "reponse": "La planification d'une évaluation se fait depuis le module Évaluations.",
+          "etapes": [
+            "Accédez au module « Évaluations » depuis le menu principal.",
+            "Sélectionnez la classe concernée.",
+            "Cliquez sur « Ajouter » pour créer une nouvelle évaluation.",
+            "Renseignez : semestre, salle, type d'évaluation, date et heure, discipline concernée, professeur responsable.",
+            "Enregistrez."
+          ]
+        },
+        {
+          "id": 54,
+          "question": "Comment saisir les notes d'une évaluation ?",
+          "reponse": "La saisie des notes se fait depuis la liste des évaluations planifiées.",
+          "etapes": [
+            "Accédez à la liste des évaluations depuis le module « Évaluations ».",
+            "Repérez l'évaluation pour laquelle vous souhaitez saisir les notes.",
+            "Cliquez sur le bouton « Notation » sur la ligne de l'évaluation.",
+            "La liste des élèves de la classe s'affiche. Saisissez la note de chaque élève dans le champ correspondant.",
+            "Une fois toutes les notes saisies, cliquez sur « Valider » pour enregistrer."
+          ],
+          "info": "Les notes saisies sont automatiquement intégrées dans les calculs de moyennes et sont disponibles pour les relevés de notes et les conseils de classe."
+        },
+        {
+          "id": 55,
+          "question": "Comment verrouiller une évaluation ?",
+          "reponse": "Le verrouillage d'une évaluation empêche toute modification ultérieure des notes saisies. Il est conseillé de verrouiller une évaluation une fois que les notes sont définitives et vérifiées.",
+          "etapes": [
+            "Accédez à la liste des évaluations.",
+            "Repérez l'évaluation à verrouiller.",
+            "Cliquez sur le bouton de verrouillage (icône de cadenas) sur la ligne correspondante.",
+            "Confirmez le verrouillage si une confirmation est demandée."
+          ],
+          "note": "Une fois verrouillée, une évaluation ne peut plus être modifiée. Si une correction est nécessaire, contactez l'administrateur de la plateforme."
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "titre": "CONSEILS DE CLASSE",
+      "questions": [
+        {
+          "id": 56,
+          "question": "Comment planifier un conseil de classe ?",
+          "reponse": "La planification d'un conseil de classe se fait depuis le module dédié.",
+          "etapes": [
+            "Accédez à la rubrique « Conseils de classes » depuis le menu principal.",
+            "Sélectionnez la classe pour laquelle vous souhaitez planifier un conseil.",
+            "Cliquez sur « Planifier le conseil ».",
+            "Indiquez la date, l'heure et le lieu du conseil de classe.",
+            "Enregistrez."
+          ],
+          "info": "La planification du conseil de classe déclenche des notifications pour les enseignants et les membres du jury concernés."
+        },
+        {
+          "id": 57,
+          "question": "Comment saisir les appréciations des élèves lors du conseil ?",
+          "reponse": "La saisie des appréciations se fait depuis le conseil de classe planifié.",
+          "etapes": [
+            "Ouvrez le conseil de classe planifié depuis la liste des conseils.",
+            "La liste de tous les élèves de la classe s'affiche, avec leurs moyennes par discipline.",
+            "Pour chaque élève, saisissez l'appréciation générale du conseil.",
+            "Indiquez également les décisions prises (passage, redoublement, félicitations, encouragements, avertissement...).",
+            "Enregistrez au fur et à mesure."
+          ]
+        },
+        {
+          "id": 58,
+          "question": "Comment valider un conseil de classe ?",
+          "reponse": "La validation clôture définitivement le conseil de classe et rend les données disponibles pour les bulletins.",
+          "etapes": [
+            "Après avoir saisi toutes les appréciations, accédez à la page de résumé du conseil.",
+            "Vérifiez que toutes les informations sont complètes et exactes.",
+            "Cliquez sur le bouton « Validation du conseil » pour finaliser et clôturer le conseil de classe."
+          ],
+          "note": "Une fois validé, le conseil de classe est clôturé et les données sont transmises aux systèmes de reporting national. Les bulletins peuvent ensuite être générés et imprimés."
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "titre": "GESTION DES UTILISATEURS",
+      "questions": [
+        {
+          "id": 59,
+          "question": "Comment ajouter un nouvel utilisateur sur PLANETE 3 ?",
+          "reponse": "La création d'un utilisateur permet d'accorder un accès à la plateforme à un nouveau membre du personnel. Seuls les administrateurs habilités peuvent créer des comptes.",
+          "etapes": [
+            "Accédez à la rubrique « Utilisateurs » dans le menu principal.",
+            "Cliquez sur « Ajouter ».",
+            "Renseignez les informations du nouvel utilisateur : prénom, nom, adresse e-mail professionnelle (@education.sn), fonction.",
+            "Attribuez un profil correspondant au rôle de l'utilisateur.",
+            "Cliquez sur « Enregistrer ». L'utilisateur recevra ses identifiants de connexion par e-mail."
+          ]
+        },
+        {
+          "id": 60,
+          "question": "Comment attribuer un profil à un utilisateur ?",
+          "reponse": "Le profil détermine les droits d'accès de l'utilisateur sur la plateforme. Il est attribué lors de la création ou lors de la modification d'un compte.",
+          "profils_disponibles": [
+            {
+              "profil": "Chef d'établissement",
+              "description": "Accès complet à toutes les fonctionnalités de gestion de son établissement."
+            },
+            {
+              "profil": "Enseignant",
+              "description": "Accès aux cours, cahier de texte, absences, évaluations et conseils de classe."
+            },
+            {
+              "profil": "Personnel administratif",
+              "description": "Accès aux inscriptions, dossiers élèves et scolarité."
+            },
+            {
+              "profil": "IEF / IA",
+              "description": "Accès en lecture aux données des établissements de leur circonscription ou académie."
+            },
+            {
+              "profil": "Inspecteur pédagogique",
+              "description": "Accès aux données pédagogiques et aux programmes."
+            },
+            {
+              "profil": "Autorité centrale",
+              "description": "Accès aux tableaux de bord nationaux et aux statistiques agrégées."
+            }
+          ],
+          "info": "Il est important d'attribuer le bon profil à chaque utilisateur pour garantir la sécurité des données et éviter les accès non autorisés."
+        },
+        {
+          "id": 61,
+          "question": "Comment rechercher un utilisateur existant ?",
+          "reponse": "La recherche d'un utilisateur se fait depuis la liste des utilisateurs.",
+          "etapes": [
+            "Accédez à la rubrique « Utilisateurs » depuis le menu principal.",
+            "La liste complète des utilisateurs de votre établissement s'affiche.",
+            "Utilisez la zone de recherche en haut de la liste pour filtrer par nom, prénom ou adresse e-mail.",
+            "Cliquez sur l'utilisateur trouvé pour consulter ou modifier son dossier."
+          ],
+          "info": "Si vous ne trouvez pas un utilisateur dans la liste, il est possible que son compte n'ait pas encore été créé ou qu'il soit rattaché à un autre établissement."
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "total_categories": 13,
+    "total_questions": 61,
+    "version_planete": "PLANETE 3",
+    "url_plateforme": "https://planete3.education.sn",
+    "institution": "Ministère de l'Éducation Nationale du Sénégal — SIMEN"
+  }
+}

@@ -29,6 +29,7 @@ from app.services import (
     KnowledgeService,
     ChatService,
     EmbeddingService,
+    PlaneteFAQService,
 )
 from app.middleware.rate_limit import limiter
 
@@ -88,12 +89,17 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
         embedding_service=app.state.embedding_service
     )
 
+    # Service FAQ PLANETE dédié (FAQ_PLANETE3.json) — branché EN TÊTE du
+    # pipeline pour toute question PLANETE (même implicite)
+    app.state.planete_faq_service = PlaneteFAQService()
+
     app.state.chat_service = ChatService(
         language_service=app.state.language_service,
         translation_service=app.state.translation_service,
         nlp_service=app.state.nlp_service,
         faq_service=app.state.faq_service,
         knowledge_service=app.state.knowledge_service,
+        planete_faq_service=app.state.planete_faq_service,
     )
 
     logger.info("Services initialisés avec succès")
@@ -184,6 +190,20 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
             logger.warning("Base de connaissances non disponible")
     except Exception as exc:
         logger.error("Erreur lors du chargement de la base de connaissances", error=str(exc))
+
+    # 5b. Initialiser la FAQ PLANETE (FAQ_PLANETE3.json)
+    logger.info("Chargement de la FAQ PLANETE 3...")
+    try:
+        planete_ok = await app.state.planete_faq_service.initialize()
+        if planete_ok:
+            logger.info(
+                "FAQ PLANETE 3 chargée",
+                questions=app.state.planete_faq_service.question_count
+            )
+        else:
+            logger.warning("FAQ PLANETE 3 non disponible (FAQ_PLANETE3.json introuvable)")
+    except Exception as exc:
+        logger.error("Erreur chargement FAQ PLANETE", error=str(exc))
 
     # 6. Chargement anticipé des modèles d'IA (Eager Loading)
     # TF-IDF ne nécessite pas de pré-chargement de modèle lourd

@@ -317,7 +317,7 @@ class ChatService:
                 if self.knowledge_service and self.knowledge_service.is_available and intent != "exercice":
                     try:
                         kb_docs = await self.knowledge_service.search(
-                            fr_message, limit=1, category=None
+                            fr_message, limit=3, category=None
                         )
                         if kb_docs:
                             kb_context = self.knowledge_service.get_context_for_llm(kb_docs)
@@ -803,8 +803,44 @@ class ChatService:
             "fiche de cours", "fiche de leçon", "objectifs pédagogiques", "déroulement"
         ])
 
-        LEVEL_OPTIONS = ["CP", "CE1", "CE2", "CM1", "CM2", "6ème", "5ème", "4ème", "3ème", "2nde", "1ère", "Terminale"]
-        SUBJECT_OPTIONS = ["Mathématiques", "Français", "Sciences", "Histoire-Géographie", "Anglais", "Physique-Chimie"]
+        # === Détection du cycle ===
+        ELEMENTAIRE_KW = ["élémentaire", "elementaire", "primaire"]
+        MOYEN_KW = ["moyen", "collège", "college"]
+        LYCEE_KW = ["lycée", "lycee", "secondaire", "second cycle"]
+
+        is_elementaire = any(kw in msg_lower for kw in ELEMENTAIRE_KW)
+        is_moyen = any(kw in msg_lower for kw in MOYEN_KW)
+        is_lycee = any(kw in msg_lower for kw in LYCEE_KW)
+
+        # Inférer le cycle à partir du niveau détecté
+        level_found = next((kw for kw in LEVEL_KEYWORDS if kw in msg_lower), "")
+        if level_found in ["cp","ce1","ce2","cm1","cm2","primaire"]:
+            is_elementaire = True
+        elif level_found in ["6ème","6eme","5ème","5eme","4ème","4eme","3ème","3eme","college","collège"]:
+            is_moyen = True
+        elif level_found in ["seconde","2nde","première","premiere","1ère","1ere","terminale","lycée","lycee"]:
+            is_lycee = True
+
+        # Options de niveau par cycle
+        if is_elementaire:
+            LEVEL_OPTIONS = ["CP", "CE1", "CE2", "CM1", "CM2"]
+        elif is_moyen:
+            LEVEL_OPTIONS = ["6ème", "5ème", "4ème", "3ème"]
+        elif is_lycee:
+            LEVEL_OPTIONS = ["2nde", "1ère", "Terminale"]
+        else:
+            LEVEL_OPTIONS = ["CP", "CE1", "CE2", "CM1", "CM2", "6ème", "5ème", "4ème", "3ème", "2nde", "1ère", "Terminale"]
+
+        # Options de matière par cycle
+        if is_elementaire:
+            SUBJECT_OPTIONS = ["Mathématiques", "Français", "Sciences", "Histoire-Géographie", "Anglais", "Éducation Civique"]
+        elif is_moyen:
+            SUBJECT_OPTIONS = ["Mathématiques", "Français", "Sciences Physiques", "SVT", "Histoire-Géographie", "Anglais"]
+        elif is_lycee:
+            SUBJECT_OPTIONS = ["Mathématiques", "Français", "Physique-Chimie", "SVT", "Histoire-Géographie", "Anglais", "Philosophie"]
+        else:
+            # Cycle inconnu : options neutres sans matières inexistantes au primaire
+            SUBJECT_OPTIONS = ["Mathématiques", "Français", "Sciences", "Histoire-Géographie", "Anglais", "Sciences Physiques"]
 
         # === FICHES PÉDAGOGIQUES : clarification avec boutons ===
         if has_fiche:
@@ -814,7 +850,6 @@ class ChatService:
                     "options": LEVEL_OPTIONS
                 }
             if has_level and not has_subject:
-                level_found = next((kw for kw in LEVEL_KEYWORDS if kw in msg_lower), "")
                 return {
                     "message": f"Parfait ! Dans quelle matière pour le {level_found.upper()} ?",
                     "options": SUBJECT_OPTIONS
@@ -843,9 +878,16 @@ class ChatService:
                 }
             return None
 
-        if not has_level:
+        if not has_level and not (is_elementaire or is_moyen or is_lycee):
             return {
                 "message": "Pour vous proposer des exercices parfaitement adaptés, j'ai besoin de connaître le niveau scolaire. Quel est le niveau ?",
+                "options": LEVEL_OPTIONS
+            }
+
+        if not has_level and (is_elementaire or is_moyen or is_lycee):
+            cycle_name = "l'élémentaire" if is_elementaire else ("le moyen" if is_moyen else "le lycée")
+            return {
+                "message": f"Quelle classe exactement pour {cycle_name} ?",
                 "options": LEVEL_OPTIONS
             }
 

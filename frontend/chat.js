@@ -23,6 +23,8 @@
         theme: localStorage.getItem("simen_theme") || "light",
         isSidebarOpen: window.innerWidth > 900,
         history: JSON.parse(localStorage.getItem("simen_history") || "[]"),
+        // Messages stockés localement par session : { sessionId: [{role, content}, ...] }
+        sessionMessages: JSON.parse(localStorage.getItem("simen_session_messages") || "{}"),
         currentSessionId: crypto.randomUUID(),
         isTyping: false,
         messages: {},
@@ -610,7 +612,23 @@
 
         if (state.history.length > CONFIG.MAX_HISTORY) state.history.pop();
 
+        // Sauvegarder les messages de cette session dans localStorage
+        const sid = state.currentSessionId;
+        if (!state.sessionMessages[sid]) state.sessionMessages[sid] = [];
+        state.sessionMessages[sid].push({ role: "user", content: userMsg });
+        state.sessionMessages[sid].push({ role: "bot", content: botMsg });
+        // Garder max 100 messages par session (50 échanges)
+        if (state.sessionMessages[sid].length > 100) {
+            state.sessionMessages[sid] = state.sessionMessages[sid].slice(-100);
+        }
+        // Garder seulement les 30 dernières sessions pour ne pas saturer localStorage
+        const activeIds = state.history.map(h => h.id);
+        Object.keys(state.sessionMessages).forEach(id => {
+            if (!activeIds.includes(id)) delete state.sessionMessages[id];
+        });
+
         localStorage.setItem("simen_history", JSON.stringify(state.history));
+        localStorage.setItem("simen_session_messages", JSON.stringify(state.sessionMessages));
         renderHistory();
     }
 
@@ -682,7 +700,10 @@
 
     function deleteConversation(sessionId) {
         state.history = state.history.filter(h => h.id !== sessionId);
+        // Supprimer aussi les messages locaux de cette session
+        delete state.sessionMessages[sessionId];
         localStorage.setItem("simen_history", JSON.stringify(state.history));
+        localStorage.setItem("simen_session_messages", JSON.stringify(state.sessionMessages));
 
         // If we deleted the current session, start a new one
         if (sessionId === state.currentSessionId) {
@@ -754,21 +775,39 @@
         state.currentSessionId = id;
         elements.messagesArea.innerHTML = "";
         elements.welcomeSection.style.display = "none";
+        if (elements.homeBtn) elements.homeBtn.classList.remove("hidden");
 
-        // Try to load from server history
+        // 1. Charger depuis localStorage (priorité — fonctionne même après redémarrage serveur)
+        const localMsgs = state.sessionMessages[id];
+        if (localMsgs && localMsgs.length > 0) {
+            localMsgs.forEach(msg => appendMessage(msg.role, msg.content));
+            renderHistory();
+            if (window.innerWidth <= 900 && state.isSidebarOpen) toggleSidebar();
+            scrollToBottom();
+            return;
+        }
+
+        // 2. Fallback : essayer le serveur (si les messages ne sont pas en local)
         fetch(`${CONFIG.API_URL}/chat/history/${id}?limit=50`)
             .then(r => r.ok ? r.json() : null)
             .then(data => {
                 if (data && data.messages && data.messages.length > 0) {
+                    // Sauvegarder en local pour les prochaines fois
+                    state.sessionMessages[id] = data.messages.map(m => ({
+                        role: m.role === "assistant" ? "bot" : "user",
+                        content: m.content
+                    }));
+                    localStorage.setItem("simen_session_messages", JSON.stringify(state.sessionMessages));
                     data.messages.forEach(msg => {
                         appendMessage(msg.role === "assistant" ? "bot" : "user", msg.content);
                     });
                 } else {
-                    elements.welcomeSection.style.display = "block";
+                    // Aucun message trouvé nulle part
+                    appendMessage("bot", "Cette conversation n'est plus disponible. Commencez un nouveau chat !");
                 }
             })
             .catch(() => {
-                elements.welcomeSection.style.display = "block";
+                appendMessage("bot", "Impossible de charger cette conversation. Vérifiez votre connexion.");
             });
 
         renderHistory();

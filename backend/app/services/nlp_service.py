@@ -95,7 +95,12 @@ RÈGLES DE FORMAT EXERCICES :
 - Mets TOUJOURS --- entre chaque exercice (séparateur)
 - Laisse une ligne vide entre le titre de l'exercice et son énoncé
 - Ne mets JAMAIS le titre et l'énoncé sur la même ligne
-- INTERDIT : N'utilise JAMAIS le gras (**...**) dans le texte des énoncés d'exercices. Le texte des questions doit être en texte normal, sans aucun formatage gras. Seuls les titres ### sont autorisés.
+- INTERDIT ABSOLU : N'utilise JAMAIS le gras (**...**) nulle part. Zéro gras.
+- Respecte EXACTEMENT la quantité d'exercices demandée (si l'utilisateur dit "2 exercices", génère 2, pas 3).
+- Respecte EXACTEMENT la matière demandée (physique → physique, chimie → chimie, PAS maths).
+- Pour les exercices en ANGLAIS : rédige les textes, questions et énoncés EN ANGLAIS (pas en français). Les consignes générales peuvent être en français.
+- Pour les exercices en ESPAGNOL : rédige en espagnol. Pour l'ARABE : rédige en arabe.
+- Si l'utilisateur demande plusieurs matières (ex: 3 physique + 2 chimie), génère exactement ça.
 
 ---
 
@@ -243,8 +248,11 @@ RÈGLE ABSOLUE : Ne jamais refuser de générer des exercices ou des fiches. Ne 
             "seconde", "première", "terminale", "lycée", "college", "collège",
             "série s", "serie l", "bac", "bfem", "cfee",
             "mathématiques", "mathematiques", "maths", "français", "francais",
-            "physique", "chimie", "svt", "histoire", "géographie", "anglais",
+            "physique", "chimie", "svt", "biologie", "sciences physiques", "science physique",
+            "physique-chimie", "histoire", "géographie", "geographie",
+            "anglais", "english", "espagnol", "arabe",
             "philosophie", "calcul", "géométrie", "geometrie", "algèbre",
+            "informatique", "technologie", "éducation civique",
             "mon enfant", "mon fils", "ma fille", "mon élève", "niveau",
             "fiche", "fiches", "fiche pédagogique", "fiche pedagogique",
             "fiche de cours", "fiche de préparation", "fiche de preparation",

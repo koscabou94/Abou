@@ -199,28 +199,74 @@ class ChatService:
             is_fiche_request = any(kw in msg_lower_fiche_check for kw in FICHE_KW)
 
             if intent == "exercice" and not is_fiche_request:
+                import re as _re
                 LEVEL_KW = ["cp","ce1","ce2","cm1","cm2","primaire","6ème","6eme","5ème","5eme",
                             "4ème","4eme","3ème","3eme","seconde","2nde","première","premiere",
                             "1ère","1ere","terminale","lycée","lycee","college","collège"]
-                SUBJECT_KW = ["mathématiques","mathematiques","maths","math","français","francais",
-                              "sciences","svt","physique","chimie","histoire","géographie","geographie",
-                              "anglais","philosophie","calcul","géométrie","geometrie","toutes les matières",
-                              "toutes les matieres"]
+                # Matières enrichies avec variantes courantes
+                SUBJECT_KW = [
+                    "mathématiques","mathematiques","maths","math",
+                    "français","francais","lecture","expression écrite","expression ecrite",
+                    "anglais","english","espagnol","arabe",
+                    "sciences physiques","science physique","physique-chimie","physique chimie",
+                    "physique","chimie",
+                    "svt","sciences de la vie","biologie",
+                    "sciences","science",
+                    "histoire-géographie","histoire geographie","histoire-geo","histoire",
+                    "géographie","geographie",
+                    "philosophie","philo",
+                    "calcul","arithmétique","arithmetique",
+                    "géométrie","geometrie","algèbre","algebre",
+                    "informatique","technologie",
+                    "éducation civique","education civique","instruction civique",
+                ]
                 msg_lower_ex = fr_message.lower()
                 found_level = next((kw for kw in LEVEL_KW if kw in msg_lower_ex), None)
-                found_subject = next((kw for kw in SUBJECT_KW if kw in msg_lower_ex), None)
+                # Chercher toutes les matières mentionnées (pas seulement la première)
+                found_subjects = [kw for kw in SUBJECT_KW if kw in msg_lower_ex]
+                found_subject = found_subjects[0] if found_subjects else None
+                multi_subject = len(found_subjects) > 1
 
                 if found_level and found_subject:
-                    # Niveau ET matière présents → reformuler en instruction directe exercice
-                    subject_display = found_subject.capitalize()
                     level_display = found_level.upper()
-                    fr_message = (
-                        f"Génère 3 exercices complets de {subject_display} adaptés au niveau {level_display}. "
-                        f"Utilise des contextes sénégalais dans les énoncés (marchés, agriculture, villes du Sénégal). "
-                        f"N'utilise PAS de gras dans les énoncés. "
-                        f"Suis exactement le format avec les séparateurs --- entre chaque exercice."
-                    )
-                    logger.debug("Message exercice reformulé (niveau+matière)", reformulated=fr_message[:80])
+
+                    # Extraire la quantité demandée (ex: "3 exercices", "5 questions")
+                    qty_match = _re.search(r'\b(\d+)\s*(exercice|devoir|question|problème|probleme)', msg_lower_ex)
+                    quantity = qty_match.group(1) if qty_match else "3"
+
+                    # Instruction spéciale pour les matières-langues (anglais, espagnol...)
+                    LANG_SUBJECTS = ["anglais","english","espagnol","arabe"]
+                    is_lang_subject = any(ls in msg_lower_ex for ls in LANG_SUBJECTS)
+
+                    if multi_subject:
+                        # Plusieurs matières → garder le message original enrichi
+                        fr_message = (
+                            f"{fr_message}\n\n"
+                            f"[INSTRUCTION] Respecte EXACTEMENT la demande : génère les exercices "
+                            f"pour chaque matière demandée avec les quantités exactes mentionnées. "
+                            f"Niveau : {level_display}. N'utilise PAS de gras."
+                        )
+                    elif is_lang_subject:
+                        # Matière langue → les exercices doivent être dans cette langue
+                        lang_display = found_subject.capitalize()
+                        fr_message = (
+                            f"Génère {quantity} exercices de {lang_display} pour le niveau {level_display}. "
+                            f"IMPORTANT : les exercices doivent être rédigés EN {lang_display.upper()} "
+                            f"(textes, questions et réponses en {lang_display}). "
+                            f"Adapte au niveau {level_display} du programme sénégalais. "
+                            f"N'utilise PAS de gras. Séparateurs --- entre chaque exercice."
+                        )
+                    else:
+                        # Matière standard → instruction claire
+                        subject_display = found_subject.capitalize()
+                        fr_message = (
+                            f"Génère {quantity} exercices complets de {subject_display} "
+                            f"pour le niveau {level_display}. "
+                            f"Utilise des contextes sénégalais dans les énoncés. "
+                            f"N'utilise PAS de gras. Séparateurs --- entre chaque exercice."
+                        )
+                    logger.debug("Exercice reformulé", level=level_display,
+                                 subject=found_subject, multi=multi_subject, qty=quantity)
 
             # === ÉTAPE 4 : Recherche dans les FAQ (chemin rapide) ===
             # Détecter les questions de culture générale (géographie, histoire...)
@@ -727,14 +773,20 @@ class ChatService:
             "préscolaire", "prescolaire"
         ]
 
-        # Mots-clés de matière
+        # Mots-clés de matière (alignés avec la reformulation)
         SUBJECT_KEYWORDS = [
             "mathématiques", "mathematiques", "maths", "math",
             "français", "francais", "lecture", "dictée", "dictee",
-            "sciences", "svt", "physique", "chimie",
-            "histoire", "géographie", "geographie", "histoire-geo",
-            "anglais", "philosophie", "calcul", "géométrie", "geometrie",
-            "ecriture", "écriture", "lecture"
+            "anglais", "english", "espagnol", "arabe",
+            "sciences physiques", "science physique", "physique-chimie",
+            "physique", "chimie", "svt", "biologie",
+            "sciences", "science",
+            "histoire-géographie", "histoire-geo", "histoire", "géographie", "geographie",
+            "philosophie", "philo",
+            "calcul", "géométrie", "geometrie", "algèbre", "algebre",
+            "informatique", "technologie",
+            "éducation civique", "education civique",
+            "écriture", "ecriture",
         ]
 
         # Mots indiquant qu'on parle d'un enfant

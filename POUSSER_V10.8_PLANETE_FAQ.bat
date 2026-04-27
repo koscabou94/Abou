@@ -48,7 +48,7 @@ git status --short
 
 echo.
 echo --- Commit ---
-git commit -m "v10.8: integration FAQ_PLANETE3 + bot intelligent (priorite PLANETE, synonymes, fuzzy, cache, robustesse)"
+git commit -m "v10.8: integration FAQ_PLANETE3 + bot intelligent (priorite PLANETE, synonymes, fuzzy, cache, robustesse, precision Q1/Q2, normalisation PLANETE 3 -> PLANETE sauf Q3/Q4)"
 
 echo.
 echo --- Push ---

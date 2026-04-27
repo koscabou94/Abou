@@ -263,12 +263,37 @@ class PlaneteFAQService:
                 return p_abs
         return None
 
+    # Questions où l'on DOIT garder "PLANETE 3" (distinction entre versions)
+    _PRESERVE_PLANETE3_IDS = {3, 4}
+
+    @staticmethod
+    def _normalize_planete_terminology(text: str, question_id: int) -> str:
+        """Pour les enseignants, PLANETE = PLANETE 3 (c'est la version
+        actuelle). Le bot doit dire "PLANETE" partout, sauf dans les
+        questions qui parlent explicitement des versions/différences.
+
+        Cette fonction remplace "PLANETE 3" / "PLANETE V3" par "PLANETE",
+        en préservant l'URL planete3.education.sn (qui n'a pas d'espace).
+        """
+        if question_id in PlaneteFAQService._PRESERVE_PLANETE3_IDS:
+            return text
+
+        # Remplacer "PLANETE 3" / "PLANETE V3" / "PLANETE  3" (avec espace)
+        # \s+ = au moins un espace, donc planete3.education.sn (URL sans
+        # espace) n'est PAS touché — preserve l'URL.
+        text = re.sub(r"\bPLANETE\s+(?:V\s*)?3\b", "PLANETE", text)
+        text = re.sub(r"\bPlanete\s+(?:V\s*)?3\b", "Planete", text)
+        text = re.sub(r"\bplanete\s+(?:v\s*)?3\b", "planete", text)
+        return text
+
     @staticmethod
     def _format_answer(item: dict) -> str:
         """Construit la réponse complète à partir d'une entrée FAQ_PLANETE3.
 
         Combine `reponse` + listes structurées (etapes, details, causes,
-        types, etc.) + note/info finale. Format markdown simple, sans gras."""
+        types, etc.) + note/info finale. Format markdown simple, sans gras.
+        Applique la normalisation PLANETE 3 → PLANETE (sauf Q3/Q4)."""
+        question_id = item.get("id")
         parts: list[str] = []
 
         # Réponse principale
@@ -344,7 +369,15 @@ class PlaneteFAQService:
             if val:
                 parts.append(f"\n{prefix} : {val}")
 
-        return "\n".join(p for p in parts if p).strip()
+        result = "\n".join(p for p in parts if p).strip()
+
+        # Normaliser PLANETE 3 → PLANETE (sauf Q3 et Q4)
+        # Pour les enseignants, PLANETE = PLANETE 3 (version actuelle).
+        # On préserve l'URL planete3.education.sn (regex exige un espace).
+        result = PlaneteFAQService._normalize_planete_terminology(
+            result, question_id
+        )
+        return result
 
     @staticmethod
     def _build_search_text(item: dict, category_title: str) -> str:
@@ -463,18 +496,15 @@ class PlaneteFAQService:
     ) -> Optional[dict]:
         """Cherche la meilleure réponse PLANETE pour une requête.
 
-        Combine 3 signaux :
+        Combine 5 signaux :
         1. TF-IDF sur corpus enrichi (questions + keywords + synonymes)
         2. Boost mots-clés métier PLANETE en commun
         3. Fuzzy matching de la question (rapidfuzz si dispo, fallback simple)
-
-        Args:
-            query: requête utilisateur (peut contenir des fautes/variations)
-            threshold: score minimum pour retourner un résultat
-            high_confidence: score au-dessus duquel le match est considéré certain
-
-        Returns:
-            dict avec {id, question, answer, category, score, confidence} ou None
+        4. Bonus de correspondance exacte (la requête est ~égale à la question)
+        5. Pénalité "mots en trop" : si le candidat contient des mots
+           significatifs absents de la requête (ex: "PLANETE 3" candidat
+           pour requête "PLANETE"), on pénalise pour préférer le candidat
+           le plus précis.
         """
         if not self.is_available or not query.strip():
             return None
@@ -484,6 +514,7 @@ class PlaneteFAQService:
             import numpy as np
 
             # 1. Préparer la requête : normaliser + expansion synonymes
+            q_norm = normalize_text(query)
             q_expanded = expand_query_with_synonyms(query)
 
             # 2. TF-IDF cosinus
@@ -491,7 +522,6 @@ class PlaneteFAQService:
             tfidf_scores = cosine_similarity(q_vec, self._tfidf_matrix).flatten()
 
             # 3. Boost mots-clés PLANETE en commun (signal lexique)
-            q_norm = normalize_text(query)
             q_planete_kws = self._extract_planete_keywords(q_norm)
             boosts = np.zeros(len(self._items), dtype=float)
             if q_planete_kws:
@@ -502,20 +532,26 @@ class PlaneteFAQService:
                     item_kws = self._extract_planete_keywords(item_norm)
                     common = q_planete_kws & item_kws
                     if common:
-                        # Bonus proportionnel : +0.05 par mot-clé partagé, plafonné à +0.25
-                        boosts[i] = min(0.05 * len(common), 0.25)
+                        # Bonus proportionnel : +0.04 par mot-clé partagé, plafonné à +0.20
+                        boosts[i] = min(0.04 * len(common), 0.20)
 
             # 4. Fuzzy matching question vs requête (rattrape les fautes)
             fuzzy_scores = self._compute_fuzzy_scores(query)
 
-            # 5. Combinaison pondérée :
-            #    - 60 % TF-IDF
-            #    - 25 % fuzzy sur la question
-            #    - 15 % boost lexique
+            # 5. Bonus correspondance exacte + pénalité "mots en trop"
+            #    Pour chaque candidat, on compare les ensembles de mots
+            #    significatifs (sans stopwords) entre la requête et la
+            #    question. Si le candidat contient peu/pas de mots en plus,
+            #    il est préféré ; s'il en a beaucoup, il est pénalisé.
+            exactness = self._compute_exactness_scores(q_norm)
+
+            # 6. Combinaison pondérée :
+            #    50 % TF-IDF · 20 % fuzzy · 10 % boost · 20 % exactitude
             combined = (
-                0.60 * tfidf_scores
-                + 0.25 * fuzzy_scores
-                + 0.15 * boosts
+                0.50 * tfidf_scores
+                + 0.20 * fuzzy_scores
+                + 0.10 * boosts
+                + 0.20 * exactness
             )
 
             best_idx = int(np.argmax(combined))
@@ -538,6 +574,7 @@ class PlaneteFAQService:
                 tfidf=round(float(tfidf_scores[best_idx]), 3),
                 fuzzy=round(float(fuzzy_scores[best_idx]), 3),
                 boost=round(float(boosts[best_idx]), 3),
+                exactness=round(float(exactness[best_idx]), 3),
                 question=item["question"][:80],
                 confidence=confidence,
             )
@@ -553,6 +590,75 @@ class PlaneteFAQService:
         except Exception as exc:
             logger.error("Erreur recherche PLANETE FAQ", error=str(exc), exc_info=True)
             return None
+
+    def _compute_exactness_scores(self, q_norm: str):
+        """Calcule un score d'exactitude [0..1] entre la requête (déjà
+        normalisée) et chaque question.
+
+        Principe : on compare les ensembles de mots SIGNIFICATIFS (hors
+        stopwords). Si le candidat a peu de mots en plus, c'est un
+        match précis ; s'il en a beaucoup, c'est imprécis.
+
+        Cas particulièrement traité :
+          requête  = "qu est ce que planete"          → mots {planete}
+          cand. Q1 = "qu est ce que planete"          → mots {planete}, extra=0 → 1.0
+          cand. Q2 = "qu est ce que planete 3"        → mots {planete, 3}, extra=1 → ~0.5
+        """
+        import numpy as np
+        scores = np.zeros(len(self._items), dtype=float)
+
+        # Filtrer les mots significatifs de la requête
+        q_words = self._significant_words(q_norm)
+        if not q_words:
+            return scores
+
+        for i, item in enumerate(self._items):
+            cand_norm = normalize_text(item["question"])
+            c_words = self._significant_words(cand_norm)
+            if not c_words:
+                continue
+
+            shared = q_words & c_words
+            extra_in_candidate = c_words - q_words
+            missing_in_candidate = q_words - c_words
+
+            if not shared:
+                continue
+
+            # Couverture : combien de mots de la requête sont dans le candidat
+            coverage = len(shared) / len(q_words)
+
+            # Pénalité pour chaque mot du candidat absent de la requête.
+            # Pénalité forte (0.30) car c'est précisément ce signal qui
+            # distingue Q1 "Qu'est-ce que PLANETE" (extra=0) de Q2
+            # "Qu'est-ce que PLANETE 3" (extra=1, donc -0.30).
+            extra_penalty = 0.30 * len(extra_in_candidate)
+            missing_penalty = 0.10 * len(missing_in_candidate)
+
+            score = coverage - extra_penalty - missing_penalty
+
+            # Bonus correspondance EXACTE (mêmes mots significatifs)
+            if not extra_in_candidate and not missing_in_candidate:
+                score += 0.60  # gros bonus pour match parfait
+
+            scores[i] = max(0.0, min(1.0, score))
+
+        return scores
+
+    @staticmethod
+    def _significant_words(text_norm: str) -> set[str]:
+        """Retourne l'ensemble des mots significatifs (hors stopwords FR)
+        d'un texte normalisé.
+
+        IMPORTANT : on garde les chiffres ("3") même s'ils ne font qu'1
+        caractère, car ils sont discriminants ("PLANETE" vs "PLANETE 3").
+        """
+        words = text_norm.split()
+        return {
+            w for w in words
+            if w not in FR_STOPWORDS
+            and (len(w) > 1 or w.isdigit())
+        }
 
     @staticmethod
     def _extract_planete_keywords(text_norm: str) -> set[str]:

@@ -21,9 +21,12 @@ class NLPService:
     SYSTEM_PROMPT = """Tu es EduBot, l'assistant intelligent du Ministère de l'Éducation Nationale du Sénégal.
 
 RÈGLE ABSOLUE DE FORMATAGE (priorité maximale) :
-- N'utilise JAMAIS le gras (**...**) nulle part dans tes réponses. Ni dans les titres, ni dans les listes, ni dans les fiches, ni dans les exercices. ZÉRO gras.
-- Utilise uniquement ### pour les titres de sections.
-- Le texte courant est toujours en texte normal, sans aucun formatage gras.
+- N'utilise JAMAIS le gras nulle part. ZÉRO gras dans tes réponses.
+- Pas de `**texte**`, pas de `__texte__`, pas de `<strong>`, pas de `<b>`.
+- Pas de gras dans les titres, ni dans les listes, ni dans les fiches, ni dans les exercices, ni dans les énumérations, ni nulle part.
+- Utilise uniquement ### pour les titres de sections (sans aucun gras dans le titre).
+- Si tu veux mettre en valeur un terme, utilise simplement une nouvelle ligne ou une liste, JAMAIS le gras.
+- Pour les noms d'éléments dans une liste (étape 1, étape 2…), écris le nom en texte normal suivi de deux points.
 
 TON IDENTITÉ :
 - Tu t'appelles EduBot.
@@ -37,21 +40,24 @@ FAITS ACTUELS (2026) :
 - Capitale : Dakar. Monnaie : FCFA. Langue officielle : Français.
 
 PLANETE (connaissance obligatoire) :
-- PLANETE et PLANETE3 désignent la même solution — PLANETE3 est simplement la version actuelle (2026) de PLANETE.
+- POUR LES UTILISATEURS, PLANETE = PLANETE 3. Dans tes réponses, dis simplement "PLANETE" — pas "PLANETE 3".
+  Exception : si la question demande explicitement la différence ou les versions, mentionne PLANETE 1, 2, 3.
 - PLANETE = Paquet de Logiciels Académiques Normalisés pour les Établissements et Écoles.
 - C'est la plateforme officielle de gestion des établissements et écoles du Ministère de l'Éducation du Sénégal.
 - PLANETE permet de gérer : l'environnement physique, l'environnement pédagogique, la vie scolaire et la communication entre acteurs.
 - Elle facilite aussi la collecte et le traitement des données statistiques.
-- Versions : PLANETE 1 (2012-2017), PLANETE 2 (2018-2025), PLANETE 3 (2026 — préscolaire, élémentaire, moyen secondaire).
+- Versions (à mentionner uniquement si demandé) : PLANETE 1 (2012-2017), PLANETE 2 (2018-2025), PLANETE 3 (2026 — version actuelle, préscolaire, élémentaire, moyen secondaire).
 - Acteurs : administration, enseignants, élèves, parents, IEF/IA, directions pédagogiques (DEE, DEMSG, DEPS).
 - Accès : https://planete3.education.sn avec e-mail professionnel (prenom.nom@education.sn).
+  L'URL contient "planete3" car c'est la version 3, mais quand tu en parles dis simplement "PLANETE".
 
 NIVEAUX SCOLAIRES AU SÉNÉGAL :
 - Préscolaire : Petite, Moyenne, Grande section
-- Primaire : CP, CE1, CE2, CM1, CM2
-- Collège : 6ème, 5ème, 4ème, 3ème (examen : BFEM)
+- Élémentaire : CI (Cours d'Initiation, 1ère classe), CP, CE1, CE2, CM1, CM2 (examen : CFEE)
+- Moyen / Collège : 6ème, 5ème, 4ème, 3ème (examen : BFEM)
 - Lycée : 2nde, 1ère, Terminale (examen : BAC)
 - Séries au lycée : L (Littéraire), S1/S2/S3 (Scientifique), G (Gestion), T (Technique)
+- IMPORTANT : Le CI (Cours d'Initiation) est la PREMIÈRE classe de l'élémentaire au Sénégal, AVANT le CP.
 
 GÉNÉRATION D'EXERCICES (TRÈS IMPORTANT) :
 Quand un élève, un parent ou un enseignant demande des exercices ou de la remédiation, tu DOIS les générer directement, sans jamais refuser.
@@ -320,7 +326,7 @@ RÈGLE ABSOLUE : Ne jamais refuser de générer des exercices ou des fiches. Ne 
             "remédiation", "remediation", "soutien scolaire",
             "entrainement", "entraînement", "révision", "revision",
             "quiz", "test", "évaluation", "contrôle",
-            "cm1", "cm2", "ce1", "ce2", "cp", "primaire",
+            "ci", "cp", "ce1", "ce2", "cm1", "cm2", "primaire", "élémentaire", "elementaire",
             "6ème", "5ème", "4ème", "3ème", "6eme", "5eme", "4eme", "3eme",
             "seconde", "première", "terminale", "lycée", "college", "collège",
             "série s", "serie l", "bac", "bfem", "cfee",
@@ -434,6 +440,9 @@ RÈGLE ABSOLUE : Ne jamais refuser de générer des exercices ou des fiches. Ne 
         text = re.sub(r'__\s*(.+?)\s*__', r'\1', text, flags=re.DOTALL)
         # 4. ** seuls orphelins (ne faisant pas partie d'une paire)
         text = re.sub(r'\*\*', '', text)
+        # 5. Tags HTML <strong> et <b> au cas où le LLM en produirait
+        text = re.sub(r'</?strong[^>]*>', '', text, flags=re.IGNORECASE)
+        text = re.sub(r'</?b\s*[^>]*>', '', text, flags=re.IGNORECASE)
 
         lines = [l for l in text.split("\n") if l.strip()]
         text = "\n".join(lines).strip()
@@ -673,9 +682,17 @@ RÈGLE ABSOLUE : Ne jamais refuser de générer des exercices ou des fiches. Ne 
             "planete": "Connectez-vous sur https://planete3.education.sn avec votre e-mail professionnel (prenom.nom@education.sn).",
             "mirador": "Pour MIRADOR, contactez le service RH de votre Inspection d'Académie.",
             "connexion": "Utilisez votre e-mail professionnel (prenom.nom@education.sn). En cas d'oubli, contactez votre administrateur local.",
-            "general": "Je suis votre assistant éducatif. Posez-moi votre question et je ferai de mon mieux pour vous aider !",
+            "general": (
+                "Je rencontre actuellement une difficulté technique pour répondre à votre question. "
+                "Vous pouvez réessayer dans quelques instants, ou reformuler votre question autrement. "
+                "Si le problème persiste, contactez le support EduBot au +221 77 696 15 45."
+            ),
         }
         # Fallback exercice explicite
         if intent == "exercice":
-            return "Je serais ravi de vous proposer des exercices ! Pourriez-vous me préciser le niveau scolaire (CP, CE1, CE2, CM1, CM2, 6ème…) et la matière souhaitée (maths, français, sciences…) ?"
+            return (
+                "Je serais ravi de vous proposer des exercices ! Pourriez-vous me préciser le niveau "
+                "scolaire (CI, CP, CE1, CE2, CM1, CM2, 6ème, 5ème, 4ème, 3ème, 2nde, 1ère, Terminale) "
+                "et la matière souhaitée (mathématiques, français, sciences, histoire-géographie…) ?"
+            )
         return fallbacks.get(intent, fallbacks["general"])

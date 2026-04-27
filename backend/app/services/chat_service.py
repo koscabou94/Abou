@@ -186,6 +186,23 @@ class ChatService:
 
         message_clean = user_message.strip()[:1000]  # Limiter à 1000 caractères
 
+        # Normaliser les niveaux scolaires écrits avec espaces ("CE 1" → "CE1",
+        # "CM 2" → "CM2", "C E 1" → "CE1", "C I" → "CI", "C P" → "CP")
+        # pour que la détection les attrape correctement.
+        import re as _re_lvl
+        # CE1, CE2, CM1, CM2 (lettre + chiffre)
+        message_clean = _re_lvl.sub(
+            r"\b([Cc])\s*([EeMm])\s*([12])\b",
+            lambda m: m.group(1).upper() + m.group(2).upper() + m.group(3),
+            message_clean,
+        )
+        # CI, CP (lettres seules)
+        message_clean = _re_lvl.sub(
+            r"\b([Cc])\s+([IiPp])\b",
+            lambda m: m.group(1).upper() + m.group(2).upper(),
+            message_clean,
+        )
+
         logger.info(
             "Traitement d'un nouveau message",
             session_id=session_id,
@@ -382,7 +399,8 @@ class ChatService:
 
             if intent == "exercice" and not is_fiche_request:
                 import re as _re
-                LEVEL_KW = ["cp","ce1","ce2","cm1","cm2","primaire","6ème","6eme","5ème","5eme",
+                LEVEL_KW = ["ci","cp","ce1","ce2","cm1","cm2","primaire","élémentaire","elementaire",
+                            "6ème","6eme","5ème","5eme",
                             "4ème","4eme","3ème","3eme","seconde","2nde","première","premiere",
                             "1ère","1ere","terminale","lycée","lycee","college","collège"]
                 # Matières enrichies avec variantes courantes
@@ -414,7 +432,11 @@ class ChatService:
                     "grammaire", "conjugaison", "orthographe", "dictée", "dictee",
                     "lecture", "écriture", "ecriture", "expression écrite", "expression ecrite",
                     "vocabulaire", "rédaction", "redaction", "compréhension", "comprehension",
-                    "production écrite", "production ecrite"
+                    "production écrite", "production ecrite",
+                    "syntaxe", "phrase", "phrases", "verbe", "verbes",
+                    "synonyme", "synonymes", "antonyme", "antonymes",
+                    "homonyme", "homonymes", "préfixe", "prefixe", "suffixe",
+                    "lettres", "alphabet", "résumé", "resume",
                 ]
                 # Si une sous-matière français est détectée, l'ajouter à found_subjects
                 french_subtopic = next((kw for kw in FRENCH_SUBTOPICS_LIST if kw in msg_lower_ex), None)
@@ -1018,7 +1040,7 @@ class ChatService:
 
         # Mots-clés de niveau scolaire
         LEVEL_KEYWORDS = [
-            "cp", "ce1", "ce2", "cm1", "cm2", "primaire",
+            "ci", "cp", "ce1", "ce2", "cm1", "cm2", "primaire", "élémentaire", "elementaire",
             "6ème", "6eme", "5ème", "5eme", "4ème", "4eme", "3ème", "3eme",
             "seconde", "2nde", "première", "premiere", "1ère", "1ere",
             "terminale", "lycée", "lycee", "college", "collège",
@@ -1097,7 +1119,7 @@ class ChatService:
 
         # Inférer le cycle à partir du niveau détecté
         level_found = next((kw for kw in LEVEL_KEYWORDS if kw in msg_lower), "")
-        if level_found in ["cp","ce1","ce2","cm1","cm2","primaire"]:
+        if level_found in ["ci","cp","ce1","ce2","cm1","cm2","primaire","élémentaire","elementaire"]:
             is_elementaire = True
         elif level_found in ["6ème","6eme","5ème","5eme","4ème","4eme","3ème","3eme","college","collège"]:
             is_moyen = True
@@ -1105,14 +1127,16 @@ class ChatService:
             is_lycee = True
 
         # Options de niveau par cycle
+        # NB : au Sénégal, l'élémentaire commence par CI (Cours d'Initiation),
+        # puis CP, CE1, CE2, CM1, CM2.
         if is_elementaire:
-            LEVEL_OPTIONS = ["CP", "CE1", "CE2", "CM1", "CM2"]
+            LEVEL_OPTIONS = ["CI", "CP", "CE1", "CE2", "CM1", "CM2"]
         elif is_moyen:
             LEVEL_OPTIONS = ["6ème", "5ème", "4ème", "3ème"]
         elif is_lycee:
             LEVEL_OPTIONS = ["2nde", "1ère", "Terminale"]
         else:
-            LEVEL_OPTIONS = ["CP", "CE1", "CE2", "CM1", "CM2", "6ème", "5ème", "4ème", "3ème", "2nde", "1ère", "Terminale"]
+            LEVEL_OPTIONS = ["CI", "CP", "CE1", "CE2", "CM1", "CM2", "6ème", "5ème", "4ème", "3ème", "2nde", "1ère", "Terminale"]
 
         # Options de matière par cycle
         if is_elementaire:

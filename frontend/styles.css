@@ -672,7 +672,14 @@ h1, h2, h3, h4 {
 .msg-bubble p { margin-bottom: 0.75em; }
 .msg-bubble *:last-child { margin-bottom: 0; }
 
-.msg-bubble strong { font-weight: 600; color: var(--color-accent); }
+/* RÈGLE ABSOLUE : zéro gras dans les messages du bot.
+   Si malgré stripBold + _clean_llm_response un <strong> ou <b> arrivait
+   à passer (bug du LLM, cas non prévu), on neutralise au niveau CSS. */
+.msg-bubble strong,
+.msg-bubble b {
+    font-weight: inherit;
+    color: inherit;
+}
 
 .msg-bubble ul, .msg-bubble ol {
     padding-left: 1.5em;

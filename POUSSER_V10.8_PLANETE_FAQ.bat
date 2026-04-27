@@ -40,6 +40,8 @@ git add backend/app/services/faq_service.py
 git add backend/app/main.py
 git add backend/requirements.txt
 git add data/FAQ_PLANETE3.json
+git add frontend/chat.js
+git add frontend/styles.css
 git add POUSSER_V10.8_PLANETE_FAQ.bat
 
 echo.
@@ -48,7 +50,7 @@ git status --short
 
 echo.
 echo --- Commit ---
-git commit -m "v10.8: integration FAQ_PLANETE3 + bot intelligent (priorite PLANETE, synonymes, fuzzy, cache, robustesse, precision Q1/Q2, normalisation PLANETE 3 -> PLANETE sauf Q3/Q4)"
+git commit -m "v10.8: FAQ_PLANETE3 + bot intelligent (synonymes, fuzzy, cache, precision Q1/Q2, PLANETE 3 -> PLANETE sauf Q3/Q4, classe CI ajoutee, gras supprime, normalisation niveaux)"
 
 echo.
 echo --- Push ---

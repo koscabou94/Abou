@@ -80,8 +80,8 @@
             quickQs: [
                 { text: "Donne-moi 3 exercices de maths niveau CM2" },
                 { text: "Exercices de remédiation en français pour la 6ème" },
-                { text: "C'est quoi PLANETE 3.0 ?" },
-                { text: "Comment avancer dans ma carrière d'enseignant ?" }
+                { text: "C'est quoi PLANETE ?" },
+                { text: "Comment configurer l'environnement physique sur PLANETE ?" }
             ]
         }
     };
@@ -584,19 +584,25 @@
     // === UTILS ===
 
     /**
-     * Supprime TOUT le gras Markdown (**...**) avant le rendu.
+     * Supprime TOUT le gras (Markdown + HTML) avant le rendu.
      * Règle absolue : zéro gras dans les réponses du bot.
+     * Cumulé avec _clean_llm_response (backend) et le CSS qui force
+     * font-weight:inherit sur <strong>, ce qui forme une triple barrière.
      */
     function stripBold(text) {
         if (!text) return text;
-        // 1. Gras+italique ***...***
+        // 1. Gras+italique ***...*** (le plus large d'abord)
         text = text.replace(/\*\*\*([^*]+?)\*\*\*/gs, '$1');
         // 2. Gras **...** (avec ou sans espaces intérieurs)
         text = text.replace(/\*\*\s*([\s\S]+?)\s*\*\*/g, '$1');
         // 3. ** orphelins restants
         text = text.replace(/\*\*/g, '');
-        // 4. Gras __...__ (format alternatif)
+        // 4. Gras __...__ (format alternatif Markdown)
         text = text.replace(/__\s*([\s\S]+?)\s*__/g, '$1');
+        // 5. Tags HTML <strong> / <b> qui pourraient venir directement
+        //    du LLM s'il décide de retourner du HTML (rare mais possible)
+        text = text.replace(/<\/?strong[^>]*>/gi, '');
+        text = text.replace(/<\/?b\s*[^>]*>/gi, '');
         return text;
     }
 

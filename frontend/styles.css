@@ -673,12 +673,22 @@ h1, h2, h3, h4 {
 .msg-bubble *:last-child { margin-bottom: 0; }
 
 /* RÈGLE ABSOLUE : zéro gras dans les messages du bot.
-   Si malgré stripBold + _clean_llm_response un <strong> ou <b> arrivait
-   à passer (bug du LLM, cas non prévu), on neutralise au niveau CSS. */
+   Triple ceinture : on force font-weight normal sur TOUT ce qui est
+   dans .msg-bubble, y compris strong, b, h1-h3, em, etc.
+   On garde la couleur (color: inherit) pour éviter de tout désaturer. */
+.msg-bubble,
+.msg-bubble *,
 .msg-bubble strong,
 .msg-bubble b {
-    font-weight: inherit;
-    color: inherit;
+    font-weight: 400 !important;
+}
+
+/* Exception : on autorise font-weight 500 (semi-bold) sur les titres
+   pour qu'ils restent visuellement distinctifs SANS être gras. */
+.msg-bubble h1,
+.msg-bubble h2,
+.msg-bubble h3 {
+    font-weight: 500 !important;
 }
 
 .msg-bubble ul, .msg-bubble ol {
@@ -750,18 +760,21 @@ h1, h2, h3, h4 {
     padding-right: 14px;
 }
 
+/* Titres dans les messages : DISTINCTIFS sans gras.
+   On utilise la taille + l'espacement + une couleur d'accent au lieu
+   de font-weight pour respecter la consigne "zéro gras". */
 .msg-bubble h1, .msg-bubble h2, .msg-bubble h3 {
     display: block;
     width: 100%;
     margin-top: 1em;
     margin-bottom: 0.4em;
     line-height: 1.4;
-    color: var(--color-platinum);
-    font-weight: 600;
+    color: var(--color-simen);
+    font-weight: normal;
 }
-.msg-bubble h1 { font-size: 1.15em; }
-.msg-bubble h2 { font-size: 1.05em; }
-.msg-bubble h3 { font-size: 1em; }
+.msg-bubble h1 { font-size: 1.20em; }
+.msg-bubble h2 { font-size: 1.10em; }
+.msg-bubble h3 { font-size: 1.05em; }
 
 /* Séparateur --- entre exercices */
 .msg-bubble hr {

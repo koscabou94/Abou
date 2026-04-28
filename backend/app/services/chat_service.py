@@ -241,6 +241,45 @@ class ChatService:
             intent, confidence = self.nlp_service.classify_intent(fr_message)
             logger.debug("Intention classifiée", intent=intent, confidence=confidence)
 
+            # === ÉTAPE 3-bis : Override intent → "programme" si curriculum-query ===
+            # Sans cet override, "programme de maths CM2" est classé "exercice"
+            # car "maths" + "CM2" pèsent plus fort que "programme".
+            # Mais l'utilisateur veut une DESCRIPTION du programme, pas des
+            # exercices. On force donc l'intent quand c'est clairement une
+            # question sur le curriculum officiel.
+            _curriculum_markers = [
+                "programme", "curriculum", "ceb",
+                "objectifs", "objectif", "objectif spécifique",
+                "compétences", "competences", "competence",
+                "que doit savoir", "qu'est-ce que doit savoir",
+                "ce que l'élève doit", "ce que l eleve doit",
+                "ce qu'il faut savoir", "ce qu'il faut connaitre",
+                "palier", "paliers",
+                "quel est le programme", "quel est le curriculum",
+                "quels sont les objectifs", "quelles sont les compétences",
+                "à quoi correspond", "que contient le programme",
+                "officiel sénégalais", "officiel senegalais",
+                "ministère de l'éducation", "ministere de l education",
+            ]
+            _exercise_markers_strong = [
+                "donne-moi", "donne moi", "génère", "genere",
+                "je veux des exercices", "je voudrais des exercices",
+                "fais-moi", "fais moi", "propose-moi", "propose moi",
+                "fournis-moi", "donnez-moi", "envoie-moi",
+            ]
+            _msg_lower = fr_message.lower()
+            _has_curriculum_marker = any(m in _msg_lower for m in _curriculum_markers)
+            _has_strong_exercise_request = any(m in _msg_lower for m in _exercise_markers_strong)
+
+            if _has_curriculum_marker and not _has_strong_exercise_request:
+                if intent != "programme":
+                    logger.info(
+                        "Intent forcé à 'programme' (curriculum-query détecté)",
+                        old_intent=intent,
+                        message=fr_message[:80],
+                    )
+                intent = "programme"
+
             # === ÉTAPE 3a : Clarification EXERCICE (priorité absolue) ===
             # Si l'utilisateur demande des exercices SANS niveau ni matière,
             # on lui demande la précision AVANT toute autre logique. Ainsi,

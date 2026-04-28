@@ -52,7 +52,7 @@ git status --short
 
 echo.
 echo --- Commit ---
-git commit -m "v10.8: FAQ_PLANETE3 + Curriculum CEB (programme officiel senegalais, 7 PDFs, 258 entrees) + intelligence (synonymes, fuzzy, cache, precision Q1/Q2, PLANETE 3 -> PLANETE, classe CI, no bold, normalisation niveaux, concept-match)"
+git commit -m "v10.8: FAQ_PLANETE3 + Curriculum CEB (7 PDFs, 258 entrees) + intelligence (synonymes, fuzzy, cache, precision Q1/Q2, PLANETE 3 -> PLANETE, classe CI, no bold force CSS, normalisation niveaux, concept-match, intent programme vs exercice fix)"
 
 echo.
 echo --- Push ---

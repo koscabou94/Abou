@@ -251,8 +251,12 @@ RÈGLE ABSOLUE : Ne jamais refuser de générer des exercices ou des fiches. Ne 
             "payer", "gratuit", "payant", "argent", "cantine", "transport"
         ],
         "programme": [
-            "programme", "matière", "cours", "curriculum", "contenu", "manuel",
-            "livre", "enseignement", "apprentissage", "leçon", "chapitre"
+            "programme", "matière", "curriculum", "ceb", "contenu", "manuel",
+            "livre", "enseignement", "apprentissage", "chapitre",
+            "objectifs", "compétences", "competences",
+            "palier", "paliers",
+            "que doit savoir", "ce que l'élève doit",
+            "officiel sénégalais", "officiel senegalais",
         ],
         "administratif": [
             "attestation", "certificat de scolarité", "relevé", "document",
@@ -609,10 +613,10 @@ RÈGLE ABSOLUE : Ne jamais refuser de générer des exercices ou des fiches. Ne 
                 "inscription": "sur les procédures d'inscription scolaire",
                 "calendrier": "sur le calendrier scolaire",
                 "bourse": "sur les bourses et aides financières",
-                "programme": "sur les programmes scolaires",
+                "programme": "programme",  # géré séparément ci-dessous
                 "administratif": "sur les démarches administratives",
                 "enseignant": "sur le corps enseignant et la formation",
-                "planete": "sur l'utilisation de la plateforme PLANETE 3.0",
+                "planete": "sur l'utilisation de la plateforme PLANETE",
                 "mirador": "sur la plateforme de gestion RH MIRADOR",
                 "identifiant": "sur les identifiants professionnels (IEN/Matricule)",
                 "pedagogique": "sur les aspects pédagogiques (notes, absences, cours)",
@@ -627,6 +631,23 @@ RÈGLE ABSOLUE : Ne jamais refuser de générer des exercices ou des fiches. Ne 
                         system_content += f"\n⚡ L'utilisateur demande une FICHE PÉDAGOGIQUE. Génère-la DIRECTEMENT et COMPLÈTEMENT avec le format structuré prévu (objectifs, contenu, déroulement en tableau, évaluation). N'attends pas de permission supplémentaire."
                     else:
                         system_content += f"\n⚡ L'utilisateur demande des exercices ou de la remédiation. GÉNÈRE-LES DIRECTEMENT avec un format clair et numéroté. N'attends pas de permission supplémentaire."
+                elif intent == "programme":
+                    # IMPORTANT : ne pas générer d'exercices ! L'utilisateur veut
+                    # une DESCRIPTION du programme officiel (objectifs, paliers,
+                    # compétences). Réponds en utilisant les extraits du curriculum
+                    # CEB qui te sont fournis dans le contexte.
+                    system_content += (
+                        "\n⚡ L'utilisateur demande une DESCRIPTION du programme officiel "
+                        "(curriculum CEB). NE GÉNÈRE PAS D'EXERCICES. "
+                        "Décris le programme en t'appuyant sur les extraits du curriculum "
+                        "officiel fournis dans le contexte. "
+                        "Structure ta réponse : 1) Objectifs / compétences attendues, "
+                        "2) Domaines et sous-domaines, 3) Paliers (CI : 1-4, CP : 5-8, etc.), "
+                        "4) Citation textuelle des objectifs spécifiques quand c'est dans le contexte. "
+                        "Si l'utilisateur veut ENSUITE des exercices, propose-le à la fin "
+                        "(exemple : 'Voulez-vous que je génère des exercices basés sur ce programme ?'). "
+                        "N'utilise pas de gras."
+                    )
                 else:
                     system_content += f"\nL'utilisateur pose une question {intent_labels[intent]}."
         if knowledge_context:

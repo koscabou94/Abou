@@ -233,6 +233,29 @@ class ChatService:
             intent, confidence = self.nlp_service.classify_intent(fr_message)
             logger.debug("Intention classifiée", intent=intent, confidence=confidence)
 
+            # === ÉTAPE 3a : Clarification EXERCICE (priorité absolue) ===
+            # Si l'utilisateur demande des exercices SANS niveau ni matière,
+            # on lui demande la précision AVANT toute autre logique. Ainsi,
+            # peu importe ce que la détection PLANETE ferait, on ne saute
+            # jamais cette demande de précision pour un exercice.
+            if intent == "exercice":
+                clarification = self._check_needs_clarification(fr_message, intent)
+                if clarification:
+                    response_time_ms = int((time.time() - start_time) * 1000)
+                    return {
+                        "response": clarification["message"],
+                        "clarification": {
+                            "options": clarification["options"],
+                        },
+                        "session_id": session_id,
+                        "language": detected_lang,
+                        "intent": intent,
+                        "confidence": confidence,
+                        "source": "clarification",
+                        "response_time_ms": response_time_ms,
+                        "timestamp": datetime.utcnow().isoformat(),
+                    }
+
             # === Détection PLANETE renforcée (lexique métier) ===
             # Même si la classification d'intention n'a pas attribué "planete",
             # on inspecte le lexique pour repérer les questions implicitement
@@ -241,16 +264,21 @@ class ChatService:
 
             # On considère la question comme PLANETE si :
             # - l'intent est explicitement "planete", OU
-            # - au moins 1 mot-clé du lexique métier PLANETE est présent
-            is_planete_q = (intent == "planete") or is_planete_implicit
+            # - le lexique STRONG/WEAK déclenche la détection
+            # MAIS jamais quand intent est "exercice" ou "fiche" (actions
+            # de génération qui ne sont pas des questions PLANETE).
+            is_planete_q = (
+                (intent == "planete") or is_planete_implicit
+            ) and intent not in ("exercice",)
 
             # Réutiliser le contexte de la conversation : si la dernière
             # question était PLANETE et que le message actuel est court
             # (< 8 mots, possible suivi du type "et une salle ?"), on
-            # propage l'intention PLANETE.
+            # propage l'intention PLANETE — sauf pour les exercices.
             session_state = self._get_session_state(session_id)
             if (
                 not is_planete_q
+                and intent != "exercice"
                 and session_state.get("last_intent") == "planete"
                 and len(fr_message.split()) <= 7
                 and intent in ("general", "salutation")

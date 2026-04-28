@@ -29,52 +29,122 @@ logger = structlog.get_logger(__name__)
 # ============================================================
 # LEXIQUE PLANETE
 # ============================================================
-# Mots-clés métier qui indiquent une question PLANETE — même si le mot
-# "PLANETE" lui-même n'est pas prononcé. Servent à la fois à la détection
-# d'intention et au boost de score lors de la recherche.
-PLANETE_LEXICON = {
+# Pour limiter les faux positifs ("exercices pour mes élèves CM2" ne doit
+# PAS être détecté comme PLANETE), on sépare en deux ensembles :
+#
+#  - STRONG : termes spécifiques et non-ambigus (multi-mots ou techniques).
+#    Un seul match = question PLANETE.
+#  - WEAK : mots communs qui peuvent apparaître dans d'autres contextes
+#    (élève, personnel, absence, classe…). Il en faut au moins 2 pour
+#    déclencher la détection PLANETE.
+
+# Termes forts : un seul match → PLANETE garanti
+PLANETE_STRONG_LEXICON = {
     # Vocabulaire système
     "planete", "planète", "planete3", "planète3", "simen", "mirador",
     # URL / connexion
     "education.sn", "@education.sn", "planete3.education.sn",
-    # Concepts généraux
-    "tableau de bord", "dashboard", "fiche établissement", "fiche etablissement",
-    "polarisation", "bst", "polarisateur",
-    # Configuration
-    "configuration", "configurer", "environnement physique", "environnement pédagogique",
-    "bâtiment", "batiment", "bâtiments", "batiments",
-    "salle", "salles", "salle de classe",
-    "classe pédagogique", "classe pedagogique", "groupage", "groupage de classes",
-    "programme", "discipline", "second semestre", "semestre",
-    "frais de scolarité", "frais de scolarite", "scolarité", "scolarite",
-    "compte bancaire", "rib", "code banque",
-    # Personnel
-    "personnel", "agent", "complément horaire", "complement horaire",
-    "pointage", "prise de service", "archiver", "archivage", "ien",
-    # Élèves
-    "inscrire", "inscription", "élève", "eleve", "élèves", "eleves",
-    "affecter", "affectation", "transfert", "transfert entrant", "transfert sortant",
-    "import élèves", "import eleves", "reprise scolarité", "reprise scolarite",
-    "bfem", "bst", "candidat bfem",
-    # Emploi du temps
-    "emploi du temps", "emplois du temps", "edt", "génération automatique edt",
+    # Concepts métier multi-mots (tres specifiques à PLANETE)
+    "tableau de bord", "fiche établissement", "fiche etablissement",
+    "polarisation bst", "bst polarisateur",
+    "environnement physique", "environnement pédagogique", "environnement pedagogique",
+    "classe pédagogique", "classe pedagogique",
+    "groupage de classes", "second semestre",
+    "frais de scolarité", "frais de scolarite",
+    "compte bancaire", "code banque",
+    "complément horaire", "complement horaire",
+    "prise de service", "mise à jour personnel", "mise a jour personnel",
+    "import élèves", "import eleves", "import personnel",
+    "transfert entrant", "transfert sortant",
+    "reprise scolarité", "reprise scolarite",
+    "candidat bfem", "élève bst", "eleve bst",
+    "emploi du temps", "emplois du temps",
+    "génération automatique edt", "generation automatique edt",
     "generer edt", "générer edt", "export edt", "export cours",
-    # Cours
-    "cahier de texte", "cahier texte", "cahier", "absence", "retard",
-    "justifier absence", "absence justifiée",
-    # Rapport journalier
-    "rapport de fin de journée", "rapport journalier", "déclarer un incident",
-    "incident",
-    # Évaluations
-    "évaluation", "evaluation", "notation", "saisir les notes", "verrouiller",
-    "verrouillage",
-    # Conseils
-    "conseil de classe", "conseils de classe", "conseil classe", "appréciation",
-    "appreciation", "valider conseil",
-    # Utilisateurs
-    "utilisateur", "utilisateurs",
+    "cahier de texte", "cahier texte",
+    "justifier absence", "absence justifiée", "absence justifiee",
+    "rapport de fin de journée", "rapport de fin de journee",
+    "rapport journalier", "déclarer un incident", "declarer un incident",
+    "saisir les notes", "saisir les absences",
+    "justifier une absence", "justifier les absences",
+    "verrouiller évaluation", "verrouiller evaluation",
+    "conseil de classe", "conseils de classe", "conseil classe",
+    "valider conseil", "validation conseil",
     "ajouter utilisateur", "profil utilisateur", "rechercher utilisateur",
-    "chef d'établissement", "chef etablissement", "ief", "ia",
+    "chef d'établissement", "chef etablissement",
+    # Termes techniques courts mais non-ambigus
+    "bfem", "bst", "edt", "ien", "ief",
+    "polarisation", "polarisateur",
+    # Bâtiments dans le contexte PLANETE (peu d'autres contextes éducatifs
+    # parlent de "bâtiments" dans une question type)
+    "bâtiment", "batiment", "bâtiments", "batiments",
+}
+
+# Termes faibles : très communs, ambigus. Il en faut 2+ pour déclencher PLANETE
+PLANETE_WEAK_LEXICON = {
+    "configuration", "configurer", "paramétrer", "parametrer",
+    "salle", "salles", "salle de classe",
+    "groupage", "programme", "discipline", "semestre",
+    "scolarité", "scolarite",
+    "personnel", "agent", "pointage", "archiver", "archivage",
+    "inscrire", "inscription", "élève", "eleve", "élèves", "eleves",
+    "affecter", "affectation", "transfert",
+    "absence", "retard",
+    "incident",
+    "évaluation", "evaluation", "notation", "verrouiller", "verrouillage",
+    "appréciation", "appreciation",
+    "utilisateur", "utilisateurs", "profil",
+    "ia",
+}
+
+# Lexique unifié pour le boost de score (utilisé dans find_best_match)
+PLANETE_LEXICON = PLANETE_STRONG_LEXICON | PLANETE_WEAK_LEXICON
+
+
+# ============================================================
+# CONCEPTS PLANETE (objets concrets manipulés)
+# ============================================================
+# Quand l'utilisateur mentionne un de ces concepts ET qu'il apparaît
+# aussi dans la QUESTION d'un candidat (pas juste dans son contenu),
+# on donne un GROS bonus à ce candidat. Évite que "configurer un batiment"
+# tombe sur Q18 ("environnement physique") qui mentionne "bâtiments" parmi
+# les éléments à configurer mais n'est PAS la bonne réponse.
+#
+# Format : { concept_canonical: [variantes possibles dans le texte] }
+PLANETE_CONCEPTS = {
+    "batiment":        ["batiment", "batiments", "bloc", "edifice"],
+    "salle":           ["salle", "salles"],
+    "classe":          ["classe pedagogique", "classes pedagogiques",
+                        "classe", "classes"],
+    "groupage":        ["groupage", "groupages"],
+    "compte_bancaire": ["compte bancaire"],
+    "frais_scolarite": ["frais de scolarite", "scolarite"],
+    "personnel":       ["personnel", "agent", "agents"],
+    "complement":      ["complement horaire"],
+    "pointage":        ["pointage"],
+    "eleve":           ["eleve", "eleves"],
+    "inscription":     ["inscription", "inscrire"],
+    "affectation":     ["affectation", "affecter"],
+    "transfert_in":    ["transfert entrant"],
+    "transfert_out":   ["transfert sortant"],
+    "reprise":         ["reprise scolarite", "reprise"],
+    "bfem":            ["bfem", "candidat bfem"],
+    "bst":             ["bst", "eleve bst"],
+    "edt":             ["emploi du temps", "emplois du temps", "edt"],
+    "cahier":          ["cahier de texte", "cahier texte"],
+    "absence":         ["absence", "absences"],
+    "rapport":         ["rapport de fin de journee", "rapport journalier"],
+    "incident":        ["incident", "incidents"],
+    "evaluation":      ["evaluation", "evaluations"],
+    "conseil":         ["conseil de classe", "conseils de classe"],
+    "utilisateur":     ["utilisateur", "utilisateurs"],
+    "url":             ["url", "adresse"],
+    "mot_de_passe":    ["mot de passe", "password", "mdp"],
+    "connexion":       ["connexion", "se connecter", "me connecter"],
+    "tableau_bord":    ["tableau de bord", "dashboard"],
+    "etablissement":   ["fiche etablissement"],  # specifique
+    "polarisation":    ["polarisation", "polarisateur"],
+    "environnement":   ["environnement physique", "environnement pedagogique"],
 }
 
 # Synonymes / reformulations courantes — étendent la requête utilisateur
@@ -97,10 +167,16 @@ SYNONYMS = {
     "se loguer": ["se connecter", "connexion", "login"],
     "accéder": ["se connecter", "ouvrir", "entrer"],
     "ouvrir": ["accéder", "lancer", "démarrer"],
-    "configurer": ["paramétrer", "régler", "mettre en place", "définir"],
-    "paramétrer": ["configurer", "régler", "définir"],
-    "créer": ["ajouter", "déclarer", "enregistrer", "saisir"],
-    "ajouter": ["créer", "enregistrer", "déclarer"],
+    # IMPORTANT : "configurer" et "créer" sont quasi-synonymes pour les
+    # utilisateurs. "configurer un bâtiment" = "créer un bâtiment".
+    "configurer": ["paramétrer", "régler", "mettre en place", "définir",
+                    "créer", "ajouter", "déclarer", "enregistrer"],
+    "paramétrer": ["configurer", "régler", "définir", "créer", "ajouter"],
+    "créer": ["ajouter", "déclarer", "enregistrer", "saisir",
+              "configurer", "paramétrer", "mettre en place"],
+    "ajouter": ["créer", "enregistrer", "déclarer", "configurer", "paramétrer"],
+    "déclarer": ["créer", "ajouter", "enregistrer"],
+    "enregistrer": ["créer", "ajouter", "déclarer", "saisir"],
     "supprimer": ["effacer", "retirer", "enlever", "supprimer définitivement"],
     "modifier": ["changer", "mettre à jour", "éditer", "corriger"],
     "mettre à jour": ["modifier", "actualiser", "changer", "éditer"],
@@ -180,33 +256,41 @@ def expand_query_with_synonyms(query: str) -> str:
     return " ".join(expansions)
 
 
+def _count_lexicon_hits(text_norm: str, lexicon: set) -> int:
+    """Compte combien de termes du lexique apparaissent dans le texte normalisé."""
+    hits = 0
+    for kw in lexicon:
+        kw_norm = normalize_text(kw)
+        if not kw_norm:
+            continue
+        if " " in kw_norm:
+            if kw_norm in text_norm:
+                hits += 1
+        else:
+            if re.search(rf"\b{re.escape(kw_norm)}\b", text_norm):
+                hits += 1
+    return hits
+
+
 def is_planete_question(text: str) -> tuple[bool, int]:
     """Détecte si une question concerne PLANETE, même implicitement.
 
-    Retourne (is_planete, score) où score est le nombre de mots-clés
-    PLANETE détectés. Plus le score est élevé, plus la confiance est forte.
+    Règle :
+      - 1+ terme STRONG (multi-mots spécifique ou technique)  → PLANETE
+      - 2+ termes WEAK (mots communs comme "élève", "personnel") → PLANETE
+      - 1 terme WEAK seul                                       → PAS PLANETE
+        (ex : "exercices pour mes élèves" → "élève" seul ne suffit pas)
+
+    Retourne (is_planete, total_hits).
     """
     if not text:
         return (False, 0)
     text_norm = normalize_text(text)
-    hits = 0
-    matched = []
-    for kw in PLANETE_LEXICON:
-        kw_norm = normalize_text(kw)
-        if not kw_norm:
-            continue
-        # Mot-clé multi-mots → recherche substring
-        if " " in kw_norm:
-            if kw_norm in text_norm:
-                hits += 1
-                matched.append(kw_norm)
-        else:
-            # Mot simple → match par limites de mots
-            if re.search(rf"\b{re.escape(kw_norm)}\b", text_norm):
-                hits += 1
-                matched.append(kw_norm)
-    is_planete = hits >= 1
-    return (is_planete, hits)
+    strong_hits = _count_lexicon_hits(text_norm, PLANETE_STRONG_LEXICON)
+    weak_hits = _count_lexicon_hits(text_norm, PLANETE_WEAK_LEXICON)
+    total = strong_hits + weak_hits
+    is_planete = (strong_hits >= 1) or (weak_hits >= 2)
+    return (is_planete, total)
 
 
 # ============================================================
@@ -539,19 +623,26 @@ class PlaneteFAQService:
             fuzzy_scores = self._compute_fuzzy_scores(query)
 
             # 5. Bonus correspondance exacte + pénalité "mots en trop"
-            #    Pour chaque candidat, on compare les ensembles de mots
-            #    significatifs (sans stopwords) entre la requête et la
-            #    question. Si le candidat contient peu/pas de mots en plus,
-            #    il est préféré ; s'il en a beaucoup, il est pénalisé.
             exactness = self._compute_exactness_scores(q_norm)
 
-            # 6. Combinaison pondérée :
-            #    50 % TF-IDF · 20 % fuzzy · 10 % boost · 20 % exactitude
+            # 6. Concept-match : si la requête mentionne "bâtiment" et que
+            #    la QUESTION du candidat contient aussi "bâtiment", c'est
+            #    fortement indicatif que c'est le bon match. Évite que
+            #    "configurer un bâtiment" tombe sur Q18 qui parle de
+            #    configurer l'environnement physique (où "bâtiments" est
+            #    mentionné dans la liste des éléments mais n'est pas le
+            #    sujet principal de la question).
+            concept_scores = self._compute_concept_match_scores(q_norm)
+
+            # 7. Combinaison pondérée :
+            #    35 % TF-IDF · 15 % fuzzy · 10 % boost lexique
+            #    · 20 % exactitude · 20 % concept-match
             combined = (
-                0.50 * tfidf_scores
-                + 0.20 * fuzzy_scores
+                0.35 * tfidf_scores
+                + 0.15 * fuzzy_scores
                 + 0.10 * boosts
                 + 0.20 * exactness
+                + 0.20 * concept_scores
             )
 
             best_idx = int(np.argmax(combined))
@@ -659,6 +750,67 @@ class PlaneteFAQService:
             if w not in FR_STOPWORDS
             and (len(w) > 1 or w.isdigit())
         }
+
+    def _compute_concept_match_scores(self, q_norm: str):
+        """Calcule un score [0..1] qui récompense les candidats dont la
+        QUESTION (pas seulement le contenu) partage les mêmes concepts
+        PLANETE que la requête.
+
+        Exemple critique :
+          Requête : "comment configurer un batiment"
+          Concept détecté : 'batiment'
+          - Q18 "configurer l'environnement physique" → 'batiment' n'est
+            pas dans sa question principale → 0.0
+          - Q19 "créer un bâtiment dans PLANETE 3" → 'batiment' est dans
+            sa question → 1.0  → préférer Q19
+
+        Si plusieurs concepts matchent, on cumule (max 1.0).
+        Si aucun concept dans la requête, retourne tableau de zéros.
+        """
+        import numpy as np
+        scores = np.zeros(len(self._items), dtype=float)
+
+        # 1. Détecter les concepts présents dans la requête
+        query_concepts = set()
+        for concept_id, variants in PLANETE_CONCEPTS.items():
+            for v in variants:
+                v_norm = normalize_text(v)
+                if " " in v_norm:
+                    if v_norm in q_norm:
+                        query_concepts.add(concept_id)
+                        break
+                else:
+                    if re.search(rf"\b{re.escape(v_norm)}\b", q_norm):
+                        query_concepts.add(concept_id)
+                        break
+
+        if not query_concepts:
+            return scores
+
+        # 2. Pour chaque candidat, vérifier ses concepts en commun avec
+        #    la requête (uniquement dans la QUESTION du candidat).
+        for i, item in enumerate(self._items):
+            cand_q_norm = normalize_text(item["question"])
+            cand_concepts = set()
+            for concept_id in query_concepts:  # ne tester que les concepts pertinents
+                variants = PLANETE_CONCEPTS[concept_id]
+                for v in variants:
+                    v_norm = normalize_text(v)
+                    if " " in v_norm:
+                        if v_norm in cand_q_norm:
+                            cand_concepts.add(concept_id)
+                            break
+                    else:
+                        if re.search(rf"\b{re.escape(v_norm)}\b", cand_q_norm):
+                            cand_concepts.add(concept_id)
+                            break
+
+            common = query_concepts & cand_concepts
+            if common:
+                # Score = ratio de concepts en commun, plafonné à 1.0
+                scores[i] = min(1.0, len(common) / len(query_concepts))
+
+        return scores
 
     @staticmethod
     def _extract_planete_keywords(text_norm: str) -> set[str]:

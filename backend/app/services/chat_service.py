@@ -120,10 +120,13 @@ class ChatService:
         """Récupère ou crée l'état conversationnel d'une session."""
         if session_id not in self._session_state:
             self._session_state[session_id] = {
-                "last_intent": None,
-                "last_planete_topic": None,
-                "last_level": None,
-                "last_subject": None,
+                "last_intent": None,           # exercice / programme / planete / ...
+                "last_planete_topic": None,    # categorie PLANETE traitee
+                "last_niveau": None,           # CI / CP / CE1 / .../ Terminale
+                "last_matiere": None,          # mathematiques / francais / anglais / ...
+                "last_response_type": None,    # curriculum / exercice / fiche / planete_faq
+                "last_question": None,         # texte de la derniere question utilisateur
+                "last_assistant_excerpt": None,  # debut de la derniere reponse (pour "la suite")
             }
         return self._session_state[session_id]
 
@@ -132,8 +135,11 @@ class ChatService:
         session_id: str,
         intent: Optional[str] = None,
         planete_topic: Optional[str] = None,
-        level: Optional[str] = None,
-        subject: Optional[str] = None,
+        niveau: Optional[str] = None,
+        matiere: Optional[str] = None,
+        response_type: Optional[str] = None,
+        question: Optional[str] = None,
+        assistant_excerpt: Optional[str] = None,
     ) -> None:
         """Met à jour l'état d'une session — sans écraser avec None."""
         state = self._get_session_state(session_id)
@@ -141,10 +147,16 @@ class ChatService:
             state["last_intent"] = intent
         if planete_topic:
             state["last_planete_topic"] = planete_topic
-        if level:
-            state["last_level"] = level
-        if subject:
-            state["last_subject"] = subject
+        if niveau:
+            state["last_niveau"] = niveau
+        if matiere:
+            state["last_matiere"] = matiere
+        if response_type:
+            state["last_response_type"] = response_type
+        if question:
+            state["last_question"] = question
+        if assistant_excerpt:
+            state["last_assistant_excerpt"] = assistant_excerpt[:300]
 
     # ---------------------------------------------------------
     # CACHE LLM
@@ -153,6 +165,188 @@ class ChatService:
     def _cache_key(message: str, intent: str) -> str:
         norm = message.lower().strip()
         return hashlib.md5(f"{intent}|{norm}".encode("utf-8")).hexdigest()
+
+    # ---------------------------------------------------------
+    # RESOLUTION DES FOLLOW-UPS (mémoire conversationnelle)
+    # ---------------------------------------------------------
+    def _resolve_followup(
+        self, message: str, session_id: str
+    ) -> tuple[str, Optional[str]]:
+        """Résout un message court en utilisant le contexte de la session.
+
+        Exemples gérés :
+          1. "en français" après "programme CM2" → "programme de français en CM2"
+          2. "et en maths" après "programme CE1" → "programme de mathématiques en CE1"
+          3. "la suite" / "continue" → "continue ce que tu disais"
+          4. "donne moi des exercices" après curriculum CM2 → ajoute le niveau
+          5. "et le palier 4" après description curriculum → reformule
+
+        Args:
+            message: message utilisateur brut
+            session_id: identifiant de session
+
+        Returns:
+            (message_reformulé, intent_forcé) — intent_forcé peut être None
+        """
+        state = self._get_session_state(session_id)
+        last_intent = state.get("last_intent")
+        last_niveau = state.get("last_niveau")
+        last_matiere = state.get("last_matiere")
+        last_resp_type = state.get("last_response_type")
+
+        # Pas d'historique → pas de résolution possible
+        if not last_intent:
+            return message, None
+
+        msg_lower = message.lower().strip()
+        word_count = len(msg_lower.split())
+
+        # Trop long pour être un follow-up court (probablement nouvelle question)
+        if word_count > 7:
+            return message, None
+
+        # ── Pattern 1 : matière seule après une question programme ──
+        # Ex: "en français", "francais", "et les maths", "maths", "anglais"
+        SUBJECT_TRIGGERS = {
+            "francais": "français", "français": "français",
+            "math": "mathématiques", "maths": "mathématiques",
+            "mathematiques": "mathématiques", "mathématiques": "mathématiques",
+            "anglais": "anglais", "english": "anglais",
+            "arabe": "arabe",
+            "histoire": "histoire-géographie",
+            "geographie": "histoire-géographie", "géographie": "histoire-géographie",
+            "histoire-geo": "histoire-géographie", "histoire-géo": "histoire-géographie",
+            "sciences": "sciences", "science": "sciences",
+            "physique": "physique-chimie", "chimie": "physique-chimie",
+            "physique-chimie": "physique-chimie",
+            "svt": "SVT", "biologie": "SVT",
+            "philosophie": "philosophie", "philo": "philosophie",
+            "lecture": "lecture", "écriture": "écriture", "ecriture": "écriture",
+            "grammaire": "grammaire", "conjugaison": "conjugaison",
+            "orthographe": "orthographe", "vocabulaire": "vocabulaire",
+            "calcul": "calcul", "géométrie": "géométrie", "geometrie": "géométrie",
+            "algèbre": "algèbre", "algebre": "algèbre",
+            "eps": "EPS", "education physique": "EPS",
+            "arts": "arts", "musique": "musique",
+            "communication orale": "communication orale",
+            "production écrite": "production écrite",
+            "production ecrite": "production écrite",
+            "vivre ensemble": "vivre ensemble",
+            "découverte du monde": "découverte du monde",
+            "decouverte du monde": "découverte du monde",
+        }
+
+        # Détecter une matière dans le message court
+        detected_subject = None
+        for trigger, canonical in SUBJECT_TRIGGERS.items():
+            # Pour les multi-mots, recherche substring
+            if " " in trigger and trigger in msg_lower:
+                detected_subject = canonical
+                break
+            # Pour les mots simples, limites de mots
+            elif " " not in trigger:
+                import re as _re
+                if _re.search(rf"\b{_re.escape(trigger)}\b", msg_lower):
+                    detected_subject = canonical
+                    break
+
+        # Cas : matière détectée + dernière question était sur le programme
+        # → on précise la matière dans la même question
+        if (
+            detected_subject
+            and last_intent == "programme"
+            and last_niveau
+        ):
+            reformulated = (
+                f"Quel est le programme de {detected_subject} en {last_niveau} ?"
+            )
+            logger.info(
+                "Follow-up résolu (programme + matière)",
+                original=message,
+                reformulated=reformulated,
+            )
+            return reformulated, "programme"
+
+        # Cas : matière détectée + dernière question était sur des exercices
+        # → on réutilise le niveau et change la matière
+        if (
+            detected_subject
+            and last_intent == "exercice"
+            and last_niveau
+        ):
+            reformulated = (
+                f"Donne-moi 3 exercices de {detected_subject} pour le {last_niveau}"
+            )
+            logger.info(
+                "Follow-up résolu (exercices + nouvelle matière)",
+                original=message,
+                reformulated=reformulated,
+            )
+            return reformulated, "exercice"
+
+        # ── Pattern 2 : "la suite", "continue", "et après", "ensuite" ──
+        CONTINUATION_MARKERS = [
+            "la suite", "et la suite", "donne la suite", "donne-moi la suite",
+            "continue", "continuez", "poursuis",
+            "ensuite", "et ensuite", "et après", "et apres",
+            "encore", "plus", "donne plus", "plus de détails", "plus de details",
+            "developpe", "développe", "approfondis",
+        ]
+        if any(c in msg_lower for c in CONTINUATION_MARKERS) and word_count <= 5:
+            if last_intent == "programme" and last_niveau:
+                mat_part = f" en {last_matiere}" if last_matiere else ""
+                reformulated = (
+                    f"Continue la description du programme {last_niveau}{mat_part}. "
+                    f"Donne plus de détails sur les paliers et les objectifs."
+                )
+                logger.info(
+                    "Follow-up résolu (continuation programme)",
+                    reformulated=reformulated,
+                )
+                return reformulated, "programme"
+            if last_intent == "planete":
+                # "et après" pour PLANETE est déjà géré ailleurs
+                return message, None
+            # Continuation générale
+            reformulated = f"Continue ta dernière réponse, donne plus de détails."
+            return reformulated, last_intent
+
+        # ── Pattern 3 : demande d'exercices après une question programme ──
+        EXERCISE_REQUEST_SHORT = [
+            "donne moi des exercices", "donne-moi des exercices",
+            "des exercices", "exercices", "fais des exercices",
+            "je veux des exercices", "fais moi des exercices",
+            "génère des exercices", "genere des exercices",
+            "propose des exercices", "donne des exercices",
+        ]
+        if (
+            last_intent == "programme"
+            and last_niveau
+            and any(e in msg_lower for e in EXERCISE_REQUEST_SHORT)
+            and word_count <= 8
+        ):
+            mat_part = f" de {last_matiere}" if last_matiere else ""
+            reformulated = (
+                f"Donne-moi 3 exercices{mat_part} pour le {last_niveau}"
+            )
+            logger.info(
+                "Follow-up résolu (exercices après programme)",
+                reformulated=reformulated,
+            )
+            return reformulated, "exercice"
+
+        # ── Pattern 4 : "et avec corrigé" après exercices ──
+        if last_intent == "exercice" and "corrig" in msg_lower and word_count <= 5:
+            # Le LLM gère déjà cela via l'historique de conversation
+            return message, "exercice"
+
+        # ── Pattern 5 : niveau seul après matière seule ──
+        # Ex: utilisateur a dit "exercices français" → bot a demandé niveau →
+        # utilisateur dit "CM2" → on combine
+        # (cas géré par la clarification existante, on laisse passer)
+
+        # Pas de follow-up détecté
+        return message, None
 
     async def process_message(
         self,
@@ -237,8 +431,30 @@ class ChatService:
 
             logger.debug("Message en français", fr_message=fr_message[:100])
 
+            # === ÉTAPE 2-bis : Résolution des follow-ups conversationnels ===
+            # Si le message est court et que le contexte de session le permet,
+            # on reformule la question pour intégrer le niveau/matière déjà
+            # connus. Ex : "en français" après "programme CM2" devient
+            # "Quel est le programme de français en CM2 ?".
+            forced_intent: Optional[str] = None
+            original_fr_message = fr_message
+            fr_message_resolved, forced_intent = self._resolve_followup(
+                fr_message, session_id
+            )
+            if fr_message_resolved != fr_message:
+                fr_message = fr_message_resolved
+                logger.info(
+                    "Message reformulé via mémoire conversationnelle",
+                    original=original_fr_message[:100],
+                    resolved=fr_message[:120],
+                    forced_intent=forced_intent,
+                )
+
             # === ÉTAPE 3 : Classification de l'intention ===
             intent, confidence = self.nlp_service.classify_intent(fr_message)
+            if forced_intent:
+                # Le résolveur de follow-up impose l'intent (priorité absolue)
+                intent = forced_intent
             logger.debug("Intention classifiée", intent=intent, confidence=confidence)
 
             # === ÉTAPE 3-bis : Override intent → "programme" si curriculum-query ===
@@ -761,8 +977,29 @@ class ChatService:
                 db=db
             )
 
-            # Mémoire de session : tracker la dernière intention
-            self._update_session_state(session_id, intent=intent)
+            # Mémoire de session : tracker l'intention + niveau + matière
+            # détectés dans le message, pour résoudre les follow-ups suivants
+            # (ex : "en français" après "programme CM2").
+            try:
+                detected_niv_save = detect_niveau(original_fr_message) or detect_niveau(fr_message)
+                detected_mat_save = detect_matiere(original_fr_message) or detect_matiere(fr_message)
+            except Exception:
+                detected_niv_save = None
+                detected_mat_save = None
+
+            self._update_session_state(
+                session_id,
+                intent=intent,
+                niveau=detected_niv_save,
+                matiere=detected_mat_save,
+                response_type=(
+                    "curriculum" if intent == "programme"
+                    else "exercice" if intent == "exercice"
+                    else "general"
+                ),
+                question=original_fr_message,
+                assistant_excerpt=fr_response[:300] if fr_response else None,
+            )
 
             # Calcul du temps de réponse
             response_time_ms = int((time.time() - start_time) * 1000)

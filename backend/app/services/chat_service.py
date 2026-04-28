@@ -23,6 +23,11 @@ from app.services.planete_faq_service import (
     PlaneteFAQService,
     is_planete_question,
 )
+from app.services.curriculum_service import (
+    CurriculumService,
+    detect_niveau,
+    detect_matiere,
+)
 
 logger = structlog.get_logger(__name__)
 
@@ -72,6 +77,7 @@ class ChatService:
         faq_service: FAQService,
         knowledge_service: Optional["KnowledgeService"] = None,
         planete_faq_service: Optional["PlaneteFAQService"] = None,
+        curriculum_service: Optional["CurriculumService"] = None,
     ) -> None:
         """
         Initialise le service de chat avec ses dépendances.
@@ -83,6 +89,7 @@ class ChatService:
             faq_service: Service de recherche dans les FAQ
             knowledge_service: Service de recherche dans la base de connaissances
             planete_faq_service: Service FAQ dédié PLANETE (FAQ_PLANETE3.json)
+            curriculum_service: Service Curriculum CEB (programme officiel sénégalais)
         """
         self.language_service = language_service
         self.translation_service = translation_service
@@ -90,6 +97,7 @@ class ChatService:
         self.faq_service = faq_service
         self.knowledge_service = knowledge_service
         self.planete_faq_service = planete_faq_service
+        self.curriculum_service = curriculum_service
 
         # Cache LRU des réponses LLM (200 entrées max)
         self._llm_cache = _LRUCache(max_size=200)
@@ -618,6 +626,51 @@ class ChatService:
                             )
                     except Exception as exc:
                         logger.warning("Erreur recherche KB", error=str(exc))
+
+                # === ÉTAPE 5c : Enrichir le contexte avec le Curriculum CEB ===
+                # Pour la génération d'exercices ET les questions sur le programme,
+                # injecter les paliers/objectifs officiels du curriculum sénégalais
+                # dans le contexte LLM. Garantit que les exercices respectent les
+                # objectifs officiels (paliers, OS) du Ministère.
+                if (
+                    self.curriculum_service
+                    and self.curriculum_service.is_available
+                    and intent in ("exercice", "programme", "general")
+                ):
+                    try:
+                        niveau = detect_niveau(fr_message)
+                        matiere = detect_matiere(fr_message)
+                        if niveau or intent == "programme":
+                            # Pour exercices : extraits ciblés (limité)
+                            entries = await self.curriculum_service.get_for_level_and_subject(
+                                niveau or "",
+                                matiere=matiere,
+                                limit=3,
+                            )
+                            if not entries:
+                                # Fallback : recherche libre sur la requête
+                                entries = await self.curriculum_service.search(
+                                    fr_message,
+                                    niveau=niveau,
+                                    matiere=matiere,
+                                    limit=3,
+                                )
+                            if entries:
+                                curr_context = self.curriculum_service.get_curriculum_context(
+                                    entries, max_chars=1200
+                                )
+                                if curr_context:
+                                    kb_context = (
+                                        f"{kb_context}\n\n{curr_context}"
+                                        if kb_context else curr_context
+                                    )
+                                    logger.info(
+                                        "Curriculum CEB injecté dans le contexte LLM",
+                                        niveau=niveau, matiere=matiere,
+                                        extracts=len(entries),
+                                    )
+                    except Exception as exc:
+                        logger.warning("Erreur injection curriculum", error=str(exc))
 
                 # === ÉTAPE 6 : Génération de réponse par le LLM ===
                 logger.debug("Génération de réponse LLM", intent=intent, with_kb=bool(kb_context))

@@ -30,6 +30,7 @@ from app.services import (
     ChatService,
     EmbeddingService,
     PlaneteFAQService,
+    CurriculumService,
 )
 from app.middleware.rate_limit import limiter
 
@@ -93,6 +94,9 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
     # pipeline pour toute question PLANETE (même implicite)
     app.state.planete_faq_service = PlaneteFAQService()
 
+    # Service Curriculum CEB — programme officiel sénégalais (7 PDFs)
+    app.state.curriculum_service = CurriculumService()
+
     app.state.chat_service = ChatService(
         language_service=app.state.language_service,
         translation_service=app.state.translation_service,
@@ -100,6 +104,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
         faq_service=app.state.faq_service,
         knowledge_service=app.state.knowledge_service,
         planete_faq_service=app.state.planete_faq_service,
+        curriculum_service=app.state.curriculum_service,
     )
 
     logger.info("Services initialisés avec succès")
@@ -204,6 +209,20 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
             logger.warning("FAQ PLANETE 3 non disponible (FAQ_PLANETE3.json introuvable)")
     except Exception as exc:
         logger.error("Erreur chargement FAQ PLANETE", error=str(exc))
+
+    # 5c. Initialiser le Curriculum CEB (programme officiel sénégalais)
+    logger.info("Chargement du Curriculum CEB...")
+    try:
+        curr_ok = await app.state.curriculum_service.initialize()
+        if curr_ok:
+            logger.info(
+                "Curriculum CEB chargé",
+                entries=app.state.curriculum_service.entry_count
+            )
+        else:
+            logger.warning("Curriculum CEB non disponible (curriculum_ceb.json introuvable)")
+    except Exception as exc:
+        logger.error("Erreur chargement Curriculum CEB", error=str(exc))
 
     # 6. Chargement anticipé des modèles d'IA (Eager Loading)
     # TF-IDF ne nécessite pas de pré-chargement de modèle lourd

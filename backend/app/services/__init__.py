@@ -10,6 +10,7 @@ from .knowledge_service import KnowledgeService
 from .chat_service import ChatService
 from .embedding_service import EmbeddingService
 from .planete_faq_service import PlaneteFAQService
+from .curriculum_service import CurriculumService
 
 __all__ = [
     "LanguageService",
@@ -20,4 +21,5 @@ __all__ = [
     "ChatService",
     "EmbeddingService",
     "PlaneteFAQService",
+    "CurriculumService",
 ]

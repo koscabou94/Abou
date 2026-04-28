@@ -33,6 +33,7 @@ echo ============================================================
 echo.
 
 git add backend/app/services/planete_faq_service.py
+git add backend/app/services/curriculum_service.py
 git add backend/app/services/__init__.py
 git add backend/app/services/chat_service.py
 git add backend/app/services/nlp_service.py
@@ -40,6 +41,7 @@ git add backend/app/services/faq_service.py
 git add backend/app/main.py
 git add backend/requirements.txt
 git add data/FAQ_PLANETE3.json
+git add data/curriculum_ceb.json
 git add frontend/chat.js
 git add frontend/styles.css
 git add POUSSER_V10.8_PLANETE_FAQ.bat
@@ -50,7 +52,7 @@ git status --short
 
 echo.
 echo --- Commit ---
-git commit -m "v10.8: FAQ_PLANETE3 + bot intelligent (synonymes, fuzzy, cache, precision Q1/Q2, PLANETE 3 -> PLANETE sauf Q3/Q4, classe CI ajoutee, gras supprime, normalisation niveaux)"
+git commit -m "v10.8: FAQ_PLANETE3 + Curriculum CEB (programme officiel senegalais, 7 PDFs, 258 entrees) + intelligence (synonymes, fuzzy, cache, precision Q1/Q2, PLANETE 3 -> PLANETE, classe CI, no bold, normalisation niveaux, concept-match)"
 
 echo.
 echo --- Push ---

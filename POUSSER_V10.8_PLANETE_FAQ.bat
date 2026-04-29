@@ -38,6 +38,7 @@ git add backend/app/services/__init__.py
 git add backend/app/services/chat_service.py
 git add backend/app/services/nlp_service.py
 git add backend/app/services/faq_service.py
+git add backend/app/routes/chat.py
 git add backend/app/main.py
 git add backend/requirements.txt
 git add data/FAQ_PLANETE3.json
@@ -52,7 +53,7 @@ git status --short
 
 echo.
 echo --- Commit ---
-git commit -m "v10.8: FAQ_PLANETE3 + Curriculum CEB (7 PDFs, 258 entrees) + intelligence conversationnelle (memoire follow-ups, synonymes, fuzzy, cache, precision Q1/Q2, PLANETE 3 -> PLANETE, classe CI, no bold force CSS, normalisation niveaux, concept-match, intent programme)"
+git commit -m "v10.8 final: FAQ_PLANETE3 + Curriculum CEB + memoire conversationnelle + suggestions de relance + 5 couches anti-gras (marked override + CSS strict + backend agressif + stripBold renforce + SYSTEM_PROMPT exemples) + welcome screen + audit complet"
 
 echo.
 echo --- Push ---

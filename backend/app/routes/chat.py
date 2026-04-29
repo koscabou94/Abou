@@ -89,6 +89,10 @@ class ChatResponse(BaseModel):
         None,
         description="Options de clarification à afficher comme boutons cliquables (si besoin)"
     )
+    suggestions: Optional[list[str]] = Field(
+        default=None,
+        description="2-3 questions de relance contextuelles à proposer à l'utilisateur"
+    )
 
     class Config:
         json_schema_extra = {
@@ -200,6 +204,7 @@ async def send_message(
         response_time_ms=result.get("response_time_ms", 0),
         timestamp=result["timestamp"],
         clarification=clarification_data,
+        suggestions=result.get("suggestions") or None,
     )
 
 

@@ -78,13 +78,33 @@
             errorNetwork: "Connexion au serveur impossible. Vérifiez votre accès internet.",
             errorServer: "Désolé, une erreur technique est survenue. Veuillez réessayer.",
             quickQs: [
-                { text: "Donne-moi 3 exercices de maths niveau CM2" },
-                { text: "Exercices de remédiation en français pour la 6ème" },
-                { text: "C'est quoi PLANETE ?" },
-                { text: "Comment configurer l'environnement physique sur PLANETE ?" }
+                { text: "Donne-moi 3 exercices de maths CM2" },
+                { text: "Quel est le programme de français en CE1 ?" },
+                { text: "Comment se connecter à PLANETE ?" },
+                { text: "Fiche pédagogique de mathématiques pour le CE2" }
             ]
         }
     };
+
+    // === MARKED.JS HARDENING (defense ultime contre le gras) ===
+    // Override le renderer marked pour que MEME SI un **texte** ou
+    // *texte* arrive, il soit rendu en texte simple (pas <strong>/<em>).
+    // C'est la 5e barriere contre le gras (apres : SYSTEM_PROMPT,
+    // _clean_llm_response, stripBold, et CSS).
+    if (typeof marked !== "undefined" && marked.Renderer) {
+        const noBoldRenderer = new marked.Renderer();
+        // Ignorer completement le rendu strong/em : retourner juste le texte
+        noBoldRenderer.strong = (text) => {
+            // marked v4+ passe parfois un objet { text }
+            if (typeof text === "object" && text !== null && "text" in text) text = text.text;
+            return String(text);
+        };
+        noBoldRenderer.em = (text) => {
+            if (typeof text === "object" && text !== null && "text" in text) text = text.text;
+            return String(text);
+        };
+        marked.setOptions({ renderer: noBoldRenderer });
+    }
 
     // === INITIALIZATION ===
     function init() {
@@ -243,6 +263,10 @@
                 if (data.clarification && data.clarification.options && data.clarification.options.length > 0) {
                     showClarificationOptions(data.clarification.options, message);
                 }
+                // Suggestions de relance contextuelles (apparaissent sous la reponse)
+                if (data.suggestions && data.suggestions.length > 0) {
+                    showSuggestions(data.suggestions);
+                }
                 addToHistory(message, data.response);
             } else {
                 const errorData = await response.json().catch(() => null);
@@ -392,6 +416,54 @@
         scrollToBottom();
     }
 
+    /**
+     * Affiche les suggestions de relance contextuelles sous le dernier
+     * message du bot (boutons cliquables pour des questions de relance).
+     */
+    function showSuggestions(suggestions) {
+        if (!suggestions || suggestions.length === 0) return;
+        const allBotMessages = document.querySelectorAll(".message.bot");
+        const lastBotMessage = allBotMessages[allBotMessages.length - 1];
+        if (!lastBotMessage) return;
+        const msgContent = lastBotMessage.querySelector(".msg-content");
+        if (!msgContent) return;
+
+        // Eviter doublon
+        const old = msgContent.querySelector(".suggestion-chips");
+        if (old) old.remove();
+
+        const wrap = document.createElement("div");
+        wrap.className = "suggestion-chips";
+        const label = document.createElement("div");
+        label.className = "suggestion-label";
+        label.textContent = "Vous pouvez aussi demander :";
+        wrap.appendChild(label);
+
+        const row = document.createElement("div");
+        row.className = "suggestion-row";
+        suggestions.forEach(text => {
+            const chip = document.createElement("button");
+            chip.className = "suggestion-chip";
+            chip.textContent = text;
+            chip.onclick = () => {
+                // Disable et envoyer la question
+                wrap.querySelectorAll(".suggestion-chip").forEach(b => b.disabled = true);
+                sendMessage(text);
+            };
+            row.appendChild(chip);
+        });
+        wrap.appendChild(row);
+
+        // Inserer avant les actions (copier/PDF) si elles existent
+        const actions = msgContent.querySelector(".msg-actions");
+        if (actions) {
+            msgContent.insertBefore(wrap, actions);
+        } else {
+            msgContent.appendChild(wrap);
+        }
+        scrollToBottom();
+    }
+
     // Envoie un message de clarification : affiche displayText dans le chat, envoie apiMessage à l'API
     async function sendClarifiedMessage(displayText, apiMessage) {
         if (state.isTyping) return;
@@ -425,6 +497,10 @@
                 // Nouvelle clarification ? Passer apiMessage comme nouveau contexte
                 if (data.clarification && data.clarification.options && data.clarification.options.length > 0) {
                     showClarificationOptions(data.clarification.options, apiMessage);
+                }
+                // Suggestions de relance
+                if (data.suggestions && data.suggestions.length > 0) {
+                    showSuggestions(data.suggestions);
                 }
                 addToHistory(displayText, data.response);
             } else {
@@ -584,25 +660,29 @@
     // === UTILS ===
 
     /**
-     * Supprime TOUT le gras (Markdown + HTML) avant le rendu.
-     * Règle absolue : zéro gras dans les réponses du bot.
-     * Cumulé avec _clean_llm_response (backend) et le CSS qui force
-     * font-weight:inherit sur <strong>, ce qui forme une triple barrière.
+     * Supprime TOUT le gras et italique (Markdown + HTML) avant le rendu.
+     * Defense en couche frontend (cumulee avec backend, CSS, marked override).
+     * Triple passe pour gerer les imbrications.
      */
     function stripBold(text) {
         if (!text) return text;
-        // 1. Gras+italique ***...*** (le plus large d'abord)
-        text = text.replace(/\*\*\*([^*]+?)\*\*\*/gs, '$1');
-        // 2. Gras **...** (avec ou sans espaces intérieurs)
-        text = text.replace(/\*\*\s*([\s\S]+?)\s*\*\*/g, '$1');
-        // 3. ** orphelins restants
-        text = text.replace(/\*\*/g, '');
-        // 4. Gras __...__ (format alternatif Markdown)
-        text = text.replace(/__\s*([\s\S]+?)\s*__/g, '$1');
-        // 5. Tags HTML <strong> / <b> qui pourraient venir directement
-        //    du LLM s'il décide de retourner du HTML (rare mais possible)
-        text = text.replace(/<\/?strong[^>]*>/gi, '');
-        text = text.replace(/<\/?b\s*[^>]*>/gi, '');
+        for (let i = 0; i < 3; i++) {
+            // 1. Gras+italique ***...***
+            text = text.replace(/\*\*\*([^*]+?)\*\*\*/gs, '$1');
+            // 2. Gras **...** strict
+            text = text.replace(/\*\*\s*([^*]+?)\s*\*\*/g, '$1');
+            // 3. Gras **...** plus permissif (multilignes)
+            text = text.replace(/\*\*\s*([\s\S]+?)\s*\*\*/g, '$1');
+            // 4. Gras __...__
+            text = text.replace(/__\s*([\s\S]+?)\s*__/g, '$1');
+            // 5. ** orphelins
+            text = text.replace(/\*\*/g, '');
+            // 6. Italique *texte* (eviter conversion en gras visuel),
+            //    en preservant les * de debut de ligne (listes Markdown)
+            text = text.replace(/(^|[^\n*])\*([^\s*][^*\n]*?[^\s*])\*/g, '$1$2');
+            // 7. HTML <strong>/<b>/<em>/<i>
+            text = text.replace(/<\/?(strong|b|em|i)\s*[^>]*>/gi, '');
+        }
         return text;
     }
 

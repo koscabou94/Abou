@@ -673,22 +673,35 @@ h1, h2, h3, h4 {
 .msg-bubble *:last-child { margin-bottom: 0; }
 
 /* RÈGLE ABSOLUE : zéro gras dans les messages du bot.
-   Triple ceinture : on force font-weight normal sur TOUT ce qui est
-   dans .msg-bubble, y compris strong, b, h1-h3, em, etc.
-   On garde la couleur (color: inherit) pour éviter de tout désaturer. */
+   Quintuple ceinture : on force font-weight normal sur TOUT ce qui est
+   dans .msg-bubble. Les éléments strong/b/em conservent leur couleur
+   héritée — pas de couleur d'accent qui les ferait ressortir comme du gras. */
 .msg-bubble,
 .msg-bubble *,
 .msg-bubble strong,
-.msg-bubble b {
+.msg-bubble b,
+.msg-bubble em,
+.msg-bubble i {
     font-weight: 400 !important;
+    font-style: normal !important;
 }
 
-/* Exception : on autorise font-weight 500 (semi-bold) sur les titres
-   pour qu'ils restent visuellement distinctifs SANS être gras. */
+/* Forcer la couleur héritée sur strong/b/em pour qu'ils ne ressortent
+   pas en couleur d'accent (cela donnerait l'impression de gras visuel). */
+.msg-bubble strong,
+.msg-bubble b,
+.msg-bubble em,
+.msg-bubble i {
+    color: inherit !important;
+}
+
+/* Exception : titres uniquement (h1/h2/h3) avec un poids un peu plus marqué
+   et la couleur de l'accent SIMEN, pour rester visuellement distincts. */
 .msg-bubble h1,
 .msg-bubble h2,
 .msg-bubble h3 {
     font-weight: 500 !important;
+    color: var(--color-simen) !important;
 }
 
 .msg-bubble ul, .msg-bubble ol {
@@ -1163,6 +1176,51 @@ h1, h2, h3, h4 {
 .clarification-btn:disabled {
     cursor: not-allowed;
     opacity: 0.5;
+}
+
+/* === Suggestions de relance contextuelles ===
+   Affichees sous chaque reponse du bot pour proposer des questions
+   de suivi pertinentes. Style discret (chips arrondies). */
+.suggestion-chips {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 16px 0 4px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--color-border);
+}
+.suggestion-label {
+    font-size: 0.78rem;
+    color: var(--color-muted);
+    margin-bottom: 2px;
+}
+.suggestion-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.suggestion-chip {
+    background: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-platinum);
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 0.82rem;
+    font-weight: 400 !important;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    text-align: left;
+}
+.suggestion-chip:hover:not(:disabled) {
+    background: var(--color-simen-bg);
+    border-color: var(--color-simen);
+    color: var(--color-simen);
+}
+.suggestion-chip:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
 }
 
 /* Animation du loader PDF */

@@ -167,6 +167,70 @@ class ChatService:
         return hashlib.md5(f"{intent}|{norm}".encode("utf-8")).hexdigest()
 
     # ---------------------------------------------------------
+    # SUGGESTIONS DE RELANCE CONTEXTUELLES
+    # ---------------------------------------------------------
+    def _build_suggestions(
+        self,
+        intent: str,
+        niveau: Optional[str],
+        matiere: Optional[str],
+        source: str,
+    ) -> list[str]:
+        """Génère 2-3 suggestions de questions de relance pertinentes
+        selon l'intent et le contexte. Affichées comme boutons sous la
+        réponse dans le frontend. Aide les utilisateurs à explorer le bot."""
+
+        # Aprés une question PLANETE FAQ : proposer les sujets connexes
+        if source == "planete_faq":
+            return [
+                "Comment configurer un bâtiment ?",
+                "Comment importer le personnel ?",
+                "Comment justifier une absence ?",
+            ]
+
+        # Après une question programme : proposer matière ou exercices
+        if intent == "programme" and niveau:
+            if matiere:
+                return [
+                    f"Donne-moi 3 exercices de {matiere} pour le {niveau}",
+                    f"Fiche pédagogique de {matiere} pour le {niveau}",
+                    f"Quels sont les paliers en {niveau} ?",
+                ]
+            return [
+                f"En français",
+                f"En mathématiques",
+                f"Donne-moi des exercices pour le {niveau}",
+            ]
+
+        # Après une demande d'exercices : proposer corrigés ou variations
+        if intent == "exercice" and niveau:
+            base = [f"Donne-moi les corrigés"]
+            if matiere:
+                base.append(f"D'autres exercices de {matiere} pour le {niveau}")
+                base.append(f"Fiche pédagogique de {matiere} pour le {niveau}")
+            else:
+                base.append(f"D'autres exercices pour le {niveau}")
+            return base[:3]
+
+        # Après une fiche : proposer exercices
+        if intent == "fiche" and niveau and matiere:
+            return [
+                f"Donne-moi 3 exercices de {matiere} pour le {niveau}",
+                f"Quel est le programme de {matiere} en {niveau} ?",
+                f"Évaluation de {matiere} {niveau}",
+            ]
+
+        # Suggestions générales par défaut
+        if intent in ("salutation", "general", "error"):
+            return [
+                "Quel est le programme de maths en CM2 ?",
+                "Comment se connecter à PLANETE ?",
+                "Donne-moi 3 exercices pour le CE1",
+            ]
+
+        return []
+
+    # ---------------------------------------------------------
     # RESOLUTION DES FOLLOW-UPS (mémoire conversationnelle)
     # ---------------------------------------------------------
     def _resolve_followup(
@@ -318,27 +382,82 @@ class ChatService:
             "je veux des exercices", "fais moi des exercices",
             "génère des exercices", "genere des exercices",
             "propose des exercices", "donne des exercices",
+            "oui des exercices", "oui exercices", "oui je veux des exercices",
         ]
         if (
             last_intent == "programme"
-            and last_niveau
             and any(e in msg_lower for e in EXERCISE_REQUEST_SHORT)
-            and word_count <= 8
+            and word_count <= 10
         ):
-            mat_part = f" de {last_matiere}" if last_matiere else ""
-            reformulated = (
-                f"Donne-moi 3 exercices{mat_part} pour le {last_niveau}"
-            )
-            logger.info(
-                "Follow-up résolu (exercices après programme)",
-                reformulated=reformulated,
-            )
-            return reformulated, "exercice"
+            # Cherche aussi une matière dans le message ("oui des exercices en maths")
+            from app.services.curriculum_service import detect_matiere as _dmat
+            mat_in_msg = _dmat(msg_lower)
+            target_mat = mat_in_msg or last_matiere
+
+            if last_niveau:
+                # On a niveau + matière (ou niveau seul) → reformulation directe
+                mat_part = f" de {target_mat}" if target_mat else ""
+                reformulated = (
+                    f"Donne-moi 3 exercices{mat_part} pour le {last_niveau}"
+                )
+                logger.info(
+                    "Follow-up résolu (exercices après programme)",
+                    reformulated=reformulated,
+                )
+                return reformulated, "exercice"
+            else:
+                # Pas de niveau précis → forcer la clarification niveau
+                # (le pipeline déclenchera _check_needs_clarification)
+                mat_part = f" de {target_mat}" if target_mat else ""
+                reformulated = f"Donne-moi 3 exercices{mat_part}"
+                logger.info(
+                    "Follow-up sans niveau → reformule pour déclencher clarification",
+                    reformulated=reformulated,
+                )
+                return reformulated, "exercice"
 
         # ── Pattern 4 : "et avec corrigé" après exercices ──
         if last_intent == "exercice" and "corrig" in msg_lower and word_count <= 5:
             # Le LLM gère déjà cela via l'historique de conversation
             return message, "exercice"
+
+        # ── Pattern 4-bis : "celui du X" / "celle de X" / "et pour le X" ──
+        # L'utilisateur veut hériter de l'intent précédent en changeant juste
+        # le niveau ou la matière. Détecte un niveau dans le message court.
+        from app.services.curriculum_service import detect_niveau as _det_niv
+        from app.services.curriculum_service import detect_matiere as _det_mat
+        ELLIPSIS_MARKERS = [
+            "celui du", "celui de", "celle du", "celle de",
+            "celui pour", "celle pour", "et pour", "et le", "et la",
+            "pareil pour", "même chose pour", "et celui",
+        ]
+        has_ellipsis = any(m in msg_lower for m in ELLIPSIS_MARKERS)
+        new_niveau_in_msg = _det_niv(msg_lower)
+
+        if (has_ellipsis or new_niveau_in_msg) and word_count <= 8:
+            # Hériter de l'intent précédent et utiliser le nouveau niveau/matière
+            target_niveau = new_niveau_in_msg or last_niveau
+            target_matiere = _det_mat(msg_lower) or last_matiere
+            if last_intent == "programme" and target_niveau:
+                mat_part = f" en {target_matiere}" if target_matiere else ""
+                reformulated = (
+                    f"Quel est le programme{mat_part} pour le {target_niveau} ?"
+                )
+                logger.info(
+                    "Follow-up résolu (ellipse 'celui du X' programme)",
+                    reformulated=reformulated,
+                )
+                return reformulated, "programme"
+            if last_intent == "exercice" and target_niveau:
+                mat_part = f" de {target_matiere}" if target_matiere else ""
+                reformulated = (
+                    f"Donne-moi 3 exercices{mat_part} pour le {target_niveau}"
+                )
+                logger.info(
+                    "Follow-up résolu (ellipse 'celui du X' exercice)",
+                    reformulated=reformulated,
+                )
+                return reformulated, "exercice"
 
         # ── Pattern 5 : niveau seul après matière seule ──
         # Ex: utilisateur a dit "exercices français" → bot a demandé niveau →
@@ -477,17 +596,21 @@ class ChatService:
                 "officiel sénégalais", "officiel senegalais",
                 "ministère de l'éducation", "ministere de l education",
             ]
-            _exercise_markers_strong = [
-                "donne-moi", "donne moi", "génère", "genere",
-                "je veux des exercices", "je voudrais des exercices",
-                "fais-moi", "fais moi", "propose-moi", "propose moi",
-                "fournis-moi", "donnez-moi", "envoie-moi",
-            ]
+            # Mot "exercice"/"exercices" présent → vraie demande d'exercices
+            _has_exercice_word = any(
+                w in fr_message.lower()
+                for w in ["exercice", "exercices", "exo", "exos", "devoir", "devoirs"]
+            )
             _msg_lower = fr_message.lower()
             _has_curriculum_marker = any(m in _msg_lower for m in _curriculum_markers)
-            _has_strong_exercise_request = any(m in _msg_lower for m in _exercise_markers_strong)
 
-            if _has_curriculum_marker and not _has_strong_exercise_request:
+            # RÈGLE :
+            # - "donne moi le curriculum / programme / objectifs" → programme
+            #   (même avec "donne moi", car le mot 'curriculum' DOMINE)
+            # - "donne moi des exercices basés sur le programme" → exercices
+            #   (présence explicite du mot exercice → vraie demande d'exos)
+            # → curriculum_marker l'emporte SAUF si "exercice" est explicitement mentionné
+            if _has_curriculum_marker and not _has_exercice_word:
                 if intent != "programme":
                     logger.info(
                         "Intent forcé à 'programme' (curriculum-query détecté)",
@@ -600,6 +723,11 @@ class ChatService:
                         score=round(planete_match["score"], 3),
                         response_time_ms=response_time_ms,
                     )
+                    # Suggestions PLANETE basees sur la categorie
+                    suggestions = self._build_suggestions(
+                        intent="planete", niveau=None, matiere=None,
+                        source="planete_faq",
+                    )
                     return {
                         "response": final_response,
                         "session_id": session_id,
@@ -610,6 +738,7 @@ class ChatService:
                         "response_time_ms": response_time_ms,
                         "timestamp": datetime.utcnow().isoformat(),
                         "planete_category": planete_match.get("category"),
+                        "suggestions": suggestions,
                     }
                 else:
                     logger.debug(
@@ -1013,6 +1142,14 @@ class ChatService:
                 response_time_ms=response_time_ms
             )
 
+            # Suggestions de relance contextuelles (2-3 questions)
+            suggestions = self._build_suggestions(
+                intent=intent,
+                niveau=detected_niv_save,
+                matiere=detected_mat_save,
+                source=source,
+            )
+
             return {
                 "response": final_response,
                 "session_id": session_id,
@@ -1022,6 +1159,7 @@ class ChatService:
                 "source": source,
                 "response_time_ms": response_time_ms,
                 "timestamp": datetime.utcnow().isoformat(),
+                "suggestions": suggestions,
             }
 
         except Exception as exc:

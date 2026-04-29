@@ -28,10 +28,14 @@ from app.services.planete_faq_service import (
 logger = structlog.get_logger(__name__)
 
 
-# Niveaux scolaires reconnus
+# Niveaux scolaires reconnus (élémentaire + collège + lycée)
 NIVEAUX_VALIDES = {
     "ci", "cp", "ce1", "ce2", "cm1", "cm2",
     "prescolaire", "préscolaire",
+    "6eme", "6ème", "5eme", "5ème", "4eme", "4ème", "3eme", "3ème",
+    "seconde", "2nde",
+    "premiere", "première", "1ere", "1ère",
+    "terminale",
 }
 
 # Matieres reconnues (alias normalisés)
@@ -67,12 +71,30 @@ MATIERES_ALIAS = {
 
 
 def detect_niveau(text: str) -> Optional[str]:
-    """Detecte le niveau scolaire dans un texte."""
+    """Detecte le niveau scolaire dans un texte (du préscolaire à Terminale)."""
     t = normalize_text(text)
-    # Niveaux specifiques d'abord (pour eviter "ce" matchant "ce1")
-    for niv in ["prescolaire", "ci", "cp", "ce1", "ce2", "cm1", "cm2"]:
-        if re.search(rf"\b{re.escape(niv)}\b", t):
-            return niv.upper() if niv != "prescolaire" else "Préscolaire"
+
+    # Mappings : pattern dans le texte normalisé → forme canonique de retour
+    # Ordre important : préfixes plus longs avant les courts (ex: "ce1" avant "ce")
+    NIVEAU_MAPS = [
+        ("ci", "CI"),
+        ("cp", "CP"),
+        ("ce1", "CE1"), ("ce2", "CE2"),
+        ("cm1", "CM1"), ("cm2", "CM2"),
+        ("prescolaire", "Préscolaire"),
+        # Collège — plusieurs orthographes possibles après normalize
+        ("6eme", "6ème"), ("6e", "6ème"),
+        ("5eme", "5ème"), ("5e", "5ème"),
+        ("4eme", "4ème"), ("4e", "4ème"),
+        ("3eme", "3ème"), ("3e", "3ème"),
+        # Lycée
+        ("seconde", "2nde"), ("2nde", "2nde"),
+        ("premiere", "1ère"), ("1ere", "1ère"),
+        ("terminale", "Terminale"),
+    ]
+    for token, canonical in NIVEAU_MAPS:
+        if re.search(rf"\b{re.escape(token)}\b", t):
+            return canonical
     return None
 
 

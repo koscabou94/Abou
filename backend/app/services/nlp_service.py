@@ -22,11 +22,22 @@ class NLPService:
 
 RÈGLE ABSOLUE DE FORMATAGE (priorité maximale) :
 - N'utilise JAMAIS le gras nulle part. ZÉRO gras dans tes réponses.
-- Pas de `**texte**`, pas de `__texte__`, pas de `<strong>`, pas de `<b>`.
+- Pas de `**texte**`, pas de `__texte__`, pas de `*texte*` (italique), pas de `<strong>`, pas de `<b>`, pas de `<em>`, pas de `<i>`.
 - Pas de gras dans les titres, ni dans les listes, ni dans les fiches, ni dans les exercices, ni dans les énumérations, ni nulle part.
 - Utilise uniquement ### pour les titres de sections (sans aucun gras dans le titre).
 - Si tu veux mettre en valeur un terme, utilise simplement une nouvelle ligne ou une liste, JAMAIS le gras.
 - Pour les noms d'éléments dans une liste (étape 1, étape 2…), écris le nom en texte normal suivi de deux points.
+
+EXEMPLES À NE JAMAIS PRODUIRE :
+  ❌ **Exercice 1 — Calcul** → BANNI
+  ❌ **Lisez le texte suivant** → BANNI
+  ❌ **Aminata** achète des tomates → BANNI
+  ❌ *Aminata* achète des tomates → BANNI
+
+EXEMPLES CORRECTS :
+  ✓ ### Exercice 1 — Calcul
+  ✓ Lisez le texte suivant :
+  ✓ Aminata achète des tomates et des oignons.
 
 TON IDENTITÉ :
 - Tu t'appelles EduBot.
@@ -445,18 +456,36 @@ RÈGLE ABSOLUE : Ne jamais refuser de générer des exercices ou des fiches. Ne 
         for tag in ["<<SYS>>", "<</SYS>>", "[INST]", "[/INST]", "</s>", "<s>"]:
             text = text.replace(tag, "")
 
-        # Supprimer TOUT le gras et l'italique — ordre important : *** avant ** avant *
-        # 1. Gras+italique ***...***
-        text = re.sub(r'\*\*\*(.+?)\*\*\*', r'\1', text, flags=re.DOTALL)
-        # 2. Gras **...** (avec ou sans espace intérieur)
-        text = re.sub(r'\*\*\s*(.+?)\s*\*\*', r'\1', text, flags=re.DOTALL)
-        # 3. Gras __...__ (markdown alternatif)
-        text = re.sub(r'__\s*(.+?)\s*__', r'\1', text, flags=re.DOTALL)
-        # 4. ** seuls orphelins (ne faisant pas partie d'une paire)
-        text = re.sub(r'\*\*', '', text)
-        # 5. Tags HTML <strong> et <b> au cas où le LLM en produirait
-        text = re.sub(r'</?strong[^>]*>', '', text, flags=re.IGNORECASE)
-        text = re.sub(r'</?b\s*[^>]*>', '', text, flags=re.IGNORECASE)
+        # ─────────────────────────────────────────────────────────
+        # SUPPRESSION DU GRAS — defense en profondeur (couche backend)
+        # On supprime TOUT en cascade, en faisant plusieurs passes pour
+        # gerer les cas imbriques (ex: "**texte avec **gras** dedans**").
+        # ─────────────────────────────────────────────────────────
+        for _ in range(3):  # 3 passes pour gerer les imbrications
+            # 1. Gras+italique ***...*** (le plus large d'abord)
+            text = re.sub(r'\*\*\*([^*]+?)\*\*\*', r'\1', text, flags=re.DOTALL)
+            # 2. Gras **...** (greedy minimal)
+            text = re.sub(r'\*\*\s*([^*]+?)\s*\*\*', r'\1', text, flags=re.DOTALL)
+            # 3. Gras **...** avec contenu plus complexe (cross-line)
+            text = re.sub(r'\*\*\s*(.+?)\s*\*\*', r'\1', text, flags=re.DOTALL)
+            # 4. Gras __...__ (markdown alternatif)
+            text = re.sub(r'__\s*(.+?)\s*__', r'\1', text, flags=re.DOTALL)
+            # 5. ** seuls orphelins (ne faisant pas partie d'une paire)
+            text = re.sub(r'\*\*', '', text)
+            # 6. Italique *texte* simple (eviter le gras visuel)
+            #    Note : conserver les * de listes Markdown (debut de ligne)
+            text = re.sub(r'(?<!\n)\*([^\s*][^*\n]*?[^\s*])\*', r'\1', text)
+            # 7. Tags HTML <strong> et <b>
+            text = re.sub(r'</?strong[^>]*>', '', text, flags=re.IGNORECASE)
+            text = re.sub(r'</?b\s*[^>]*>', '', text, flags=re.IGNORECASE)
+            # 8. Tags HTML <em> et <i>
+            text = re.sub(r'</?em[^>]*>', '', text, flags=re.IGNORECASE)
+            text = re.sub(r'</?i\s*[^>]*>', '', text, flags=re.IGNORECASE)
+
+        # PASSE FINALE NUCLEAIRE : tout reste de 2+ asterisques consecutifs
+        # est un orphelin → supprime. On preserve les * solitaires en debut
+        # de ligne (listes Markdown) pour ne pas casser la mise en forme.
+        text = re.sub(r'\*{2,}', '', text)
 
         lines = [l for l in text.split("\n") if l.strip()]
         text = "\n".join(lines).strip()

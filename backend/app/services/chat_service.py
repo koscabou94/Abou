@@ -265,6 +265,39 @@ class ChatService:
         msg_lower = message.lower().strip()
         word_count = len(msg_lower.split())
 
+        # ── GARDE-FOUS : ne PAS reformuler si le message est ──
+        # ─────────────────────────────────────────────────────
+        # 1. Une réponse à une clarification (contient " — " injecté par
+        #    le frontend quand l'utilisateur clique sur un bouton)
+        if " — " in message or " - " in message:
+            logger.debug("Skip résolveur : réponse à clarification (contient — )")
+            return message, None
+
+        # 2. La dernière réponse était une clarification (boutons)
+        #    Le message actuel est une RÉPONSE, pas un follow-up à reformuler
+        if last_resp_type == "clarification":
+            logger.debug("Skip résolveur : dernière réponse était une clarification")
+            return message, None
+
+        # 3. Une demande complète qui commence par un verbe d'action explicite
+        #    (avec >3 mots → c'est clairement une nouvelle question, pas un
+        #    follow-up court)
+        NEW_REQUEST_STARTERS = [
+            "donne moi", "donne-moi", "donnez moi", "donnez-moi",
+            "fais moi", "fais-moi", "faites moi", "faites-moi",
+            "génère", "genere", "produis", "propose moi", "propose-moi",
+            "fournis moi", "fournis-moi", "envoie moi", "envoie-moi",
+            "j'aimerais", "je voudrais", "je veux",
+            "peux-tu", "peux tu", "pouvez-vous", "pouvez vous",
+        ]
+        is_new_request = any(msg_lower.startswith(s) for s in NEW_REQUEST_STARTERS)
+        if is_new_request and word_count > 3:
+            logger.debug(
+                "Skip résolveur : nouvelle demande complète",
+                msg=message[:60],
+            )
+            return message, None
+
         # Trop long pour être un follow-up court (probablement nouvelle question)
         if word_count > 7:
             return message, None
@@ -627,6 +660,14 @@ class ChatService:
             if intent == "exercice":
                 clarification = self._check_needs_clarification(fr_message, intent)
                 if clarification:
+                    # Tracker que la dernière réponse était une clarification
+                    # → le résolveur de follow-up saura que le PROCHAIN message
+                    # est une RÉPONSE, pas un follow-up à reformuler
+                    self._update_session_state(
+                        session_id,
+                        intent=intent,
+                        response_type="clarification",
+                    )
                     response_time_ms = int((time.time() - start_time) * 1000)
                     return {
                         "response": clarification["message"],
@@ -748,6 +789,12 @@ class ChatService:
             # === CHEMIN RAPIDE : Clarification exercice ===
             clarification = self._check_needs_clarification(fr_message, intent)
             if clarification:
+                # Tracker que la dernière réponse était une clarification
+                self._update_session_state(
+                    session_id,
+                    intent=intent,
+                    response_type="clarification",
+                )
                 response_time_ms = int((time.time() - start_time) * 1000)
                 return {
                     "response": clarification["message"],
@@ -988,6 +1035,52 @@ class ChatService:
             else:
                 # === ÉTAPE 5 : Récupération de l'historique de conversation ===
                 conversation_history = await self._get_conversation_history(session_id, db)
+
+                # === GARDE-FOU FINAL : exercice sans niveau → forcer clarification ===
+                # Au cas où le résolveur de follow-up et _check_needs_clarification
+                # auraient laissé passer une demande d'exercice sans niveau
+                # (cela arrive quand le LLM générerait pour CI par défaut),
+                # on intercepte ici une dernière fois.
+                if intent == "exercice":
+                    niv_in_msg = detect_niveau(fr_message)
+                    # Verifier aussi dans l'historique recent (3 derniers messages)
+                    niv_in_history = None
+                    for h in (conversation_history or [])[-6:]:
+                        if h.get("role") == "user":
+                            niv_in_history = detect_niveau(h.get("content", ""))
+                            if niv_in_history:
+                                break
+                    if not niv_in_msg and not niv_in_history:
+                        logger.info(
+                            "Garde-fou exercice : aucun niveau détecté → clarification forcée",
+                            message=fr_message[:60],
+                        )
+                        self._update_session_state(
+                            session_id,
+                            intent=intent,
+                            response_type="clarification",
+                        )
+                        response_time_ms = int((time.time() - start_time) * 1000)
+                        return {
+                            "response": (
+                                "Pour vous proposer des exercices parfaitement adaptés, "
+                                "j'ai besoin de connaître le niveau scolaire. Quel est le niveau ?"
+                            ),
+                            "clarification": {
+                                "options": [
+                                    "CI", "CP", "CE1", "CE2", "CM1", "CM2",
+                                    "6ème", "5ème", "4ème", "3ème",
+                                    "2nde", "1ère", "Terminale",
+                                ],
+                            },
+                            "session_id": session_id,
+                            "language": detected_lang,
+                            "intent": intent,
+                            "confidence": confidence,
+                            "source": "clarification",
+                            "response_time_ms": response_time_ms,
+                            "timestamp": datetime.utcnow().isoformat(),
+                        }
 
                 # === ÉTAPE 5b : Recherche dans la base de connaissances ===
                 # Pour l'intent "exercice", on bypasse aussi le KB :

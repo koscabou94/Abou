@@ -24,8 +24,6 @@ from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 import structlog
-from jose import jwt, JWTError
-from passlib.context import CryptContext
 
 from app.config import settings
 
@@ -55,7 +53,22 @@ EMAIL_REGEX = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
 PHONE_REGEX = re.compile(r"^\+?\d{8,15}$")
 
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# Initialisation paresseuse de passlib pour éviter qu'un crash au boot
+# (incompatibilité bcrypt/passlib sur certains environnements) ne casse
+# tout le module d'auth.
+_PWD_CONTEXT = None
+
+
+def _get_pwd_context():
+    global _PWD_CONTEXT
+    if _PWD_CONTEXT is None:
+        try:
+            from passlib.context import CryptContext
+            _PWD_CONTEXT = CryptContext(schemes=["bcrypt"], deprecated="auto")
+        except Exception as exc:
+            logger.error("Échec init passlib/bcrypt", error=str(exc))
+            raise
+    return _PWD_CONTEXT
 
 
 # ─────────────────────────────────────────────────────────────────
@@ -160,7 +173,11 @@ def normalize_identifier(method: str, identifier: str) -> str:
 
 def hash_password(password: str) -> str:
     """Hash bcrypt d'un mot de passe."""
-    return pwd_context.hash(password)
+    try:
+        return _get_pwd_context().hash(password)
+    except Exception as exc:
+        logger.error("Échec hash_password", error=str(exc))
+        raise
 
 
 def verify_password(plain: str, hashed: str) -> bool:
@@ -168,8 +185,9 @@ def verify_password(plain: str, hashed: str) -> bool:
     if not plain or not hashed:
         return False
     try:
-        return pwd_context.verify(plain, hashed)
-    except Exception:
+        return _get_pwd_context().verify(plain, hashed)
+    except Exception as exc:
+        logger.warning("Échec verify_password", error=str(exc))
         return False
 
 
@@ -228,6 +246,7 @@ def verify_otp(identifier: str, code: str) -> bool:
 
 def create_access_token(user_id: int, profile_type: Optional[str] = None) -> str:
     """Crée un JWT signé pour un user_id."""
+    from jose import jwt
     expire = datetime.now(timezone.utc) + timedelta(days=JWT_EXPIRE_DAYS)
     payload = {
         "sub": str(user_id),
@@ -243,10 +262,11 @@ def decode_access_token(token: str) -> Optional[int]:
     if not token:
         return None
     try:
+        from jose import jwt, JWTError
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[JWT_ALGORITHM])
         sub = payload.get("sub")
         return int(sub) if sub else None
-    except (JWTError, ValueError) as exc:
+    except Exception as exc:
         logger.debug("JWT invalide", error=str(exc))
         return None
 

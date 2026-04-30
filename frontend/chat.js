@@ -210,10 +210,16 @@
         // Garder l'affichage court (ce que l'utilisateur a tapé/cliqué)
         const userDisplayText = message;
 
-        // Si une clarification est en attente, enrichir le message ENVOYÉ À L'API avec le contexte complet
-        // L'affichage dans le chat reste court (ex: "CM2" ou "Mathématiques")
+        // Si une clarification est en attente, on enrichit le message envoyé à l'API
+        // UNIQUEMENT si la saisie ressemble à une réponse courte de clarification
+        // (≤ 3 mots, ex: "CM2", "Mathématiques", "Anglais"). Sinon l'utilisateur
+        // a abandonné la clarification pour poser une nouvelle question : on efface.
         if (state.pendingClarificationContext && message) {
-            message = state.pendingClarificationContext + " — " + message;
+            const wordCount = message.trim().split(/\s+/).length;
+            if (wordCount <= 3) {
+                message = state.pendingClarificationContext + " — " + message;
+            }
+            // Dans tous les cas on efface : la clarification est consommée ou abandonnée
             state.pendingClarificationContext = null;
         }
 
@@ -257,7 +263,16 @@
 
             if (response.ok) {
                 const data = await response.json();
-                await appendBotMessageStreaming(data.response);
+                // Tagger le bubble avec session+source pour le feedback
+                window._lastBotResponse = {
+                    sessionId: state.currentSessionId,
+                    source: data.source,
+                    intent: data.intent,
+                    question: message,
+                    response: data.response,
+                    timestamp: data.timestamp,
+                };
+                await appendBotMessageStreaming(data.response, data.source);
                 // Si le serveur renvoie des options de clarification, les afficher
                 // On passe `message` (le message complet envoyé à l'API) comme contexte capturé
                 if (data.clarification && data.clarification.options && data.clarification.options.length > 0) {
@@ -309,7 +324,27 @@
         if (window.lucide) lucide.createIcons();
     }
 
-    async function appendBotMessageStreaming(fullText) {
+    /**
+     * Mappe la source backend en libelle UI + classe CSS.
+     * Retourne null pour les sources qu'on n'affiche pas (salutation, error...).
+     */
+    function getSourceBadge(source) {
+        if (!source) return null;
+        const OFFICIAL = ["planete_faq", "faq", "knowledge"];
+        const AI = ["llm", "cache"];
+        if (OFFICIAL.includes(source)) {
+            const label = source === "planete_faq" ? "Source officielle PLANETE"
+                        : source === "faq"          ? "FAQ officielle"
+                        :                             "Base de connaissances";
+            return { label, cls: "badge-official", icon: "shield-check" };
+        }
+        if (AI.includes(source)) {
+            return { label: "Réponse générée par IA", cls: "badge-ai", icon: "sparkles" };
+        }
+        return null;  // greeting, clarification, error → pas de badge
+    }
+
+    async function appendBotMessageStreaming(fullText, source = null) {
         const msgNode = document.createElement("div");
         msgNode.className = "message-node bot";
 
@@ -325,7 +360,18 @@
 
         const actions = document.createElement("div");
         actions.className = "msg-actions";
+        const badgeInfo = getSourceBadge(source);
+        const badgeHTML = badgeInfo
+            ? `<span class="source-badge ${badgeInfo.cls}" title="Type de source"><i data-lucide="${badgeInfo.icon}" style="width:12px;height:12px"></i>${badgeInfo.label}</span>`
+            : "";
         actions.innerHTML = `
+            ${badgeHTML}
+            <button class="msg-action-btn feedback-btn feedback-up" title="Réponse utile" onclick="window.sendFeedback(this, 'up')">
+                <i data-lucide="thumbs-up" style="width:14px;height:14px"></i>
+            </button>
+            <button class="msg-action-btn feedback-btn feedback-down" title="Réponse à améliorer" onclick="window.sendFeedback(this, 'down')">
+                <i data-lucide="thumbs-down" style="width:14px;height:14px"></i>
+            </button>
             <button class="msg-action-btn copy-btn" title="Copier" onclick="window.copyMessage(this)">
                 <i data-lucide="copy" style="width:14px;height:14px"></i>
             </button>
@@ -340,13 +386,22 @@
         msgNode.appendChild(container);
         elements.messagesArea.appendChild(msgNode);
 
-        // Streaming effect
+        // Streaming effect — on ne re-parse le markdown que tous les
+        // PARSE_EVERY mots pour eviter d'appeler marked.parse() 800 fois
+        // sur une longue reponse (cause principale du jank ressenti).
+        // L'effet visuel reste fluide mais le CPU souffle.
         const words = fullText.split(" ");
+        const PARSE_EVERY = 6;
         let displayedText = "";
 
         for (let i = 0; i < words.length; i++) {
             displayedText += words[i] + " ";
-            bubble.innerHTML = marked.parse(stripBold(displayedText));
+            // Re-parse au pas N, ou sur fin de bloc structure (titres / separateurs)
+            const word = words[i];
+            const isBlockBoundary = word === "---" || word.startsWith("###") || word.endsWith("\n\n");
+            if (i % PARSE_EVERY === 0 || isBlockBoundary || i === words.length - 1) {
+                bubble.innerHTML = marked.parse(stripBold(displayedText));
+            }
             scrollToBottom();
             await new Promise(r => setTimeout(r, CONFIG.STREAM_SPEED));
         }
@@ -422,7 +477,8 @@
      */
     function showSuggestions(suggestions) {
         if (!suggestions || suggestions.length === 0) return;
-        const allBotMessages = document.querySelectorAll(".message.bot");
+        // Note : le sélecteur correct est .message-node.bot (cf. appendMessage / appendBotMessageStreaming)
+        const allBotMessages = document.querySelectorAll(".message-node.bot");
         const lastBotMessage = allBotMessages[allBotMessages.length - 1];
         if (!lastBotMessage) return;
         const msgContent = lastBotMessage.querySelector(".msg-content");
@@ -493,7 +549,15 @@
 
             if (response.ok) {
                 const data = await response.json();
-                await appendBotMessageStreaming(data.response);
+                window._lastBotResponse = {
+                    sessionId: state.currentSessionId,
+                    source: data.source,
+                    intent: data.intent,
+                    question: apiMessage,
+                    response: data.response,
+                    timestamp: data.timestamp,
+                };
+                await appendBotMessageStreaming(data.response, data.source);
                 // Nouvelle clarification ? Passer apiMessage comme nouveau contexte
                 if (data.clarification && data.clarification.options && data.clarification.options.length > 0) {
                     showClarificationOptions(data.clarification.options, apiMessage);
@@ -514,6 +578,65 @@
             elements.sendBtn.disabled = (elements.messageInput.value.trim().length === 0 && state.attachedFiles.length === 0);
         }
     }
+
+    // === FEEDBACK 👍 / 👎 ===
+    // Envoie un vote au backend pour piloter l'amelioration des reponses.
+    // Persiste aussi en localStorage pour que le vote reste actif au reload.
+    window.sendFeedback = async function (btn, vote) {
+        const actionsBar = btn.closest(".msg-actions");
+        if (!actionsBar) return;
+        // Eviter le double-vote sur la meme reponse
+        if (actionsBar.dataset.voted) return;
+        actionsBar.dataset.voted = vote;
+
+        // Marquer visuellement le bouton choisi + desactiver les deux
+        actionsBar.querySelectorAll(".feedback-btn").forEach(b => {
+            b.disabled = true;
+            b.classList.remove("active");
+        });
+        btn.classList.add("active");
+
+        // Recuperer le contexte de la derniere reponse bot
+        const ctx = window._lastBotResponse || {};
+        const bubble = btn.closest(".msg-content")?.querySelector(".msg-bubble");
+        const responseText = bubble ? (bubble.innerText || bubble.textContent) : ctx.response;
+
+        const payload = {
+            session_id: ctx.sessionId || state.currentSessionId,
+            vote,
+            intent: ctx.intent || null,
+            source: ctx.source || null,
+            question: ctx.question || null,
+            answer: (responseText || "").substring(0, 1000),
+        };
+
+        // Persister en local (pour suivi cote utilisateur)
+        try {
+            const localKey = "edubot_feedback";
+            const stored = JSON.parse(localStorage.getItem(localKey) || "[]");
+            stored.push({ ...payload, timestamp: new Date().toISOString() });
+            // Garder max 100 votes en local
+            localStorage.setItem(localKey, JSON.stringify(stored.slice(-100)));
+        } catch (_) { /* localStorage plein ou indisponible */ }
+
+        // Envoyer au backend (best-effort, non bloquant)
+        try {
+            await fetch(`${CONFIG.API_URL}/feedback`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+            });
+        } catch (_) { /* endpoint indisponible : le vote reste en local */ }
+
+        // Petit feedback visuel temporaire
+        const original = btn.innerHTML;
+        btn.innerHTML = '<i data-lucide="check" style="width:14px;height:14px"></i>';
+        if (window.lucide) lucide.createIcons();
+        setTimeout(() => {
+            btn.innerHTML = original;
+            if (window.lucide) lucide.createIcons();
+        }, 1500);
+    };
 
     // === COPY TO CLIPBOARD ===
     window.copyMessage = function (btn) {
@@ -660,29 +783,25 @@
     // === UTILS ===
 
     /**
-     * Supprime TOUT le gras et italique (Markdown + HTML) avant le rendu.
-     * Defense en couche frontend (cumulee avec backend, CSS, marked override).
-     * Triple passe pour gerer les imbrications.
+     * Supprime le gras et italique residuels (Markdown + HTML) avant le rendu.
+     * Defense en couche frontend : le backend a deja nettoye en profondeur,
+     * et marked.js override neutralise strong/em au rendu. Une seule passe
+     * suffit ici — c'est appele a chaque mot pendant le streaming.
      */
     function stripBold(text) {
         if (!text) return text;
-        for (let i = 0; i < 3; i++) {
-            // 1. Gras+italique ***...***
-            text = text.replace(/\*\*\*([^*]+?)\*\*\*/gs, '$1');
-            // 2. Gras **...** strict
-            text = text.replace(/\*\*\s*([^*]+?)\s*\*\*/g, '$1');
-            // 3. Gras **...** plus permissif (multilignes)
-            text = text.replace(/\*\*\s*([\s\S]+?)\s*\*\*/g, '$1');
-            // 4. Gras __...__
-            text = text.replace(/__\s*([\s\S]+?)\s*__/g, '$1');
-            // 5. ** orphelins
-            text = text.replace(/\*\*/g, '');
-            // 6. Italique *texte* (eviter conversion en gras visuel),
-            //    en preservant les * de debut de ligne (listes Markdown)
-            text = text.replace(/(^|[^\n*])\*([^\s*][^*\n]*?[^\s*])\*/g, '$1$2');
-            // 7. HTML <strong>/<b>/<em>/<i>
-            text = text.replace(/<\/?(strong|b|em|i)\s*[^>]*>/gi, '');
-        }
+        // Gras+italique ***...*** d'abord (le plus large)
+        text = text.replace(/\*\*\*([^*]+?)\*\*\*/gs, '$1');
+        // Gras **...** (multilignes)
+        text = text.replace(/\*\*\s*([\s\S]+?)\s*\*\*/g, '$1');
+        // Gras __...__
+        text = text.replace(/__\s*([\s\S]+?)\s*__/g, '$1');
+        // ** orphelins
+        text = text.replace(/\*\*/g, '');
+        // Italique *texte* (preserver les * de debut de ligne pour les listes)
+        text = text.replace(/(^|[^\n*])\*([^\s*][^*\n]*?[^\s*])\*/g, '$1$2');
+        // HTML <strong>/<b>/<em>/<i>
+        text = text.replace(/<\/?(strong|b|em|i)\s*[^>]*>/gi, '');
         return text;
     }
 

@@ -177,11 +177,16 @@ async def send_message(
         message_length=len(chat_request.message)
     )
 
+    # Récupérer l'utilisateur authentifié (None = invité)
+    from app.middleware.auth import get_current_user_optional
+    current_user = await get_current_user_optional(request, db)
+
     result = await chat_service.process_message(
         user_message=chat_request.message,
         session_id=chat_request.session_id,
         db=db,
         language_override=chat_request.language,
+        user=current_user,
     )
 
     # Vérifier si une erreur s'est produite

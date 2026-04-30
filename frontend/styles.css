@@ -620,15 +620,16 @@ h1, h2, h3, h4 {
 }
 [dir="rtl"] .user .msg-bubble { float: left; }
 
-/* === MESSAGE ACTIONS (copy button) === */
+/* === MESSAGE ACTIONS (copy / PDF / feedback) ===
+   La barre est toujours visible (badge "source" inclus). Seuls les
+   BOUTONS s'estompent par defaut et reapparaissent au hover du message. */
 .msg-actions {
     display: flex;
+    align-items: center;
     gap: 4px;
     margin-top: 6px;
-    opacity: 0;
-    transition: opacity 0.2s;
+    flex-wrap: wrap;
 }
-.message-node:hover .msg-actions { opacity: 1; }
 
 .msg-action-btn {
     background: none;
@@ -641,8 +642,49 @@ h1, h2, h3, h4 {
     align-items: center;
     justify-content: center;
     transition: var(--transition-elite);
+    opacity: 0;
 }
+.message-node:hover .msg-action-btn { opacity: 1; }
 .msg-action-btn:hover { color: var(--color-platinum); border-color: var(--color-border-active); background: var(--color-bg-hover); }
+/* Un bouton actif (vote envoye) reste visible meme sans hover */
+.msg-action-btn.active { opacity: 1; }
+
+/* Boutons feedback 👍 / 👎 — opacite reduite par defaut, pleine au hover */
+.feedback-btn.active { color: var(--color-simen); border-color: var(--color-simen-border); background: var(--color-simen-bg); }
+.feedback-btn:disabled { cursor: default; }
+.feedback-btn:disabled:not(.active) { opacity: 0.4; }
+.feedback-up.active { color: var(--color-simen); }
+.feedback-down.active { color: #E31B23; border-color: rgba(227, 27, 35, 0.25); background: rgba(227, 27, 35, 0.08); }
+
+/* Badge de source — indique si la reponse vient d'une FAQ officielle ou d'une IA */
+.source-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-right: auto;
+    padding: 2px 9px;
+    border-radius: 10px;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    line-height: 1.6;
+    border: 1px solid transparent;
+    user-select: none;
+}
+.source-badge i, .source-badge svg { width: 12px; height: 12px; }
+.badge-official {
+    color: var(--color-simen);
+    background: var(--color-simen-bg);
+    border-color: var(--color-simen-border);
+}
+.badge-ai {
+    color: var(--color-silver);
+    background: var(--color-bg-hover);
+    border-color: var(--color-border);
+}
+/* Le badge est legerement visible meme sans hover, pour assumer la transparence */
+.message-node .msg-actions .source-badge { opacity: 0.85; }
+.message-node:hover .msg-actions .source-badge { opacity: 1; }
 
 /* Bouton télécharger PDF */
 .download-pdf-btn {

@@ -20,7 +20,7 @@ from slowapi.errors import RateLimitExceeded
 from app.config import settings
 from app.database.connection import create_tables, check_db_connection
 from app.database.models import FAQ
-from app.routes import chat_router, faq_router, admin_router
+from app.routes import chat_router, faq_router, admin_router, feedback_router
 from app.services import (
     LanguageService,
     TranslationService,
@@ -338,6 +338,7 @@ async def log_requests(request: Request, call_next) -> Response:
 app.include_router(chat_router, prefix="/api")
 app.include_router(faq_router, prefix="/api")
 app.include_router(admin_router, prefix="/api")
+app.include_router(feedback_router, prefix="/api")
 
 
 # === Health check public ===

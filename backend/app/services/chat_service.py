@@ -162,9 +162,23 @@ class ChatService:
     # CACHE LLM
     # ---------------------------------------------------------
     @staticmethod
-    def _cache_key(message: str, intent: str) -> str:
+    def _cache_key(
+        message: str,
+        intent: str,
+        niveau: Optional[str] = None,
+        matiere: Optional[str] = None,
+    ) -> str:
+        """Construit la clé du cache LRU.
+
+        Inclut le niveau et la matière du contexte courant pour éviter
+        qu'une question de follow-up courte ("donne plus de détails",
+        "continue") serve la même réponse à deux sessions au contexte
+        différent (ex : un utilisateur sur le programme CM2, un autre
+        sur le programme CE1).
+        """
         norm = message.lower().strip()
-        return hashlib.md5(f"{intent}|{norm}".encode("utf-8")).hexdigest()
+        ctx = f"{(niveau or '').lower()}|{(matiere or '').lower()}"
+        return hashlib.md5(f"{intent}|{ctx}|{norm}".encode("utf-8")).hexdigest()
 
     # ---------------------------------------------------------
     # SUGGESTIONS DE RELANCE CONTEXTUELLES
@@ -506,6 +520,7 @@ class ChatService:
         session_id: str,
         db: AsyncSession,
         language_override: Optional[str] = None,
+        user: Optional[object] = None,
     ) -> dict:
         """
         Traite un message utilisateur et génère une réponse.
@@ -539,6 +554,30 @@ class ChatService:
             )
 
         message_clean = user_message.strip()[:1000]  # Limiter à 1000 caractères
+
+        # ─────────────────────────────────────────────────────────
+        # PERSONNALISATION (utilisateur authentifié)
+        # ─────────────────────────────────────────────────────────
+        # Si l'utilisateur est connecté avec un niveau connu (élève / parent),
+        # on l'injecte dans le message si absent. Cela évite la clarification
+        # niveau pour ces utilisateurs et oriente directement la génération.
+        user_profile = None
+        user_level_default = None
+        if user is not None:
+            user_profile = getattr(user, "profile_type", None)
+            user_level_default = getattr(user, "level", None)
+            if user_level_default:
+                # Vérifier si un niveau est déjà mentionné dans le message
+                try:
+                    if not detect_niveau(message_clean):
+                        message_clean = f"{message_clean} (niveau {user_level_default})"
+                        logger.debug(
+                            "Niveau utilisateur injecté",
+                            level=user_level_default,
+                            profile=user_profile,
+                        )
+                except Exception:
+                    pass
 
         # Normaliser les niveaux scolaires écrits avec espaces ("CE 1" → "CE1",
         # "CM 2" → "CM2", "C E 1" → "CE1", "C I" → "CI", "C P" → "CP")
@@ -1003,7 +1042,21 @@ class ChatService:
             # question a déjà été répondue. Économise quota Groq + latence.
             # Le cache est désactivé pour les exercices (réponses doivent
             # rester variées) et la culture générale.
-            cache_key = self._cache_key(fr_message, intent or "general")
+            # On inclut le niveau et la matière courants pour éviter qu'un
+            # follow-up court ("continue", "plus de détails") d'une session
+            # serve la réponse d'une autre session avec un contexte différent.
+            try:
+                _cache_niveau = detect_niveau(fr_message) or session_state.get("last_niveau")
+                _cache_matiere = detect_matiere(fr_message) or session_state.get("last_matiere")
+            except Exception:
+                _cache_niveau = None
+                _cache_matiere = None
+            cache_key = self._cache_key(
+                fr_message,
+                intent or "general",
+                niveau=_cache_niveau,
+                matiere=_cache_matiere,
+            )
             if intent != "exercice" and not _is_general_knowledge:
                 cached = self._llm_cache.get(cache_key)
                 if cached:
@@ -1150,12 +1203,24 @@ class ChatService:
                         logger.warning("Erreur injection curriculum", error=str(exc))
 
                 # === ÉTAPE 6 : Génération de réponse par le LLM ===
-                logger.debug("Génération de réponse LLM", intent=intent, with_kb=bool(kb_context))
+                # Construire le contexte utilisateur pour personnaliser la réponse
+                user_ctx = None
+                if user is not None:
+                    user_ctx = {
+                        "profile_type": user_profile,
+                        "level": user_level_default,
+                        "full_name": getattr(user, "full_name", None),
+                        "school": getattr(user, "school", None),
+                    }
+                logger.debug("Génération de réponse LLM", intent=intent,
+                             with_kb=bool(kb_context),
+                             user_profile=user_profile)
                 fr_response = await self.nlp_service.generate_response(
                     fr_message,
                     conversation_history,
                     intent,
-                    knowledge_context=kb_context
+                    knowledge_context=kb_context,
+                    user_context=user_ctx,
                 )
                 if source != "knowledge":
                     source = "llm"
@@ -1795,40 +1860,9 @@ class ChatService:
         return None
 
     def _get_greeting_response(self, message: str) -> str:
-        """
-        Retourne une réponse de salutation instantanée.
-        Correspond exactement aux réponses demandées par l'utilisateur.
-
-        Args:
-            message: Message en français de l'utilisateur
-
-        Returns:
-            Réponse de salutation
-        """
-        msg_lower = message.lower().strip()
-
-        # Détection de remerciements
-        if any(w in msg_lower for w in ["merci", "thanks"]):
-            return "Avec plaisir ! N'hésitez pas si vous avez d'autres questions. 😊"
-
-        # Détection d'au revoir
-        if any(w in msg_lower for w in ["au revoir", "bonne journée", "bonne soirée", "bye"]):
-            return "Au revoir et bonne continuation ! 👋"
-
-        # Détection "comment ça va"
-        if any(w in msg_lower for w in ["comment ça va", "comment ca va", "ça va", "ca va"]):
-            return "Je vais bien, merci ! Comment puis-je vous aider ? 😊"
-
-        # Bonsoir
-        if "bonsoir" in msg_lower:
-            return "Bonsoir ! 👋 Je suis votre assistant éducatif. Que puis-je faire pour vous ?"
-
-        # Salut
-        if "salut" in msg_lower:
-            return "Salut ! 👋 Je suis votre assistant éducatif. Que puis-je faire pour vous ?"
-
-        # Bonjour (et tout le reste)
-        return "Bonjour ! 👋 Je suis votre assistant éducatif. Que puis-je faire pour vous ?"
+        """Délègue à NLPService pour avoir une seule source de vérité.
+        Évite la dérive entre les deux implémentations historiques."""
+        return self.nlp_service._get_greeting_response(message)
 
     def _build_error_response(
         self,

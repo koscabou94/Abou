@@ -583,12 +583,15 @@ RÈGLE ABSOLUE : Ne jamais refuser de générer des exercices ou des fiches. Ne 
         message: str,
         context: list,
         intent: Optional[str] = None,
-        knowledge_context: Optional[str] = None
+        knowledge_context: Optional[str] = None,
+        user_context: Optional[dict] = None,
     ) -> str:
         if intent == "salutation":
             return self._get_greeting_response(message)
 
-        chat_messages = self._build_chat_messages(message, context, intent, knowledge_context)
+        chat_messages = self._build_chat_messages(
+            message, context, intent, knowledge_context, user_context=user_context
+        )
 
         # Pipeline standard : retry exponentiel avec bascule modèle rapide
         text = await self._call_groq_with_retry(
@@ -639,8 +642,56 @@ RÈGLE ABSOLUE : Ne jamais refuser de générer des exercices ou des fiches. Ne 
             return self._build_lightweight_response(message, knowledge_context, intent)
         return self._get_fallback_response(intent)
 
-    def _build_chat_messages(self, message, context, intent=None, knowledge_context=None):
+    def _build_chat_messages(self, message, context, intent=None, knowledge_context=None, user_context=None):
         system_content = self.SYSTEM_PROMPT
+
+        # ─── Personnalisation selon le profil utilisateur connecté ───
+        if user_context:
+            profile = user_context.get("profile_type")
+            level = user_context.get("level")
+            full_name = user_context.get("full_name")
+            school = user_context.get("school")
+
+            persona_block = "\n\n[CONTEXTE UTILISATEUR]"
+            if full_name:
+                persona_block += f"\n- Nom : {full_name}"
+            if school:
+                persona_block += f"\n- Établissement : {school}"
+
+            if profile == "enseignant":
+                persona_block += (
+                    "\n- Profil : ENSEIGNANT.\n"
+                    "  Adapte le ton à un professionnel de l'éducation : termes pédagogiques, "
+                    "références au programme officiel CEB, formats de fiches structurés. "
+                    "Privilégie les conseils pratiques pour la classe et les outils PLANETE pour la gestion."
+                )
+            elif profile == "eleve":
+                persona_block += (
+                    f"\n- Profil : ÉLÈVE en {level or 'classe non précisée'}.\n"
+                    "  Utilise un langage simple, clair, encourageant. Donne des explications "
+                    "pas-à-pas. Pour les exercices, mentionne d'abord le rappel de la règle puis "
+                    "donne l'exercice. Termine toujours par un encouragement bref."
+                )
+            elif profile == "parent":
+                persona_block += (
+                    f"\n- Profil : PARENT d'un enfant en {level or 'classe non précisée'}.\n"
+                    "  Concentre-toi sur le suivi de scolarité, les conseils pour aider l'enfant à la "
+                    "maison, la compréhension du système éducatif sénégalais (calendrier, examens, "
+                    "bourses). Utilise un ton rassurant et bienveillant."
+                )
+            elif profile == "autre":
+                persona_block += (
+                    "\n- Profil : VISITEUR / AGENT.\n"
+                    "  Réponses neutres et factuelles, références au MEN quand c'est pertinent."
+                )
+
+            if level and profile in ("eleve", "parent"):
+                persona_block += (
+                    f"\n- Le niveau {level} est ACQUIS pour cette session : "
+                    "n'utilise JAMAIS la clarification de niveau, génère directement la réponse adaptée."
+                )
+            persona_block += "\n[FIN CONTEXTE UTILISATEUR]\n"
+            system_content += persona_block
         if intent and intent != "general":
             intent_labels = {
                 "inscription": "sur les procédures d'inscription scolaire",

@@ -99,3 +99,30 @@ def validate_session_id(session_id: str) -> bool:
         return True
     except (ValueError, AttributeError):
         return False
+
+
+async def get_current_user_optional(request, db) -> Optional["User"]:  # type: ignore[name-defined]
+    """Dépendance optionnelle : décode le JWT s'il est présent et retourne
+    l'utilisateur authentifié. Retourne None pour les utilisateurs invités.
+
+    Le mode invité reste fonctionnel : l'absence de token ne lève PAS d'erreur.
+    """
+    from sqlalchemy import select
+    from app.database.models import User
+    from app.services.auth_service import decode_access_token
+
+    auth_header = request.headers.get("Authorization") or request.headers.get("authorization")
+    if not auth_header:
+        return None
+    parts = auth_header.split()
+    if len(parts) != 2 or parts[0].lower() != "bearer":
+        return None
+    token = parts[1]
+    user_id = decode_access_token(token)
+    if not user_id:
+        return None
+    try:
+        result = await db.execute(select(User).where(User.id == user_id))
+        return result.scalar_one_or_none()
+    except Exception:
+        return None

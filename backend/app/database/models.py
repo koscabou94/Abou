@@ -24,7 +24,11 @@ class Base(DeclarativeBase):
 class User(Base):
     """
     Représente un utilisateur du chatbot.
-    Les utilisateurs sont identifiés par leur session_id (UUID) sans besoin de compte.
+
+    Deux modes coexistent :
+      1. INVITÉ : identifié par session_id (UUID), aucun champ d'auth rempli.
+      2. AUTHENTIFIÉ : profile_type renseigné + au moins un identifiant
+         (ien, email pro, telephone). Connexion via mot de passe ou OTP.
     """
     __tablename__ = "users"
 
@@ -41,13 +45,57 @@ class User(Base):
     total_messages: int = Column(Integer, default=0,
                                  comment="Nombre total de messages envoyés")
 
+    # ─────────────────────────────────────────────────────────
+    # AUTHENTIFICATION (tous nullable pour préserver le mode invité)
+    # ─────────────────────────────────────────────────────────
+    auth_method: Optional[str] = Column(String(20), nullable=True,
+                                        comment="Méthode utilisée : ien | email | phone | None (invité)")
+    ien: Optional[str] = Column(String(20), unique=True, nullable=True, index=True,
+                                comment="Identifiant Education Nationale")
+    email: Optional[str] = Column(String(120), unique=True, nullable=True, index=True,
+                                  comment="Adresse e-mail (pro ou perso)")
+    phone: Optional[str] = Column(String(20), unique=True, nullable=True, index=True,
+                                  comment="Numéro de téléphone international (+221...)")
+    password_hash: Optional[str] = Column(String(200), nullable=True,
+                                          comment="Hash bcrypt du mot de passe (mode IEN)")
+    profile_type: Optional[str] = Column(String(20), nullable=True, index=True,
+                                         comment="enseignant | eleve | parent | autre")
+    full_name: Optional[str] = Column(String(100), nullable=True,
+                                      comment="Nom complet de l'utilisateur")
+    school: Optional[str] = Column(String(150), nullable=True,
+                                   comment="Établissement scolaire")
+    level: Optional[str] = Column(String(20), nullable=True,
+                                  comment="Niveau scolaire (CI..Terminale) — utile pour élève/parent")
+    is_active: bool = Column(Boolean, default=True, nullable=False,
+                             comment="Compte actif (False = bloqué)")
+    last_login_at: Optional[datetime] = Column(DateTime(timezone=True), nullable=True,
+                                               comment="Dernière connexion authentifiée")
+
     # Relations
     conversations: List["Conversation"] = relationship(
         "Conversation", back_populates="user", cascade="all, delete-orphan"
     )
 
+    @property
+    def is_authenticated(self) -> bool:
+        """True si l'utilisateur est connecté (a un profil + au moins un identifiant)."""
+        return bool(self.profile_type) and bool(self.ien or self.email or self.phone)
+
+    def public_dict(self) -> dict:
+        """Représentation publique du profil (pas de hash, pas de session)."""
+        return {
+            "id": self.id,
+            "profile_type": self.profile_type,
+            "full_name": self.full_name,
+            "school": self.school,
+            "level": self.level,
+            "auth_method": self.auth_method,
+            "is_authenticated": self.is_authenticated,
+            "language_preference": self.language_preference,
+        }
+
     def __repr__(self) -> str:
-        return f"<User(id={self.id}, session_id={self.session_id}, lang={self.language_preference})>"
+        return f"<User(id={self.id}, session_id={self.session_id}, profile={self.profile_type})>"
 
 
 class Conversation(Base):

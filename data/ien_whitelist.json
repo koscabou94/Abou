@@ -1,0 +1,47 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "description": "Liste blanche d'IEN (Identifiants Education Nationale) pour la phase pilote.",
+    "note": "Le mot de passe par defaut pour tous les comptes de test est : edubot2026",
+    "production_ready": false,
+    "next_step": "A remplacer par une integration directe avec la base PLANETE/SIMEN du MEN."
+  },
+  "default_password": "edubot2026",
+  "ien": [
+    {
+      "ien": "200001",
+      "profile_type": "enseignant",
+      "full_name": "Aminata Diop",
+      "school": "Ecole El Hadji Malick Sy, Dakar",
+      "level": null
+    },
+    {
+      "ien": "200002",
+      "profile_type": "enseignant",
+      "full_name": "Mamadou Sow",
+      "school": "Ecole Cheikh Anta Diop, Thies",
+      "level": null
+    },
+    {
+      "ien": "300001",
+      "profile_type": "eleve",
+      "full_name": "Fatou Ndiaye",
+      "school": "CEM Blaise Diagne, Dakar",
+      "level": "CM2"
+    },
+    {
+      "ien": "300002",
+      "profile_type": "eleve",
+      "full_name": "Ibrahima Fall",
+      "school": "Lycee Limamou Laye, Guediawaye",
+      "level": "Terminale"
+    },
+    {
+      "ien": "400001",
+      "profile_type": "parent",
+      "full_name": "Aida Sarr",
+      "school": "Parent eleve CE1",
+      "level": "CE1"
+    }
+  ]
+}

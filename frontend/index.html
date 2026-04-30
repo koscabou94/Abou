@@ -23,8 +23,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-    <!-- App Styles (v9) -->
-    <link rel="stylesheet" href="/styles.css?v=9">
+    <!-- App Styles (v10 — auth) -->
+    <link rel="stylesheet" href="/styles.css?v=10">
 
     <!-- Configuration -->
     <script>window.API_URL = '/api';</script>
@@ -59,6 +59,24 @@
             </nav>
 
             <div class="sidebar-footer">
+                <!-- Bloc utilisateur : "Se connecter" si invite, avatar+nom si connecte -->
+                <div class="auth-block" id="auth-block">
+                    <button class="auth-login-btn" id="auth-login-btn" title="Se connecter">
+                        <i data-lucide="log-in"></i>
+                        <span>Se connecter</span>
+                    </button>
+                    <div class="auth-user-card hidden" id="auth-user-card">
+                        <div class="auth-avatar" id="auth-avatar">?</div>
+                        <div class="auth-user-info">
+                            <span class="auth-user-name" id="auth-user-name">Utilisateur</span>
+                            <span class="auth-user-role" id="auth-user-role">Profil</span>
+                        </div>
+                        <button class="auth-logout-btn" id="auth-logout-btn" title="Se déconnecter">
+                            <i data-lucide="log-out"></i>
+                        </button>
+                    </div>
+                </div>
+
                 <a href="https://wa.me/221776961545" target="_blank" class="support-sidebar-btn" title="Contacter le support EduBot">
                     <div class="support-avatar">📞</div>
                     <div class="support-info">
@@ -186,6 +204,128 @@
         </div>
     </div>
 
+    <!-- ============================================
+         MODAL : LOGIN (3 onglets : IEN / Email / Tel)
+         ============================================ -->
+    <div id="login-modal" class="modal hidden">
+        <div class="modal-content modal-auth">
+            <div class="auth-header">
+                <h3>Bienvenue sur EduBot</h3>
+                <p class="auth-subtitle">Connectez-vous pour bénéficier d'une expérience personnalisée selon votre profil</p>
+            </div>
+
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-method="ien">
+                    <i data-lucide="badge-check"></i><span>IEN</span>
+                </button>
+                <button class="auth-tab" data-method="email">
+                    <i data-lucide="mail"></i><span>Email</span>
+                </button>
+                <button class="auth-tab" data-method="phone">
+                    <i data-lucide="phone"></i><span>Téléphone</span>
+                </button>
+            </div>
+
+            <form class="auth-form" id="auth-form" autocomplete="off">
+                <!-- Champ commun : identifiant -->
+                <div class="auth-field">
+                    <label id="auth-id-label">Votre IEN</label>
+                    <input type="text" id="auth-id-input" placeholder="Ex : 200001" required>
+                    <small id="auth-id-hint" class="auth-hint">Identifiant Éducation Nationale (5 à 12 chiffres)</small>
+                </div>
+
+                <!-- Champ : mot de passe (visible uniquement pour IEN) -->
+                <div class="auth-field" id="auth-password-field">
+                    <label>Mot de passe</label>
+                    <input type="password" id="auth-password-input" placeholder="Votre mot de passe">
+                </div>
+
+                <!-- Champ : OTP (visible apres demande pour email/tel) -->
+                <div class="auth-field hidden" id="auth-otp-field">
+                    <label>Code reçu (6 chiffres)</label>
+                    <input type="text" id="auth-otp-input" placeholder="123456" maxlength="6" inputmode="numeric">
+                    <small class="auth-hint">En mode démo, le code 123456 est accepté.</small>
+                </div>
+
+                <div class="auth-error hidden" id="auth-error"></div>
+
+                <!-- Bouton principal : envoyer OTP ou se connecter -->
+                <button type="submit" class="auth-submit-btn" id="auth-submit-btn">Se connecter</button>
+
+                <button type="button" class="auth-guest-btn" id="auth-guest-btn">
+                    Continuer en tant qu'invité
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================
+         MODAL : COMPLETER LE PROFIL (apres premier login)
+         ============================================ -->
+    <div id="profile-modal" class="modal hidden">
+        <div class="modal-content modal-auth">
+            <div class="auth-header">
+                <h3>Complétons votre profil</h3>
+                <p class="auth-subtitle">Pour adapter EduBot à vos besoins</p>
+            </div>
+
+            <form class="auth-form" id="profile-form" autocomplete="off">
+                <div class="auth-field">
+                    <label>Vous êtes</label>
+                    <div class="profile-type-grid" id="profile-type-grid">
+                        <button type="button" class="profile-type-btn" data-value="enseignant">
+                            <i data-lucide="graduation-cap"></i><span>Enseignant</span>
+                        </button>
+                        <button type="button" class="profile-type-btn" data-value="eleve">
+                            <i data-lucide="user"></i><span>Élève</span>
+                        </button>
+                        <button type="button" class="profile-type-btn" data-value="parent">
+                            <i data-lucide="users"></i><span>Parent</span>
+                        </button>
+                        <button type="button" class="profile-type-btn" data-value="autre">
+                            <i data-lucide="user-cog"></i><span>Autre</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="auth-field">
+                    <label>Nom complet</label>
+                    <input type="text" id="profile-name-input" placeholder="Prénom Nom" required>
+                </div>
+
+                <div class="auth-field">
+                    <label>Établissement (optionnel)</label>
+                    <input type="text" id="profile-school-input" placeholder="Ex : Ecole El Hadji Malick Sy">
+                </div>
+
+                <div class="auth-field hidden" id="profile-level-field">
+                    <label>Niveau scolaire</label>
+                    <select id="profile-level-select">
+                        <option value="">— Choisir —</option>
+                        <option value="Préscolaire">Préscolaire</option>
+                        <option value="CI">CI</option>
+                        <option value="CP">CP</option>
+                        <option value="CE1">CE1</option>
+                        <option value="CE2">CE2</option>
+                        <option value="CM1">CM1</option>
+                        <option value="CM2">CM2</option>
+                        <option value="6ème">6ème</option>
+                        <option value="5ème">5ème</option>
+                        <option value="4ème">4ème</option>
+                        <option value="3ème">3ème</option>
+                        <option value="2nde">2nde</option>
+                        <option value="1ère">1ère</option>
+                        <option value="Terminale">Terminale</option>
+                    </select>
+                </div>
+
+                <div class="auth-error hidden" id="profile-error"></div>
+
+                <button type="submit" class="auth-submit-btn" id="profile-submit-btn">Enregistrer mon profil</button>
+            </form>
+        </div>
+    </div>
+
     <!-- Delete Confirm Modal -->
     <div id="delete-modal" class="modal hidden">
         <div class="modal-content">
@@ -200,8 +340,8 @@
         </div>
     </div>
 
-    <!-- Scripts (v9) -->
-    <script src="/chat.js?v=9"></script>
+    <!-- Scripts (v10 — auth) -->
+    <script src="/chat.js?v=10"></script>
     <script>lucide.createIcons();</script>
 </body>
 </html>

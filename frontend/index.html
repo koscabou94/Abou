@@ -59,24 +59,6 @@
             </nav>
 
             <div class="sidebar-footer">
-                <!-- Bloc utilisateur : "Se connecter" si invite, avatar+nom si connecte -->
-                <div class="auth-block" id="auth-block">
-                    <button class="auth-login-btn" id="auth-login-btn" title="Se connecter">
-                        <i data-lucide="log-in"></i>
-                        <span>Se connecter</span>
-                    </button>
-                    <div class="auth-user-card hidden" id="auth-user-card">
-                        <div class="auth-avatar" id="auth-avatar">?</div>
-                        <div class="auth-user-info">
-                            <span class="auth-user-name" id="auth-user-name">Utilisateur</span>
-                            <span class="auth-user-role" id="auth-user-role">Profil</span>
-                        </div>
-                        <button class="auth-logout-btn" id="auth-logout-btn" title="Se déconnecter">
-                            <i data-lucide="log-out"></i>
-                        </button>
-                    </div>
-                </div>
-
                 <a href="https://wa.me/221776961545" target="_blank" class="support-sidebar-btn" title="Contacter le support EduBot">
                     <div class="support-avatar">📞</div>
                     <div class="support-info">
@@ -117,8 +99,36 @@
                         <span class="dptic-nav-title">EduBot</span>
                     </div>
                 </div>
-                <div class="language-selector">
-                    <button class="lang-pill active" data-lang="fr">FR</button>
+                <div class="top-nav-right">
+                    <!-- Bouton Se connecter (invite) ou avatar (connecte) -->
+                    <button class="topnav-login-btn" id="auth-login-btn" title="Se connecter">
+                        <i data-lucide="log-in"></i>
+                        <span>Se connecter</span>
+                    </button>
+
+                    <div class="topnav-user hidden" id="auth-user-card">
+                        <button class="topnav-avatar" id="auth-avatar-btn" title="Mon compte" aria-haspopup="true" aria-expanded="false">
+                            <span id="auth-avatar">?</span>
+                        </button>
+                        <div class="topnav-dropdown hidden" id="auth-dropdown" role="menu">
+                            <div class="dropdown-header">
+                                <div class="dropdown-avatar" id="dropdown-avatar">?</div>
+                                <div class="dropdown-info">
+                                    <span class="dropdown-name" id="auth-user-name">Utilisateur</span>
+                                    <span class="dropdown-role" id="auth-user-role">Profil</span>
+                                </div>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <button class="dropdown-item" id="dropdown-profile-btn" role="menuitem">
+                                <i data-lucide="user-cog"></i>
+                                <span>Mon profil</span>
+                            </button>
+                            <button class="dropdown-item dropdown-danger" id="auth-logout-btn" role="menuitem">
+                                <i data-lucide="log-out"></i>
+                                <span>Se déconnecter</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </header>
 
@@ -205,57 +215,93 @@
     </div>
 
     <!-- ============================================
-         MODAL : LOGIN (3 onglets : IEN / Email / Tel)
+         MODAL : LOGIN (3 methodes : IEN / Email / Tel)
          ============================================ -->
     <div id="login-modal" class="modal hidden">
         <div class="modal-content modal-auth">
-            <div class="auth-header">
-                <h3>Bienvenue sur EduBot</h3>
-                <p class="auth-subtitle">Connectez-vous pour bénéficier d'une expérience personnalisée selon votre profil</p>
+            <button class="auth-close-btn" id="auth-close-btn" aria-label="Fermer">
+                <i data-lucide="x"></i>
+            </button>
+
+            <div class="auth-hero">
+                <div class="auth-logo">
+                    <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="36" height="36" rx="10" fill="url(#logoGradient)"/>
+                        <path d="M18 8L6 14l12 6 12-6-12-6z" fill="#FDEF42"/>
+                        <path d="M10 17v6c0 2.5 3.6 4.5 8 4.5s8-2 8-4.5v-6l-8 4-8-4z" fill="white" opacity="0.95"/>
+                        <rect x="26" y="14" width="1.5" height="10" rx="0.75" fill="#FDEF42"/>
+                        <circle cx="26.75" cy="25" r="1.5" fill="#FDEF42"/>
+                        <defs>
+                            <linearGradient id="logoGradient" x1="0" y1="0" x2="36" y2="36">
+                                <stop offset="0%" stop-color="#008751"/>
+                                <stop offset="100%" stop-color="#00A862"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <h2 class="auth-title">Bienvenue sur EduBot</h2>
+                <p class="auth-subtitle">Connectez-vous pour une expérience adaptée à votre profil — enseignant, élève, parent ou visiteur.</p>
             </div>
 
-            <div class="auth-tabs">
-                <button class="auth-tab active" data-method="ien">
-                    <i data-lucide="badge-check"></i><span>IEN</span>
+            <div class="auth-methods">
+                <button class="auth-method active" data-method="ien">
+                    <i data-lucide="badge-check"></i>
+                    <span>IEN</span>
                 </button>
-                <button class="auth-tab" data-method="email">
-                    <i data-lucide="mail"></i><span>Email</span>
+                <button class="auth-method" data-method="email">
+                    <i data-lucide="mail"></i>
+                    <span>E-mail</span>
                 </button>
-                <button class="auth-tab" data-method="phone">
-                    <i data-lucide="phone"></i><span>Téléphone</span>
+                <button class="auth-method" data-method="phone">
+                    <i data-lucide="phone"></i>
+                    <span>Téléphone</span>
                 </button>
             </div>
 
             <form class="auth-form" id="auth-form" autocomplete="off">
-                <!-- Champ commun : identifiant -->
-                <div class="auth-field">
-                    <label id="auth-id-label">Votre IEN</label>
-                    <input type="text" id="auth-id-input" placeholder="Ex : 200001" required>
-                    <small id="auth-id-hint" class="auth-hint">Identifiant Éducation Nationale (5 à 12 chiffres)</small>
+                <div class="auth-input-group">
+                    <label id="auth-id-label" for="auth-id-input">Votre IEN</label>
+                    <div class="auth-input-wrapper">
+                        <i data-lucide="user" class="auth-input-icon"></i>
+                        <input type="text" id="auth-id-input" placeholder="200001" required>
+                    </div>
+                    <small id="auth-id-hint" class="auth-hint">Identifiant Éducation Nationale, 5 à 12 chiffres</small>
                 </div>
 
-                <!-- Champ : mot de passe (visible uniquement pour IEN) -->
-                <div class="auth-field" id="auth-password-field">
-                    <label>Mot de passe</label>
-                    <input type="password" id="auth-password-input" placeholder="Votre mot de passe">
+                <div class="auth-input-group" id="auth-password-field">
+                    <label for="auth-password-input">Mot de passe</label>
+                    <div class="auth-input-wrapper">
+                        <i data-lucide="lock" class="auth-input-icon"></i>
+                        <input type="password" id="auth-password-input" placeholder="••••••••">
+                        <button type="button" class="auth-eye-btn" id="auth-eye-btn" tabindex="-1" aria-label="Afficher le mot de passe">
+                            <i data-lucide="eye"></i>
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Champ : OTP (visible apres demande pour email/tel) -->
-                <div class="auth-field hidden" id="auth-otp-field">
-                    <label>Code reçu (6 chiffres)</label>
-                    <input type="text" id="auth-otp-input" placeholder="123456" maxlength="6" inputmode="numeric">
-                    <small class="auth-hint">En mode démo, le code 123456 est accepté.</small>
+                <div class="auth-input-group hidden" id="auth-otp-field">
+                    <label for="auth-otp-input">Code à 6 chiffres</label>
+                    <div class="auth-input-wrapper">
+                        <i data-lucide="shield-check" class="auth-input-icon"></i>
+                        <input type="text" id="auth-otp-input" placeholder="123456" maxlength="6" inputmode="numeric" autocomplete="one-time-code">
+                    </div>
+                    <small class="auth-hint">En mode démo, le code <span class="auth-pill">123456</span> est accepté.</small>
                 </div>
 
                 <div class="auth-error hidden" id="auth-error"></div>
 
-                <!-- Bouton principal : envoyer OTP ou se connecter -->
-                <button type="submit" class="auth-submit-btn" id="auth-submit-btn">Se connecter</button>
+                <button type="submit" class="auth-submit-btn" id="auth-submit-btn">
+                    <span>Se connecter</span>
+                    <i data-lucide="arrow-right"></i>
+                </button>
+            </form>
 
+            <div class="auth-footer">
                 <button type="button" class="auth-guest-btn" id="auth-guest-btn">
                     Continuer en tant qu'invité
                 </button>
-            </form>
+                <p class="auth-legal">Vos identifiants sont sécurisés. EduBot est un service du Ministère de l'Éducation Nationale du Sénégal.</p>
+            </div>
         </div>
     </div>
 
@@ -264,64 +310,83 @@
          ============================================ -->
     <div id="profile-modal" class="modal hidden">
         <div class="modal-content modal-auth">
-            <div class="auth-header">
-                <h3>Complétons votre profil</h3>
-                <p class="auth-subtitle">Pour adapter EduBot à vos besoins</p>
+            <div class="auth-hero">
+                <div class="auth-logo auth-logo-small">
+                    <i data-lucide="user-cog"></i>
+                </div>
+                <h2 class="auth-title">Personnalisons votre expérience</h2>
+                <p class="auth-subtitle">Quelques informations pour qu'EduBot vous accompagne au mieux</p>
             </div>
 
             <form class="auth-form" id="profile-form" autocomplete="off">
-                <div class="auth-field">
-                    <label>Vous êtes</label>
+                <div class="auth-input-group">
+                    <label>Je suis</label>
                     <div class="profile-type-grid" id="profile-type-grid">
                         <button type="button" class="profile-type-btn" data-value="enseignant">
-                            <i data-lucide="graduation-cap"></i><span>Enseignant</span>
+                            <i data-lucide="graduation-cap"></i>
+                            <span>Enseignant</span>
                         </button>
                         <button type="button" class="profile-type-btn" data-value="eleve">
-                            <i data-lucide="user"></i><span>Élève</span>
+                            <i data-lucide="user"></i>
+                            <span>Élève</span>
                         </button>
                         <button type="button" class="profile-type-btn" data-value="parent">
-                            <i data-lucide="users"></i><span>Parent</span>
+                            <i data-lucide="users"></i>
+                            <span>Parent</span>
                         </button>
                         <button type="button" class="profile-type-btn" data-value="autre">
-                            <i data-lucide="user-cog"></i><span>Autre</span>
+                            <i data-lucide="briefcase"></i>
+                            <span>Autre</span>
                         </button>
                     </div>
                 </div>
 
-                <div class="auth-field">
-                    <label>Nom complet</label>
-                    <input type="text" id="profile-name-input" placeholder="Prénom Nom" required>
+                <div class="auth-input-group">
+                    <label for="profile-name-input">Nom complet</label>
+                    <div class="auth-input-wrapper">
+                        <i data-lucide="user" class="auth-input-icon"></i>
+                        <input type="text" id="profile-name-input" placeholder="Prénom Nom" required>
+                    </div>
                 </div>
 
-                <div class="auth-field">
-                    <label>Établissement (optionnel)</label>
-                    <input type="text" id="profile-school-input" placeholder="Ex : Ecole El Hadji Malick Sy">
+                <div class="auth-input-group">
+                    <label for="profile-school-input">Établissement <span class="auth-optional">(optionnel)</span></label>
+                    <div class="auth-input-wrapper">
+                        <i data-lucide="school" class="auth-input-icon"></i>
+                        <input type="text" id="profile-school-input" placeholder="Ex : Ecole El Hadji Malick Sy">
+                    </div>
                 </div>
 
-                <div class="auth-field hidden" id="profile-level-field">
-                    <label>Niveau scolaire</label>
-                    <select id="profile-level-select">
-                        <option value="">— Choisir —</option>
-                        <option value="Préscolaire">Préscolaire</option>
-                        <option value="CI">CI</option>
-                        <option value="CP">CP</option>
-                        <option value="CE1">CE1</option>
-                        <option value="CE2">CE2</option>
-                        <option value="CM1">CM1</option>
-                        <option value="CM2">CM2</option>
-                        <option value="6ème">6ème</option>
-                        <option value="5ème">5ème</option>
-                        <option value="4ème">4ème</option>
-                        <option value="3ème">3ème</option>
-                        <option value="2nde">2nde</option>
-                        <option value="1ère">1ère</option>
-                        <option value="Terminale">Terminale</option>
-                    </select>
+                <div class="auth-input-group hidden" id="profile-level-field">
+                    <label for="profile-level-select">Niveau scolaire</label>
+                    <div class="auth-input-wrapper">
+                        <i data-lucide="layers" class="auth-input-icon"></i>
+                        <select id="profile-level-select">
+                            <option value="">Choisir un niveau</option>
+                            <option value="Préscolaire">Préscolaire</option>
+                            <option value="CI">CI</option>
+                            <option value="CP">CP</option>
+                            <option value="CE1">CE1</option>
+                            <option value="CE2">CE2</option>
+                            <option value="CM1">CM1</option>
+                            <option value="CM2">CM2</option>
+                            <option value="6ème">6ème</option>
+                            <option value="5ème">5ème</option>
+                            <option value="4ème">4ème</option>
+                            <option value="3ème">3ème</option>
+                            <option value="2nde">2nde</option>
+                            <option value="1ère">1ère</option>
+                            <option value="Terminale">Terminale</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="auth-error hidden" id="profile-error"></div>
 
-                <button type="submit" class="auth-submit-btn" id="profile-submit-btn">Enregistrer mon profil</button>
+                <button type="submit" class="auth-submit-btn" id="profile-submit-btn">
+                    <span>Continuer</span>
+                    <i data-lucide="arrow-right"></i>
+                </button>
             </form>
         </div>
     </div>

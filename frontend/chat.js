@@ -131,7 +131,7 @@
         else              localStorage.removeItem("edubot_user");
     }
 
-    /** Met à jour le bloc auth dans la sidebar (login button vs user card). */
+    /** Met à jour le bloc auth de la top-nav (bouton "Se connecter" OU avatar+dropdown). */
     function renderAuthBlock() {
         const loginBtn = document.getElementById("auth-login-btn");
         const userCard = document.getElementById("auth-user-card");
@@ -142,16 +142,40 @@
             userCard.classList.remove("hidden");
             const name = state.user.full_name || "Utilisateur";
             const initial = name.trim().charAt(0).toUpperCase() || "?";
-            document.getElementById("auth-avatar").textContent = initial;
-            document.getElementById("auth-user-name").textContent = name;
+            // Avatar dans la top-nav
+            const avatarTop = document.getElementById("auth-avatar");
+            if (avatarTop) avatarTop.textContent = initial;
+            // Avatar dans le dropdown
+            const avatarDrop = document.getElementById("dropdown-avatar");
+            if (avatarDrop) avatarDrop.textContent = initial;
+            // Nom + role dans le dropdown
+            const nameEl = document.getElementById("auth-user-name");
+            if (nameEl) nameEl.textContent = name;
             const profile = state.user.profile_type || "";
             const level = state.user.level ? ` · ${state.user.level}` : "";
-            document.getElementById("auth-user-role").textContent =
-                profile.charAt(0).toUpperCase() + profile.slice(1) + level;
+            const roleEl = document.getElementById("auth-user-role");
+            if (roleEl) {
+                roleEl.textContent = profile
+                    ? profile.charAt(0).toUpperCase() + profile.slice(1) + level
+                    : "Visiteur";
+            }
         } else {
             loginBtn.classList.remove("hidden");
             userCard.classList.add("hidden");
+            // Fermer le dropdown si ouvert
+            const dropdown = document.getElementById("auth-dropdown");
+            if (dropdown) dropdown.classList.add("hidden");
         }
+    }
+
+    /** Ouvre / ferme le menu dropdown sous l'avatar. */
+    function toggleAuthDropdown(forceClose = false) {
+        const dropdown = document.getElementById("auth-dropdown");
+        const avatarBtn = document.getElementById("auth-avatar-btn");
+        if (!dropdown) return;
+        const willOpen = !forceClose && dropdown.classList.contains("hidden");
+        dropdown.classList.toggle("hidden", !willOpen);
+        if (avatarBtn) avatarBtn.setAttribute("aria-expanded", String(willOpen));
     }
 
     function showLoginModal() {
@@ -160,7 +184,7 @@
         // Reset etat du modal
         state.authMethod = "ien";
         state.otpSent = false;
-        document.querySelectorAll(".auth-tab").forEach(t =>
+        document.querySelectorAll(".auth-method").forEach(t =>
             t.classList.toggle("active", t.dataset.method === "ien"));
         updateAuthFormForMethod("ien");
         document.getElementById("auth-id-input").value = "";
@@ -169,6 +193,11 @@
         document.getElementById("auth-error").classList.add("hidden");
         modal.classList.remove("hidden");
         if (window.lucide) lucide.createIcons();
+        // Focus sur le champ identifiant pour une meilleure UX
+        setTimeout(() => {
+            const idInput = document.getElementById("auth-id-input");
+            if (idInput) idInput.focus();
+        }, 100);
     }
 
     function hideLoginModal() {
@@ -195,6 +224,14 @@
         if (modal) modal.classList.add("hidden");
     }
 
+    /** Helper : remplit le label (avec icone fleche) du bouton submit. */
+    function setSubmitText(text) {
+        const submitBtn = document.getElementById("auth-submit-btn");
+        if (!submitBtn) return;
+        submitBtn.innerHTML = `<span>${text}</span><i data-lucide="arrow-right"></i>`;
+        if (window.lucide) lucide.createIcons();
+    }
+
     /** Adapte les champs du formulaire de login selon la methode active. */
     function updateAuthFormForMethod(method) {
         state.authMethod = method;
@@ -204,17 +241,19 @@
         const hintEl  = document.getElementById("auth-id-hint");
         const passField = document.getElementById("auth-password-field");
         const otpField  = document.getElementById("auth-otp-field");
-        const submitBtn = document.getElementById("auth-submit-btn");
+
+        // Reset OTP a chaque changement de methode
+        document.getElementById("auth-otp-input").value = "";
 
         if (method === "ien") {
             labelEl.textContent = "Votre IEN";
-            idInput.placeholder = "Ex : 200001";
+            idInput.placeholder = "200001";
             idInput.type = "text";
             idInput.inputMode = "numeric";
-            hintEl.textContent = "Identifiant Éducation Nationale (5 à 12 chiffres)";
+            hintEl.textContent = "Identifiant Éducation Nationale, 5 à 12 chiffres";
             passField.classList.remove("hidden");
             otpField.classList.add("hidden");
-            submitBtn.textContent = "Se connecter";
+            setSubmitText("Se connecter");
         } else if (method === "email") {
             labelEl.textContent = "Adresse e-mail";
             idInput.placeholder = "prenom.nom@education.sn";
@@ -223,7 +262,7 @@
             hintEl.textContent = "Nous vous enverrons un code à 6 chiffres.";
             passField.classList.add("hidden");
             otpField.classList.add("hidden");
-            submitBtn.textContent = "Recevoir un code";
+            setSubmitText("Recevoir un code");
         } else if (method === "phone") {
             labelEl.textContent = "Numéro de téléphone";
             idInput.placeholder = "+221 77 696 15 45";
@@ -232,7 +271,7 @@
             hintEl.textContent = "Format international avec l'indicatif (+221).";
             passField.classList.add("hidden");
             otpField.classList.add("hidden");
-            submitBtn.textContent = "Recevoir un code";
+            setSubmitText("Recevoir un code");
         }
     }
 
@@ -276,8 +315,13 @@
                 }
                 state.otpSent = true;
                 document.getElementById("auth-otp-field").classList.remove("hidden");
-                submitBtn.textContent = "Valider le code";
+                setSubmitText("Valider le code");
                 submitBtn.disabled = false;
+                // Focus auto sur le champ OTP
+                setTimeout(() => {
+                    const otpInput = document.getElementById("auth-otp-input");
+                    if (otpInput) otpInput.focus();
+                }, 100);
                 return;
             }
 
@@ -376,10 +420,10 @@
     }
 
     function attachAuthListeners() {
-        // Onglets
-        document.querySelectorAll(".auth-tab").forEach(tab => {
+        // Onglets de methode (segmented control IEN / Email / Tel)
+        document.querySelectorAll(".auth-method").forEach(tab => {
             tab.onclick = () => {
-                document.querySelectorAll(".auth-tab").forEach(t => t.classList.remove("active"));
+                document.querySelectorAll(".auth-method").forEach(t => t.classList.remove("active"));
                 tab.classList.add("active");
                 updateAuthFormForMethod(tab.dataset.method);
             };
@@ -390,16 +434,69 @@
         // Bouton invite
         const guestBtn = document.getElementById("auth-guest-btn");
         if (guestBtn) guestBtn.onclick = () => hideLoginModal();
-        // Boutons sidebar
+        // Bouton fermer modal (X en haut a droite)
+        const closeBtn = document.getElementById("auth-close-btn");
+        if (closeBtn) closeBtn.onclick = () => hideLoginModal();
+        // Toggle visibilite mot de passe (icone oeil)
+        const eyeBtn = document.getElementById("auth-eye-btn");
+        if (eyeBtn) {
+            eyeBtn.onclick = () => {
+                const input = document.getElementById("auth-password-input");
+                if (!input) return;
+                const isPassword = input.type === "password";
+                input.type = isPassword ? "text" : "password";
+                eyeBtn.innerHTML = `<i data-lucide="${isPassword ? "eye-off" : "eye"}"></i>`;
+                if (window.lucide) lucide.createIcons();
+            };
+        }
+        // Bouton "Se connecter" dans la top-nav
         const loginBtn = document.getElementById("auth-login-btn");
         if (loginBtn) loginBtn.onclick = showLoginModal;
+        // Avatar dans la top-nav -> toggle dropdown
+        const avatarBtn = document.getElementById("auth-avatar-btn");
+        if (avatarBtn) {
+            avatarBtn.onclick = (e) => {
+                e.stopPropagation();
+                toggleAuthDropdown();
+            };
+        }
+        // Item "Mon profil" du dropdown
+        const profileBtn = document.getElementById("dropdown-profile-btn");
+        if (profileBtn) {
+            profileBtn.onclick = () => {
+                toggleAuthDropdown(true);
+                showProfileModal();
+            };
+        }
+        // Item "Se deconnecter" du dropdown
         const logoutBtn = document.getElementById("auth-logout-btn");
-        if (logoutBtn) logoutBtn.onclick = logout;
+        if (logoutBtn) {
+            logoutBtn.onclick = () => {
+                toggleAuthDropdown(true);
+                logout();
+            };
+        }
+        // Fermer dropdown en cliquant ailleurs
+        document.addEventListener("click", (e) => {
+            const userCard = document.getElementById("auth-user-card");
+            if (!userCard || userCard.classList.contains("hidden")) return;
+            if (!userCard.contains(e.target)) toggleAuthDropdown(true);
+        });
         // Fermer modal en cliquant sur le backdrop
         const loginModal = document.getElementById("login-modal");
         if (loginModal) loginModal.onclick = (e) => {
             if (e.target === loginModal) hideLoginModal();
         };
+        const profileModal = document.getElementById("profile-modal");
+        if (profileModal) profileModal.onclick = (e) => {
+            if (e.target === profileModal) hideProfileModal();
+        };
+        // Echap pour fermer les modaux
+        document.addEventListener("keydown", (e) => {
+            if (e.key !== "Escape") return;
+            if (!document.getElementById("login-modal").classList.contains("hidden")) hideLoginModal();
+            if (!document.getElementById("profile-modal").classList.contains("hidden")) hideProfileModal();
+        });
 
         // Form profil : selection type
         document.querySelectorAll(".profile-type-btn").forEach(btn => {
@@ -440,6 +537,36 @@
         updateDirection();
 
         if (window.lucide) lucide.createIcons();
+
+        // Re-hydrater l'etat utilisateur en best-effort : si on a un token,
+        // on verifie qu'il est encore valide cote serveur. Sinon log-out
+        // silencieux (le token a peut-etre expire ou ete revoque).
+        if (state.token) refreshAuthFromServer();
+    }
+
+    /** Verifie le token aupres du backend et met a jour state.user.
+     *  Best-effort : si l'endpoint est down, on ne deconnecte pas l'utilisateur. */
+    async function refreshAuthFromServer() {
+        try {
+            const r = await fetch(`${CONFIG.API_URL}/auth/me`, {
+                headers: authHeaders(),
+            });
+            if (r.status === 401) {
+                // Token invalide ou expire -> log out silencieux
+                logout();
+                return;
+            }
+            if (!r.ok) return;
+            const data = await r.json();
+            if (data && data.user) {
+                state.user = data.user;
+                persistAuth();
+                renderAuthBlock();
+                applyLanguage(state.lang);
+            }
+        } catch (_) {
+            // Reseau down : on conserve l'etat local
+        }
     }
 
     // === THEME & UI LOGIC ===

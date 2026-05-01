@@ -31,6 +31,63 @@ logger = structlog.get_logger(__name__)
 
 
 # ─────────────────────────────────────────────────────────────────
+# RESOLUTION AUTOMATIQUE DE SECRET_KEY
+# ─────────────────────────────────────────────────────────────────
+# Si settings.SECRET_KEY n'est pas configure (ou contient encore la
+# valeur par defaut), on en genere une et on la persiste dans
+# data/.secret_key. Cela evite que l'admin oublie de configurer la
+# variable d'env et que les JWT soient signes avec une cle publique.
+#
+# Note Render free : le disque etant ephemere, ce fichier sera perdu
+# a chaque redemarrage -> les JWT existants seront invalides. Pour
+# une prod durable, il faut definir SECRET_KEY comme variable d'env.
+
+_DEFAULT_SECRET = "changez-cette-cle-secrete-en-production"
+
+
+def _resolve_secret_key() -> str:
+    """Retourne une SECRET_KEY robuste. Genere + persiste si non configuree."""
+    configured = getattr(settings, "SECRET_KEY", "") or ""
+    if configured and configured != _DEFAULT_SECRET and len(configured) >= 32:
+        return configured
+
+    # Tenter de lire un fichier persiste cree precedemment
+    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    project_root = os.path.dirname(base_dir)
+    secret_path = os.path.join(project_root, "data", ".secret_key")
+    try:
+        if os.path.exists(secret_path):
+            with open(secret_path, "r", encoding="utf-8") as f:
+                value = f.read().strip()
+            if value and len(value) >= 32:
+                logger.info("SECRET_KEY chargee depuis data/.secret_key")
+                return value
+    except Exception as exc:
+        logger.warning("Lecture data/.secret_key echouee", error=str(exc))
+
+    # Generer une nouvelle cle et essayer de la persister
+    generated = secrets.token_urlsafe(48)
+    try:
+        os.makedirs(os.path.dirname(secret_path), exist_ok=True)
+        with open(secret_path, "w", encoding="utf-8") as f:
+            f.write(generated)
+        logger.warning(
+            "SECRET_KEY generee automatiquement et persistee. "
+            "Configurer la variable d'env SECRET_KEY pour eviter cela en prod.",
+            path=secret_path,
+        )
+    except Exception as exc:
+        logger.warning(
+            "Persistance SECRET_KEY impossible, utilisation en memoire seule",
+            error=str(exc),
+        )
+    return generated
+
+
+_RESOLVED_SECRET_KEY = _resolve_secret_key()
+
+
+# ─────────────────────────────────────────────────────────────────
 # CONSTANTES
 # ─────────────────────────────────────────────────────────────────
 
@@ -254,7 +311,7 @@ def create_access_token(user_id: int, profile_type: Optional[str] = None) -> str
         "iat": datetime.now(timezone.utc),
         "exp": expire,
     }
-    return jwt.encode(payload, settings.SECRET_KEY, algorithm=JWT_ALGORITHM)
+    return jwt.encode(payload, _RESOLVED_SECRET_KEY, algorithm=JWT_ALGORITHM)
 
 
 def decode_access_token(token: str) -> Optional[int]:
@@ -263,7 +320,7 @@ def decode_access_token(token: str) -> Optional[int]:
         return None
     try:
         from jose import jwt, JWTError
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[JWT_ALGORITHM])
+        payload = jwt.decode(token, _RESOLVED_SECRET_KEY, algorithms=[JWT_ALGORITHM])
         sub = payload.get("sub")
         return int(sub) if sub else None
     except Exception as exc:

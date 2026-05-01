@@ -70,3 +70,5 @@ ehthumbs.db
 .env.production
 *.pem
 *.key
+data/.secret_key
+data/feedback.jsonl

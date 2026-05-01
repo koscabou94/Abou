@@ -1,8 +1,15 @@
 """
 Connexion asynchrone à la base de données via SQLAlchemy.
 Support SQLite (développement) et PostgreSQL/Supabase (production).
+
+Si la BD distante configurée est injoignable au boot (host inaccessible,
+projet Supabase en pause...), on bascule automatiquement sur SQLite local.
+Cela permet a l'app de tourner meme quand la BD prod a un probleme — au
+prix d'une persistance ephemere sur Render free.
 """
 
+import re
+import socket
 from typing import AsyncGenerator
 import structlog
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
@@ -12,12 +19,69 @@ from app.config import settings
 
 logger = structlog.get_logger(__name__)
 
+
+# ─────────────────────────────────────────────────────────────────
+# RESOLUTION DE L'URL EFFECTIVE
+# Si la BD configuree est distante mais injoignable, on bascule
+# automatiquement sur SQLite local pour ne pas planter le service.
+# ─────────────────────────────────────────────────────────────────
+
+_SQLITE_FALLBACK = "sqlite+aiosqlite:///./edu_chatbot.db"
+
+
+def _extract_host_port(url: str) -> tuple[str | None, int | None]:
+    """Extrait (host, port) d'une URL postgres/mysql/etc."""
+    # postgres://user:pass@host:port/dbname (ou postgresql+asyncpg://...)
+    m = re.search(r"@([^:/?]+)(?::(\d+))?", url)
+    if not m:
+        return (None, None)
+    return (m.group(1), int(m.group(2)) if m.group(2) else 5432)
+
+
+def _is_remote_db_reachable(url: str, timeout: float = 3.0) -> bool:
+    """Test rapide TCP : le host de la BD repond-il sur son port ?
+    Retourne True pour SQLite (toujours dispo), False si injoignable."""
+    if "sqlite" in url:
+        return True
+    host, port = _extract_host_port(url)
+    if not host:
+        return True  # URL malformee : on laisse SQLAlchemy planter avec un message clair
+    try:
+        with socket.create_connection((host, port), timeout=timeout):
+            return True
+    except (socket.error, OSError) as exc:
+        logger.warning(
+            "BD distante injoignable au boot",
+            host=host, port=port,
+            error=str(exc),
+        )
+        return False
+
+
+def _resolve_effective_url() -> str:
+    """Renvoie l'URL effective : configuree si joignable, sinon SQLite local."""
+    configured = settings.DATABASE_URL
+    if _is_remote_db_reachable(configured):
+        return configured
+    logger.warning(
+        "Fallback automatique sur SQLite local",
+        reason="BD distante injoignable",
+        sqlite_path=_SQLITE_FALLBACK,
+        note="Persistance ephemere sur Render free. Reactiver Supabase pour une BD durable.",
+    )
+    return _SQLITE_FALLBACK
+
+
+EFFECTIVE_DATABASE_URL = _resolve_effective_url()
+_USING_FALLBACK = EFFECTIVE_DATABASE_URL != settings.DATABASE_URL
+
+
 engine_args = {
     "echo": settings.DEBUG,
     "pool_pre_ping": True,
 }
 
-if "sqlite" in settings.DATABASE_URL:
+if "sqlite" in EFFECTIVE_DATABASE_URL:
     engine_args["poolclass"] = NullPool
 else:
     # PostgreSQL / Supabase pooler (transaction mode, port 6543)
@@ -30,7 +94,12 @@ else:
         "statement_cache_size": 0,
     }
 
-engine = create_async_engine(settings.DATABASE_URL, **engine_args)
+engine = create_async_engine(EFFECTIVE_DATABASE_URL, **engine_args)
+logger.info(
+    "Engine BD initialise",
+    backend="sqlite" if "sqlite" in EFFECTIVE_DATABASE_URL else "postgres",
+    fallback_active=_USING_FALLBACK,
+)
 
 AsyncSessionLocal = async_sessionmaker(
     engine,
@@ -86,7 +155,7 @@ async def _ensure_users_auth_columns() -> None:
         "last_login_at": ("DATETIME",     "TIMESTAMP WITH TIME ZONE"),
     }
 
-    is_sqlite = "sqlite" in settings.DATABASE_URL
+    is_sqlite = "sqlite" in EFFECTIVE_DATABASE_URL
     logger.info("Migration users : verification du schema", dialect="sqlite" if is_sqlite else "postgres")
 
     try:

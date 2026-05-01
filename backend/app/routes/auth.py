@@ -501,7 +501,8 @@ async def auth_health(db: AsyncSession = Depends(get_db)) -> dict:
 
     # 4. Schema BD : la table users a-t-elle les colonnes auth ?
     try:
-        is_sqlite = "sqlite" in settings.DATABASE_URL
+        from app.database.connection import EFFECTIVE_DATABASE_URL, _USING_FALLBACK
+        is_sqlite = "sqlite" in EFFECTIVE_DATABASE_URL
         if is_sqlite:
             result = await db.execute(text("PRAGMA table_info(users)"))
             existing = {row[1] for row in result.fetchall()}
@@ -519,6 +520,7 @@ async def auth_health(db: AsyncSession = Depends(get_db)) -> dict:
             "missing_columns": missing,
             "total_columns": len(existing),
             "dialect": "sqlite" if is_sqlite else "postgres",
+            "fallback_active": _USING_FALLBACK,
         }
         if missing:
             failed.append("users_schema")
@@ -534,18 +536,27 @@ async def auth_health(db: AsyncSession = Depends(get_db)) -> dict:
         }
         failed.append("users_schema")
 
-    # 5. SECRET_KEY configure ?
-    secret_set = bool(settings.SECRET_KEY) and settings.SECRET_KEY != "changez-cette-cle-secrete-en-production"
-    report["components"]["secret_key"] = {
-        "ok": secret_set,
-        "is_default": not secret_set,
-    }
-    if not secret_set:
-        report["components"]["secret_key"]["hint"] = (
-            "SECRET_KEY non configuree (valeur par defaut). "
-            "Definir une variable d'env SECRET_KEY sur Render."
-        )
-        # Non bloquant pour la phase MVP
+    # 5. SECRET_KEY : configuree par env, ou auto-generee+persistee ?
+    try:
+        from app.services.auth_service import _RESOLVED_SECRET_KEY
+        env_set = bool(settings.SECRET_KEY) and settings.SECRET_KEY != "changez-cette-cle-secrete-en-production" and len(settings.SECRET_KEY) >= 32
+        # Si la cle effective differe de l'env, c'est qu'on a auto-genere
+        is_auto_generated = _RESOLVED_SECRET_KEY != (settings.SECRET_KEY or "")
+        report["components"]["secret_key"] = {
+            "ok": True,  # Toujours OK car auto-genere si manquante
+            "source": "env" if env_set else "auto-generated",
+            "length": len(_RESOLVED_SECRET_KEY),
+        }
+        if is_auto_generated:
+            report["components"]["secret_key"]["note"] = (
+                "Cle auto-generee et persistee dans data/.secret_key. "
+                "Pour la prod, definir SECRET_KEY comme variable d'env Render."
+            )
+    except Exception as exc:
+        report["components"]["secret_key"] = {
+            "ok": False,
+            "error": str(exc),
+        }
 
     if failed:
         report["status"] = "degraded"

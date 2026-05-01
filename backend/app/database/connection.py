@@ -87,6 +87,7 @@ async def _ensure_users_auth_columns() -> None:
     }
 
     is_sqlite = "sqlite" in settings.DATABASE_URL
+    logger.info("Migration users : verification du schema", dialect="sqlite" if is_sqlite else "postgres")
 
     try:
         async with engine.begin() as conn:
@@ -100,16 +101,29 @@ async def _ensure_users_auth_columns() -> None:
                 ))
                 existing = {row[0] for row in result.fetchall()}
 
+            added = []
             for col, (sqlite_type, pg_type) in expected_columns.items():
                 if col in existing:
                     continue
                 col_type = sqlite_type if is_sqlite else pg_type
-                logger.info("Ajout colonne manquante users", column=col)
-                await conn.execute(text(f"ALTER TABLE users ADD COLUMN {col} {col_type}"))
+                logger.info("Migration users : ajout colonne", column=col, type=col_type)
+                try:
+                    await conn.execute(text(f"ALTER TABLE users ADD COLUMN {col} {col_type}"))
+                    added.append(col)
+                except Exception as col_exc:
+                    logger.error("Migration users : echec colonne",
+                                 column=col, error=str(col_exc))
+
+            if added:
+                logger.info("Migration users : colonnes ajoutees", columns=added)
+            else:
+                logger.info("Migration users : schema deja a jour",
+                            existing_columns=len(existing))
     except Exception as exc:
         # Migration best-effort — si elle échoue, l'app peut continuer (les
         # nouveaux endpoints d'auth retourneront simplement des erreurs)
-        logger.warning("Migration users échouée (non-bloquant)", error=str(exc))
+        logger.error("Migration users echouee (non-bloquant)",
+                     error_type=type(exc).__name__, error=str(exc))
 
 
 async def check_db_connection() -> bool:

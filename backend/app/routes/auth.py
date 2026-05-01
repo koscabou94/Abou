@@ -235,6 +235,37 @@ async def login(
     payload: LoginRequest,
     db: AsyncSession = Depends(get_db),
 ) -> AuthResponse:
+    """Endpoint de login. Toute exception non-HTTP est capturee et
+    transformee en 503 avec un message explicite — on ne renvoie JAMAIS
+    un 500 silencieux a l'utilisateur."""
+    try:
+        return await _login_inner(request, payload, db)
+    except HTTPException:
+        raise  # Erreurs deja formattees (401, 400…) -> repropager
+    except Exception as exc:
+        logger.error(
+            "Echec inattendu sur /auth/login",
+            method=payload.method,
+            error_type=type(exc).__name__,
+            error_msg=str(exc),
+            exc_info=True,
+        )
+        # Diagnostic court inclus dans le message pour aider en prod
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=(
+                "Le service d'authentification rencontre un probleme "
+                f"technique ({type(exc).__name__}). Reessayez dans un instant. "
+                "Si l'erreur persiste, consultez /api/auth/health pour le diagnostic."
+            ),
+        )
+
+
+async def _login_inner(
+    request: Request,
+    payload: LoginRequest,
+    db: AsyncSession,
+) -> AuthResponse:
     # 1. Validation format
     is_valid, msg = validate_identifier(payload.method, payload.identifier)
     if not is_valid:
@@ -393,3 +424,131 @@ async def list_profiles() -> dict:
             "2nde", "1ère", "Terminale",
         ],
     }
+
+
+# ─────────────────────────────────────────────────────────────────
+# DIAGNOSTIC : ouvre /api/auth/health pour identifier la panne exacte
+# ─────────────────────────────────────────────────────────────────
+
+@router.get(
+    "/health",
+    summary="Diagnostic complet de la chaine d'authentification",
+    description=("Teste tous les composants : whitelist IEN, bcrypt, JWT, "
+                 "schema BD users. Permet d'identifier la cause d'un 500 "
+                 "sur /login sans avoir acces aux logs serveur."),
+)
+async def auth_health(db: AsyncSession = Depends(get_db)) -> dict:
+    """Endpoint de diagnostic ouvert (pas d'auth). Utile pour identifier
+    rapidement quel composant casse en prod."""
+    from sqlalchemy import text
+    from app.config import settings
+
+    report: dict = {
+        "status": "ok",
+        "components": {},
+    }
+    failed = []
+
+    # 1. Whitelist IEN
+    try:
+        from app.services.auth_service import _load_ien_whitelist
+        wl = _load_ien_whitelist()
+        ien_count = len(wl.get("ien", []))
+        report["components"]["whitelist_ien"] = {
+            "ok": ien_count > 0,
+            "count": ien_count,
+            "default_password_set": bool(wl.get("default_password")),
+        }
+        if ien_count == 0:
+            failed.append("whitelist_ien")
+    except Exception as exc:
+        report["components"]["whitelist_ien"] = {"ok": False, "error": str(exc)}
+        failed.append("whitelist_ien")
+
+    # 2. bcrypt (passlib)
+    try:
+        from app.services.auth_service import hash_password, verify_password
+        h = hash_password("diagnostic-test-2026")
+        ok = verify_password("diagnostic-test-2026", h)
+        report["components"]["bcrypt"] = {"ok": ok, "hash_prefix": h[:7] if h else None}
+        if not ok:
+            failed.append("bcrypt")
+    except Exception as exc:
+        report["components"]["bcrypt"] = {
+            "ok": False,
+            "error_type": type(exc).__name__,
+            "error": str(exc),
+            "hint": "passlib 1.7.4 incompatible avec bcrypt 4+. Pin bcrypt==3.2.2.",
+        }
+        failed.append("bcrypt")
+
+    # 3. JWT (jose)
+    try:
+        from app.services.auth_service import create_access_token, decode_access_token
+        token = create_access_token(user_id=999999, profile_type="diagnostic")
+        decoded = decode_access_token(token)
+        ok = decoded == 999999
+        report["components"]["jwt"] = {"ok": ok, "decoded_uid": decoded}
+        if not ok:
+            failed.append("jwt")
+    except Exception as exc:
+        report["components"]["jwt"] = {
+            "ok": False,
+            "error_type": type(exc).__name__,
+            "error": str(exc),
+        }
+        failed.append("jwt")
+
+    # 4. Schema BD : la table users a-t-elle les colonnes auth ?
+    try:
+        is_sqlite = "sqlite" in settings.DATABASE_URL
+        if is_sqlite:
+            result = await db.execute(text("PRAGMA table_info(users)"))
+            existing = {row[1] for row in result.fetchall()}
+        else:
+            result = await db.execute(text(
+                "SELECT column_name FROM information_schema.columns "
+                "WHERE table_name = 'users'"
+            ))
+            existing = {row[0] for row in result.fetchall()}
+        required = {"ien", "email", "phone", "password_hash",
+                    "profile_type", "full_name", "auth_method"}
+        missing = sorted(required - existing)
+        report["components"]["users_schema"] = {
+            "ok": not missing,
+            "missing_columns": missing,
+            "total_columns": len(existing),
+            "dialect": "sqlite" if is_sqlite else "postgres",
+        }
+        if missing:
+            failed.append("users_schema")
+            report["components"]["users_schema"]["hint"] = (
+                "Migration _ensure_users_auth_columns n'a pas tourne ou a echoue. "
+                "Restart du backend pour qu'elle s'execute, ou ALTER TABLE manuel."
+            )
+    except Exception as exc:
+        report["components"]["users_schema"] = {
+            "ok": False,
+            "error_type": type(exc).__name__,
+            "error": str(exc),
+        }
+        failed.append("users_schema")
+
+    # 5. SECRET_KEY configure ?
+    secret_set = bool(settings.SECRET_KEY) and settings.SECRET_KEY != "changez-cette-cle-secrete-en-production"
+    report["components"]["secret_key"] = {
+        "ok": secret_set,
+        "is_default": not secret_set,
+    }
+    if not secret_set:
+        report["components"]["secret_key"]["hint"] = (
+            "SECRET_KEY non configuree (valeur par defaut). "
+            "Definir une variable d'env SECRET_KEY sur Render."
+        )
+        # Non bloquant pour la phase MVP
+
+    if failed:
+        report["status"] = "degraded"
+        report["failed_components"] = failed
+
+    return report

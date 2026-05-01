@@ -927,9 +927,29 @@ class ChatService:
                     "éducation civique","education civique","instruction civique",
                 ]
                 msg_lower_ex = fr_message.lower()
-                found_level = next((kw for kw in LEVEL_KW if kw in msg_lower_ex), None)
+
+                # ─────────────────────────────────────────────────────
+                # CRITIQUE : utiliser des word-boundaries pour eviter
+                # les faux positifs comme "ci" dans "exerCIces" qui
+                # faisait detecter le niveau CI a tort sur n'importe
+                # quelle requete d'exercices.
+                # ─────────────────────────────────────────────────────
+                def _kw_match(kw: str, text: str) -> bool:
+                    """Match un mot-cle avec word-boundary si c'est un mot
+                    simple (pas d'espace ni de caractere special), sinon
+                    fait un substring match classique."""
+                    # Si le mot-cle contient deja un espace/tiret, on garde
+                    # le substring (ex: "histoire-géographie", "expression écrite")
+                    if any(c in kw for c in " -'"):
+                        return kw in text
+                    # Mot simple : utiliser \b mais en mode UNICODE pour
+                    # gerer les accents (ème, première...)
+                    pattern = rf"(?<![a-zA-Z0-9àâäéèêëïîôöùûüÿñç]){_re.escape(kw)}(?![a-zA-Z0-9àâäéèêëïîôöùûüÿñç])"
+                    return bool(_re.search(pattern, text))
+
+                found_level = next((kw for kw in LEVEL_KW if _kw_match(kw, msg_lower_ex)), None)
                 # Chercher toutes les matières mentionnées (pas seulement la première)
-                found_subjects = [kw for kw in SUBJECT_KW if kw in msg_lower_ex]
+                found_subjects = [kw for kw in SUBJECT_KW if _kw_match(kw, msg_lower_ex)]
                 found_subject = found_subjects[0] if found_subjects else None
                 multi_subject = len(found_subjects) > 1
 
@@ -945,7 +965,7 @@ class ChatService:
                     "lettres", "alphabet", "résumé", "resume",
                 ]
                 # Si une sous-matière français est détectée, l'ajouter à found_subjects
-                french_subtopic = next((kw for kw in FRENCH_SUBTOPICS_LIST if kw in msg_lower_ex), None)
+                french_subtopic = next((kw for kw in FRENCH_SUBTOPICS_LIST if _kw_match(kw, msg_lower_ex)), None)
                 if french_subtopic and not found_subject:
                     found_subject = french_subtopic
                     found_subjects = [french_subtopic]
@@ -1685,11 +1705,23 @@ class ChatService:
         if intent != "exercice":
             return None
 
+        import re as _re
+
         msg_lower = message.lower()
 
         # Ne pas déclencher si c'est une réponse courte à une clarification précédente
         # (ex: l'utilisateur dit juste "CM2" ou "Mathématiques")
         word_count = len(msg_lower.split())
+
+        # ─────────────────────────────────────────────────────
+        # Helper word-boundary : evite les faux positifs comme
+        # "ci" dans "exerCIces" ou "math" dans "informatique".
+        # ─────────────────────────────────────────────────────
+        def _kw_match_strict(kw: str, text: str) -> bool:
+            if any(c in kw for c in " -'"):
+                return kw in text
+            pattern = rf"(?<![a-zA-Z0-9àâäéèêëïîôöùûüÿñç]){_re.escape(kw)}(?![a-zA-Z0-9àâäéèêëïîôöùûüÿñç])"
+            return bool(_re.search(pattern, text))
 
         # Mots-clés de niveau scolaire
         LEVEL_KEYWORDS = [
@@ -1723,8 +1755,8 @@ class ChatService:
             "mes enfants", "mes élèves", "mon petit", "ma petite"
         ]
 
-        has_level = any(kw in msg_lower for kw in LEVEL_KEYWORDS)
-        has_subject = any(kw in msg_lower for kw in SUBJECT_KEYWORDS)
+        has_level = any(_kw_match_strict(kw, msg_lower) for kw in LEVEL_KEYWORDS)
+        has_subject = any(_kw_match_strict(kw, msg_lower) for kw in SUBJECT_KEYWORDS)
 
         # Sous-matières du français : grammaire, conjugaison, etc. = Français
         FRENCH_SUBTOPICS = [
@@ -1733,7 +1765,7 @@ class ChatService:
             "vocabulaire", "rédaction", "redaction", "compréhension", "comprehension",
             "production écrite", "production ecrite"
         ]
-        if any(kw in msg_lower for kw in FRENCH_SUBTOPICS):
+        if any(_kw_match_strict(kw, msg_lower) for kw in FRENCH_SUBTOPICS):
             has_subject = True  # c'est du Français
 
         # Demande de corrections/corrigés d'exercices déjà donnés → ne pas déclencher la clarification
@@ -1771,7 +1803,7 @@ class ChatService:
         is_lycee = any(kw in msg_lower for kw in LYCEE_KW)
 
         # Inférer le cycle à partir du niveau détecté
-        level_found = next((kw for kw in LEVEL_KEYWORDS if kw in msg_lower), "")
+        level_found = next((kw for kw in LEVEL_KEYWORDS if _kw_match_strict(kw, msg_lower)), "")
         if level_found in ["ci","cp","ce1","ce2","cm1","cm2","primaire","élémentaire","elementaire"]:
             is_elementaire = True
         elif level_found in ["6ème","6eme","5ème","5eme","4ème","4eme","3ème","3eme","college","collège"]:

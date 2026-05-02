@@ -717,6 +717,14 @@ RÈGLE ABSOLUE : Ne jamais refuser de générer des exercices ou des fiches. Ne 
 
     @staticmethod
     def _clean_llm_response(text: str) -> str:
+        # Sprint 2 : passer par le sanitizer ultime (response_validator) qui
+        # est notre derniere ligne de defense anti-gras.
+        try:
+            from app.services.response_validator import sanitize_response
+            text = sanitize_response(text)
+        except Exception:
+            pass
+
         for tag in ["<<SYS>>", "<</SYS>>", "[INST]", "[/INST]", "</s>", "<s>"]:
             text = text.replace(tag, "")
 
@@ -839,6 +847,65 @@ RÈGLE ABSOLUE : Ne jamais refuser de générer des exercices ou des fiches. Ne 
         return None
 
     # ─────────────────────────────────────────────────────────
+    # SPRINT 2 — VALIDATION + RETRY si mismatch
+    # Si l'intent attend X (ex greeting = pas d'exercices) mais
+    # la reponse contient des exercices, on retry une fois avec
+    # une instruction explicite. Sinon on retourne la 1ere reponse.
+    # ─────────────────────────────────────────────────────────
+    async def _validate_or_retry(
+        self,
+        response_text: str,
+        intent: str,
+        chat_messages: list,
+        model_to_use: Optional[str] = None,
+    ) -> str:
+        try:
+            from app.services.response_validator import is_mismatch
+            mismatch, reason = is_mismatch(intent, response_text)
+        except Exception:
+            return response_text
+
+        if not mismatch:
+            return response_text
+
+        logger.warning(
+            "Mismatch intent/reponse detecte — retry",
+            intent=intent, reason=reason,
+        )
+
+        # Construire un correctif explicite qu'on injecte au LLM
+        retry_instruction = (
+            f"\n\n[CORRECTION SYSTEME] La precedente reponse ne correspondait "
+            f"pas a l'intent attendu : {reason}. "
+            f"Recommence avec UNIQUEMENT ce que l'intent demande. "
+            f"Si l'intent est 'greeting' ou 'smalltalk' : reponds en 1-2 "
+            f"phrases naturelles SANS aucun exercice ni fiche."
+        )
+
+        retry_messages = list(chat_messages) + [
+            {"role": "system", "content": retry_instruction}
+        ]
+
+        try:
+            client = await self._ensure_client()
+            response = await asyncio.wait_for(
+                client.chat.completions.create(
+                    model=model_to_use or settings.LLM_MODEL,
+                    messages=retry_messages,
+                    max_tokens=600,  # Reponse plus courte au retry
+                    temperature=0.2,
+                ),
+                timeout=20.0,
+            )
+            retry_text = response.choices[0].message.content.strip()
+            if retry_text:
+                return self._clean_llm_response(retry_text)
+        except Exception as exc:
+            logger.warning("Retry mismatch echec, on garde la 1ere reponse", error=str(exc))
+
+        return response_text
+
+    # ─────────────────────────────────────────────────────────
     # V2 — generation avec SYSTEM_PROMPT modulaire (Sprint 1)
     # Cette methode est utilisee par le nouveau pipeline "router".
     # L'ancien generate_response reste actif pour le fallback legacy.
@@ -903,7 +970,12 @@ RÈGLE ABSOLUE : Ne jamais refuser de générer des exercices ou des fiches. Ne 
             )
             text = response.choices[0].message.content.strip()
             if text:
-                return self._clean_llm_response(text)
+                cleaned = self._clean_llm_response(text)
+                # Sprint 2 : mismatch detector avec retry
+                cleaned = await self._validate_or_retry(
+                    cleaned, intent, chat_messages, model_to_use
+                )
+                return cleaned
         except asyncio.TimeoutError:
             logger.warning("generate_response_v2 timeout", intent=intent)
         except Exception as exc:

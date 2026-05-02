@@ -2053,6 +2053,10 @@ class ChatService:
         if intent == "correction_request":
             return await self._handle_correction(message, history, user_ctx, session_id=session_id)
 
+        # Demande de fiche pedagogique : reservee aux enseignants
+        if intent == "fiche_request":
+            return await self._handle_fiche(message, entities, user_ctx, history)
+
         # Pour tous les autres intents : retrieval conditionnel + LLM modulaire
         kb_context = await self._build_kb_context(message, intent_result)
         use_fast = intent in ("smalltalk",)
@@ -2344,6 +2348,152 @@ class ChatService:
             "suggestions": self._build_suggestions(
                 intent="exercice", niveau=niveau, matiere=matiere, source="llm"
             ),
+        }
+
+    async def _handle_fiche(
+        self,
+        message: str,
+        entities: dict,
+        user_ctx: Optional[dict],
+        history: list,
+    ) -> dict:
+        """Genere une fiche pedagogique. Reserve aux ENSEIGNANTS et autres
+        professionnels — pas pour les eleves.
+
+        Workflow :
+          1. Si user=eleve : refuser poliment et rediriger vers une explication
+          2. Si niveau absent : demander avec boutons
+          3. Si matiere absente : demander avec boutons CEB selon niveau
+          4. Generer la fiche avec contexte CEB officiel injecte
+        """
+        # ─── 1. Restriction profil : un eleve ne demande pas une fiche prof ───
+        if user_ctx and user_ctx.get("profile_type") == "eleve":
+            return {
+                "response": (
+                    "La fiche pédagogique est un outil destiné aux enseignants "
+                    "pour préparer leurs séances de classe. En tant qu'élève, "
+                    "tu n'en as pas vraiment besoin !\n\n"
+                    "Mais je peux t'aider autrement — qu'est-ce qui t'intéresse ?"
+                ),
+                "source": "clarification",
+                "clarification": {
+                    "options": [
+                        "Une explication d'un concept",
+                        "Des exercices à faire",
+                        "Réviser un sujet",
+                        "Comprendre un cours",
+                    ],
+                },
+                "suggestions": [],
+            }
+
+        niveau = entities.get("niveau")
+        matiere = entities.get("matiere")
+        sujet = entities.get("sujet")
+
+        # Detection robuste depuis le message brut
+        if not niveau:
+            niveau = detect_niveau(message)
+        if not matiere:
+            mat = detect_matiere(message)
+            if mat:
+                matiere = mat
+
+        # Heritage : enseignant connecte avec un niveau associe (non standard,
+        # mais possible si on enrichit le profil enseignant plus tard)
+        if not niveau and user_ctx and user_ctx.get("level"):
+            niveau = user_ctx.get("level")
+
+        # ─── 2. NIVEAU ───
+        if not niveau:
+            return {
+                "response": (
+                    "Pour préparer la fiche pédagogique, j'ai besoin de "
+                    "connaître le niveau scolaire. Pour quelle classe ?"
+                ),
+                "source": "clarification",
+                "clarification": {
+                    "options": [
+                        "CI", "CP", "CE1", "CE2", "CM1", "CM2",
+                        "6ème", "5ème", "4ème", "3ème",
+                        "2nde", "1ère", "Terminale",
+                    ],
+                },
+                "suggestions": [],
+            }
+
+        # ─── 3. MATIERE (avec suggestions issues du curriculum officiel) ───
+        if not matiere:
+            options = self._get_subjects_for_level(niveau)
+            return {
+                "response": (
+                    f"Très bien, une fiche pour le {niveau}. "
+                    f"Dans quelle matière ?"
+                ),
+                "source": "clarification",
+                "clarification": {"options": options},
+                "suggestions": [],
+            }
+
+        # ─── 4. GENERATION avec contexte CEB ───
+        kb_context = ""
+        suggestions_topics: list[str] = []
+        if self.curriculum_service and self.curriculum_service.is_available:
+            try:
+                entries = await self.curriculum_service.get_for_level_and_subject(
+                    niveau, matiere=matiere, limit=4,
+                )
+                if not entries:
+                    entries = await self.curriculum_service.search(
+                        message, niveau=niveau, matiere=matiere, limit=4,
+                    )
+                if entries:
+                    kb_context = self.curriculum_service.get_curriculum_context(
+                        entries, max_chars=1500
+                    )
+                    # Construire 2-3 suggestions de sujets a partir des paliers
+                    for e in entries[:3]:
+                        title = (e.get("title") or "").strip()
+                        if title:
+                            # Garder un titre court "Palier X — sujet"
+                            short = title.split(" - ")[0] if " - " in title else title
+                            suggestions_topics.append(short[:80])
+            except Exception:
+                pass
+
+        # Si l'utilisateur n'a pas precise un sujet et qu'on a des suggestions,
+        # on peut lui en proposer (mais on genere quand meme une fiche generale)
+        enriched_message = (
+            f"{message}\n\n"
+            f"[INSTRUCTION] Génère une fiche pédagogique complète pour "
+            f"{matiere} en {niveau}, format strict (Discipline, Niveau, "
+            f"Durée, Compétence, Objectifs, Contenu, Déroulement en tableau, "
+            f"Évaluation). N'utilise aucun gras."
+        )
+        if sujet:
+            enriched_message += f" Sujet précis : {sujet}."
+
+        text = await self.nlp_service.generate_response_v2(
+            message=enriched_message,
+            intent="fiche_request",
+            conversation_history=history,
+            user_context=user_ctx,
+            knowledge_context=kb_context,
+        )
+
+        # Suggestions de relance contextuelles
+        relance = []
+        if suggestions_topics:
+            relance.append(
+                f"Une fiche sur un autre palier de {matiere} {niveau}"
+            )
+        relance.append(f"Des exercices de {matiere} pour le {niveau}")
+        relance.append(f"Évaluation de {matiere} pour le {niveau}")
+
+        return {
+            "response": text,
+            "source": "llm",
+            "suggestions": relance[:3],
         }
 
     @staticmethod

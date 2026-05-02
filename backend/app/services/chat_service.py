@@ -110,6 +110,11 @@ class ChatService:
         # désambiguïser les références implicites ("et une salle ?").
         self._session_state: dict[str, dict] = {}
 
+        # Sprint 2 : memoire des derniers exercices generes par session.
+        # Permet a _handle_correction de retrouver les exos meme si la BD
+        # est down (Render ephemere). Cache simple dict, pas de LRU.
+        self._session_exercises: dict[str, str] = {}
+
         logger.info(
             "Service de chat initialisé avec succès",
             knowledge_available=knowledge_service is not None,
@@ -2046,11 +2051,36 @@ class ChatService:
 
         # Demande de corriges : prend les exos precedents et genere leurs corrigés
         if intent == "correction_request":
-            return await self._handle_correction(message, history, user_ctx)
+            return await self._handle_correction(message, history, user_ctx, session_id=session_id)
 
         # Pour tous les autres intents : retrieval conditionnel + LLM modulaire
         kb_context = await self._build_kb_context(message, intent_result)
         use_fast = intent in ("smalltalk",)
+
+        # Sprint 2 : cache LRU pour les intents stables (questions repetitives)
+        # Pas de cache pour : exercise_request (variete), correction_request
+        # (depend du contexte session), greeting (deja statique)
+        cacheable = intent in ("factual_question", "explain", "planete_help",
+                               "guidance", "smalltalk", "complaint_emotion")
+        cache_key = None
+        if cacheable:
+            niveau = entities.get("niveau") if entities else None
+            matiere = entities.get("matiere") if entities else None
+            cache_key = self._cache_key(message, intent, niveau=niveau, matiere=matiere)
+            cached = self._llm_cache.get(cache_key)
+            if cached:
+                logger.info("Cache hit V2", intent=intent,
+                            hits=self._llm_cache.hits, misses=self._llm_cache.misses)
+                return {
+                    "response": cached,
+                    "source": "cache",
+                    "suggestions": self._build_suggestions(
+                        intent="programme" if intent == "factual_question"
+                        else intent,
+                        niveau=niveau, matiere=matiere, source="cache",
+                    ),
+                }
+
         response_text = await self.nlp_service.generate_response_v2(
             message=message,
             intent=intent,
@@ -2059,6 +2089,10 @@ class ChatService:
             knowledge_context=kb_context,
             use_fast_model=use_fast,
         )
+
+        # Memoriser dans le cache pour les prochaines questions identiques
+        if cacheable and cache_key and response_text:
+            self._llm_cache.put(cache_key, response_text)
         suggestions = self._build_suggestions(
             intent="programme" if intent == "factual_question" else
                    "exercice" if intent == "exercise_request" else
@@ -2299,6 +2333,11 @@ class ChatService:
             user_context=user_ctx,
             knowledge_context=kb_context,
         )
+
+        # Memoriser les exercices pour que _handle_correction puisse les
+        # retrouver meme si la BD est down (fallback SQLite ephemere)
+        self._session_exercises[session_id] = text
+
         return {
             "response": text,
             "source": "llm",
@@ -2399,22 +2438,29 @@ class ChatService:
         message: str,
         history: list,
         user_ctx: Optional[dict],
+        session_id: Optional[str] = None,
     ) -> dict:
         """Genere les corriges des exercices presents dans l'historique recent.
 
-        Strategie : extraire le DERNIER message assistant qui contient des
-        exercices ('### Exercice 1', '### Exercice 2', etc.), l'inclure dans
-        le contexte LLM, et demander les corriges via le module dédié.
+        Strategie de recherche, dans l'ordre :
+          1. Cache session memoire (_session_exercises) — fiable meme si BD down
+          2. Historique BD (passe en parametre par process_message_v2)
         """
-        # 1. Trouver le dernier bloc d'exercices dans l'historique
         last_exercises_block = None
-        for msg in reversed(history or []):
-            if msg.get("role") != "assistant":
-                continue
-            content = msg.get("content", "") or ""
-            if "Exercice 1" in content or "exercice 1" in content.lower():
-                last_exercises_block = content
-                break
+
+        # 1. Cache memoire (Sprint 2)
+        if session_id and session_id in self._session_exercises:
+            last_exercises_block = self._session_exercises[session_id]
+
+        # 2. Fallback sur l'historique BD
+        if not last_exercises_block:
+            for msg in reversed(history or []):
+                if msg.get("role") != "assistant":
+                    continue
+                content = msg.get("content", "") or ""
+                if "Exercice 1" in content or "exercice 1" in content.lower():
+                    last_exercises_block = content
+                    break
 
         # 2. Si pas d'exercices trouves, repondre honnetement
         if not last_exercises_block:

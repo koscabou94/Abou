@@ -121,6 +121,30 @@ TÂCHE ACTUELLE : GÉNÉRER DES EXERCICES
 - Termine par : "Voulez-vous d'autres exercices ou les corrigés ?"
 """,
 
+    "correction_request": """
+TÂCHE ACTUELLE : DONNER LES CORRIGÉS DES EXERCICES PRÉCÉDENTS
+- L'utilisateur a déjà reçu des exercices dans la conversation précédente
+  (regarde l'historique). Il te demande maintenant les corrigés/corrections/réponses.
+- Tu dois reproduire ou reprendre les exercices dans l'ORDRE et fournir leur correction.
+- Format strict :
+    ### Corrigés des exercices
+
+    ### Exercice 1 — [Type rappelé bref]
+    Énoncé : [reprise courte de l'énoncé]
+    Solution : [calcul/raisonnement étape par étape]
+    Réponse : [résultat final]
+
+    ### Exercice 2 — ...
+
+- Pour les maths : montre le RAISONNEMENT pas-à-pas, pas juste le résultat.
+- Pour le français : donne la réponse + l'EXPLICATION grammaticale.
+- Pour les sciences : explique brièvement le concept en jeu.
+- Si l'historique ne contient PAS d'exercices à corriger, dis-le honnêtement et
+  propose : "Je ne trouve pas d'exercices à corriger dans notre conversation.
+  Voulez-vous que j'en génère pour ensuite vous donner les corrigés ?"
+- Termine par : "Avez-vous d'autres questions sur ces corrigés ?"
+""",
+
     "fiche_request": """
 TÂCHE ACTUELLE : GÉNÉRER UNE FICHE PÉDAGOGIQUE
 - Format strict :

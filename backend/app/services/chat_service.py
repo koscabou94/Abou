@@ -2044,6 +2044,10 @@ class ChatService:
                 message, entities, user_ctx, history, session_id
             )
 
+        # Demande de corriges : prend les exos precedents et genere leurs corrigés
+        if intent == "correction_request":
+            return await self._handle_correction(message, history, user_ctx)
+
         # Pour tous les autres intents : retrieval conditionnel + LLM modulaire
         kb_context = await self._build_kb_context(message, intent_result)
         use_fast = intent in ("smalltalk",)
@@ -2229,24 +2233,9 @@ class ChatService:
 
         # ─── Etape 2 : MATIERE (toujours confirmee) ───
         if not matiere:
-            # Choisir les matieres pertinentes selon le niveau (cycle)
-            elementaire = niveau in ("CI", "CP", "CE1", "CE2", "CM1", "CM2")
-            collège     = niveau in ("6ème", "5ème", "4ème", "3ème")
-            lycee       = niveau in ("2nde", "1ère", "Terminale")
-
-            if elementaire:
-                options = ["Mathématiques", "Français", "Sciences",
-                           "Histoire-Géographie", "Anglais", "Éducation Civique"]
-            elif collège:
-                options = ["Mathématiques", "Français", "Sciences Physiques",
-                           "SVT", "Histoire-Géographie", "Anglais"]
-            elif lycee:
-                options = ["Mathématiques", "Français", "Physique-Chimie",
-                           "SVT", "Histoire-Géographie", "Anglais", "Philosophie"]
-            else:
-                options = ["Mathématiques", "Français", "Sciences",
-                           "Histoire-Géographie", "Anglais"]
-
+            # Matieres selon le programme officiel CEB du Senegal
+            # https://www.education.sn (Curriculum de l'Education de Base)
+            options = self._get_subjects_for_level(niveau)
             return {
                 "response": (
                     f"Parfait, des exercices pour le {niveau} ! "
@@ -2316,6 +2305,162 @@ class ChatService:
             "suggestions": self._build_suggestions(
                 intent="exercice", niveau=niveau, matiere=matiere, source="llm"
             ),
+        }
+
+    @staticmethod
+    def _get_subjects_for_level(niveau: str) -> list[str]:
+        """Retourne les matières du programme officiel CEB selon le niveau.
+
+        Source : Curriculum de l'Éducation de Base (CEB), Ministère de
+        l'Éducation Nationale du Sénégal. Chaque niveau a ses matières
+        propres (l'élémentaire combine plus de domaines, le lycée se
+        spécialise par série).
+        """
+        # ÉLÉMENTAIRE — Étape 1 (CI/CP) : intégration forte
+        if niveau in ("CI", "CP"):
+            return [
+                "Langue et Communication (Français)",
+                "Mathématiques",
+                "Découverte du Monde",
+                "Éducation Physique et Sportive",
+                "Vivre Ensemble",
+                "Arts (Plastiques et Musique)",
+            ]
+        # ÉLÉMENTAIRE — Étape 2 (CE1/CE2) : amorce de l'anglais
+        if niveau in ("CE1", "CE2"):
+            return [
+                "Mathématiques",
+                "Français (Lecture, Écriture, Grammaire)",
+                "Découverte du Monde (Sciences, Histoire, Géographie)",
+                "Éducation Physique et Sportive",
+                "Vivre Ensemble",
+                "Arts",
+                "Anglais (initiation)",
+            ]
+        # ÉLÉMENTAIRE — Étape 3 (CM1/CM2) : préparation au CFEE
+        if niveau in ("CM1", "CM2"):
+            return [
+                "Mathématiques",
+                "Français (Lecture, Production écrite, Grammaire)",
+                "Sciences et Vie",
+                "Histoire-Géographie",
+                "Anglais",
+                "Éducation Civique et Morale",
+                "Éducation Physique et Sportive",
+                "Arts",
+            ]
+        # PRÉSCOLAIRE
+        if niveau == "Préscolaire":
+            return [
+                "Langage et Communication",
+                "Découverte du Monde",
+                "Activités d'éveil",
+                "Anglais (initiation)",
+            ]
+        # COLLÈGE (6e à 3e)
+        if niveau in ("6ème", "5ème", "4ème", "3ème"):
+            options = [
+                "Mathématiques",
+                "Français",
+                "Histoire-Géographie",
+                "Sciences de la Vie et de la Terre (SVT)",
+                "Sciences Physiques",
+                "Anglais",
+                "Éducation Civique et Morale",
+                "Éducation Physique et Sportive",
+            ]
+            # LV2 à partir de la 4e
+            if niveau in ("4ème", "3ème"):
+                options.insert(6, "Espagnol (LV2)")
+                options.insert(7, "Arabe (LV2)")
+            return options
+        # LYCÉE — matières communes (les séries spécialiseront ensuite)
+        if niveau in ("2nde", "1ère", "Terminale"):
+            return [
+                "Mathématiques",
+                "Français",
+                "Philosophie",
+                "Histoire-Géographie",
+                "Sciences de la Vie et de la Terre (SVT)",
+                "Physique-Chimie",
+                "Anglais",
+                "Espagnol",
+                "Arabe",
+                "Éducation Physique et Sportive",
+            ]
+        # Fallback : matières standard
+        return [
+            "Mathématiques", "Français", "Sciences",
+            "Histoire-Géographie", "Anglais",
+        ]
+
+    async def _handle_correction(
+        self,
+        message: str,
+        history: list,
+        user_ctx: Optional[dict],
+    ) -> dict:
+        """Genere les corriges des exercices presents dans l'historique recent.
+
+        Strategie : extraire le DERNIER message assistant qui contient des
+        exercices ('### Exercice 1', '### Exercice 2', etc.), l'inclure dans
+        le contexte LLM, et demander les corriges via le module dédié.
+        """
+        # 1. Trouver le dernier bloc d'exercices dans l'historique
+        last_exercises_block = None
+        for msg in reversed(history or []):
+            if msg.get("role") != "assistant":
+                continue
+            content = msg.get("content", "") or ""
+            if "Exercice 1" in content or "exercice 1" in content.lower():
+                last_exercises_block = content
+                break
+
+        # 2. Si pas d'exercices trouves, repondre honnetement
+        if not last_exercises_block:
+            return {
+                "response": (
+                    "Je ne trouve pas d'exercices à corriger dans notre conversation. "
+                    "Voulez-vous que je génère des exercices, puis je vous donnerai "
+                    "les corrigés tout de suite après ?"
+                ),
+                "source": "clarification",
+                "clarification": {
+                    "options": [
+                        "Oui, génère 3 exercices",
+                        "Oui, génère 5 exercices",
+                        "Non merci",
+                    ],
+                },
+                "suggestions": [],
+            }
+
+        # 3. Construire un message enrichi pour le LLM avec les exercices a corriger
+        enriched_message = (
+            f"Voici les exercices a corriger (extraits de notre conversation precedente) :\n\n"
+            f"{last_exercises_block[:2500]}\n\n"
+            f"--- FIN DES EXERCICES ---\n\n"
+            f"Donne-moi maintenant les CORRIGÉS COMPLETS de tous ces exercices, "
+            f"dans l'ordre, avec le raisonnement pas-à-pas. Format : "
+            f"### Corrigés des exercices, puis ### Exercice 1, énoncé court, "
+            f"Solution :, Réponse :, etc."
+        )
+
+        text = await self.nlp_service.generate_response_v2(
+            message=enriched_message,
+            intent="correction_request",
+            conversation_history=history,
+            user_context=user_ctx,
+        )
+
+        return {
+            "response": text,
+            "source": "llm",
+            "suggestions": [
+                "D'autres exercices",
+                "Une fiche pédagogique",
+                "Expliquer un concept",
+            ],
         }
 
     async def _build_kb_context(self, message: str, intent_result) -> str:

@@ -84,6 +84,15 @@ UNCLEAR_CASES = [
     "asdfgh",
 ]
 
+CORRECTION_CASES = [
+    "Donne-moi les corrigés",
+    "Les corrections s'il te plaît",
+    "Tu peux corriger ces exercices ?",
+    "Donne les solutions",
+    "Les réponses des exercices",
+    "Donne-moi le corrigé",
+]
+
 
 @pytest.mark.parametrize("msg", GREETING_CASES)
 def test_heuristic_greeting(classifier, msg):
@@ -111,6 +120,42 @@ def test_heuristic_exercise_explicit(classifier, msg):
     assert result.primary_intent == "exercise_request", (
         f"'{msg}' devrait etre 'exercise_request', got '{result.primary_intent}'"
     )
+
+
+@pytest.mark.parametrize("msg", CORRECTION_CASES)
+def test_heuristic_correction(classifier, msg):
+    """Demande de corriges -> 'correction_request' (jamais exercise_request)."""
+    result = classifier._classify_heuristic(msg, user_context=None)
+    assert result.primary_intent == "correction_request", (
+        f"'{msg}' devrait etre 'correction_request', got '{result.primary_intent}'"
+    )
+
+
+def test_correction_vs_new_exercise(classifier):
+    """Si l'utilisateur dit 'd'autres exercices' c'est exercise_request,
+    PAS correction_request, meme s'il dit 'corriger' ailleurs."""
+    msg = "Donne-moi d'autres exercices"
+    result = classifier._classify_heuristic(msg, user_context=None)
+    assert result.primary_intent == "exercise_request"
+
+
+def test_exercises_with_corrige_is_exercise(classifier):
+    """'donne-moi des exercices avec corrige' -> exercise_request."""
+    msg = "Donne-moi 3 exercices avec corrigé"
+    result = classifier._classify_heuristic(msg, user_context=None)
+    assert result.primary_intent == "exercise_request", (
+        f"'{msg}' devrait etre exercise_request, got '{result.primary_intent}'"
+    )
+
+
+def test_correction_alone_is_correction(classifier):
+    """'donne les corriges' SANS demande d'exercices -> correction_request."""
+    for msg in ["Donne les corriges", "Les corrigés s'il te plaît",
+                "Tu peux corriger ?"]:
+        result = classifier._classify_heuristic(msg, user_context=None)
+        assert result.primary_intent == "correction_request", (
+            f"'{msg}' devrait etre correction_request, got '{result.primary_intent}'"
+        )
 
 
 @pytest.mark.parametrize("msg", PLANETE_CASES)
@@ -204,10 +249,56 @@ def test_intent_result_to_dict():
 # ═════════════════════════════════════════════════════════
 
 def test_taxonomy_complete():
-    """Les 10 intents prevus existent tous."""
+    """Les 11 intents prevus existent tous (10 + correction_request)."""
     expected = {
         "greeting", "smalltalk", "factual_question", "explain",
-        "exercise_request", "fiche_request", "planete_help",
-        "guidance", "complaint_emotion", "unclear",
+        "exercise_request", "correction_request", "fiche_request",
+        "planete_help", "guidance", "complaint_emotion", "unclear",
     }
     assert VALID_INTENTS == expected
+
+
+# ═════════════════════════════════════════════════════════
+# Test des matieres officielles CEB par niveau
+# ═════════════════════════════════════════════════════════
+
+def test_subjects_for_level_elementaire():
+    """Les niveaux elementaires CI..CM2 retournent des matieres alignees CEB."""
+    from app.services.chat_service import ChatService
+
+    # CI/CP : etape integree
+    cicp = ChatService._get_subjects_for_level("CI")
+    assert any("Français" in s or "Français" in s for s in cicp)
+    assert any("Mathématiques" in s for s in cicp)
+
+    # CM1/CM2 : prepa CFEE
+    cm = ChatService._get_subjects_for_level("CM2")
+    assert any("Mathématiques" in s for s in cm)
+    assert any("Français" in s for s in cm)
+    assert any("Anglais" in s for s in cm)
+    assert any("Histoire" in s for s in cm)
+
+
+def test_subjects_for_level_college():
+    """College : SVT, Sciences Physiques, etc."""
+    from app.services.chat_service import ChatService
+
+    sixieme = ChatService._get_subjects_for_level("6ème")
+    assert any("Mathématiques" in s for s in sixieme)
+    assert any("SVT" in s or "Vie et de la Terre" in s for s in sixieme)
+    assert any("Sciences Physiques" in s for s in sixieme)
+    assert any("Anglais" in s for s in sixieme)
+
+    # 4eme/3eme : LV2 disponible
+    quatrieme = ChatService._get_subjects_for_level("4ème")
+    assert any("Espagnol" in s for s in quatrieme)
+
+
+def test_subjects_for_level_lycee():
+    """Lycee : Philosophie + Physique-Chimie."""
+    from app.services.chat_service import ChatService
+
+    term = ChatService._get_subjects_for_level("Terminale")
+    assert any("Mathématiques" in s for s in term)
+    assert any("Philosophie" in s for s in term)
+    assert any("Physique-Chimie" in s for s in term)

@@ -35,16 +35,17 @@ logger = structlog.get_logger(__name__)
 # ─────────────────────────────────────────────────────────────────
 
 VALID_INTENTS = {
-    "greeting",          # "Bonjour", "Salut", "Hello"
-    "smalltalk",         # "Comment ca va ?", "Merci", "Au revoir"
-    "factual_question",  # "Quel est le programme du CM2 ?"
-    "explain",           # "Comment expliquer la photosynthese ?"
-    "exercise_request",  # "Donne 3 exercices de maths CM2"
-    "fiche_request",     # "Fiche pedagogique sur les fractions"
-    "planete_help",      # "Comment justifier une absence ?"
-    "guidance",          # "Comment aider mon enfant ?"
-    "complaint_emotion", # "Je n'y arrive pas"
-    "unclear",           # Intent ambigu / multiple
+    "greeting",           # "Bonjour", "Salut", "Hello"
+    "smalltalk",          # "Comment ca va ?", "Merci", "Au revoir"
+    "factual_question",   # "Quel est le programme du CM2 ?"
+    "explain",            # "Comment expliquer la photosynthese ?"
+    "exercise_request",   # "Donne 3 exercices de maths CM2"
+    "correction_request", # "Donne-moi les corriges des exercices precedents"
+    "fiche_request",      # "Fiche pedagogique sur les fractions"
+    "planete_help",       # "Comment justifier une absence ?"
+    "guidance",           # "Comment aider mon enfant ?"
+    "complaint_emotion",  # "Je n'y arrive pas"
+    "unclear",            # Intent ambigu / multiple
 }
 
 # Intents qui necessitent une recherche dans la base de connaissances
@@ -101,6 +102,9 @@ Tu dois classer le message dans UN des 10 intents suivants :
 - "factual_question"  : question avec réponse factuelle (Quel est le programme du CM2 ?)
 - "explain"           : demande d'EXPLICATION pédagogique (Comment expliquer X ?, Aide-moi à comprendre Y)
 - "exercise_request"  : demande EXPLICITE d'exercices (Donne 3 exercices de maths CM2)
+- "correction_request": demande des CORRIGÉS / corrections / réponses des exercices précédents
+                         ("Donne-moi les corrigés", "Les corrections", "Les solutions",
+                          "Tu peux me corriger ça ?")
 - "fiche_request"     : demande de fiche/préparation/leçon
 - "planete_help"      : aide sur la plateforme PLANETE (gestion école, absence, notes...)
 - "guidance"          : conseil parental ou pédagogique (Comment aider mon enfant ?)
@@ -113,6 +117,7 @@ RÈGLES CRITIQUES :
 3. "Comment aider mon enfant" → "guidance", JAMAIS "exercise_request".
 4. "Bonjour CM2" reste "greeting" (mention de niveau ne suffit pas).
 5. Une question pure ("Quel est..." / "Qu'est-ce que...") → "factual_question" ou "explain".
+6. "Donne-moi les corrigés" / "les corrections" / "tu peux corriger ?" / "les réponses" / "les solutions" → "correction_request" (JAMAIS "exercise_request"). C'est une demande de corrigés des exercices déjà fournis, pas de nouveaux exercices.
 
 Tu dois aussi extraire les entities (champ optionnel, mets null si absent) :
 - niveau : CI, CP, CE1, CE2, CM1, CM2, 6ème, 5ème, 4ème, 3ème, 2nde, 1ère, Terminale, ou null
@@ -177,6 +182,12 @@ USER: "Fiche pédagogique de mathématiques pour le CE2"
 
 USER: "et en français ?"
 {"primary_intent":"factual_question","confidence":0.85,"secondary_intent":null,"entities":{"niveau":null,"matiere":"français","sujet":null,"emotion_user":null,"ton_souhaite":null},"is_followup":true,"needs_retrieval":["curriculum"],"language":"fr","summary":"Suivi de conversation : matière français à la place de la précédente."}
+
+USER: "Donne-moi les corrigés"
+{"primary_intent":"correction_request","confidence":0.97,"secondary_intent":null,"entities":{"niveau":null,"matiere":null,"sujet":null,"emotion_user":null,"ton_souhaite":null},"is_followup":true,"needs_retrieval":[],"language":"fr","summary":"Demande des corrigés des exercices précédents."}
+
+USER: "Les corrections s'il te plaît"
+{"primary_intent":"correction_request","confidence":0.96,"secondary_intent":null,"entities":{"niveau":null,"matiere":null,"sujet":null,"emotion_user":null,"ton_souhaite":null},"is_followup":true,"needs_retrieval":[],"language":"fr","summary":"Demande des corrections des exercices."}
 
 Maintenant, classe le message suivant. Réponds UNIQUEMENT avec le JSON, RIEN d'autre."""
 
@@ -387,6 +398,35 @@ class IntentClassifier:
             return IntentResult(
                 primary_intent="smalltalk", confidence=0.85,
                 summary="Conversation courtoise (heuristique).",
+            )
+
+        # CORRECTION_REQUEST : prioritaire car peut contenir le mot "exercice"
+        # ("corriger ces exercices", "corrigés des exos") - on doit l'attraper
+        # AVANT le pattern exercise_request.
+        CORRECTION_PATTERNS = [
+            r"\bcorrig[eé]s?\b",       # corrigé, corrigés
+            r"\bcorrection(s)?\b",      # correction, corrections
+            r"\bcorriger\b",            # corriger
+            r"\bsolutions?\b",          # solution, solutions
+            r"\br[eé]ponses?\b",        # réponse, réponses
+        ]
+        # Discriminer entre :
+        # - "Donne-moi les corrigés" -> correction_request (demande pure)
+        # - "Donne-moi des exercices avec corrigé" -> exercise_request (avec corrigé)
+        # - "D'autres exercices" -> exercise_request (nouveaux)
+        new_exercise_marker = re.search(
+            r"(nouveaux exercices|nouvel exercice|d['']autres exercices|autres exercices|"
+            r"d['']autres exos|donne[\s\-]+(?:moi)?\s+(?:des|un|\d+)\s+(?:exercice|exo|devoir)s?|"
+            r"avec\s+corrig|g[eé]n[eè]re\s+(?:des|un|\d+)?\s*(?:exercice|exo)s?|"
+            r"fais[\s\-]+moi\s+(?:des|un|\d+)?\s*(?:exercice|exo)s?)",
+            msg
+        )
+        is_correction = any(re.search(p, msg) for p in CORRECTION_PATTERNS)
+        if is_correction and not new_exercise_marker:
+            return IntentResult(
+                primary_intent="correction_request", confidence=0.85,
+                is_followup=True,
+                summary="Demande de corrigés (heuristique).",
             )
 
         # Exercice EXPLICITE uniquement (le mot doit etre present)

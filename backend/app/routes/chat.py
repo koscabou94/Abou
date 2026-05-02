@@ -181,13 +181,27 @@ async def send_message(
     from app.middleware.auth import get_current_user_optional
     current_user = await get_current_user_optional(request, db)
 
-    result = await chat_service.process_message(
-        user_message=chat_request.message,
-        session_id=chat_request.session_id,
-        db=db,
-        language_override=chat_request.language,
-        user=current_user,
-    )
+    # Sprint 1 : pipeline V2 (classifier LLM + router + handlers).
+    # Le flag d'env LEGACY_PIPELINE=1 permet de revenir a V1 si besoin.
+    import os
+    use_legacy = os.environ.get("LEGACY_PIPELINE", "").strip() == "1"
+
+    if use_legacy or chat_service.intent_classifier is None:
+        result = await chat_service.process_message(
+            user_message=chat_request.message,
+            session_id=chat_request.session_id,
+            db=db,
+            language_override=chat_request.language,
+            user=current_user,
+        )
+    else:
+        result = await chat_service.process_message_v2(
+            user_message=chat_request.message,
+            session_id=chat_request.session_id,
+            db=db,
+            language_override=chat_request.language,
+            user=current_user,
+        )
 
     # Vérifier si une erreur s'est produite
     if result.get("intent") == "error":

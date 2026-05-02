@@ -78,6 +78,7 @@ class ChatService:
         knowledge_service: Optional["KnowledgeService"] = None,
         planete_faq_service: Optional["PlaneteFAQService"] = None,
         curriculum_service: Optional["CurriculumService"] = None,
+        intent_classifier: Optional[object] = None,
     ) -> None:
         """
         Initialise le service de chat avec ses dépendances.
@@ -98,6 +99,8 @@ class ChatService:
         self.knowledge_service = knowledge_service
         self.planete_faq_service = planete_faq_service
         self.curriculum_service = curriculum_service
+        # Sprint 1 : nouveau classifier d'intent LLM-based (optionnel)
+        self.intent_classifier = intent_classifier
 
         # Cache LRU des réponses LLM (200 entrées max)
         self._llm_cache = _LRUCache(max_size=200)
@@ -1890,6 +1893,391 @@ class ChatService:
             }
 
         return None
+
+    # ═════════════════════════════════════════════════════════
+    # PIPELINE V2 — refonte coeur (Sprint 1)
+    # ═════════════════════════════════════════════════════════
+    # Nouveau pipeline base sur :
+    #   1. Classifier d'intent LLM-based (10 intents propres)
+    #   2. Router par intent vers handler dedie
+    #   3. SYSTEM_PROMPT modulaire (court, focalise sur la tache)
+    #   4. PAS DE REFORMULATION DESTRUCTRICE du message
+    # ═════════════════════════════════════════════════════════
+
+    async def process_message_v2(
+        self,
+        user_message: str,
+        session_id: str,
+        db: AsyncSession,
+        language_override: Optional[str] = None,
+        user: Optional[object] = None,
+    ) -> dict:
+        """Pipeline V2 : classifier -> router -> handler dedie.
+
+        Avantages sur process_message (V1) :
+        - "Bonjour" reste une salutation, ne declenche plus d'exercices
+        - Le message original n'est JAMAIS reecrit
+        - SYSTEM_PROMPT reduit a 60-80 lignes (vs 240) selon l'intent
+        - Routing modele (Haiku pour intents simples, 70B pour complexes)
+        """
+        start_time = time.time()
+
+        if not user_message or not user_message.strip():
+            return self._build_error_response(session_id, "Message vide", "fr")
+
+        # Si pas de classifier dispo (init partiel), fallback sur V1
+        if self.intent_classifier is None:
+            logger.warning("V2 : pas de classifier, fallback V1")
+            return await self.process_message(
+                user_message, session_id, db, language_override, user
+            )
+
+        message_clean = user_message.strip()[:1000]
+        detected_lang = "fr"  # Multi-langue traite plus tard si besoin
+
+        try:
+            # ─── Phase 1 : recuperer le contexte de session ───
+            session_state = self._get_session_state(session_id)
+            history = await self._get_conversation_history(session_id, db)
+
+            user_ctx = None
+            if user is not None:
+                user_ctx = {
+                    "profile_type": getattr(user, "profile_type", None),
+                    "level": getattr(user, "level", None),
+                    "full_name": getattr(user, "full_name", None),
+                    "school": getattr(user, "school", None),
+                }
+
+            # ─── Phase 2 : classifier l'intent (LLM Haiku) ───
+            intent_result = await self.intent_classifier.classify(
+                message=message_clean,
+                conversation_history=history,
+                user_context=user_ctx,
+            )
+            intent = intent_result.primary_intent
+            entities = intent_result.entities or {}
+            logger.info(
+                "V2 intent classifie",
+                intent=intent,
+                confidence=round(intent_result.confidence, 2),
+                entities=entities,
+            )
+
+            # ─── Phase 3 : routing par intent ───
+            response_data = await self._route_intent(
+                intent_result=intent_result,
+                message=message_clean,
+                history=history,
+                user_ctx=user_ctx,
+                user=user,
+                session_id=session_id,
+                db=db,
+            )
+
+            response_data["session_id"] = session_id
+            response_data["language"] = detected_lang
+            response_data["intent"] = intent
+            response_data["confidence"] = intent_result.confidence
+            response_data["response_time_ms"] = int((time.time() - start_time) * 1000)
+            response_data["timestamp"] = datetime.utcnow().isoformat()
+
+            # ─── Phase 4 : sauvegarde + memoire de session ───
+            await self._save_message(
+                session_id=session_id,
+                user_message=message_clean,
+                assistant_response=response_data["response"],
+                detected_lang=detected_lang,
+                intent=intent,
+                confidence=intent_result.confidence,
+                source=response_data.get("source", "llm"),
+                db=db,
+            )
+
+            self._update_session_state(
+                session_id,
+                intent=intent,
+                niveau=entities.get("niveau"),
+                matiere=entities.get("matiere"),
+                response_type=intent,
+                question=message_clean,
+                assistant_excerpt=response_data["response"][:300],
+            )
+
+            return response_data
+
+        except Exception as exc:
+            logger.error("V2 pipeline echec, fallback V1", error=str(exc), exc_info=True)
+            return await self.process_message(
+                user_message, session_id, db, language_override, user
+            )
+
+    async def _route_intent(
+        self,
+        intent_result,
+        message: str,
+        history: list,
+        user_ctx: Optional[dict],
+        user: Optional[object],
+        session_id: str,
+        db: AsyncSession,
+    ) -> dict:
+        """Route un message vers le handler approprie selon l'intent."""
+        intent = intent_result.primary_intent
+        entities = intent_result.entities or {}
+
+        # Confiance trop basse + intent = unclear -> demander clarification
+        if intent == "unclear" or intent_result.confidence < 0.5:
+            return await self._handle_unclear(message, history, user_ctx)
+
+        # Salutations : reponse rapide statique (pas d'appel LLM)
+        if intent == "greeting":
+            return self._handle_greeting_static(user_ctx)
+
+        # Aide PLANETE : FAQ_PLANETE3 prioritaire
+        if intent == "planete_help":
+            return await self._handle_planete(message, entities, user_ctx, history)
+
+        # Demande d'exercices : delegue a la generation specialisee
+        if intent == "exercise_request":
+            return await self._handle_exercise(
+                message, entities, user_ctx, history, session_id
+            )
+
+        # Pour tous les autres intents : retrieval conditionnel + LLM modulaire
+        kb_context = await self._build_kb_context(message, intent_result)
+        use_fast = intent in ("smalltalk",)
+        response_text = await self.nlp_service.generate_response_v2(
+            message=message,
+            intent=intent,
+            conversation_history=history,
+            user_context=user_ctx,
+            knowledge_context=kb_context,
+            use_fast_model=use_fast,
+        )
+        suggestions = self._build_suggestions(
+            intent="programme" if intent == "factual_question" else
+                   "exercice" if intent == "exercise_request" else
+                   "fiche" if intent == "fiche_request" else
+                   intent,
+            niveau=entities.get("niveau"),
+            matiere=entities.get("matiere"),
+            source="llm",
+        )
+        return {
+            "response": response_text,
+            "source": "llm" if not kb_context else "knowledge",
+            "suggestions": suggestions,
+        }
+
+    def _handle_greeting_static(self, user_ctx: Optional[dict]) -> dict:
+        """Salutation : reponse instantanee sans LLM."""
+        first_name = None
+        if user_ctx and user_ctx.get("full_name"):
+            first_name = user_ctx["full_name"].split(" ")[0]
+        if first_name:
+            response = (
+                f"Bonjour {first_name} ! 👋 Je suis EduBot, votre assistant éducatif. "
+                "Comment puis-je vous aider aujourd'hui ?"
+            )
+        else:
+            response = (
+                "Bonjour ! 👋 Je suis EduBot, l'assistant éducatif "
+                "du Ministère de l'Éducation Nationale du Sénégal. "
+                "Comment puis-je vous aider aujourd'hui ?"
+            )
+        # Suggestions adaptees au profil
+        profile = user_ctx.get("profile_type") if user_ctx else None
+        level = user_ctx.get("level") if user_ctx else None
+        if profile == "enseignant":
+            suggestions = [
+                "Fiche pédagogique de mathématiques pour le CM2",
+                "Comment importer le personnel sur PLANETE ?",
+                "Évaluation de français CE1",
+            ]
+        elif profile == "eleve" and level:
+            suggestions = [
+                f"3 exercices de maths pour le {level}",
+                f"Programme de français en {level}",
+                f"Comment réviser pour mon prochain examen ?",
+            ]
+        elif profile == "parent" and level:
+            suggestions = [
+                f"Que doit savoir mon enfant en {level} ?",
+                f"Comment aider mon enfant en lecture ?",
+                "Quel est le calendrier scolaire ?",
+            ]
+        else:
+            suggestions = [
+                "Quel est le programme de maths en CM2 ?",
+                "Comment se connecter à PLANETE ?",
+                "Donne-moi 3 exercices pour le CE1",
+            ]
+        return {"response": response, "source": "greeting", "suggestions": suggestions}
+
+    async def _handle_unclear(
+        self, message: str, history: list, user_ctx: Optional[dict]
+    ) -> dict:
+        """Demande de clarification structuree."""
+        response = (
+            "Je veux m'assurer de bien vous aider. Que souhaitez-vous faire ?"
+        )
+        return {
+            "response": response,
+            "source": "clarification",
+            "clarification": {
+                "options": [
+                    "Une explication d'un concept",
+                    "Des exercices",
+                    "Une fiche pédagogique",
+                    "Aide PLANETE",
+                    "Conseil parental",
+                    "Autre",
+                ],
+            },
+            "suggestions": [],
+        }
+
+    async def _handle_planete(
+        self, message: str, entities: dict, user_ctx: Optional[dict], history: list
+    ) -> dict:
+        """Recherche dans FAQ_PLANETE3, fallback LLM si pas de match."""
+        if self.planete_faq_service and self.planete_faq_service.is_available:
+            match = await self.planete_faq_service.find_best_match(message)
+            if match:
+                return {
+                    "response": match["answer"],
+                    "source": "planete_faq",
+                    "planete_category": match.get("category"),
+                    "suggestions": self._build_suggestions(
+                        intent="planete", niveau=None, matiere=None, source="planete_faq"
+                    ),
+                }
+        # Fallback LLM avec module planete_help
+        text = await self.nlp_service.generate_response_v2(
+            message=message,
+            intent="planete_help",
+            conversation_history=history,
+            user_context=user_ctx,
+        )
+        return {
+            "response": text,
+            "source": "llm",
+            "suggestions": self._build_suggestions(
+                intent="planete", niveau=None, matiere=None, source="planete_faq"
+            ),
+        }
+
+    async def _handle_exercise(
+        self,
+        message: str,
+        entities: dict,
+        user_ctx: Optional[dict],
+        history: list,
+        session_id: str,
+    ) -> dict:
+        """Genere des exercices avec curriculum CEB injecte si dispo.
+
+        Si niveau manque dans entities ET dans le profil utilisateur,
+        on demande la clarification.
+        """
+        niveau = entities.get("niveau")
+        matiere = entities.get("matiere")
+
+        # Niveau hereditaire du profil
+        if not niveau and user_ctx:
+            niveau = user_ctx.get("level")
+
+        # Si toujours pas de niveau ET pas detectable -> clarification
+        if not niveau:
+            niv_in_message = detect_niveau(message)
+            if niv_in_message:
+                niveau = niv_in_message
+            else:
+                return {
+                    "response": (
+                        "Pour vous proposer des exercices parfaitement adaptés, "
+                        "j'ai besoin de connaître le niveau scolaire."
+                    ),
+                    "source": "clarification",
+                    "clarification": {
+                        "options": [
+                            "CI", "CP", "CE1", "CE2", "CM1", "CM2",
+                            "6ème", "5ème", "4ème", "3ème",
+                            "2nde", "1ère", "Terminale",
+                        ],
+                    },
+                    "suggestions": [],
+                }
+
+        # Recuperer le contexte CEB pour le niveau/matiere
+        kb_context = ""
+        if self.curriculum_service and self.curriculum_service.is_available:
+            try:
+                entries = await self.curriculum_service.get_for_level_and_subject(
+                    niveau, matiere=matiere, limit=3,
+                )
+                if not entries:
+                    entries = await self.curriculum_service.search(
+                        message, niveau=niveau, matiere=matiere, limit=3,
+                    )
+                if entries:
+                    kb_context = self.curriculum_service.get_curriculum_context(
+                        entries, max_chars=1200
+                    )
+            except Exception:
+                pass
+
+        # Generer avec module exercise_request
+        text = await self.nlp_service.generate_response_v2(
+            message=message,
+            intent="exercise_request",
+            conversation_history=history,
+            user_context=user_ctx,
+            knowledge_context=kb_context,
+        )
+        return {
+            "response": text,
+            "source": "llm",
+            "suggestions": self._build_suggestions(
+                intent="exercice", niveau=niveau, matiere=matiere, source="llm"
+            ),
+        }
+
+    async def _build_kb_context(self, message: str, intent_result) -> str:
+        """Construit le contexte de recherche selon les besoins de l'intent."""
+        needs = intent_result.needs_retrieval or []
+        parts = []
+
+        # Curriculum si demande
+        if "curriculum" in needs and self.curriculum_service and self.curriculum_service.is_available:
+            try:
+                niveau = intent_result.entities.get("niveau") if intent_result.entities else None
+                matiere = intent_result.entities.get("matiere") if intent_result.entities else None
+                entries = await self.curriculum_service.search(
+                    message, niveau=niveau, matiere=matiere, limit=3,
+                )
+                if entries:
+                    ctx = self.curriculum_service.get_curriculum_context(entries, max_chars=1000)
+                    if ctx:
+                        parts.append(ctx)
+            except Exception:
+                pass
+
+        # Knowledge base si demande
+        if "knowledge" in needs and self.knowledge_service and self.knowledge_service.is_available:
+            try:
+                docs = await self.knowledge_service.search(message, limit=2, category=None)
+                if docs:
+                    parts.append(self.knowledge_service.get_context_for_llm(docs))
+            except Exception:
+                pass
+
+        return "\n\n".join(parts) if parts else ""
+
+    # ═════════════════════════════════════════════════════════
+    # FIN PIPELINE V2
+    # ═════════════════════════════════════════════════════════
 
     def _get_greeting_response(self, message: str) -> str:
         """Délègue à NLPService pour avoir une seule source de vérité.

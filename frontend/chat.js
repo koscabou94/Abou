@@ -18,13 +18,52 @@
             "text/plain", "text/csv"]
     };
 
+    // ─────────────────────────────────────────────────────────
+    // HISTORIQUE PRIVE PAR UTILISATEUR (Sprint 3)
+    // - Connecte : cle "simen_history_<userId>"
+    // - Invite   : pas d'historique persiste (cle null)
+    // ─────────────────────────────────────────────────────────
+    function _userIdForStorage() {
+        try {
+            const u = JSON.parse(localStorage.getItem("edubot_user") || "null");
+            if (u && u.id) return String(u.id);
+        } catch (_) {}
+        return null;
+    }
+
+    function _historyKey() {
+        const uid = _userIdForStorage();
+        return uid ? `simen_history_${uid}` : null;
+    }
+
+    function _messagesKey() {
+        const uid = _userIdForStorage();
+        return uid ? `simen_session_messages_${uid}` : null;
+    }
+
+    function loadHistoryForCurrentUser() {
+        const hKey = _historyKey();
+        if (!hKey) return [];
+        try {
+            return JSON.parse(localStorage.getItem(hKey) || "[]");
+        } catch (_) { return []; }
+    }
+
+    function loadMessagesForCurrentUser() {
+        const mKey = _messagesKey();
+        if (!mKey) return {};
+        try {
+            return JSON.parse(localStorage.getItem(mKey) || "{}");
+        } catch (_) { return {}; }
+    }
+
     let state = {
         lang: localStorage.getItem("simen_lang") || "fr",
         theme: localStorage.getItem("simen_theme") || "light",
         isSidebarOpen: window.innerWidth > 900,
-        history: JSON.parse(localStorage.getItem("simen_history") || "[]"),
+        history: loadHistoryForCurrentUser(),
         // Messages stockés localement par session : { sessionId: [{role, content}, ...] }
-        sessionMessages: JSON.parse(localStorage.getItem("simen_session_messages") || "{}"),
+        sessionMessages: loadMessagesForCurrentUser(),
         currentSessionId: crypto.randomUUID(),
         isTyping: false,
         messages: {},
@@ -342,6 +381,8 @@
             state.user = data.user;
             persistAuth();
             renderAuthBlock();
+            // Sprint 3 : recharger l'historique du nouvel utilisateur
+            reloadHistoryAfterAuthChange();
             applyLanguage(state.lang);  // re-render quick cards selon profil
             hideLoginModal();
 
@@ -401,6 +442,7 @@
             state.user = data.user;
             persistAuth();
             renderAuthBlock();
+            reloadHistoryAfterAuthChange();
             applyLanguage(state.lang);
             hideProfileModal();
         } catch (err) {
@@ -416,7 +458,23 @@
         state.user = null;
         persistAuth();
         renderAuthBlock();
+        // Sprint 3 : reset historique en memoire (mode invite : pas d'historique)
+        state.history = [];
+        state.sessionMessages = {};
+        renderHistory();
         applyLanguage(state.lang);
+        // Reset la conversation courante (UX claire)
+        state.currentSessionId = crypto.randomUUID();
+        if (elements.messagesArea) elements.messagesArea.innerHTML = "";
+        if (elements.welcomeSection) elements.welcomeSection.style.display = "";
+        if (elements.homeBtn) elements.homeBtn.classList.add("hidden");
+    }
+
+    /** Apres login : recharger l'historique du nouvel utilisateur. */
+    function reloadHistoryAfterAuthChange() {
+        state.history = loadHistoryForCurrentUser();
+        state.sessionMessages = loadMessagesForCurrentUser();
+        renderHistory();
     }
 
     function attachAuthListeners() {
@@ -1349,13 +1407,31 @@
             if (!activeIds.includes(id)) delete state.sessionMessages[id];
         });
 
-        localStorage.setItem("simen_history", JSON.stringify(state.history));
-        localStorage.setItem("simen_session_messages", JSON.stringify(state.sessionMessages));
+        // Sprint 3 : ne sauver que pour les utilisateurs CONNECTES.
+        // Mode invite -> pas d'historique persiste (vide a chaque session).
+        const hKey = _historyKey();
+        const mKey = _messagesKey();
+        if (hKey && mKey) {
+            localStorage.setItem(hKey, JSON.stringify(state.history));
+            localStorage.setItem(mKey, JSON.stringify(state.sessionMessages));
+        }
         renderHistory();
     }
 
     function renderHistory() {
         const content = I18N[state.lang] || I18N["fr"];
+
+        // Sprint 3 : si invite, montrer un CTA "Connectez-vous"
+        const isAuthenticated = state.user && state.user.is_authenticated;
+        if (!isAuthenticated) {
+            elements.historyList.innerHTML = `
+                <div class="history-empty history-empty-cta">
+                    <i data-lucide="archive" style="width:18px;height:18px;opacity:0.6"></i>
+                    <p>Connectez-vous pour retrouver vos conversations.</p>
+                </div>`;
+            if (window.lucide) lucide.createIcons();
+            return;
+        }
 
         if (state.history.length === 0) {
             elements.historyList.innerHTML = `<div class="history-empty">${content.historyEmpty}</div>`;
@@ -1424,8 +1500,12 @@
         state.history = state.history.filter(h => h.id !== sessionId);
         // Supprimer aussi les messages locaux de cette session
         delete state.sessionMessages[sessionId];
-        localStorage.setItem("simen_history", JSON.stringify(state.history));
-        localStorage.setItem("simen_session_messages", JSON.stringify(state.sessionMessages));
+        const hKey = _historyKey();
+        const mKey = _messagesKey();
+        if (hKey && mKey) {
+            localStorage.setItem(hKey, JSON.stringify(state.history));
+            localStorage.setItem(mKey, JSON.stringify(state.sessionMessages));
+        }
 
         // If we deleted the current session, start a new one
         if (sessionId === state.currentSessionId) {
@@ -1519,7 +1599,10 @@
                         role: m.role === "assistant" ? "bot" : "user",
                         content: m.content
                     }));
-                    localStorage.setItem("simen_session_messages", JSON.stringify(state.sessionMessages));
+                    const mKey = _messagesKey();
+                    if (mKey) {
+                        localStorage.setItem(mKey, JSON.stringify(state.sessionMessages));
+                    }
                     data.messages.forEach(msg => {
                         appendMessage(msg.role === "assistant" ? "bot" : "user", msg.content);
                     });

@@ -414,3 +414,141 @@ async def clear_all_conversations(
         "message": "Toutes les conversations ont été effacées",
         "timestamp": datetime.utcnow().isoformat()
     }
+
+
+@router.get(
+    "/metrics",
+    summary="Métriques opérationnelles temps réel (Sprint 3)",
+    description=(
+        "Statistiques en temps réel sur le pipeline V2 : taux de cache, "
+        "distribution des intents, profils utilisateurs, taux de feedback. "
+        "Endpoint admin protégé par X-API-Key."
+    ),
+)
+@limiter.limit("30/minute")
+async def get_metrics(
+    request: Request,
+    db: AsyncSession = Depends(get_db),
+    api_key: str = Depends(verify_api_key),
+) -> dict:
+    """Métriques pour piloter la qualité du bot en production."""
+    from sqlalchemy import select, func
+    from app.database.models import Message, User
+    import json
+    import os
+
+    metrics: dict = {"timestamp": datetime.utcnow().isoformat()}
+
+    # 1. Cache LRU
+    try:
+        chat_service = request.app.state.chat_service
+        cache = getattr(chat_service, "_llm_cache", None)
+        if cache:
+            total = cache.hits + cache.misses
+            metrics["cache"] = {
+                "hits": cache.hits,
+                "misses": cache.misses,
+                "total_lookups": total,
+                "hit_rate": round(cache.hits / total, 3) if total else None,
+                "size": len(cache._store),
+                "max_size": cache._max_size,
+            }
+        exos = getattr(chat_service, "_session_exercises", {})
+        metrics["session_exercises_cached"] = len(exos)
+    except Exception as exc:
+        metrics["cache_error"] = str(exc)
+
+    # 2. Distribution des intents
+    try:
+        stmt = (
+            select(Message.intent, func.count(Message.id).label("count"))
+            .where(Message.intent.isnot(None))
+            .group_by(Message.intent)
+            .order_by(func.count(Message.id).desc())
+            .limit(15)
+        )
+        result = await db.execute(stmt)
+        metrics["intents_distribution"] = [
+            {"intent": r[0], "count": r[1]} for r in result.fetchall()
+        ]
+    except Exception as exc:
+        metrics["intents_error"] = str(exc)
+
+    # 3. Distribution des sources
+    try:
+        stmt = (
+            select(Message.source, func.count(Message.id).label("count"))
+            .where(Message.source.isnot(None))
+            .group_by(Message.source)
+            .order_by(func.count(Message.id).desc())
+        )
+        result = await db.execute(stmt)
+        metrics["sources_distribution"] = [
+            {"source": r[0], "count": r[1]} for r in result.fetchall()
+        ]
+    except Exception as exc:
+        metrics["sources_error"] = str(exc)
+
+    # 4. Profils utilisateurs
+    try:
+        stmt = (
+            select(User.profile_type, func.count(User.id).label("count"))
+            .where(User.profile_type.isnot(None))
+            .group_by(User.profile_type)
+        )
+        result = await db.execute(stmt)
+        metrics["users_by_profile"] = [
+            {"profile": r[0] or "guest", "count": r[1]} for r in result.fetchall()
+        ]
+        total_stmt = select(func.count(User.id))
+        metrics["users_total"] = (await db.execute(total_stmt)).scalar() or 0
+        auth_stmt = select(func.count(User.id)).where(User.profile_type.isnot(None))
+        metrics["users_authenticated"] = (await db.execute(auth_stmt)).scalar() or 0
+    except Exception as exc:
+        metrics["users_error"] = str(exc)
+
+    # 5. Feedback (lit data/feedback.jsonl)
+    try:
+        base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        project_root = os.path.dirname(base_dir)
+        path = os.path.join(project_root, "data", "feedback.jsonl")
+        up = down = 0
+        by_intent: dict[str, dict[str, int]] = {}
+        if os.path.exists(path):
+            with open(path, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    try:
+                        rec = json.loads(line)
+                    except json.JSONDecodeError:
+                        continue
+                    vote = rec.get("vote")
+                    if vote == "up":
+                        up += 1
+                    elif vote == "down":
+                        down += 1
+                    intent_name = rec.get("intent") or "unknown"
+                    by_intent.setdefault(intent_name, {"up": 0, "down": 0})
+                    if vote in ("up", "down"):
+                        by_intent[intent_name][vote] += 1
+        total_feedback = up + down
+        metrics["feedback"] = {
+            "up": up,
+            "down": down,
+            "total": total_feedback,
+            "approval_rate": round(up / total_feedback, 3) if total_feedback else None,
+            "by_intent": by_intent,
+        }
+    except Exception as exc:
+        metrics["feedback_error"] = str(exc)
+
+    # 6. Total messages
+    try:
+        msg_count_stmt = select(func.count(Message.id))
+        metrics["messages_total"] = (await db.execute(msg_count_stmt)).scalar() or 0
+    except Exception:
+        pass
+
+    return metrics

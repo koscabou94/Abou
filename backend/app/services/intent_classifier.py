@@ -118,6 +118,7 @@ Tu dois aussi extraire les entities (champ optionnel, mets null si absent) :
 - niveau : CI, CP, CE1, CE2, CM1, CM2, 6ème, 5ème, 4ème, 3ème, 2nde, 1ère, Terminale, ou null
 - matiere : mathématiques, français, anglais, arabe, sciences, histoire-géo, EPS, philosophie, physique-chimie, SVT, ou null
 - sujet : sujet précis si mentionné (ex: "fractions", "photosynthèse", "PLANETE 3"...)
+- quantity : nombre d'exercices/questions demandés (ex: 3, 5, 10), null si non précisé
 - emotion_user : "decourage", "frustre", "perplexe", "enthousiaste", ou null
 - ton_souhaite : "pedagogique", "rapide", "rassurant", "professionnel", ou null
 

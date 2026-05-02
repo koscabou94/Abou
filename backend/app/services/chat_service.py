@@ -2176,40 +2176,103 @@ class ChatService:
         history: list,
         session_id: str,
     ) -> dict:
-        """Genere des exercices avec curriculum CEB injecte si dispo.
+        """Genere des exercices APRES avoir verifie qu'on a tout :
+        niveau (peut etre herite du profil) + matiere + quantite.
 
-        Si niveau manque dans entities ET dans le profil utilisateur,
-        on demande la clarification.
-        """
+        Ordre de clarification : niveau -> matiere -> quantite -> generation.
+        Le niveau peut etre herite du profil utilisateur, mais matiere et
+        quantite doivent toujours etre confirmes par l'utilisateur."""
+        import re as _re
+
         niveau = entities.get("niveau")
         matiere = entities.get("matiere")
+        quantity = entities.get("quantity")
 
-        # Niveau hereditaire du profil
+        # ─── Etape 0 : extraction depuis le message brut ───
+        # Le LLM classifier extrait deja niveau/matiere, mais on tente
+        # une recuperation supplementaire au cas ou (ex: "donne 5 exercices"
+        # -> quantity=5 meme si le LLM ne l'a pas extrait).
+        if not niveau:
+            niveau = detect_niveau(message)
+        if not matiere:
+            mat = detect_matiere(message)
+            if mat:
+                matiere = mat
+        if not quantity:
+            qm = _re.search(r"\b(\d+)\s*(?:exercice|exo|devoir|probleme|problème|question)", message.lower())
+            if qm:
+                try:
+                    quantity = int(qm.group(1))
+                except ValueError:
+                    pass
+
+        # ─── Etape 1 : NIVEAU (avec heritage profil) ───
         if not niveau and user_ctx:
             niveau = user_ctx.get("level")
 
-        # Si toujours pas de niveau ET pas detectable -> clarification
         if not niveau:
-            niv_in_message = detect_niveau(message)
-            if niv_in_message:
-                niveau = niv_in_message
-            else:
-                return {
-                    "response": (
-                        "Pour vous proposer des exercices parfaitement adaptés, "
-                        "j'ai besoin de connaître le niveau scolaire."
-                    ),
-                    "source": "clarification",
-                    "clarification": {
-                        "options": [
-                            "CI", "CP", "CE1", "CE2", "CM1", "CM2",
-                            "6ème", "5ème", "4ème", "3ème",
-                            "2nde", "1ère", "Terminale",
-                        ],
-                    },
-                    "suggestions": [],
-                }
+            return {
+                "response": (
+                    "Pour vous proposer des exercices parfaitement adaptés, "
+                    "j'ai besoin de connaître le niveau scolaire. Quel niveau ?"
+                ),
+                "source": "clarification",
+                "clarification": {
+                    "options": [
+                        "CI", "CP", "CE1", "CE2", "CM1", "CM2",
+                        "6ème", "5ème", "4ème", "3ème",
+                        "2nde", "1ère", "Terminale",
+                    ],
+                },
+                "suggestions": [],
+            }
 
+        # ─── Etape 2 : MATIERE (toujours confirmee) ───
+        if not matiere:
+            # Choisir les matieres pertinentes selon le niveau (cycle)
+            elementaire = niveau in ("CI", "CP", "CE1", "CE2", "CM1", "CM2")
+            collège     = niveau in ("6ème", "5ème", "4ème", "3ème")
+            lycee       = niveau in ("2nde", "1ère", "Terminale")
+
+            if elementaire:
+                options = ["Mathématiques", "Français", "Sciences",
+                           "Histoire-Géographie", "Anglais", "Éducation Civique"]
+            elif collège:
+                options = ["Mathématiques", "Français", "Sciences Physiques",
+                           "SVT", "Histoire-Géographie", "Anglais"]
+            elif lycee:
+                options = ["Mathématiques", "Français", "Physique-Chimie",
+                           "SVT", "Histoire-Géographie", "Anglais", "Philosophie"]
+            else:
+                options = ["Mathématiques", "Français", "Sciences",
+                           "Histoire-Géographie", "Anglais"]
+
+            return {
+                "response": (
+                    f"Parfait, des exercices pour le {niveau} ! "
+                    f"Dans quelle matière ?"
+                ),
+                "source": "clarification",
+                "clarification": {"options": options},
+                "suggestions": [],
+            }
+
+        # ─── Etape 3 : QUANTITE (toujours confirmee si non specifiee) ───
+        if not quantity:
+            return {
+                "response": (
+                    f"Très bien, des exercices de {matiere} pour le {niveau}. "
+                    f"Combien d'exercices voulez-vous ?"
+                ),
+                "source": "clarification",
+                "clarification": {
+                    "options": ["1 exercice", "3 exercices", "5 exercices",
+                                "10 exercices"],
+                },
+                "suggestions": [],
+            }
+
+        # ─── Etape 4 : on a tout -> generation ───
         # Recuperer le contexte CEB pour le niveau/matiere
         kb_context = ""
         if self.curriculum_service and self.curriculum_service.is_available:
@@ -2228,9 +2291,20 @@ class ChatService:
             except Exception:
                 pass
 
-        # Generer avec module exercise_request
+        # Enrichir le message avec quantite/niveau/matiere pour que le LLM
+        # genere exactement ce qui est demande (sans reformuler le message
+        # original — on l'augmente uniquement avec une instruction explicite)
+        enriched_message = (
+            f"{message}\n\n"
+            f"[INSTRUCTION] Génère exactement {quantity} exercice"
+            f"{'s' if quantity > 1 else ''} de {matiere} pour le niveau {niveau}. "
+            f"Format strict : ### Exercice 1 — [type], puis énoncé, puis ---, "
+            f"puis ### Exercice 2 — [type], etc. "
+            f"N'utilise aucun gras nulle part."
+        )
+
         text = await self.nlp_service.generate_response_v2(
-            message=message,
+            message=enriched_message,
             intent="exercise_request",
             conversation_history=history,
             user_context=user_ctx,

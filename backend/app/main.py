@@ -32,6 +32,7 @@ from app.services import (
     PlaneteFAQService,
     CurriculumService,
 )
+from app.services.intent_classifier import IntentClassifier
 from app.middleware.rate_limit import limiter
 
 # === Configuration du logging structuré ===
@@ -97,6 +98,9 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
     # Service Curriculum CEB — programme officiel sénégalais (7 PDFs)
     app.state.curriculum_service = CurriculumService()
 
+    # Sprint 1 : nouveau classifier d'intent LLM-based (Haiku/8B)
+    app.state.intent_classifier = IntentClassifier()
+
     app.state.chat_service = ChatService(
         language_service=app.state.language_service,
         translation_service=app.state.translation_service,
@@ -105,6 +109,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
         knowledge_service=app.state.knowledge_service,
         planete_faq_service=app.state.planete_faq_service,
         curriculum_service=app.state.curriculum_service,
+        intent_classifier=app.state.intent_classifier,
     )
 
     logger.info("Services initialisés avec succès")

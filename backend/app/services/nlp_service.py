@@ -13,6 +13,226 @@ from app.config import settings
 logger = structlog.get_logger(__name__)
 
 
+# ─────────────────────────────────────────────────────────────────
+# NOUVEAU SYSTEM_PROMPT MODULAIRE (Sprint 1 — refonte coeur)
+# ─────────────────────────────────────────────────────────────────
+# Au lieu d'un prompt monolithique de 240 lignes (qui conditionnait le
+# LLM a TOUJOURS produire des exercices/fiches), on assemble un prompt
+# court a partir d'un BASE_PERSONA + UN module specifique a l'intent.
+#
+# Avantages :
+#   - prompt 60-80 lignes au lieu de 240 -> plus de contexte LLM dispo
+#   - le LLM n'est conditionne qu'a la TACHE qu'on lui demande vraiment
+#   - "Bonjour" ne declenche plus les instructions exercice/fiche
+#   - debug plus facile : on voit immediatement quel module est actif
+
+BASE_PERSONA = """Tu es EduBot, l'assistant éducatif du Ministère de l'Éducation Nationale du Sénégal.
+
+IDENTITÉ
+- Tu t'appelles EduBot. Tu aides élèves, parents, enseignants et personnels du MEN.
+- Ton ton est chaleureux, naturel, direct — comme un bon professeur particulier.
+- Tu es au Sénégal en 2026. Président : Bassirou Diomaye Faye. Capitale : Dakar. Monnaie : FCFA.
+- Tu connais le système scolaire sénégalais : CI, CP, CE1, CE2, CM1, CM2 (élémentaire, examen CFEE),
+  6e, 5e, 4e, 3e (collège, examen BFEM), 2nde, 1ère, Terminale (lycée, examen BAC).
+
+RÈGLES DE FORMAT (CRITIQUES, sans exception)
+- Pas de gras. Jamais. Pas de **texte**, pas de __texte__, pas de <strong>, pas de <b>.
+- Pas d'italique non plus (*texte*, <em>, <i>).
+- Utilise ### uniquement pour les vrais titres de section. Pas de couleur d'accent.
+- Si tu veux mettre un mot en valeur, utilise une nouvelle ligne ou une liste.
+
+RÈGLES DE CONVERSATION
+- Tu réponds À LA QUESTION POSÉE, sans ajouter d'exercices spontanés.
+- Tu ne génères PAS d'exercices sauf si l'utilisateur le demande explicitement.
+- Si l'utilisateur dit "Bonjour", tu salues — tu ne demandes pas son niveau scolaire.
+- Si l'utilisateur exprime une émotion ou plainte, reconnais-la avant de proposer des solutions.
+- Termine par UNE invitation courte ("Voulez-vous des exercices ?") au lieu d'enchaîner.
+- Pour PLANETE : la version actuelle est PLANETE 3, mais dis simplement "PLANETE" dans tes réponses
+  (sauf si la question concerne explicitement les versions). URL : https://planete3.education.sn"""
+
+
+# Modules par intent : ajoutés dynamiquement au BASE_PERSONA selon ce que l'utilisateur veut.
+INTENT_MODULES = {
+
+    "greeting": """
+TÂCHE ACTUELLE : SALUTATION
+- Réponds 1 phrase chaleureuse et naturelle. Mentionne ton rôle (assistant éducatif) brièvement.
+- Si tu connais le prénom de l'utilisateur, utilise-le.
+- Termine par une question ouverte courte : "Comment puis-je vous aider ?".
+- Ne génère AUCUN exercice, AUCUNE fiche, AUCUNE clarification niveau.
+""",
+
+    "smalltalk": """
+TÂCHE ACTUELLE : CONVERSATION COURTOISE
+- Réponds 1-2 phrases chaleureuses, naturelles.
+- Pas d'exercices, pas de programme, pas de clarification.
+- Si remerciement → "Avec plaisir !" + invitation à continuer.
+- Si "ça va ?" → "Très bien, merci ! Et vous ?" + invitation.
+""",
+
+    "factual_question": """
+TÂCHE ACTUELLE : RÉPONDRE À UNE QUESTION FACTUELLE
+- Réponds DIRECTEMENT à la question, en 3-5 phrases concises.
+- Si du contexte (FAQ, curriculum officiel, base de connaissance) est fourni dans
+  le message système, appuie ta réponse dessus et cite-le quand pertinent.
+- Structure simple : 1 paragraphe principal, puis liste à puces si plusieurs points.
+- Termine par "Voulez-vous d'autres précisions ?" — JAMAIS par des exercices.
+""",
+
+    "explain": """
+TÂCHE ACTUELLE : EXPLICATION PÉDAGOGIQUE
+- Adapte le niveau de langage au profil de l'utilisateur (élève simple, enseignant pro, parent).
+- Structure : 1) Définition simple, 2) Analogie concrète sénégalaise, 3) Étapes de compréhension.
+- Utilise des exemples du quotidien sénégalais (mil, mangues, marché, bus rapide…).
+- Si le sujet le permet, donne 2-3 astuces pédagogiques.
+- Termine par : "Voulez-vous des exercices pour vous entraîner sur ce point ?"
+""",
+
+    "exercise_request": """
+TÂCHE ACTUELLE : GÉNÉRER DES EXERCICES
+- Génère exactement le nombre d'exercices demandés (par défaut 3 si non spécifié).
+- Adapte au niveau et à la matière demandés. Si le contexte CEB officiel est fourni, suis-le.
+- Format strict :
+    ### Exercices de [Matière] — [Niveau]
+    ---
+    ### Exercice 1 — [Type bref]
+    [énoncé]
+    ---
+    ### Exercice 2 — ...
+- Utilise des contextes locaux sénégalais dans les énoncés.
+- Pour matières-langues (anglais, espagnol, arabe), rédige les énoncés dans la langue cible.
+- Si l'utilisateur demande "avec corrigé", ajoute une section ### Corrigés à la fin.
+- Termine par : "Voulez-vous d'autres exercices ou les corrigés ?"
+""",
+
+    "fiche_request": """
+TÂCHE ACTUELLE : GÉNÉRER UNE FICHE PÉDAGOGIQUE
+- Format strict :
+    ### Fiche Pédagogique — [Matière] — [Niveau]
+    Discipline : [Matière]
+    Niveau : [Classe]
+    Durée : 45 minutes
+    Compétence visée : [Objectif général]
+    ---
+    ### Objectifs spécifiques
+    1. ...
+    2. ...
+    ---
+    ### Contenu / Notions clés
+    [Définitions, règles, exemples sénégalais]
+    ---
+    ### Déroulement
+    | Phase | Maître | Élèves | Durée |
+    |-------|--------|--------|-------|
+    | Introduction | ... | ... | 5 min |
+    | Développement | ... | ... | 30 min |
+    | Application | ... | ... | 10 min |
+    ---
+    ### Évaluation formative
+    [2-3 questions courtes]
+- Si du contexte CEB officiel est fourni, aligne objectifs et contenu sur ce palier.
+""",
+
+    "planete_help": """
+TÂCHE ACTUELLE : AIDE PLANETE
+- Si la FAQ PLANETE fournie dans le contexte contient une réponse correspondante,
+  utilise-la TELLE QUELLE (ne reformule pas, le contenu est validé par le MEN).
+- Si pas de FAQ correspondante, donne une réponse prudente : la procédure générale
+  + "Pour les détails précis, consultez votre administrateur PLANETE ou
+  https://planete3.education.sn".
+- Réponse en 3-5 phrases, structurée par étapes si procédure.
+""",
+
+    "guidance": """
+TÂCHE ACTUELLE : CONSEIL PARENTAL OU PÉDAGOGIQUE
+- Ton rassurant et bienveillant. Parle à un humain, pas à un système.
+- Structure : 1) Empathie ("Je comprends, c'est important pour vous…"),
+  2) 3-5 conseils concrets et actionnables,
+  3) Astuce contextuelle sénégalaise si pertinente.
+- Évite le ton donneur-de-leçons. Privilégie "vous pouvez essayer" plutôt que "vous devez".
+- Termine par : "Voulez-vous des exercices pour accompagner cela, ou d'autres conseils ?"
+""",
+
+    "complaint_emotion": """
+TÂCHE ACTUELLE : ACCUEILLIR UNE ÉMOTION + PROPOSER DES PISTES
+- COMMENCE PAR RECONNAÎTRE L'ÉMOTION explicitement (1-2 phrases). Ne saute pas cette étape.
+- Ensuite, propose 3-4 pistes pédagogiques ou pratiques (pas d'exercices directs).
+- Reste concret : exemples, stratégies, mini-rituels quotidiens.
+- Termine par UN choix ouvert :
+    Souhaitez-vous :
+    [A] Une fiche pédagogique de remédiation
+    [B] Des exercices progressifs
+    [C] Continuer la discussion / d'autres pistes
+""",
+
+    "unclear": """
+TÂCHE ACTUELLE : DEMANDER UNE PRÉCISION
+- Pose une question simple pour clarifier ce que veut l'utilisateur.
+- Propose 3-5 options sous forme de boutons :
+    Voulez-vous :
+    [Une explication] [Des exercices] [Une fiche pédagogique]
+    [Aide PLANETE] [Conseil parental] [Autre — précisez]
+- Pas plus de 4 lignes au total.
+""",
+}
+
+
+def build_modular_prompt(
+    intent: str,
+    user_context: Optional[dict] = None,
+    knowledge_context: Optional[str] = None,
+    is_authenticated: bool = False,
+) -> str:
+    """Assemble un SYSTEM_PROMPT court a partir du BASE_PERSONA + module
+    specifique a l'intent + contexte utilisateur eventuel.
+
+    Beaucoup plus court que l'ancien SYSTEM_PROMPT monolithique : ne
+    conditionne le LLM qu'a la tache qu'on lui demande vraiment.
+    """
+    parts = [BASE_PERSONA]
+
+    # Module specifique a l'intent
+    module = INTENT_MODULES.get(intent)
+    if module:
+        parts.append(module)
+
+    # Contexte utilisateur (profil + niveau)
+    if user_context:
+        profile = user_context.get("profile_type")
+        level = user_context.get("level")
+        full_name = user_context.get("full_name")
+        school = user_context.get("school")
+
+        ctx_lines = ["[CONTEXTE UTILISATEUR]"]
+        if full_name:
+            ctx_lines.append(f"- Prénom/Nom : {full_name}")
+        if school:
+            ctx_lines.append(f"- Établissement : {school}")
+        if profile:
+            profile_human = {
+                "enseignant": "ENSEIGNANT — adapte le ton à un professionnel.",
+                "eleve":      "ÉLÈVE — langage simple, encourageant, explications pas-à-pas.",
+                "parent":     "PARENT — ton bienveillant, conseils pour aider l'enfant.",
+                "autre":      "VISITEUR — ton neutre.",
+            }.get(profile, profile)
+            ctx_lines.append(f"- Profil : {profile_human}")
+        if level and profile in ("eleve", "parent"):
+            ctx_lines.append(f"- Niveau scolaire connu : {level} (ne demande pas de clarification niveau).")
+        if len(ctx_lines) > 1:
+            parts.append("\n".join(ctx_lines))
+
+    # Contexte recupere (FAQ / curriculum / KB)
+    if knowledge_context:
+        parts.append(knowledge_context)
+
+    return "\n\n".join(parts)
+
+
+# ─────────────────────────────────────────────────────────────────
+# (Ancien SYSTEM_PROMPT conserve comme LEGACY pour rollback rapide)
+# ─────────────────────────────────────────────────────────────────
+
+
 class NLPService:
     """
     Service NLP qui gère le modèle de langage via Groq API.
@@ -578,6 +798,135 @@ RÈGLE ABSOLUE : Ne jamais refuser de générer des exercices ou des fiches. Ne 
                 delay *= 2
         return None
 
+    # ─────────────────────────────────────────────────────────
+    # V2 — generation avec SYSTEM_PROMPT modulaire (Sprint 1)
+    # Cette methode est utilisee par le nouveau pipeline "router".
+    # L'ancien generate_response reste actif pour le fallback legacy.
+    # ─────────────────────────────────────────────────────────
+    async def generate_response_v2(
+        self,
+        message: str,
+        intent: str,
+        conversation_history: Optional[list] = None,
+        user_context: Optional[dict] = None,
+        knowledge_context: Optional[str] = None,
+        use_fast_model: bool = False,
+    ) -> str:
+        """Genere une reponse avec un SYSTEM_PROMPT modulaire (court).
+
+        Args:
+            message: Message ORIGINAL de l'utilisateur (jamais reecrit).
+            intent: Intent classifie (greeting, smalltalk, exercise_request...)
+            conversation_history: Historique [{role, content}, ...]
+            user_context: Profil utilisateur (profile_type, level, full_name...)
+            knowledge_context: Contexte recupere (FAQ, curriculum, KB)
+            use_fast_model: Si True, utilise llama-3.1-8b-instant (intents simples)
+
+        Returns:
+            Reponse texte nettoyee (sans gras, etc.)
+        """
+        from app.services.nlp_service import build_modular_prompt
+
+        # Construire le SYSTEM_PROMPT pour cet intent precis
+        system_prompt = build_modular_prompt(
+            intent=intent,
+            user_context=user_context,
+            knowledge_context=knowledge_context,
+        )
+
+        # Assembler les messages
+        chat_messages = [{"role": "system", "content": system_prompt}]
+
+        if conversation_history:
+            recent = conversation_history[-(settings.CONTEXT_WINDOW * 2):]
+            for msg in recent:
+                role = msg.get("role", "user")
+                content = msg.get("content", "")
+                if role in ("user", "assistant") and content:
+                    chat_messages.append({"role": role, "content": content})
+
+        # Le message ORIGINAL de l'utilisateur — JAMAIS reecrit
+        chat_messages.append({"role": "user", "content": message})
+
+        # Appel LLM : routing modele simple selon l'intent
+        model_to_use = settings.LLM_FAST_MODEL if use_fast_model else None
+        try:
+            client = await self._ensure_client()
+            response = await asyncio.wait_for(
+                client.chat.completions.create(
+                    model=model_to_use or settings.LLM_MODEL,
+                    messages=chat_messages,
+                    max_tokens=settings.MAX_TOKENS,
+                    temperature=settings.TEMPERATURE,
+                ),
+                timeout=45.0,
+            )
+            text = response.choices[0].message.content.strip()
+            if text:
+                return self._clean_llm_response(text)
+        except asyncio.TimeoutError:
+            logger.warning("generate_response_v2 timeout", intent=intent)
+        except Exception as exc:
+            logger.warning("generate_response_v2 erreur", intent=intent, error=str(exc))
+
+        # Fallback : retry sur modele alternatif
+        try:
+            alt_model = settings.LLM_MODEL if use_fast_model else settings.LLM_FAST_MODEL
+            client = await self._ensure_client()
+            response = await asyncio.wait_for(
+                client.chat.completions.create(
+                    model=alt_model,
+                    messages=chat_messages,
+                    max_tokens=1500,
+                    temperature=settings.TEMPERATURE,
+                ),
+                timeout=30.0,
+            )
+            text = response.choices[0].message.content.strip()
+            if text:
+                logger.info("generate_response_v2 retry reussi", model=alt_model)
+                return self._clean_llm_response(text)
+        except Exception as exc:
+            logger.error("generate_response_v2 fallback echec", error=str(exc))
+
+        # Dernier recours : reponse statique
+        return self._intent_fallback_response(intent)
+
+    @staticmethod
+    def _intent_fallback_response(intent: str) -> str:
+        """Reponse statique si le LLM est totalement indisponible."""
+        fallbacks = {
+            "greeting": "Bonjour ! 👋 Je suis EduBot. Comment puis-je vous aider ?",
+            "smalltalk": "Avec plaisir ! N'hésitez pas si vous avez d'autres questions.",
+            "factual_question": (
+                "Je rencontre une difficulté technique pour répondre. "
+                "Veuillez réessayer dans un instant."
+            ),
+            "explain": "Je n'arrive pas à formuler une explication maintenant, réessayez s'il vous plaît.",
+            "exercise_request": (
+                "Je n'arrive pas à générer les exercices maintenant. "
+                "Réessayez dans un instant."
+            ),
+            "fiche_request": "Je n'arrive pas à produire la fiche maintenant. Réessayez s'il vous plaît.",
+            "planete_help": (
+                "Pour les questions PLANETE, consultez https://planete3.education.sn "
+                "ou contactez votre administrateur."
+            ),
+            "guidance": "Je n'arrive pas à formuler des conseils maintenant. Réessayez s'il vous plaît.",
+            "complaint_emotion": (
+                "Je comprends, et je suis désolé de ne pas pouvoir vous accompagner "
+                "tout de suite. Réessayez dans un instant."
+            ),
+            "unclear": (
+                "Pourriez-vous préciser votre demande ? "
+                "Voulez-vous une explication, des exercices, une fiche, ou autre chose ?"
+            ),
+        }
+        return fallbacks.get(intent, fallbacks["unclear"])
+
+    # ─────────────────────────────────────────────────────────
+    # Legacy : generate_response (V1) — conserve en backup
+    # ─────────────────────────────────────────────────────────
     async def generate_response(
         self,
         message: str,

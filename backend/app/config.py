@@ -109,6 +109,10 @@ class Settings(BaseSettings):
         env_file = ".env"
         env_file_encoding = "utf-8"
         case_sensitive = True
+        # Tolerer les variables d'env supplementaires (Postgres, Ollama, etc.)
+        # Sans cela, un .env qui contient POSTGRES_DB ou autre fait planter
+        # toute l'app au boot avec ValidationError.
+        extra = "ignore"
 
 
 settings = Settings()

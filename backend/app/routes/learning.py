@@ -225,7 +225,7 @@ async def get_tutor_students(
     try:
         # Vérifier que l'utilisateur est bien un tuteur
         profile = getattr(current_user, "profile_type", None) or getattr(current_user, "role", None)
-        if profile not in ("tuteur", "enseignant", "admin"):
+        if profile not in ("tuteur", "enseignant", "volontaire", "admin"):
             raise HTTPException(status_code=403, detail="Accès réservé aux tuteurs")
 
         # Récupérer tous les élèves (pour l'instant, un tuteur voit tous les élèves du système)
@@ -306,7 +306,7 @@ async def get_tutor_requests(
 
     try:
         profile = getattr(current_user, "profile_type", None) or getattr(current_user, "role", None)
-        if profile not in ("tuteur", "enseignant", "admin"):
+        if profile not in ("tuteur", "enseignant", "volontaire", "admin"):
             raise HTTPException(status_code=403, detail="Accès réservé aux tuteurs")
 
         query = await db.execute(
@@ -361,7 +361,7 @@ async def reply_to_request(
 
     try:
         profile = getattr(current_user, "profile_type", None) or getattr(current_user, "role", None)
-        if profile not in ("tuteur", "enseignant", "admin"):
+        if profile not in ("tuteur", "enseignant", "volontaire", "admin"):
             raise HTTPException(status_code=403, detail="Accès réservé aux tuteurs")
 
         req = await db.get(TutorRequest, request_id)

@@ -864,7 +864,7 @@ async function init() {
     if (!r.ok) { window.location.href = "index.html"; return; }
     currentUser = await r.json();
     const role = currentUser.profile_type || currentUser.role || "";
-    if (role !== "tuteur" && role !== "enseignant" && role !== "admin") {
+    if (role !== "tuteur" && role !== "enseignant" && role !== "volontaire" && role !== "admin") {
       window.location.href = "index.html";
       return;
     }

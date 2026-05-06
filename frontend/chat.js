@@ -464,7 +464,7 @@
         const profile = user.profile_type || user.role || "";
         if (profile === "eleve") {
             window.location.href = "dashboard.html";
-        } else if (profile === "tuteur" || profile === "enseignant") {
+        } else if (profile === "tuteur" || profile === "enseignant" || profile === "volontaire") {
             window.location.href = "tutor.html";
         }
         // admin et autres restent sur index.html (interface chat)
@@ -623,7 +623,7 @@
             if (profileType === "eleve") {
                 window.location.href = "dashboard.html";
                 return;
-            } else if (profileType === "tuteur" || profileType === "enseignant") {
+            } else if (profileType === "tuteur" || profileType === "enseignant" || profileType === "volontaire") {
                 window.location.href = "tutor.html";
                 return;
             }
@@ -720,7 +720,7 @@
         const firstName = u.full_name.split(" ")[0];
         return {
             h2: `Bonjour ${firstName}, comment puis-je vous aider ?`,
-            p: u.profile_type === "enseignant"
+            p: (u.profile_type === "enseignant" || u.profile_type === "volontaire")
                 ? `Vos outils pédagogiques et PLANETE en un clic${u.school ? " — " + u.school : ""}.`
                 : u.profile_type === "eleve"
                 ? `Exercices, programme et révisions pour le ${u.level || "niveau"}.`

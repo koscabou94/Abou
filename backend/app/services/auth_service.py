@@ -94,7 +94,7 @@ _RESOLVED_SECRET_KEY = _resolve_secret_key()
 JWT_ALGORITHM = "HS256"
 JWT_EXPIRE_DAYS = 7
 
-VALID_PROFILES = {"enseignant", "eleve", "parent", "autre"}
+VALID_PROFILES = {"enseignant", "eleve", "parent", "autre", "tuteur", "admin"}
 VALID_LEVELS = {
     "Préscolaire", "CI", "CP", "CE1", "CE2", "CM1", "CM2",
     "6ème", "5ème", "4ème", "3ème",

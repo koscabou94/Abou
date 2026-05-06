@@ -280,3 +280,281 @@ class UsageStats(Base):
 
     def __repr__(self) -> str:
         return f"<UsageStats(date={self.date}, messages={self.total_messages})>"
+
+
+# ══════════════════════════════════════════════════════════════
+#  SYSTÈME D'APPRENTISSAGE PROGRESSIF — EduBot Learning Platform
+# ══════════════════════════════════════════════════════════════
+
+class Lesson(Base):
+    """
+    Représente une leçon dans le parcours d'apprentissage.
+    Les leçons se débloquent séquentiellement selon l'ordre défini.
+    """
+    __tablename__ = "lessons"
+
+    id: int = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    title: str = Column(String(200), nullable=False, comment="Titre de la leçon")
+    subject: str = Column(String(50), nullable=False, index=True,
+                          comment="Matière : mathematiques, francais, sciences, anglais, histoire-geo...")
+    level: str = Column(String(20), nullable=False, index=True,
+                        comment="Niveau scolaire : CI, CP, CE1, CE2, CM1, CM2, 6eme, 5eme...")
+    order_in_subject: int = Column(Integer, nullable=False, default=1,
+                                   comment="Ordre de la leçon dans la matière (1=première)")
+    content: str = Column(Text, nullable=False, comment="Contenu pédagogique de la leçon (Markdown)")
+    summary: str = Column(String(500), nullable=True, comment="Résumé court de la leçon")
+    duration_minutes: int = Column(Integer, default=20, comment="Durée estimée en minutes")
+    prerequisite_lesson_id: Optional[int] = Column(Integer, ForeignKey("lessons.id"), nullable=True,
+                                                    comment="Leçon à compléter avant d'accéder à celle-ci")
+    is_active: bool = Column(Boolean, default=True)
+    created_at: datetime = Column(DateTime(timezone=True), server_default=func.now())
+
+    # Relations
+    exercises: List["Exercise"] = relationship("Exercise", back_populates="lesson",
+                                                cascade="all, delete-orphan")
+    progress_records: List["StudentProgress"] = relationship("StudentProgress",
+                                                              back_populates="lesson",
+                                                              cascade="all, delete-orphan")
+
+    __table_args__ = (
+        Index("ix_lessons_level_subject_order", "level", "subject", "order_in_subject"),
+    )
+
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "title": self.title,
+            "subject": self.subject,
+            "level": self.level,
+            "order": self.order_in_subject,
+            "summary": self.summary,
+            "duration_minutes": self.duration_minutes,
+            "prerequisite_lesson_id": self.prerequisite_lesson_id,
+        }
+
+    def __repr__(self) -> str:
+        return f"<Lesson(id={self.id}, level={self.level}, subject={self.subject}, order={self.order_in_subject})>"
+
+
+class Exercise(Base):
+    """
+    Exercice ou question d'évaluation associé à une leçon.
+    Types : qcm (choix multiple), vrai_faux, texte_libre, calcul.
+    """
+    __tablename__ = "exercises"
+
+    id: int = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    lesson_id: int = Column(Integer, ForeignKey("lessons.id", ondelete="CASCADE"),
+                            nullable=False, index=True)
+    question: str = Column(Text, nullable=False, comment="Énoncé de la question")
+    exercise_type: str = Column(String(20), nullable=False, default="qcm",
+                                comment="Type : qcm | vrai_faux | texte_libre | calcul")
+    options: Optional[str] = Column(Text, nullable=True,
+                                    comment="Options JSON pour QCM : [{'label':'A','text':'...'}]")
+    correct_answer: str = Column(Text, nullable=False,
+                                 comment="Réponse correcte (lettre pour QCM, texte sinon)")
+    explanation: Optional[str] = Column(Text, nullable=True,
+                                        comment="Explication de la bonne réponse affichée après correction")
+    points: int = Column(Integer, default=1, comment="Points attribués si réponse correcte")
+    order_in_lesson: int = Column(Integer, default=1)
+    is_active: bool = Column(Boolean, default=True)
+
+    # Relations
+    lesson: "Lesson" = relationship("Lesson", back_populates="exercises")
+    grades: List["Grade"] = relationship("Grade", back_populates="exercise",
+                                          cascade="all, delete-orphan")
+
+    def get_options(self) -> list:
+        if self.options:
+            return json.loads(self.options)
+        return []
+
+    def set_options(self, options: list) -> None:
+        self.options = json.dumps(options, ensure_ascii=False)
+
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "lesson_id": self.lesson_id,
+            "question": self.question,
+            "type": self.exercise_type,
+            "options": self.get_options(),
+            "points": self.points,
+            "order": self.order_in_lesson,
+        }
+
+    def __repr__(self) -> str:
+        return f"<Exercise(id={self.id}, type={self.exercise_type}, lesson_id={self.lesson_id})>"
+
+
+class StudentProgress(Base):
+    """
+    Suivi de la progression d'un élève sur chaque leçon.
+    Statuts : not_started → in_progress → completed.
+    """
+    __tablename__ = "student_progress"
+
+    id: int = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    user_id: int = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"),
+                          nullable=False, index=True)
+    lesson_id: int = Column(Integer, ForeignKey("lessons.id", ondelete="CASCADE"),
+                            nullable=False, index=True)
+    status: str = Column(String(20), nullable=False, default="not_started",
+                         comment="not_started | in_progress | completed")
+    score: Optional[float] = Column(Float, nullable=True,
+                                    comment="Score obtenu sur les exercices (0-100)")
+    attempts: int = Column(Integer, default=0, comment="Nombre de tentatives")
+    started_at: Optional[datetime] = Column(DateTime(timezone=True), nullable=True)
+    completed_at: Optional[datetime] = Column(DateTime(timezone=True), nullable=True)
+    time_spent_minutes: int = Column(Integer, default=0, comment="Temps passé en minutes")
+    unlocked: bool = Column(Boolean, default=False,
+                            comment="True si la leçon est débloquée pour cet élève")
+
+    # Relations
+    user: "User" = relationship("User")
+    lesson: "Lesson" = relationship("Lesson", back_populates="progress_records")
+
+    __table_args__ = (
+        Index("ix_progress_user_lesson", "user_id", "lesson_id", unique=True),
+    )
+
+    def to_dict(self) -> dict:
+        return {
+            "lesson_id": self.lesson_id,
+            "status": self.status,
+            "score": self.score,
+            "attempts": self.attempts,
+            "unlocked": self.unlocked,
+            "completed_at": self.completed_at.isoformat() if self.completed_at else None,
+        }
+
+    def __repr__(self) -> str:
+        return f"<StudentProgress(user={self.user_id}, lesson={self.lesson_id}, status={self.status})>"
+
+
+class Grade(Base):
+    """
+    Note d'un élève sur un exercice spécifique.
+    Permet de stocker l'historique des réponses et les notes obtenues.
+    """
+    __tablename__ = "grades"
+
+    id: int = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    user_id: int = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"),
+                          nullable=False, index=True)
+    exercise_id: int = Column(Integer, ForeignKey("exercises.id", ondelete="CASCADE"),
+                              nullable=False, index=True)
+    student_answer: str = Column(Text, nullable=False, comment="Réponse soumise par l'élève")
+    is_correct: bool = Column(Boolean, nullable=False, comment="True si réponse correcte")
+    points_earned: int = Column(Integer, default=0, comment="Points effectivement gagnés")
+    submitted_at: datetime = Column(DateTime(timezone=True), server_default=func.now())
+    attempt_number: int = Column(Integer, default=1)
+
+    # Relations
+    exercise: "Exercise" = relationship("Exercise", back_populates="grades")
+
+    def to_dict(self) -> dict:
+        return {
+            "exercise_id": self.exercise_id,
+            "student_answer": self.student_answer,
+            "is_correct": self.is_correct,
+            "points_earned": self.points_earned,
+            "submitted_at": self.submitted_at.isoformat(),
+        }
+
+    def __repr__(self) -> str:
+        return f"<Grade(user={self.user_id}, exercise={self.exercise_id}, correct={self.is_correct})>"
+
+
+class DiagnosticSession(Base):
+    """
+    Session de diagnostic initial menée par EduBot à la première connexion.
+    EduBot pose des questions par matière pour déterminer le niveau réel de l'élève.
+    """
+    __tablename__ = "diagnostic_sessions"
+
+    id: int = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    user_id: int = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"),
+                          nullable=False, index=True, unique=True,
+                          comment="Un seul diagnostic par élève")
+    declared_level: str = Column(String(20), nullable=False,
+                                 comment="Niveau déclaré à l'inscription")
+    evaluated_level: Optional[str] = Column(String(20), nullable=True,
+                                             comment="Niveau évalué après le diagnostic")
+    questions_asked: Optional[str] = Column(Text, nullable=True,
+                                             comment="Questions posées (JSON)")
+    answers_given: Optional[str] = Column(Text, nullable=True,
+                                           comment="Réponses de l'élève (JSON)")
+    scores_by_subject: Optional[str] = Column(Text, nullable=True,
+                                               comment="Scores par matière (JSON) : {math: 75, fr: 60}")
+    recommended_path: Optional[str] = Column(Text, nullable=True,
+                                              comment="Parcours recommandé (JSON liste de lesson_ids)")
+    status: str = Column(String(20), default="pending",
+                         comment="pending | in_progress | completed")
+    started_at: datetime = Column(DateTime(timezone=True), server_default=func.now())
+    completed_at: Optional[datetime] = Column(DateTime(timezone=True), nullable=True)
+
+    def get_scores(self) -> dict:
+        if self.scores_by_subject:
+            return json.loads(self.scores_by_subject)
+        return {}
+
+    def set_scores(self, scores: dict) -> None:
+        self.scores_by_subject = json.dumps(scores)
+
+    def get_questions(self) -> list:
+        if self.questions_asked:
+            return json.loads(self.questions_asked)
+        return []
+
+    def get_answers(self) -> list:
+        if self.answers_given:
+            return json.loads(self.answers_given)
+        return []
+
+    def __repr__(self) -> str:
+        return f"<DiagnosticSession(user={self.user_id}, status={self.status}, level={self.evaluated_level})>"
+
+
+class TutorRequest(Base):
+    """
+    Demande d'aide d'un élève vers son tuteur assigné.
+    L'élève peut aussi choisir de demander l'aide d'EduBot (IA).
+    """
+    __tablename__ = "tutor_requests"
+
+    id: int = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    student_id: int = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"),
+                             nullable=False, index=True)
+    tutor_id: Optional[int] = Column(Integer, ForeignKey("users.id"), nullable=True,
+                                      comment="NULL si aide demandée à l'IA")
+    lesson_id: Optional[int] = Column(Integer, ForeignKey("lessons.id"), nullable=True,
+                                       comment="Leçon concernée par la demande")
+    exercise_id: Optional[int] = Column(Integer, ForeignKey("exercises.id"), nullable=True,
+                                         comment="Exercice concerné (optionnel)")
+    message: str = Column(Text, nullable=False, comment="Message de l'élève")
+    request_type: str = Column(String(20), default="tutor",
+                               comment="tutor | ai | both")
+    status: str = Column(String(20), default="pending",
+                         comment="pending | seen | answered | closed")
+    response: Optional[str] = Column(Text, nullable=True,
+                                      comment="Réponse du tuteur ou de l'IA")
+    created_at: datetime = Column(DateTime(timezone=True), server_default=func.now())
+    responded_at: Optional[datetime] = Column(DateTime(timezone=True), nullable=True)
+
+    student: "User" = relationship("User", foreign_keys=[student_id])
+    tutor: Optional["User"] = relationship("User", foreign_keys=[tutor_id])
+
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "lesson_id": self.lesson_id,
+            "message": self.message,
+            "request_type": self.request_type,
+            "status": self.status,
+            "response": self.response,
+            "created_at": self.created_at.isoformat(),
+        }
+
+    def __repr__(self) -> str:
+        return f"<TutorRequest(student={self.student_id}, status={self.status}, type={self.request_type})>"

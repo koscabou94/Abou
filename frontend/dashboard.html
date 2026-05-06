@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduBot — Mon Parcours</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --green: #008751;
+      --green-light: #e6f4ed;
+      --green-mid: #00a562;
+      --yellow: #fbbf24;
+      --red: #e31b23;
+      --blue: #3b82f6;
+      --blue-light: #eff6ff;
+      --purple: #8b5cf6;
+      --purple-light: #f5f3ff;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 16px;
+      --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    }
+    .nav-brand { display: flex; align-items: center; gap: 10px; }
+    .nav-logo {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: var(--green); display: flex; align-items: center; justify-content: center;
+      font-size: 18px; color: #fff; font-family: 'Outfit', sans-serif; font-weight: 800;
+    }
+    .nav-title { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 18px; }
+    .nav-title span { color: var(--green); }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .student-pill {
+      background: var(--green-light); color: var(--green);
+      padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600;
+    }
+    .btn-chat {
+      background: var(--green); color: #fff; border: none;
+      padding: 8px 16px; border-radius: 10px; font-size: 13px; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; gap: 6px;
+      transition: opacity .15s;
+    }
+    .btn-chat:hover { opacity: .85; }
+
+    /* ── LAYOUT ── */
+    .layout { display: flex; min-height: calc(100vh - 64px); }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: 240px; min-width: 240px;
+      background: var(--card);
+      border-right: 1px solid var(--border);
+      padding: 24px 16px;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .sidebar-label {
+      font-size: 11px; font-weight: 600; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: .05em;
+      padding: 8px 12px 4px;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border-radius: 10px;
+      font-size: 14px; font-weight: 500; color: var(--text-muted);
+      cursor: pointer; transition: all .15s; border: none; background: none;
+      width: 100%; text-align: left;
+    }
+    .nav-item:hover { background: var(--bg); color: var(--text); }
+    .nav-item.active { background: var(--green-light); color: var(--green); font-weight: 600; }
+    .nav-item .icon { font-size: 18px; width: 22px; text-align: center; }
+
+    /* ── MAIN ── */
+    main { flex: 1; padding: 32px; overflow-y: auto; max-width: 1100px; }
+
+    /* ── SCREENS ── */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* ── DIAGNOSTIC ── */
+    #screen-diagnostic { max-width: 700px; margin: 0 auto; }
+    .diag-header {
+      text-align: center; margin-bottom: 32px;
+    }
+    .diag-avatar {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--green), var(--green-mid));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px; margin: 0 auto 16px;
+      box-shadow: 0 8px 24px rgba(0,135,81,.3);
+    }
+    .diag-header h1 { font-family: 'Outfit', sans-serif; font-size: 26px; margin-bottom: 8px; }
+    .diag-header p { color: var(--text-muted); font-size: 15px; line-height: 1.6; }
+    .progress-bar-wrap { background: var(--border); border-radius: 99px; height: 6px; margin: 24px 0; }
+    .progress-bar-fill { background: var(--green); height: 6px; border-radius: 99px; transition: width .4s; }
+    .progress-label { text-align: right; font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+    .question-card {
+      background: var(--card); border-radius: var(--radius);
+      padding: 28px; box-shadow: var(--shadow); margin-bottom: 16px;
+    }
+    .question-subject-tag {
+      display: inline-block; padding: 3px 10px; border-radius: 20px;
+      font-size: 11px; font-weight: 600; text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .tag-francais { background: #fef3c7; color: #92400e; }
+    .tag-mathematiques { background: #dbeafe; color: #1e40af; }
+    .tag-sciences { background: #d1fae5; color: #065f46; }
+    .tag-anglais { background: #ede9fe; color: #5b21b6; }
+    .tag-histoire-geo { background: #fee2e2; color: #991b1b; }
+    .question-text { font-size: 17px; font-weight: 600; margin-bottom: 20px; line-height: 1.5; }
+    .options-grid { display: flex; flex-direction: column; gap: 10px; }
+    .option-btn {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px; border-radius: 12px;
+      border: 2px solid var(--border); background: var(--bg);
+      font-size: 15px; cursor: pointer; transition: all .15s;
+      text-align: left; width: 100%;
+    }
+    .option-btn:hover { border-color: var(--green); background: var(--green-light); }
+    .option-btn.selected { border-color: var(--green); background: var(--green-light); color: var(--green); font-weight: 600; }
+    .option-btn.correct { border-color: #16a34a; background: #dcfce7; color: #15803d; }
+    .option-btn.wrong { border-color: var(--red); background: #fee2e2; color: var(--red); }
+    .option-label {
+      width: 30px; height: 30px; border-radius: 8px;
+      background: var(--border); display: flex; align-items: center;
+      justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0;
+    }
+    .diag-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+    .btn-primary {
+      background: var(--green); color: #fff; border: none;
+      padding: 12px 28px; border-radius: 12px; font-size: 15px; font-weight: 600;
+      cursor: pointer; transition: opacity .15s;
+    }
+    .btn-primary:hover { opacity: .85; }
+    .btn-primary:disabled { opacity: .4; cursor: not-allowed; }
+    .btn-secondary {
+      background: var(--bg); color: var(--text-muted); border: 2px solid var(--border);
+      padding: 12px 22px; border-radius: 12px; font-size: 15px; font-weight: 500;
+      cursor: pointer; transition: all .15s;
+    }
+    .btn-secondary:hover { border-color: var(--green); color: var(--green); }
+
+    /* ── RÉSULTAT DIAGNOSTIC ── */
+    .diag-result {
+      background: var(--card); border-radius: var(--radius);
+      padding: 36px; text-align: center; box-shadow: var(--shadow);
+    }
+    .result-score {
+      font-family: 'Outfit', sans-serif; font-size: 56px; font-weight: 800;
+      color: var(--green); line-height: 1;
+    }
+    .result-label { color: var(--text-muted); font-size: 15px; margin: 8px 0 24px; }
+    .scores-by-subject { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin: 20px 0; }
+    .score-pill {
+      padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600;
+      background: var(--green-light); color: var(--green);
+    }
+    .result-message {
+      background: var(--green-light); color: var(--green);
+      padding: 16px 20px; border-radius: 12px; font-size: 15px;
+      font-weight: 500; margin: 20px 0; line-height: 1.6;
+    }
+
+    /* ── DASHBOARD PRINCIPAL ── */
+    .welcome-banner {
+      background: linear-gradient(135deg, var(--green) 0%, var(--green-mid) 100%);
+      color: #fff; border-radius: var(--radius); padding: 28px 32px;
+      margin-bottom: 28px; position: relative; overflow: hidden;
+    }
+    .welcome-banner::after {
+      content: '📚'; position: absolute; right: 32px; top: 50%;
+      transform: translateY(-50%); font-size: 64px; opacity: .3;
+    }
+    .welcome-banner h2 { font-family: 'Outfit', sans-serif; font-size: 22px; margin-bottom: 6px; }
+    .welcome-banner p { opacity: .85; font-size: 14px; }
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+    .stat-card {
+      background: var(--card); border-radius: var(--radius);
+      padding: 20px; box-shadow: var(--shadow);
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .stat-icon { font-size: 24px; margin-bottom: 4px; }
+    .stat-value { font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 800; }
+    .stat-label { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+    .section-title {
+      font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 700;
+      margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+    }
+    .subjects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+    .subject-card {
+      background: var(--card); border-radius: var(--radius);
+      padding: 20px; box-shadow: var(--shadow); cursor: pointer;
+      transition: transform .15s, box-shadow .15s; border: 2px solid transparent;
+    }
+    .subject-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.1); border-color: var(--green); }
+    .subject-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .subject-icon { font-size: 28px; }
+    .subject-name { font-weight: 700; font-size: 16px; }
+    .subject-count { font-size: 12px; color: var(--text-muted); }
+    .subject-progress-bar { background: var(--border); border-radius: 99px; height: 8px; margin-bottom: 8px; }
+    .subject-progress-fill { height: 8px; border-radius: 99px; transition: width .5s; }
+    .subject-meta { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted); }
+    .subject-score { font-weight: 600; color: var(--green); }
+
+    /* ── LEÇONS ── */
+    #screen-lessons { max-width: 800px; }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--text-muted); font-size: 14px; font-weight: 500;
+      cursor: pointer; margin-bottom: 20px; background: none; border: none;
+      transition: color .15s;
+    }
+    .back-btn:hover { color: var(--green); }
+    .lessons-list { display: flex; flex-direction: column; gap: 12px; }
+    .lesson-item {
+      background: var(--card); border-radius: var(--radius);
+      padding: 18px 20px; box-shadow: var(--shadow);
+      display: flex; align-items: center; gap: 16px;
+      cursor: pointer; transition: all .15s; border: 2px solid transparent;
+    }
+    .lesson-item.locked { opacity: .5; cursor: not-allowed; }
+    .lesson-item.completed { border-color: var(--green); }
+    .lesson-item:not(.locked):hover { border-color: var(--green); transform: translateX(4px); }
+    .lesson-num {
+      width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 15px; font-family: 'Outfit', sans-serif;
+    }
+    .lesson-num.done { background: var(--green); color: #fff; }
+    .lesson-num.active { background: var(--green-light); color: var(--green); }
+    .lesson-num.locked { background: var(--border); color: var(--text-muted); }
+    .lesson-info { flex: 1; }
+    .lesson-title { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+    .lesson-meta { font-size: 12px; color: var(--text-muted); }
+    .lesson-badge {
+      padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    }
+    .badge-done { background: var(--green-light); color: var(--green); }
+    .badge-active { background: #dbeafe; color: #1d4ed8; }
+    .badge-locked { background: var(--border); color: var(--text-muted); }
+
+    /* ── CONTENU LEÇON ── */
+    #screen-lesson-content { max-width: 800px; }
+    .lesson-content-card {
+      background: var(--card); border-radius: var(--radius);
+      padding: 32px; box-shadow: var(--shadow); margin-bottom: 24px;
+      line-height: 1.8; font-size: 15px;
+    }
+    .lesson-content-card h2 { font-family: 'Outfit', sans-serif; font-size: 22px; margin-bottom: 16px; color: var(--green); }
+    .lesson-content-card h3 { font-size: 17px; font-weight: 600; margin: 20px 0 10px; }
+    .lesson-content-card p { margin-bottom: 12px; }
+    .lesson-content-card ul, .lesson-content-card ol { padding-left: 20px; margin-bottom: 12px; }
+    .exercises-section { margin-top: 24px; }
+    .exercise-card {
+      background: var(--card); border-radius: var(--radius);
+      padding: 24px; box-shadow: var(--shadow); margin-bottom: 16px;
+    }
+    .exercise-num { font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; }
+    .exercise-q { font-size: 16px; font-weight: 600; margin-bottom: 16px; line-height: 1.5; }
+    .exercise-feedback {
+      padding: 12px 16px; border-radius: 10px; margin-top: 12px;
+      font-size: 14px; font-weight: 500; display: none;
+    }
+    .exercise-feedback.correct { background: #dcfce7; color: #15803d; }
+    .exercise-feedback.wrong { background: #fee2e2; color: #dc2626; }
+    .submit-section { margin-top: 28px; text-align: center; }
+
+    /* ── NOTES ── */
+    #screen-grades { max-width: 800px; }
+    .grades-header {
+      background: var(--card); border-radius: var(--radius);
+      padding: 24px; box-shadow: var(--shadow); margin-bottom: 20px;
+      display: flex; align-items: center; gap: 20px;
+    }
+    .big-score {
+      font-family: 'Outfit', sans-serif; font-size: 48px; font-weight: 800;
+      color: var(--green); line-height: 1;
+    }
+    .grade-row {
+      background: var(--card); border-radius: 12px; padding: 16px 20px;
+      box-shadow: var(--shadow); margin-bottom: 10px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .grade-icon { font-size: 20px; flex-shrink: 0; }
+    .grade-info { flex: 1; }
+    .grade-title { font-weight: 600; font-size: 14px; }
+    .grade-subject { font-size: 12px; color: var(--text-muted); }
+    .grade-score {
+      font-family: 'Outfit', sans-serif; font-size: 22px; font-weight: 800;
+    }
+    .score-green { color: var(--green); }
+    .score-orange { color: #f59e0b; }
+    .score-red { color: var(--red); }
+
+    /* ── AIDE / CHAT ── */
+    #screen-help { max-width: 700px; }
+    .help-card {
+      background: var(--card); border-radius: var(--radius);
+      padding: 24px; box-shadow: var(--shadow); margin-bottom: 16px;
+    }
+    .help-card h3 { font-weight: 700; margin-bottom: 8px; }
+    .help-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 16px; }
+    .help-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .help-option {
+      padding: 16px; border-radius: 12px; border: 2px solid var(--border);
+      cursor: pointer; transition: all .15s; text-align: center;
+      background: none;
+    }
+    .help-option:hover { border-color: var(--green); background: var(--green-light); }
+    .help-option.selected { border-color: var(--green); background: var(--green-light); }
+    .help-option .ho-icon { font-size: 28px; margin-bottom: 6px; }
+    .help-option .ho-label { font-size: 13px; font-weight: 600; }
+    textarea.help-input {
+      width: 100%; border: 2px solid var(--border); border-radius: 12px;
+      padding: 14px; font-size: 15px; font-family: 'Inter', sans-serif;
+      resize: vertical; min-height: 100px; outline: none;
+      transition: border-color .15s;
+    }
+    textarea.help-input:focus { border-color: var(--green); }
+    .chat-messages {
+      background: var(--bg); border-radius: 12px;
+      padding: 16px; max-height: 350px; overflow-y: auto;
+      margin-bottom: 16px; display: flex; flex-direction: column; gap: 10px;
+    }
+    .chat-msg {
+      max-width: 85%; padding: 12px 16px; border-radius: 14px;
+      font-size: 14px; line-height: 1.6;
+    }
+    .chat-msg.bot { background: var(--card); align-self: flex-start; box-shadow: var(--shadow); }
+    .chat-msg.user { background: var(--green); color: #fff; align-self: flex-end; }
+    .chat-msg.bot strong { color: var(--green); font-size: 12px; display: block; margin-bottom: 4px; }
+    .chat-input-row { display: flex; gap: 10px; }
+    .chat-input-row input {
+      flex: 1; border: 2px solid var(--border); border-radius: 12px;
+      padding: 12px 16px; font-size: 14px; font-family: 'Inter', sans-serif;
+      outline: none; transition: border-color .15s;
+    }
+    .chat-input-row input:focus { border-color: var(--green); }
+
+    /* ── LOADER ── */
+    .loader {
+      text-align: center; padding: 60px 20px; color: var(--text-muted);
+    }
+    .spinner {
+      width: 40px; height: 40px; border: 3px solid var(--border);
+      border-top-color: var(--green); border-radius: 50%;
+      animation: spin .8s linear infinite; margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px;
+      background: #1e293b; color: #fff;
+      padding: 14px 20px; border-radius: 12px;
+      font-size: 14px; font-weight: 500;
+      box-shadow: 0 8px 24px rgba(0,0,0,.2);
+      transform: translateY(80px); opacity: 0;
+      transition: all .3s; z-index: 999;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { border-left: 4px solid var(--green); }
+    .toast.error { border-left: 4px solid var(--red); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      main { padding: 16px; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .subjects-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo">E</div>
+    <div class="nav-title">Edu<span>Bot</span></div>
+  </div>
+  <div class="nav-right">
+    <div class="student-pill" id="nav-student-name">Chargement...</div>
+    <button class="btn-chat" onclick="showScreen('help')">💬 Demander de l'aide</button>
+  </div>
+</nav>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-label">Navigation</div>
+    <button class="nav-item active" id="nav-dashboard" onclick="showScreen('dashboard')">
+      <span class="icon">🏠</span> Tableau de bord
+    </button>
+    <button class="nav-item" id="nav-lessons" onclick="showScreen('subjects')">
+      <span class="icon">📖</span> Mes leçons
+    </button>
+    <button class="nav-item" id="nav-grades" onclick="showScreen('grades')">
+      <span class="icon">📊</span> Mes notes
+    </button>
+    <button class="nav-item" id="nav-help" onclick="showScreen('help')">
+      <span class="icon">🤝</span> Demander de l'aide
+    </button>
+    <div style="flex:1"></div>
+    <div class="sidebar-label">Mon compte</div>
+    <button class="nav-item" onclick="logout()">
+      <span class="icon">🚪</span> Déconnexion
+    </button>
+  </aside>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- ════ DIAGNOSTIC ════ -->
+    <div id="screen-diagnostic" class="screen active">
+      <div id="screen-diagnostic-inner">
+        <div class="diag-header">
+          <div class="diag-avatar">🤖</div>
+          <h1>Bienvenue ! Je suis <span style="color:var(--green)">EduBot</span></h1>
+          <p>Avant de commencer, je vais te poser quelques questions<br>pour mieux adapter ton parcours d'apprentissage.</p>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" id="diag-progress" style="width:0%"></div>
+        </div>
+        <div class="progress-label" id="diag-progress-label">Question 1 / ?</div>
+        <div id="diag-question-container"></div>
+        <div class="diag-nav">
+          <button class="btn-secondary" id="btn-diag-prev" onclick="diagPrev()" style="display:none">← Précédent</button>
+          <button class="btn-primary" id="btn-diag-next" onclick="diagNext()" disabled>Suivant →</button>
+        </div>
+      </div>
+      <!-- Résultat diagnostic -->
+      <div id="diag-result-panel" style="display:none">
+        <div class="diag-result">
+          <div class="diag-avatar" style="background:linear-gradient(135deg,#f59e0b,#f97316)">🎉</div>
+          <div class="result-score" id="result-score">0%</div>
+          <div class="result-label">Score global au diagnostic</div>
+          <div class="scores-by-subject" id="result-subjects"></div>
+          <div class="result-message" id="result-message"></div>
+          <button class="btn-primary" style="margin-top:8px" onclick="goToDashboard()">
+            🚀 Démarrer mon parcours
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ DASHBOARD ════ -->
+    <div id="screen-dashboard" class="screen">
+      <div id="welcome-banner" class="welcome-banner">
+        <h2>Bonjour, <span id="student-first-name">élève</span> ! 👋</h2>
+        <p>Continue ton apprentissage là où tu t'es arrêté(e).</p>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon">📚</div>
+          <div class="stat-value" id="stat-total">—</div>
+          <div class="stat-label">Leçons au total</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">✅</div>
+          <div class="stat-value" id="stat-done">—</div>
+          <div class="stat-label">Leçons complétées</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">⭐</div>
+          <div class="stat-value" id="stat-avg">—</div>
+          <div class="stat-label">Moyenne générale</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🏅</div>
+          <div class="stat-value" id="stat-level">—</div>
+          <div class="stat-label">Mon niveau</div>
+        </div>
+      </div>
+      <div class="section-title">📖 Mes matières</div>
+      <div class="subjects-grid" id="subjects-grid">
+        <div class="loader"><div class="spinner"></div>Chargement...</div>
+      </div>
+    </div>
+
+    <!-- ════ LISTE LEÇONS (matière) ════ -->
+    <div id="screen-lessons" class="screen">
+      <button class="back-btn" onclick="showScreen('dashboard')">← Retour au tableau de bord</button>
+      <div class="section-title" id="lessons-title">📖 Leçons</div>
+      <div class="lessons-list" id="lessons-list"></div>
+    </div>
+
+    <!-- ════ CONTENU LEÇON ════ -->
+    <div id="screen-lesson-content" class="screen">
+      <button class="back-btn" id="lesson-back-btn" onclick="showScreen('lessons')">← Retour aux leçons</button>
+      <div class="lesson-content-card" id="lesson-body"></div>
+      <div class="exercises-section" id="exercises-section">
+        <div class="section-title">✏️ Exercices</div>
+        <div id="exercises-list"></div>
+        <div class="submit-section">
+          <button class="btn-primary" id="btn-submit-lesson" onclick="submitLesson()">
+            ✅ Valider mes réponses
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ NOTES ════ -->
+    <div id="screen-grades" class="screen">
+      <div class="section-title">📊 Mon carnet de notes</div>
+      <div class="grades-header">
+        <div class="big-score" id="grades-avg">—%</div>
+        <div>
+          <div style="font-weight:600;font-size:16px">Moyenne générale</div>
+          <div style="color:var(--text-muted);font-size:13px" id="grades-count">—</div>
+        </div>
+      </div>
+      <div id="grades-list">
+        <div class="loader"><div class="spinner"></div>Chargement...</div>
+      </div>
+    </div>
+
+    <!-- ════ AIDE ════ -->
+    <div id="screen-help" class="screen">
+      <div class="section-title">🤝 Demander de l'aide</div>
+      <div class="help-card">
+        <h3>Tu as une question ? EduBot est là !</h3>
+        <p>Pose ta question directement à EduBot ou demande à ton tuteur humain.</p>
+        <div class="chat-messages" id="chat-messages">
+          <div class="chat-msg bot">
+            <strong>🤖 EduBot</strong>
+            Bonjour ! Je suis EduBot, ton assistant pédagogique. Pose-moi n'importe quelle question sur tes leçons, et je t'aiderai de mon mieux ! 😊
+          </div>
+        </div>
+        <div class="chat-input-row">
+          <input type="text" id="chat-input" placeholder="Écris ta question ici..." onkeydown="if(event.key==='Enter')sendChat()" />
+          <button class="btn-primary" onclick="sendChat()">Envoyer</button>
+        </div>
+      </div>
+      <div class="help-card">
+        <h3>Demander à mon tuteur</h3>
+        <p>Si tu as besoin d'une aide plus personnalisée, envoie un message à ton tuteur.</p>
+        <textarea class="help-input" id="tutor-msg" placeholder="Décris ta difficulté ou ta question à ton tuteur..."></textarea>
+        <div style="margin-top:12px">
+          <button class="btn-primary" onclick="sendTutorRequest()">📩 Envoyer au tuteur</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ════════════════════════════════════════
+//  CONFIG & STATE
+// ════════════════════════════════════════
+const API = window.API_URL || '/api';
+let token = localStorage.getItem('edubot_token');
+let currentUser = null;
+let dashboardData = null;
+let currentLesson = null;
+let currentSubject = null;
+let diagQuestions = [];
+let diagCurrent = 0;
+let diagAnswers = {};
+
+// ════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════
+async function init() {
+  if (!token) { window.location.href = '/'; return; }
+
+  try {
+    const meResp = await apiFetch('/auth/me');
+    currentUser = meResp.user || meResp;
+    const me = currentUser;
+    document.getElementById('nav-student-name').textContent = (me.full_name || me.ien || 'Élève').split(' ')[0];
+    document.getElementById('student-first-name').textContent = (me.full_name || 'élève').split(' ')[0];
+    document.getElementById('stat-level').textContent = me.level || '—';
+
+    // Vérifier si le diagnostic est nécessaire
+    const diag = await apiFetch('/learning/diagnostic/start', 'POST');
+    if (diag.needs_diagnostic) {
+      diagQuestions = diag.questions || [];
+      renderDiagQuestion();
+      showScreen('diagnostic');
+    } else {
+      await loadDashboard();
+      showScreen('dashboard');
+    }
+  } catch (e) {
+    console.error(e);
+    toast('Erreur de connexion. Veuillez vous reconnecter.', 'error');
+    setTimeout(() => { localStorage.removeItem('edubot_token'); window.location.href = '/'; }, 1500);
+  }
+}
+
+// ════════════════════════════════════════
+//  API HELPER
+// ════════════════════════════════════════
+async function apiFetch(path, method = 'GET', body = null) {
+  const opts = {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+  };
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(API + path, opts);
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Erreur ${res.status}`);
+  }
+  return res.json();
+}
+
+// ════════════════════════════════════════
+//  NAVIGATION
+// ════════════════════════════════════════
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+
+  const map = {
+    'diagnostic': 'screen-diagnostic',
+    'dashboard': 'screen-dashboard',
+    'subjects': 'screen-dashboard',
+    'lessons': 'screen-lessons',
+    'lesson-content': 'screen-lesson-content',
+    'grades': 'screen-grades',
+    'help': 'screen-help',
+  };
+  const navMap = {
+    'dashboard': 'nav-dashboard', 'subjects': 'nav-dashboard',
+    'lessons': 'nav-lessons', 'lesson-content': 'nav-lessons',
+    'grades': 'nav-grades', 'help': 'nav-help',
+  };
+
+  const screenId = map[name] || 'screen-dashboard';
+  const navId = navMap[name];
+  document.getElementById(screenId)?.classList.add('active');
+  if (navId) document.getElementById(navId)?.classList.add('active');
+
+  if (name === 'grades') loadGrades();
+}
+
+function logout() {
+  localStorage.removeItem('edubot_token');
+  window.location.href = '/';
+}
+
+// ════════════════════════════════════════
+//  DIAGNOSTIC
+// ════════════════════════════════════════
+const SUBJECT_LABELS = {
+  francais: 'Français', mathematiques: 'Mathématiques',
+  sciences: 'Sciences', anglais: 'Anglais', 'histoire-geo': 'Histoire-Géo',
+};
+const SUBJECT_COLORS = {
+  francais: 'tag-francais', mathematiques: 'tag-mathematiques',
+  sciences: 'tag-sciences', anglais: 'tag-anglais', 'histoire-geo': 'tag-histoire-geo',
+};
+
+function renderDiagQuestion() {
+  const q = diagQuestions[diagCurrent];
+  if (!q) return;
+
+  const total = diagQuestions.length;
+  const pct = Math.round((diagCurrent / total) * 100);
+  document.getElementById('diag-progress').style.width = pct + '%';
+  document.getElementById('diag-progress-label').textContent = `Question ${diagCurrent + 1} / ${total}`;
+
+  const subjectTag = SUBJECT_COLORS[q.subject] || '';
+  const subjectLabel = SUBJECT_LABELS[q.subject] || q.subject;
+  const selected = diagAnswers[q.id];
+
+  const html = `
+    <div class="question-card">
+      <span class="question-subject-tag ${subjectTag}">${subjectLabel}</span>
+      <div class="question-text">${q.question}</div>
+      <div class="options-grid">
+        ${(q.options || []).map(opt => `
+          <button class="option-btn ${selected === opt.label ? 'selected' : ''}"
+                  onclick="selectDiagOption('${q.id}', '${opt.label}', this)">
+            <span class="option-label">${opt.label}</span>
+            ${opt.text}
+          </button>
+        `).join('')}
+      </div>
+    </div>`;
+
+  document.getElementById('diag-question-container').innerHTML = html;
+  document.getElementById('btn-diag-prev').style.display = diagCurrent > 0 ? 'block' : 'none';
+  document.getElementById('btn-diag-next').disabled = !selected;
+  document.getElementById('btn-diag-next').textContent =
+    diagCurrent === total - 1 ? '✅ Terminer le diagnostic' : 'Suivant →';
+}
+
+function selectDiagOption(qId, label, btn) {
+  diagAnswers[qId] = label;
+  btn.closest('.options-grid').querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('btn-diag-next').disabled = false;
+}
+
+function diagNext() {
+  if (diagCurrent < diagQuestions.length - 1) {
+    diagCurrent++;
+    renderDiagQuestion();
+  } else {
+    submitDiagnostic();
+  }
+}
+
+function diagPrev() {
+  if (diagCurrent > 0) { diagCurrent--; renderDiagQuestion(); }
+}
+
+async function submitDiagnostic() {
+  const answers = Object.entries(diagAnswers).map(([question_id, answer]) => ({ question_id, answer }));
+  try {
+    document.getElementById('btn-diag-next').disabled = true;
+    document.getElementById('btn-diag-next').textContent = '⏳ Analyse...';
+    const result = await apiFetch('/learning/diagnostic/submit', 'POST', { answers });
+
+    // Afficher le résultat
+    document.getElementById('screen-diagnostic-inner').style.display = 'none';
+    document.getElementById('diag-result-panel').style.display = 'block';
+    document.getElementById('result-score').textContent = result.overall_score + '%';
+    document.getElementById('result-message').textContent = result.message;
+
+    const subjHtml = Object.entries(result.scores_by_subject || {}).map(([s, pct]) =>
+      `<div class="score-pill">${SUBJECT_LABELS[s] || s} : ${pct}%</div>`
+    ).join('');
+    document.getElementById('result-subjects').innerHTML = subjHtml;
+  } catch (e) {
+    toast(e.message, 'error');
+    document.getElementById('btn-diag-next').disabled = false;
+    document.getElementById('btn-diag-next').textContent = '✅ Terminer le diagnostic';
+  }
+}
+
+async function goToDashboard() {
+  await loadDashboard();
+  showScreen('dashboard');
+}
+
+// ════════════════════════════════════════
+//  DASHBOARD
+// ════════════════════════════════════════
+const SUBJECT_ICONS = {
+  francais: '📝', mathematiques: '🔢', sciences: '🔬',
+  anglais: '🌍', 'histoire-geo': '🗺️',
+};
+const SUBJECT_COLORS_HEX = {
+  francais: '#f59e0b', mathematiques: '#3b82f6',
+  sciences: '#10b981', anglais: '#8b5cf6', 'histoire-geo': '#ef4444',
+};
+
+async function loadDashboard() {
+  try {
+    const data = await apiFetch('/learning/dashboard');
+    dashboardData = data;
+
+    const stats = data.global_stats || {};
+    document.getElementById('stat-total').textContent = stats.total_lessons || 0;
+    document.getElementById('stat-done').textContent = stats.completed_lessons || 0;
+    document.getElementById('stat-avg').textContent = (stats.global_average || 0) + '%';
+    if (data.student?.level) document.getElementById('stat-level').textContent = data.student.level;
+
+    renderSubjectsGrid(data.subjects || []);
+  } catch (e) {
+    document.getElementById('subjects-grid').innerHTML =
+      '<p style="color:var(--text-muted);padding:20px">Aucun parcours disponible pour le moment. Complète le diagnostic pour débloquer tes leçons.</p>';
+  }
+}
+
+function renderSubjectsGrid(subjects) {
+  if (!subjects.length) {
+    document.getElementById('subjects-grid').innerHTML =
+      '<p style="color:var(--text-muted);padding:20px">Aucune matière disponible. Complète d\'abord le diagnostic.</p>';
+    return;
+  }
+  document.getElementById('subjects-grid').innerHTML = subjects.map(s => {
+    const icon = SUBJECT_ICONS[s.subject] || '📚';
+    const color = SUBJECT_COLORS_HEX[s.subject] || 'var(--green)';
+    const label = SUBJECT_LABELS[s.subject] || s.subject;
+    return `
+      <div class="subject-card" onclick="openSubject('${s.subject}')">
+        <div class="subject-header">
+          <div class="subject-icon">${icon}</div>
+          <div>
+            <div class="subject-name">${label}</div>
+            <div class="subject-count">${s.completed}/${s.total_lessons} leçon${s.total_lessons > 1 ? 's' : ''}</div>
+          </div>
+        </div>
+        <div class="subject-progress-bar">
+          <div class="subject-progress-fill" style="width:${s.progress_pct}%;background:${color}"></div>
+        </div>
+        <div class="subject-meta">
+          <span>${s.progress_pct}% complété</span>
+          <span class="subject-score">Moy. ${s.avg_score}%</span>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ════════════════════════════════════════
+//  LEÇONS
+// ════════════════════════════════════════
+function openSubject(subject) {
+  currentSubject = subject;
+  const subjectData = (dashboardData?.subjects || []).find(s => s.subject === subject);
+  if (!subjectData) return;
+
+  const label = SUBJECT_LABELS[subject] || subject;
+  const icon = SUBJECT_ICONS[subject] || '📚';
+  document.getElementById('lessons-title').innerHTML = `${icon} ${label}`;
+
+  const lessons = subjectData.lessons || [];
+  document.getElementById('lessons-list').innerHTML = lessons.map(l => {
+    const isLocked = !l.unlocked;
+    const isDone = l.status === 'completed';
+    const numClass = isDone ? 'done' : (isLocked ? 'locked' : 'active');
+    const badgeClass = isDone ? 'badge-done' : (isLocked ? 'badge-locked' : 'badge-active');
+    const badgeText = isDone ? '✅ Complétée' : (isLocked ? '🔒 Verrouillée' : '▶️ En cours');
+    const score = isDone && l.score != null ? ` · ${l.score}%` : '';
+    return `
+      <div class="lesson-item ${isDone ? 'completed' : ''} ${isLocked ? 'locked' : ''}"
+           onclick="${isLocked ? '' : `openLesson(${l.id})`}">
+        <div class="lesson-num ${numClass}">${l.order}</div>
+        <div class="lesson-info">
+          <div class="lesson-title">${l.title}</div>
+          <div class="lesson-meta">${l.duration_minutes || 20} min${score}</div>
+        </div>
+        <span class="lesson-badge ${badgeClass}">${badgeText}</span>
+      </div>`;
+  }).join('');
+
+  showScreen('lessons');
+}
+
+async function openLesson(lessonId) {
+  try {
+    const data = await apiFetch(`/learning/lessons/${lessonId}`);
+    currentLesson = { id: lessonId, exercises: data.exercises || [] };
+
+    // Afficher le contenu
+    const lesson = data.lesson;
+    document.getElementById('lesson-body').innerHTML = `
+      <h2>${lesson.title}</h2>
+      <div style="color:var(--text-muted);font-size:13px;margin-bottom:20px">
+        ⏱️ ${lesson.duration_minutes || 20} minutes · ${SUBJECT_LABELS[lesson.subject] || lesson.subject}
+      </div>
+      <div>${formatContent(lesson.content || '')}</div>`;
+
+    // Afficher les exercices
+    if (data.exercises && data.exercises.length) {
+      document.getElementById('exercises-section').style.display = 'block';
+      document.getElementById('exercises-list').innerHTML = data.exercises.map((ex, i) => `
+        <div class="exercise-card" id="ex-card-${ex.id}">
+          <div class="exercise-num">Exercice ${i + 1} · ${ex.points} point${ex.points > 1 ? 's' : ''}</div>
+          <div class="exercise-q">${ex.question}</div>
+          <div class="options-grid" id="ex-opts-${ex.id}">
+            ${(ex.options || []).map(opt => `
+              <button class="option-btn" onclick="selectExOption(${ex.id}, '${opt.label}', this)">
+                <span class="option-label">${opt.label}</span> ${opt.text}
+              </button>`).join('')}
+          </div>
+          <div class="exercise-feedback" id="ex-fb-${ex.id}"></div>
+        </div>`).join('');
+    } else {
+      document.getElementById('exercises-section').style.display = 'none';
+    }
+
+    document.getElementById('lesson-back-btn').onclick = () => openSubject(lesson.subject);
+    showScreen('lesson-content');
+  } catch (e) {
+    toast(e.message, 'error');
+  }
+}
+
+function formatContent(text) {
+  // Rendu simple Markdown-like
+  return text
+    .replace(/## (.*)/g, '<h3>$1</h3>')
+    .replace(/# (.*)/g, '<h2>$1</h2>')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/\n/g, '<br>');
+}
+
+const exerciseAnswers = {};
+
+function selectExOption(exId, label, btn) {
+  exerciseAnswers[exId] = label;
+  btn.closest('.options-grid').querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+async function submitLesson() {
+  if (!currentLesson) return;
+  const exIds = currentLesson.exercises.map(e => e.id);
+  const answers = exIds.map(id => ({ exercise_id: id, answer: exerciseAnswers[id] || '' }));
+
+  try {
+    document.getElementById('btn-submit-lesson').disabled = true;
+    document.getElementById('btn-submit-lesson').textContent = '⏳ Correction...';
+    const result = await apiFetch(`/learning/lessons/${currentLesson.id}/complete`, 'POST', { answers });
+
+    // Afficher les corrections
+    (result.results || []).forEach(r => {
+      const opts = document.querySelectorAll(`#ex-opts-${r.exercise_id} .option-btn`);
+      opts.forEach(btn => {
+        const lbl = btn.querySelector('.option-label')?.textContent?.trim();
+        if (lbl === r.correct_answer) btn.classList.add('correct');
+        else if (lbl === exerciseAnswers[r.exercise_id] && !r.is_correct) btn.classList.add('wrong');
+        btn.onclick = null;
+      });
+      const fb = document.getElementById(`ex-fb-${r.exercise_id}`);
+      if (fb) {
+        fb.className = 'exercise-feedback ' + (r.is_correct ? 'correct' : 'wrong');
+        fb.style.display = 'block';
+        fb.textContent = r.is_correct
+          ? '✅ Bonne réponse !' + (r.explanation ? ' ' + r.explanation : '')
+          : `❌ Réponse correcte : ${r.correct_answer}${r.explanation ? '. ' + r.explanation : ''}`;
+      }
+    });
+
+    // Message résultat
+    const passed = result.passed;
+    const color = passed ? 'var(--green)' : '#f59e0b';
+    document.getElementById('btn-submit-lesson').textContent = result.passed ? '🎉 Réussi !' : '💪 Essaie encore !';
+    document.getElementById('btn-submit-lesson').style.background = color;
+
+    toast(result.message, passed ? 'success' : '');
+    if (result.next_lesson && passed) {
+      setTimeout(() => {
+        if (confirm(`🎉 Leçon suivante débloquée : "${result.next_lesson.title}". Veux-tu y aller ?`)) {
+          openLesson(result.next_lesson.id);
+        }
+      }, 1000);
+    }
+    if (passed) await loadDashboard();
+  } catch (e) {
+    toast(e.message, 'error');
+    document.getElementById('btn-submit-lesson').disabled = false;
+    document.getElementById('btn-submit-lesson').textContent = '✅ Valider mes réponses';
+  }
+}
+
+// ════════════════════════════════════════
+//  NOTES
+// ════════════════════════════════════════
+async function loadGrades() {
+  document.getElementById('grades-list').innerHTML = '<div class="loader"><div class="spinner"></div>Chargement...</div>';
+  try {
+    const data = await apiFetch('/learning/grades');
+    const grades = data.grades || [];
+
+    if (!grades.length) {
+      document.getElementById('grades-list').innerHTML = '<p style="color:var(--text-muted);padding:20px">Aucune note pour l\'instant. Complète des exercices !</p>';
+      return;
+    }
+
+    const allScores = grades.map(g => g.score_pct);
+    const avg = Math.round(allScores.reduce((a, b) => a + b, 0) / allScores.length);
+    document.getElementById('grades-avg').textContent = avg + '%';
+    document.getElementById('grades-count').textContent = `${grades.length} leçon${grades.length > 1 ? 's' : ''} évaluée${grades.length > 1 ? 's' : ''}`;
+
+    document.getElementById('grades-list').innerHTML = grades.map(g => {
+      const icon = SUBJECT_ICONS[g.subject] || '📚';
+      const scoreClass = g.score_pct >= 75 ? 'score-green' : (g.score_pct >= 50 ? 'score-orange' : 'score-red');
+      return `
+        <div class="grade-row">
+          <div class="grade-icon">${icon}</div>
+          <div class="grade-info">
+            <div class="grade-title">${g.lesson_title}</div>
+            <div class="grade-subject">${SUBJECT_LABELS[g.subject] || g.subject} · ${g.exercises.length} exercice${g.exercises.length > 1 ? 's' : ''}</div>
+          </div>
+          <div class="grade-score ${scoreClass}">${g.score_pct}%</div>
+        </div>`;
+    }).join('');
+  } catch (e) {
+    document.getElementById('grades-list').innerHTML = '<p style="color:var(--text-muted);padding:20px">Erreur de chargement.</p>';
+  }
+}
+
+// ════════════════════════════════════════
+//  AIDE / CHAT EDUBOT
+// ════════════════════════════════════════
+async function sendChat() {
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+
+  addChatMsg(msg, 'user');
+
+  try {
+    // Utilise l'endpoint chat existant d'EduBot
+    const res = await fetch(API + '/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ message: msg, session_id: currentUser?.session_id || 'dashboard' }),
+    });
+    const data = await res.json();
+    addChatMsg(data.response || data.message || 'Je n\'ai pas pu trouver une réponse. Essaie de reformuler.', 'bot');
+  } catch (e) {
+    addChatMsg('Désolé, je ne peux pas répondre pour le moment. Réessaie dans quelques instants.', 'bot');
+  }
+}
+
+function addChatMsg(text, role) {
+  const container = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = `chat-msg ${role}`;
+  if (role === 'bot') div.innerHTML = `<strong>🤖 EduBot</strong>${text}`;
+  else div.textContent = text;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+async function sendTutorRequest() {
+  const msg = document.getElementById('tutor-msg').value.trim();
+  if (!msg) { toast('Écris un message pour ton tuteur.', 'error'); return; }
+  try {
+    await apiFetch('/learning/help', 'POST', { message: msg, request_type: 'tutor' });
+    document.getElementById('tutor-msg').value = '';
+    toast('✅ Message envoyé à ton tuteur !', 'success');
+  } catch (e) {
+    toast(e.message, 'error');
+  }
+}
+
+// ════════════════════════════════════════
+//  TOAST
+// ════════════════════════════════════════
+function toast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ════════════════════════════════════════
+//  START
+// ════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

@@ -388,6 +388,9 @@
 
             if (!data.profile_complete) {
                 showProfileModal();
+            } else {
+                // Redirection selon le profil
+                redirectAfterLogin(data.user);
             }
         } catch (err) {
             showAuthError(err.message || "Erreur inconnue.");
@@ -445,12 +448,26 @@
             reloadHistoryAfterAuthChange();
             applyLanguage(state.lang);
             hideProfileModal();
+            // Redirection selon le profil après complétion
+            redirectAfterLogin(data.user);
         } catch (err) {
             errEl.textContent = err.message || "Erreur inconnue.";
             errEl.classList.remove("hidden");
         } finally {
             submitBtn.disabled = false;
         }
+    }
+
+    /** Redirige l'utilisateur vers la bonne interface selon son profil. */
+    function redirectAfterLogin(user) {
+        if (!user) return;
+        const profile = user.profile_type || user.role || "";
+        if (profile === "eleve") {
+            window.location.href = "dashboard.html";
+        } else if (profile === "tuteur" || profile === "enseignant" || profile === "volontaire") {
+            window.location.href = "tutor.html";
+        }
+        // admin et autres restent sur index.html (interface chat)
     }
 
     function logout() {
@@ -599,7 +616,19 @@
         // Re-hydrater l'etat utilisateur en best-effort : si on a un token,
         // on verifie qu'il est encore valide cote serveur. Sinon log-out
         // silencieux (le token a peut-etre expire ou ete revoque).
-        if (state.token) refreshAuthFromServer();
+        if (state.token) {
+            // Si un élève revient sur index.html alors qu'il est déjà connecté,
+            // le renvoyer directement vers son tableau de bord.
+            const profileType = state.user?.profile_type || state.user?.role || "";
+            if (profileType === "eleve") {
+                window.location.href = "dashboard.html";
+                return;
+            } else if (profileType === "tuteur" || profileType === "enseignant" || profileType === "volontaire") {
+                window.location.href = "tutor.html";
+                return;
+            }
+            refreshAuthFromServer();
+        }
     }
 
     /** Verifie le token aupres du backend et met a jour state.user.
@@ -691,7 +720,7 @@
         const firstName = u.full_name.split(" ")[0];
         return {
             h2: `Bonjour ${firstName}, comment puis-je vous aider ?`,
-            p: u.profile_type === "enseignant"
+            p: (u.profile_type === "enseignant" || u.profile_type === "volontaire")
                 ? `Vos outils pédagogiques et PLANETE en un clic${u.school ? " — " + u.school : ""}.`
                 : u.profile_type === "eleve"
                 ? `Exercices, programme et révisions pour le ${u.level || "niveau"}.`
@@ -1250,7 +1279,7 @@
             </div>
             <div class="pdf-body" style="line-height:1.8;">${bubble.innerHTML}</div>
             <div style="margin-top:36px;padding-top:12px;border-top:1px solid #eee;font-size:10px;color:#aaa;text-align:center;">
-                Document généré par EduBot &nbsp;•&nbsp; educonnect-w7tr.onrender.com &nbsp;•&nbsp; Ministère de l'Éducation Nationale du Sénégal
+                Document généré par EduBot &nbsp;•&nbsp; edubot-senegal.onrender.com &nbsp;•&nbsp; Ministère de l'Éducation Nationale du Sénégal
             </div>
         `;
 

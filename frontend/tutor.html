@@ -862,7 +862,8 @@ async function init() {
   try {
     const r = await fetch(`${API}/auth/me`, { headers: authHeaders() });
     if (!r.ok) { window.location.href = "index.html"; return; }
-    currentUser = await r.json();
+    const meResp = await r.json();
+    currentUser = meResp.user || meResp;
     const role = currentUser.profile_type || currentUser.role || "";
     if (role !== "tuteur" && role !== "enseignant" && role !== "volontaire" && role !== "admin") {
       window.location.href = "index.html";

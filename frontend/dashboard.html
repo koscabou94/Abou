@@ -591,8 +591,9 @@ async function init() {
   if (!token) { window.location.href = '/'; return; }
 
   try {
-    const me = await apiFetch('/auth/me');
-    currentUser = me;
+    const meResp = await apiFetch('/auth/me');
+    currentUser = meResp.user || meResp;
+    const me = currentUser;
     document.getElementById('nav-student-name').textContent = (me.full_name || me.ien || 'Élève').split(' ')[0];
     document.getElementById('student-first-name').textContent = (me.full_name || 'élève').split(' ')[0];
     document.getElementById('stat-level').textContent = me.level || '—';

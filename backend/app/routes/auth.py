@@ -390,15 +390,18 @@ async def get_me(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail="Utilisateur introuvable.")
     return {
-        "id": user.id,
-        "profile_type": user.profile_type,
-        "full_name": user.full_name,
-        "school": user.school,
-        "level": user.level,
-        "ien": user.ien,
-        "session_id": user.session_id,
-        "auth_method": user.auth_method,
-        "is_authenticated": user.is_authenticated,
+        "user": {
+            "id": user.id,
+            "profile_type": user.profile_type,
+            "full_name": user.full_name,
+            "school": user.school,
+            "level": user.level,
+            "ien": user.ien,
+            "session_id": user.session_id,
+            "auth_method": user.auth_method,
+            "is_authenticated": user.is_authenticated,
+            "language_preference": user.language_preference,
+        },
         "profile_complete": bool(user.profile_type and user.full_name),
     }
 

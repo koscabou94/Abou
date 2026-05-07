@@ -297,12 +297,20 @@ async def _login_inner(
                                     detail="Mot de passe incorrect.")
 
     elif payload.method in ("email", "phone"):
-        if not payload.otp:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
-                                detail="Le code OTP est requis.")
-        if not verify_otp(identifier, payload.otp):
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
-                                detail="Code OTP invalide ou expiré.")
+        # Permettre la connexion par mot de passe pour les comptes admin
+        # (si password_hash présent ET password fourni → pas besoin d'OTP)
+        user_for_pw_check = await _find_user_by_identifier(db, payload.method, identifier)
+        if (payload.password and user_for_pw_check
+                and user_for_pw_check.password_hash
+                and verify_password(payload.password, user_for_pw_check.password_hash)):
+            pass  # Authentification par mot de passe réussie
+        else:
+            if not payload.otp:
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                                    detail="Le code OTP est requis.")
+            if not verify_otp(identifier, payload.otp):
+                raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                                    detail="Code OTP invalide ou expiré.")
 
     # 3. Créer ou mettre à jour l'utilisateur
     user = await _create_or_update_user_from_login(
@@ -403,6 +411,74 @@ async def get_me(
             "language_preference": user.language_preference,
         },
         "profile_complete": bool(user.profile_type and user.full_name),
+    }
+
+
+@router.post(
+    "/setup-admin",
+    summary="Créer ou réinitialiser le compte administrateur (protégé par X-API-Key)",
+)
+async def setup_admin(
+    request: Request,
+    db: AsyncSession = Depends(get_db),
+) -> dict:
+    """
+    Crée ou met à jour un compte admin.
+    Requiert le header X-API-Key (visible dans le dashboard Render sous Environment Variables → API_KEY).
+    """
+    import uuid as _uuid
+    from app.middleware.auth import verify_api_key
+    from app.config import settings as _settings
+
+    # Vérification API key
+    api_key = request.headers.get("X-API-Key") or request.headers.get("x-api-key")
+    if not api_key or api_key != _settings.API_KEY:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+                            detail="Clé API invalide. Vérifiez X-API-Key dans votre dashboard Render.")
+
+    body = await request.json()
+    email = (body.get("email") or "").strip().lower()
+    password = (body.get("password") or "").strip()
+    full_name = (body.get("full_name") or "Administrateur EduBot").strip()
+
+    if not email or "@" not in email:
+        raise HTTPException(status_code=400, detail="Email invalide.")
+    if len(password) < 6:
+        raise HTTPException(status_code=400, detail="Mot de passe trop court (6 caractères minimum).")
+
+    # Chercher ou créer l'utilisateur
+    result = await db.execute(select(User).where(User.email == email))
+    user = result.scalar_one_or_none()
+
+    if user:
+        user.profile_type = "admin"
+        user.full_name = full_name
+        user.password_hash = hash_password(password)
+        user.profile_complete = True
+        action = "mis à jour"
+    else:
+        user = User(
+            session_id=str(_uuid.uuid4()),
+            email=email,
+            password_hash=hash_password(password),
+            full_name=full_name,
+            profile_type="admin",
+            profile_complete=True,
+            auth_method="email",
+            language_preference="fr",
+        )
+        db.add(user)
+        action = "créé"
+
+    await db.commit()
+    logger.info("Compte admin setup", email=email, action=action)
+
+    return {
+        "success": True,
+        "action": action,
+        "email": email,
+        "profile_type": "admin",
+        "message": f"Compte admin {action} avec succès. Connecte-toi sur le site avec cet email.",
     }
 
 

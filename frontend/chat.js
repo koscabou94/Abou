@@ -192,6 +192,12 @@
             if (nameEl) nameEl.textContent = name;
             const profile = state.user.profile_type || "";
             const level = state.user.level ? ` · ${state.user.level}` : "";
+            // Show admin lesson creation link only for admins
+            const adminLessonsBtn = document.getElementById("dropdown-admin-lessons-btn");
+            if (adminLessonsBtn) {
+                if (profile === "admin") adminLessonsBtn.classList.remove("hidden");
+                else adminLessonsBtn.classList.add("hidden");
+            }
             const roleEl = document.getElementById("auth-user-role");
             if (roleEl) {
                 roleEl.textContent = profile

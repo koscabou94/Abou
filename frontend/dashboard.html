@@ -238,22 +238,26 @@
       display: flex; align-items: center; gap: 16px;
       cursor: pointer; transition: all .15s; border: 2px solid transparent;
     }
-    .lesson-item.locked { opacity: .5; cursor: not-allowed; }
-    .lesson-item.completed { border-color: var(--green); }
-    .lesson-item:not(.locked):hover { border-color: var(--green); transform: translateX(4px); }
+    .lesson-item.locked { opacity: .65; cursor: not-allowed; filter: grayscale(0.2); }
+    .lesson-item.completed { border-color: var(--green); background: #f8fffe; }
+    .lesson-item.current { border-color: #3b82f6; background: #f0f7ff; }
+    .lesson-item:not(.locked):hover { transform: translateX(4px); box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+    .lesson-item.completed:hover { border-color: var(--green); }
+    .lesson-item.current:hover { border-color: #2563eb; }
     .lesson-num {
-      width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+      width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
       font-weight: 800; font-size: 15px; font-family: 'Outfit', sans-serif;
     }
     .lesson-num.done { background: var(--green); color: #fff; }
-    .lesson-num.active { background: var(--green-light); color: var(--green); }
+    .lesson-num.active { background: #3b82f6; color: #fff; }
     .lesson-num.locked { background: var(--border); color: var(--text-muted); }
     .lesson-info { flex: 1; }
     .lesson-title { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
     .lesson-meta { font-size: 12px; color: var(--text-muted); }
     .lesson-badge {
-      padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600;
+      padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;
+      white-space: nowrap;
     }
     .badge-done { background: var(--green-light); color: var(--green); }
     .badge-active { background: #dbeafe; color: #1d4ed8; }
@@ -876,8 +880,8 @@ function openSubject(subject) {
 
   const lessons = subjectData.lessons || [];
 
-  // Déverrouillage strictement séquentiel :
-  // la première leçon non complétée est la seule accessible.
+  // Moodle-style : toutes les leçons visibles, déverrouillage séquentiel.
+  // Complétée → verte + coche, En cours → bleue + accessible, Verrouillée → grisée + cadenas.
   let firstActiveFound = false;
   const rows = lessons.map(l => {
     const isDone = l.status === 'completed';
@@ -890,14 +894,20 @@ function openSubject(subject) {
 
     const numClass = isDone ? 'done' : (isCurrent ? 'active' : 'locked');
     const badgeClass = isDone ? 'badge-done' : (isCurrent ? 'badge-active' : 'badge-locked');
-    const badgeText = isDone ? 'Complétée' : (isCurrent ? 'En cours' : 'Verrouillée');
+    const badgeText = isDone ? '✓ Complétée' : (isCurrent ? 'Commencer →' : 'Verrouillée');
     const score = isDone && l.score != null ? ` · ${l.score}%` : '';
     const clickable = isDone || isCurrent;
 
+    // Icône dans le cercle numéroté
+    const checkSVG = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg>`;
+    const lockSVG  = `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>`;
+    const numContent = isDone ? checkSVG : (isLocked ? lockSVG : l.order);
+
+    const itemClass = `lesson-item ${isDone ? 'completed' : (isCurrent ? 'current' : 'locked')}`;
+
     return `
-      <div class="lesson-item ${isDone ? 'completed' : ''} ${isLocked ? 'locked' : ''}"
-           onclick="${clickable ? `openLesson(${l.id})` : ''}">
-        <div class="lesson-num ${numClass}">${l.order}</div>
+      <div class="${itemClass}" onclick="${clickable ? `openLesson(${l.id})` : ''}">
+        <div class="lesson-num ${numClass}">${numContent}</div>
         <div class="lesson-info">
           <div class="lesson-title">${l.title}</div>
           <div class="lesson-meta">${l.duration_minutes || 20} min${score}</div>

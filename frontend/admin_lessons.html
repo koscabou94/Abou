@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduBot Admin — Créer une leçon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --green: #008751;
+      --green-light: #e6f4ed;
+      --green-mid: #00a562;
+      --blue: #1a3a5c;
+      --blue-light: #e8f0f9;
+      --yellow: #f59e0b;
+      --red: #e31b23;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --orange: #ea580c;
+      --orange-light: #fff7ed;
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 16px;
+      --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--blue); color: #fff;
+      padding: 0 28px; height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .nav-brand { display: flex; align-items: center; gap: 10px; }
+    .nav-logo {
+      width: 34px; height: 34px; border-radius: 8px;
+      background: var(--green); display: flex; align-items: center; justify-content: center;
+      font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 16px; color: #fff;
+    }
+    .nav-title { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 17px; }
+    .nav-title span { color: #6ee7b7; }
+    .admin-badge {
+      background: rgba(255,255,255,.15); color: #fff;
+      padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;
+      letter-spacing: .5px;
+    }
+    .btn-back {
+      background: rgba(255,255,255,.1); color: #fff; border: 1px solid rgba(255,255,255,.2);
+      padding: 7px 14px; border-radius: 8px; font-size: 13px; font-weight: 500;
+      cursor: pointer; transition: background .15s; text-decoration: none;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .btn-back:hover { background: rgba(255,255,255,.2); }
+
+    /* ── WIZARD STEPS ── */
+    .wizard-bar {
+      background: var(--card); border-bottom: 1px solid var(--border);
+      padding: 0 28px; display: flex; align-items: stretch;
+    }
+    .step-tab {
+      display: flex; align-items: center; gap: 10px;
+      padding: 16px 20px; border-bottom: 3px solid transparent;
+      cursor: pointer; transition: all .15s; color: var(--text-muted);
+      font-size: 14px; font-weight: 500; white-space: nowrap;
+    }
+    .step-tab.active { border-bottom-color: var(--green); color: var(--green); font-weight: 600; }
+    .step-tab.done { color: var(--green); }
+    .step-tab.locked { color: var(--border); cursor: not-allowed; }
+    .step-circle {
+      width: 26px; height: 26px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; background: var(--border); color: var(--text-muted);
+    }
+    .step-tab.active .step-circle { background: var(--green); color: #fff; }
+    .step-tab.done .step-circle { background: var(--green); color: #fff; }
+
+    /* ── MAIN ── */
+    .main-wrap { max-width: 860px; margin: 0 auto; padding: 32px 20px 60px; }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--card); border-radius: var(--radius);
+      box-shadow: var(--shadow); padding: 28px 32px; margin-bottom: 20px;
+    }
+    .card-title {
+      font-family: 'Outfit', sans-serif; font-size: 19px; font-weight: 700;
+      margin-bottom: 6px; color: var(--text);
+    }
+    .card-sub { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
+
+    /* ── STEP SCREENS ── */
+    .step-screen { display: none; }
+    .step-screen.active { display: block; }
+
+    /* ── PILL SELECTOR ── */
+    .pill-group { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; }
+    .pill {
+      padding: 9px 18px; border-radius: 30px; border: 2px solid var(--border);
+      background: var(--bg); font-size: 14px; font-weight: 500;
+      cursor: pointer; transition: all .15s;
+    }
+    .pill:hover { border-color: var(--green); background: var(--green-light); color: var(--green); }
+    .pill.selected { border-color: var(--green); background: var(--green); color: #fff; font-weight: 600; }
+    .pill.disabled { opacity: .4; cursor: not-allowed; }
+    .field-label { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px; }
+
+    /* ── INPUTS ── */
+    input[type=text], input[type=number], textarea, select {
+      width: 100%; border: 2px solid var(--border); border-radius: 10px;
+      padding: 12px 14px; font-size: 15px; font-family: 'Inter', sans-serif;
+      outline: none; transition: border-color .15s; background: var(--bg);
+    }
+    input[type=text]:focus, input[type=number]:focus, textarea:focus, select:focus { border-color: var(--green); background: #fff; }
+    .field-row { margin-bottom: 20px; }
+
+    /* ── BUTTONS ── */
+    .btn-primary {
+      background: var(--green); color: #fff; border: none;
+      padding: 13px 28px; border-radius: 12px; font-size: 15px; font-weight: 600;
+      cursor: pointer; transition: opacity .15s; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-primary:hover { opacity: .88; }
+    .btn-primary:disabled { opacity: .4; cursor: not-allowed; }
+    .btn-secondary {
+      background: var(--bg); color: var(--text); border: 2px solid var(--border);
+      padding: 13px 22px; border-radius: 12px; font-size: 15px; font-weight: 500;
+      cursor: pointer; transition: all .15s; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-secondary:hover { border-color: var(--green); color: var(--green); }
+    .btn-ai {
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      color: #fff; border: none;
+      padding: 13px 24px; border-radius: 12px; font-size: 15px; font-weight: 600;
+      cursor: pointer; transition: opacity .15s; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-ai:hover { opacity: .88; }
+    .btn-ai:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-row { display: flex; gap: 12px; align-items: center; justify-content: space-between; margin-top: 28px; }
+    .btn-row-right { display: flex; gap: 12px; }
+
+    /* ── CONTENT EDITOR ── */
+    .editor-wrap { position: relative; }
+    .content-textarea {
+      min-height: 280px; resize: vertical;
+      font-family: 'Inter', monospace; font-size: 14px; line-height: 1.7;
+    }
+    .editor-toolbar {
+      display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap;
+    }
+    .tb-btn {
+      padding: 5px 10px; border-radius: 6px; border: 1px solid var(--border);
+      background: var(--card); font-size: 13px; cursor: pointer; font-family: monospace;
+      transition: background .1s;
+    }
+    .tb-btn:hover { background: var(--green-light); color: var(--green); }
+    .ai-generating {
+      display: none; align-items: center; gap: 10px;
+      background: var(--purple-light); border: 1px solid #c4b5fd;
+      border-radius: 10px; padding: 12px 16px; font-size: 14px; color: #5b21b6; margin-top: 10px;
+    }
+    .ai-generating.show { display: flex; }
+    .ai-dots span {
+      display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+      background: #7c3aed; margin: 0 2px;
+      animation: dot-bounce .8s infinite alternate;
+    }
+    .ai-dots span:nth-child(2) { animation-delay: .2s; }
+    .ai-dots span:nth-child(3) { animation-delay: .4s; }
+    @keyframes dot-bounce { from { opacity:.2; transform: translateY(0); } to { opacity:1; transform: translateY(-4px); } }
+
+    /* ── EXERCISE BUILDER ── */
+    .ex-type-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+    .ex-type-card {
+      padding: 16px; border-radius: 12px; border: 2px solid var(--border);
+      cursor: pointer; transition: all .15s; text-align: center; background: var(--bg);
+    }
+    .ex-type-card:hover { border-color: var(--green); background: var(--green-light); }
+    .ex-type-card.selected { border-color: var(--green); background: var(--green); color: #fff; }
+    .ex-type-icon { font-size: 26px; margin-bottom: 6px; }
+    .ex-type-label { font-size: 13px; font-weight: 600; }
+
+    .exercises-container { display: flex; flex-direction: column; gap: 16px; }
+    .exercise-block {
+      background: var(--bg); border: 2px solid var(--border);
+      border-radius: 14px; padding: 20px;
+      position: relative;
+    }
+    .exercise-block .ex-header {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+    }
+    .ex-num-badge {
+      width: 28px; height: 28px; border-radius: 8px;
+      background: var(--green); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 13px; flex-shrink: 0;
+    }
+    .ex-type-pill {
+      padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;
+      text-transform: uppercase; background: var(--green-light); color: var(--green);
+    }
+    .btn-del-ex {
+      margin-left: auto; background: #fee2e2; color: var(--red);
+      border: none; border-radius: 8px; padding: 5px 10px; font-size: 12px;
+      cursor: pointer; font-weight: 600; transition: background .15s;
+    }
+    .btn-del-ex:hover { background: #fecaca; }
+
+    /* QCM Options */
+    .qcm-options { display: flex; flex-direction: column; gap: 8px; }
+    .qcm-opt-row { display: flex; align-items: center; gap: 8px; }
+    .opt-label {
+      width: 30px; height: 30px; border-radius: 8px;
+      background: var(--border); display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 13px; flex-shrink: 0; color: var(--text-muted);
+    }
+    .opt-label.correct { background: var(--green); color: #fff; }
+    .qcm-opt-row input { flex: 1; padding: 9px 12px; font-size: 14px; }
+    .btn-correct {
+      padding: 6px 10px; border-radius: 8px; font-size: 12px; font-weight: 600;
+      cursor: pointer; border: 1px solid var(--border); background: var(--bg);
+      color: var(--text-muted); white-space: nowrap;
+    }
+    .btn-correct.active { background: var(--green); color: #fff; border-color: var(--green); }
+
+    /* H5P Upload */
+    .h5p-zone {
+      border: 2px dashed var(--border); border-radius: 12px;
+      padding: 32px; text-align: center; cursor: pointer;
+      transition: all .15s;
+    }
+    .h5p-zone:hover { border-color: var(--green); background: var(--green-light); }
+    .h5p-zone.has-file { border-color: var(--green); background: var(--green-light); }
+    .h5p-icon { font-size: 36px; margin-bottom: 8px; }
+
+    /* ── PREVIEW ── */
+    .preview-lesson {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 24px; margin-bottom: 16px;
+      line-height: 1.8; font-size: 15px;
+    }
+    .preview-lesson h2 { font-family: 'Outfit', sans-serif; font-size: 20px; margin-bottom: 12px; color: var(--green); }
+    .preview-lesson h3 { font-size: 16px; font-weight: 600; margin: 16px 0 8px; }
+    .preview-lesson p { margin-bottom: 10px; }
+    .preview-lesson ul, .preview-lesson ol { padding-left: 20px; margin-bottom: 10px; }
+    .ex-preview-card {
+      background: var(--bg); border-radius: 12px; padding: 16px; margin-top: 12px;
+      border-left: 4px solid var(--green);
+    }
+    .ex-preview-q { font-weight: 600; font-size: 15px; margin-bottom: 8px; }
+    .ex-preview-opts { display: flex; flex-direction: column; gap: 6px; }
+    .ex-preview-opt { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+    .ex-preview-opt.correct { color: var(--green); font-weight: 600; }
+
+    /* ── PUBLISH SUCCESS ── */
+    .success-screen { text-align: center; padding: 48px 24px; }
+    .success-icon { font-size: 64px; margin-bottom: 16px; }
+    .success-screen h2 { font-family: 'Outfit', sans-serif; font-size: 24px; margin-bottom: 8px; }
+    .success-screen p { color: var(--text-muted); font-size: 15px; margin-bottom: 28px; }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px;
+      background: #1e293b; color: #fff;
+      padding: 14px 20px; border-radius: 12px; font-size: 14px; font-weight: 500;
+      box-shadow: 0 8px 24px rgba(0,0,0,.2);
+      transform: translateY(80px); opacity: 0;
+      transition: all .3s; z-index: 999;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { border-left: 4px solid var(--green); }
+    .toast.error { border-left: 4px solid var(--red); }
+
+    /* ── SPINNER ── */
+    .spinner {
+      width: 18px; height: 18px; border: 2px solid rgba(255,255,255,.3);
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+    .spinner.dark { border-color: rgba(0,0,0,.1); border-top-color: var(--green); }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 640px) {
+      .ex-type-grid { grid-template-columns: repeat(2, 1fr); }
+      .main-wrap { padding: 16px 12px 60px; }
+      .card { padding: 20px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo">E</div>
+    <div class="nav-title">Edu<span>Bot</span></div>
+    <span class="admin-badge">ADMIN</span>
+  </div>
+  <a href="/" class="btn-back">
+    ← Retour au chat
+  </a>
+</nav>
+
+<!-- WIZARD BAR -->
+<div class="wizard-bar">
+  <div class="step-tab active" id="tab-1" onclick="goToStep(1)">
+    <div class="step-circle">1</div> Configuration
+  </div>
+  <div class="step-tab locked" id="tab-2">
+    <div class="step-circle">2</div> Contenu
+  </div>
+  <div class="step-tab locked" id="tab-3">
+    <div class="step-circle">3</div> Exercices
+  </div>
+  <div class="step-tab locked" id="tab-4">
+    <div class="step-circle">4</div> Publication
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main-wrap">
+
+  <!-- ═══ STEP 1 : Configuration ═══ -->
+  <div id="step-1" class="step-screen active">
+    <div class="card">
+      <div class="card-title">Configuration de la leçon</div>
+      <div class="card-sub">Choisis le niveau scolaire, la matière et donne un titre à la leçon.</div>
+
+      <div class="field-row">
+        <div class="field-label">Niveau scolaire</div>
+        <div class="pill-group" id="niveau-group">
+          <button class="pill" onclick="selectPill('niveau', 'CI', this)">CI</button>
+          <button class="pill" onclick="selectPill('niveau', 'CP', this)">CP</button>
+          <button class="pill" onclick="selectPill('niveau', 'CE1', this)">CE1</button>
+          <button class="pill" onclick="selectPill('niveau', 'CE2', this)">CE2</button>
+          <button class="pill" onclick="selectPill('niveau', 'CM1', this)">CM1</button>
+          <button class="pill" onclick="selectPill('niveau', 'CM2', this)">CM2</button>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label">Matière</div>
+        <div class="pill-group" id="matiere-group">
+          <button class="pill" onclick="selectPill('matiere', 'francais', this)">Français</button>
+          <button class="pill" onclick="selectPill('matiere', 'mathematiques', this)">Mathématiques</button>
+          <button class="pill" onclick="selectPill('matiere', 'sciences', this)">Sciences</button>
+          <button class="pill" onclick="selectPill('matiere', 'anglais', this)">Anglais</button>
+          <button class="pill" onclick="selectPill('matiere', 'histoire-geo', this)">Histoire-Géo</button>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label">Titre de la leçon</div>
+        <input type="text" id="lesson-title" placeholder="Ex : Les nombres de 0 à 10, Le verbe au présent…" />
+      </div>
+
+      <div class="field-row">
+        <div class="field-label">Durée estimée (minutes)</div>
+        <input type="number" id="lesson-duration" value="30" min="10" max="120" style="max-width:120px" />
+      </div>
+
+      <div class="btn-row">
+        <span style="font-size:13px;color:var(--text-muted)">Étape 1 sur 4</span>
+        <button class="btn-primary" onclick="validateStep1()">Continuer → Contenu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ STEP 2 : Contenu ═══ -->
+  <div id="step-2" class="step-screen">
+    <div class="card">
+      <div class="card-title">Contenu de la leçon</div>
+      <div class="card-sub">Rédige le contenu pédagogique ou génère-le automatiquement avec l'IA.</div>
+
+      <div style="display:flex;gap:12px;align-items:center;margin-bottom:20px;flex-wrap:wrap">
+        <button class="btn-ai" id="btn-generate" onclick="generateContent()">
+          ✨ Générer avec l'IA
+        </button>
+        <span style="font-size:13px;color:var(--text-muted)">
+          EduBot rédigera le cours selon le niveau et la matière choisis.
+        </span>
+      </div>
+
+      <div class="ai-generating" id="ai-generating">
+        <div class="ai-dots"><span></span><span></span><span></span></div>
+        <span>L'IA rédige la leçon… (quelques secondes)</span>
+      </div>
+
+      <div class="field-row" style="margin-top:16px">
+        <div class="field-label">Contenu (Markdown supporté)</div>
+        <div class="editor-toolbar">
+          <button class="tb-btn" onclick="insertMd('## ', '')">H2</button>
+          <button class="tb-btn" onclick="insertMd('### ', '')">H3</button>
+          <button class="tb-btn" onclick="insertMd('**', '**')"><b>Gras</b></button>
+          <button class="tb-btn" onclick="insertMd('*', '*')"><em>Italique</em></button>
+          <button class="tb-btn" onclick="insertMd('- ', '')">Liste</button>
+          <button class="tb-btn" onclick="insertMd('\n\n---\n\n', '')">Séparateur</button>
+        </div>
+        <textarea class="content-textarea" id="lesson-content"
+          placeholder="Écris le contenu de la leçon ici...&#10;&#10;## Introduction&#10;...&#10;&#10;## Exemple&#10;..."></textarea>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label">Résumé court (affiché à l'élève)</div>
+        <textarea id="lesson-summary" rows="3" placeholder="Une phrase courte décrivant l'objectif de la leçon…"></textarea>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-secondary" onclick="goToStep(1)">← Retour</button>
+        <button class="btn-primary" onclick="validateStep2()">Continuer → Exercices</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ STEP 3 : Exercices ═══ -->
+  <div id="step-3" class="step-screen">
+    <div class="card">
+      <div class="card-title">Exercices interactifs</div>
+      <div class="card-sub">Ajoute des exercices pour que l'élève s'entraîne. Choisis le type et remplis les champs.</div>
+
+      <div class="field-label" style="margin-bottom:12px">Ajouter un exercice</div>
+      <div class="ex-type-grid">
+        <div class="ex-type-card" onclick="addExercise('qcm')">
+          <div class="ex-type-icon">🔘</div>
+          <div class="ex-type-label">QCM</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:3px">Choix multiple</div>
+        </div>
+        <div class="ex-type-card" onclick="addExercise('vrai_faux')">
+          <div class="ex-type-icon">✅</div>
+          <div class="ex-type-label">Vrai / Faux</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:3px">Affirmation à juger</div>
+        </div>
+        <div class="ex-type-card" onclick="addExercise('texte_trous')">
+          <div class="ex-type-icon">✏️</div>
+          <div class="ex-type-label">Texte à trous</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:3px">Mot manquant</div>
+        </div>
+        <div class="ex-type-card" onclick="addExercise('association')">
+          <div class="ex-type-icon">🔗</div>
+          <div class="ex-type-label">Association</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:3px">Relier les éléments</div>
+        </div>
+        <div class="ex-type-card" onclick="addExercise('h5p')">
+          <div class="ex-type-icon">📦</div>
+          <div class="ex-type-label">Fichier H5P</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:3px">Contenu interactif</div>
+        </div>
+        <div class="ex-type-card" onclick="addExercise('redaction')">
+          <div class="ex-type-icon">📝</div>
+          <div class="ex-type-label">Rédaction</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:3px">Réponse libre</div>
+        </div>
+      </div>
+
+      <div class="exercises-container" id="exercises-container">
+        <div id="no-exercises-hint" style="color:var(--text-muted);font-size:14px;padding:12px 0">
+          Aucun exercice ajouté. Clique sur un type ci-dessus pour commencer.
+        </div>
+      </div>
+
+      <div class="btn-row" style="margin-top:28px">
+        <button class="btn-secondary" onclick="goToStep(2)">← Retour</button>
+        <button class="btn-primary" onclick="validateStep3()">Continuer → Aperçu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ STEP 4 : Publication ═══ -->
+  <div id="step-4" class="step-screen">
+    <div class="card" id="preview-card">
+      <div class="card-title">Aperçu & Publication</div>
+      <div class="card-sub">Vérifie la leçon avant de la publier pour les élèves.</div>
+      <div id="preview-content"></div>
+      <div class="btn-row" style="margin-top:28px">
+        <button class="btn-secondary" onclick="goToStep(3)">← Retour</button>
+        <button class="btn-primary" id="btn-publish" onclick="publishLesson()">
+          Publier la leçon
+        </button>
+      </div>
+    </div>
+
+    <!-- Succès -->
+    <div id="success-screen" class="success-screen" style="display:none">
+      <div class="success-icon">🎉</div>
+      <h2>Leçon publiée avec succès !</h2>
+      <p>La leçon est maintenant disponible pour les élèves du niveau <strong id="success-niveau"></strong>.</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <button class="btn-primary" onclick="resetWizard()">+ Créer une autre leçon</button>
+        <a href="/" class="btn-secondary" style="text-decoration:none">Retour au chat</a>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main-wrap -->
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════
+const API = window.API_URL || '/api';
+const token = localStorage.getItem('edubot_token');
+
+const lesson = {
+  niveau: null,
+  matiere: null,
+  title: '',
+  content: '',
+  summary: '',
+  duration_minutes: 30,
+};
+const exercises = [];   // list of exercise objects
+let exCounter = 0;      // for unique IDs
+
+// ═══════════════════════════════════════════
+//  NAV / WIZARD
+// ═══════════════════════════════════════════
+let currentStep = 1;
+
+function goToStep(n) {
+  if (n > currentStep) return; // can only go back or stay
+  currentStep = n;
+  document.querySelectorAll('.step-screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(`step-${n}`).classList.add('active');
+  document.querySelectorAll('.step-tab').forEach((t, i) => {
+    t.classList.remove('active', 'done', 'locked');
+    if (i + 1 < n) t.classList.add('done');
+    else if (i + 1 === n) t.classList.add('active');
+    else t.classList.add('locked');
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function advanceToStep(n) {
+  currentStep = n;
+  document.querySelectorAll('.step-screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(`step-${n}`).classList.add('active');
+  document.querySelectorAll('.step-tab').forEach((t, i) => {
+    t.classList.remove('active', 'done', 'locked');
+    if (i + 1 < n) t.classList.add('done');
+    else if (i + 1 === n) t.classList.add('active');
+    else t.classList.add('locked');
+    // make past tabs clickable
+    if (i + 1 <= n) t.onclick = () => goToStep(i + 1);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ═══════════════════════════════════════════
+//  PILL SELECTOR
+// ═══════════════════════════════════════════
+function selectPill(field, value, btn) {
+  lesson[field] = value;
+  btn.closest('.pill-group').querySelectorAll('.pill').forEach(p => p.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+// ═══════════════════════════════════════════
+//  STEP VALIDATORS
+// ═══════════════════════════════════════════
+function validateStep1() {
+  if (!lesson.niveau) { toast('Choisis un niveau scolaire.', 'error'); return; }
+  if (!lesson.matiere) { toast('Choisis une matière.', 'error'); return; }
+  const title = document.getElementById('lesson-title').value.trim();
+  if (!title) { toast('Donne un titre à la leçon.', 'error'); return; }
+  lesson.title = title;
+  lesson.duration_minutes = parseInt(document.getElementById('lesson-duration').value) || 30;
+  advanceToStep(2);
+}
+
+function validateStep2() {
+  const content = document.getElementById('lesson-content').value.trim();
+  if (!content) { toast('Le contenu de la leçon ne peut pas être vide.', 'error'); return; }
+  lesson.content = content;
+  lesson.summary = document.getElementById('lesson-summary').value.trim();
+  advanceToStep(3);
+}
+
+function validateStep3() {
+  if (exercises.length === 0) {
+    if (!confirm('Aucun exercice ajouté. Publier quand même ?')) return;
+  }
+  buildPreview();
+  advanceToStep(4);
+}
+
+// ═══════════════════════════════════════════
+//  AI GENERATION
+// ═══════════════════════════════════════════
+async function generateContent() {
+  const btn = document.getElementById('btn-generate');
+  const indicator = document.getElementById('ai-generating');
+  btn.disabled = true;
+  indicator.classList.add('show');
+
+  try {
+    const res = await fetch(API + '/admin/lessons/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ niveau: lesson.niveau, matiere: lesson.matiere, titre: lesson.title }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || `Erreur ${res.status}`);
+    }
+    const data = await res.json();
+    document.getElementById('lesson-content').value = data.content || '';
+    document.getElementById('lesson-summary').value = data.summary || '';
+    toast('Contenu généré par l\'IA !', 'success');
+  } catch (e) {
+    toast('Erreur : ' + e.message, 'error');
+  } finally {
+    btn.disabled = false;
+    indicator.classList.remove('show');
+  }
+}
+
+// ═══════════════════════════════════════════
+//  EDITOR TOOLBAR
+// ═══════════════════════════════════════════
+function insertMd(prefix, suffix) {
+  const ta = document.getElementById('lesson-content');
+  const start = ta.selectionStart;
+  const end = ta.selectionEnd;
+  const selected = ta.value.substring(start, end);
+  const replacement = prefix + selected + suffix;
+  ta.value = ta.value.substring(0, start) + replacement + ta.value.substring(end);
+  ta.selectionStart = start + prefix.length;
+  ta.selectionEnd = start + prefix.length + selected.length;
+  ta.focus();
+}
+
+// ═══════════════════════════════════════════
+//  EXERCISE BUILDER
+// ═══════════════════════════════════════════
+const EX_LABELS = {
+  qcm: 'QCM',
+  vrai_faux: 'Vrai / Faux',
+  texte_trous: 'Texte à trous',
+  association: 'Association',
+  h5p: 'H5P',
+  redaction: 'Rédaction',
+};
+
+function addExercise(type) {
+  exCounter++;
+  const exId = `ex-${exCounter}`;
+  const exObj = { id: exId, type, question: '', correct_answer: '', explanation: '', points: 1 };
+
+  if (type === 'qcm') {
+    exObj.options = [
+      { label: 'A', text: '', correct: false },
+      { label: 'B', text: '', correct: false },
+      { label: 'C', text: '', correct: false },
+      { label: 'D', text: '', correct: false },
+    ];
+  } else if (type === 'vrai_faux') {
+    exObj.correct_answer = 'Vrai';
+  } else if (type === 'association') {
+    exObj.pairs = [
+      { left: '', right: '' },
+      { left: '', right: '' },
+    ];
+  }
+
+  exercises.push(exObj);
+  renderExercises();
+  document.getElementById('no-exercises-hint').style.display = 'none';
+  // scroll to new exercise
+  setTimeout(() => {
+    const el = document.getElementById(exId);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 100);
+}
+
+function removeExercise(exId) {
+  const idx = exercises.findIndex(e => e.id === exId);
+  if (idx !== -1) exercises.splice(idx, 1);
+  renderExercises();
+  if (exercises.length === 0) document.getElementById('no-exercises-hint').style.display = '';
+}
+
+function renderExercises() {
+  const container = document.getElementById('exercises-container');
+  // Keep the hint element
+  const hint = document.getElementById('no-exercises-hint');
+  container.innerHTML = '';
+  container.appendChild(hint);
+
+  exercises.forEach((ex, idx) => {
+    const block = document.createElement('div');
+    block.className = 'exercise-block';
+    block.id = ex.id;
+    block.innerHTML = `
+      <div class="ex-header">
+        <div class="ex-num-badge">${idx + 1}</div>
+        <span class="ex-type-pill">${EX_LABELS[ex.type]}</span>
+        <button class="btn-del-ex" onclick="removeExercise('${ex.id}')">Supprimer</button>
+      </div>
+      ${renderExerciseFields(ex)}
+    `;
+    container.appendChild(block);
+  });
+}
+
+function renderExerciseFields(ex) {
+  const baseFields = `
+    <div class="field-row">
+      <div class="field-label">Question</div>
+      <textarea rows="2" style="font-size:14px;resize:vertical"
+        placeholder="Pose ta question ici…"
+        oninput="updateEx('${ex.id}','question',this.value)">${ex.question}</textarea>
+    </div>`;
+
+  const pointsField = `
+    <div class="field-row" style="display:flex;gap:12px;align-items:center">
+      <div>
+        <div class="field-label">Points</div>
+        <input type="number" value="${ex.points}" min="1" max="10" style="max-width:80px;font-size:14px"
+          oninput="updateEx('${ex.id}','points',parseInt(this.value)||1)" />
+      </div>
+      <div style="flex:1">
+        <div class="field-label">Explication (après correction)</div>
+        <input type="text" placeholder="Optionnel — explique la bonne réponse…"
+          value="${ex.explanation}"
+          oninput="updateEx('${ex.id}','explanation',this.value)" />
+      </div>
+    </div>`;
+
+  if (ex.type === 'qcm') {
+    const opts = ex.options.map(o => `
+      <div class="qcm-opt-row">
+        <div class="opt-label ${o.correct ? 'correct' : ''}" id="lbl-${ex.id}-${o.label}">${o.label}</div>
+        <input type="text" placeholder="Réponse ${o.label}…" value="${o.text}" style="font-size:14px"
+          oninput="updateQcmOption('${ex.id}','${o.label}','text',this.value)" />
+        <button class="btn-correct ${o.correct ? 'active' : ''}"
+          onclick="setCorrectOption('${ex.id}','${o.label}')">
+          ${o.correct ? '✓ Correct' : 'Définir correct'}
+        </button>
+      </div>`).join('');
+    return baseFields + `
+      <div class="field-row">
+        <div class="field-label">Options</div>
+        <div class="qcm-options" id="qcm-opts-${ex.id}">${opts}</div>
+      </div>` + pointsField;
+  }
+
+  if (ex.type === 'vrai_faux') {
+    return baseFields + `
+      <div class="field-row">
+        <div class="field-label">Bonne réponse</div>
+        <div class="pill-group">
+          <button class="pill ${ex.correct_answer === 'Vrai' ? 'selected' : ''}"
+            onclick="updateEx('${ex.id}','correct_answer','Vrai');this.closest('.pill-group').querySelectorAll('.pill').forEach(p=>p.classList.remove('selected'));this.classList.add('selected')">Vrai</button>
+          <button class="pill ${ex.correct_answer === 'Faux' ? 'selected' : ''}"
+            onclick="updateEx('${ex.id}','correct_answer','Faux');this.closest('.pill-group').querySelectorAll('.pill').forEach(p=>p.classList.remove('selected'));this.classList.add('selected')">Faux</button>
+        </div>
+      </div>` + pointsField;
+  }
+
+  if (ex.type === 'texte_trous') {
+    return `
+      <div class="field-row">
+        <div class="field-label">Phrase avec trou(s)</div>
+        <textarea rows="2" style="font-size:14px;resize:vertical"
+          placeholder="Ex : Le chien est un animal ___________."
+          oninput="updateEx('${ex.id}','question',this.value)">${ex.question}</textarea>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Utilise ___ pour marquer les trous.</div>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Réponse correcte</div>
+        <input type="text" placeholder="Mot(s) attendu(s), séparés par des virgules si plusieurs trous"
+          value="${ex.correct_answer}"
+          oninput="updateEx('${ex.id}','correct_answer',this.value)" />
+      </div>` + pointsField;
+  }
+
+  if (ex.type === 'association') {
+    const pairs = (ex.pairs || []).map((p, i) => `
+      <div class="qcm-opt-row">
+        <input type="text" placeholder="Gauche ${i+1}" value="${p.left}" style="font-size:14px"
+          oninput="updatePair('${ex.id}',${i},'left',this.value)" />
+        <span style="color:var(--text-muted);font-weight:700">→</span>
+        <input type="text" placeholder="Droite ${i+1}" value="${p.right}" style="font-size:14px"
+          oninput="updatePair('${ex.id}',${i},'right',this.value)" />
+      </div>`).join('');
+    return `
+      <div class="field-row">
+        <div class="field-label">Consigne</div>
+        <textarea rows="2" style="font-size:14px;resize:vertical"
+          placeholder="Ex : Relie chaque animal à son habitat."
+          oninput="updateEx('${ex.id}','question',this.value)">${ex.question}</textarea>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Paires à associer</div>
+        <div class="qcm-options" id="pairs-${ex.id}">${pairs}</div>
+        <button onclick="addPair('${ex.id}')" style="margin-top:8px;background:none;border:1px dashed var(--border);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:13px;color:var(--text-muted)">+ Ajouter une paire</button>
+      </div>` + pointsField;
+  }
+
+  if (ex.type === 'h5p') {
+    return `
+      <div class="field-row">
+        <div class="field-label">Titre de l'exercice H5P</div>
+        <input type="text" placeholder="Ex : Activité interactive — Les saisons"
+          value="${ex.question}"
+          oninput="updateEx('${ex.id}','question',this.value)" />
+      </div>
+      <div class="field-row">
+        <div class="field-label">Fichier H5P</div>
+        <div class="h5p-zone" id="h5p-zone-${ex.id}"
+          onclick="document.getElementById('h5p-input-${ex.id}').click()">
+          <div class="h5p-icon">📦</div>
+          <div style="font-weight:600;font-size:15px" id="h5p-name-${ex.id}">Dépose ou clique pour choisir un fichier .h5p</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Format .h5p uniquement</div>
+        </div>
+        <input type="file" id="h5p-input-${ex.id}" accept=".h5p" style="display:none"
+          onchange="handleH5P('${ex.id}', this)" />
+      </div>
+      <div class="field-row">
+        <div class="field-label">Points</div>
+        <input type="number" value="${ex.points}" min="1" max="10" style="max-width:80px;font-size:14px"
+          oninput="updateEx('${ex.id}','points',parseInt(this.value)||1)" />
+      </div>`;
+  }
+
+  if (ex.type === 'redaction') {
+    return baseFields + `
+      <div class="field-row">
+        <div class="field-label">Éléments de correction attendus (optionnel)</div>
+        <textarea rows="2" style="font-size:14px;resize:vertical"
+          placeholder="Mots-clés ou critères que l'élève devrait mentionner…"
+          oninput="updateEx('${ex.id}','correct_answer',this.value)">${ex.correct_answer}</textarea>
+      </div>` + pointsField;
+  }
+
+  return baseFields + pointsField;
+}
+
+// ═══════════════════════════════════════════
+//  EXERCISE STATE UPDATERS
+// ═══════════════════════════════════════════
+function updateEx(exId, field, value) {
+  const ex = exercises.find(e => e.id === exId);
+  if (ex) ex[field] = value;
+}
+
+function updateQcmOption(exId, label, field, value) {
+  const ex = exercises.find(e => e.id === exId);
+  if (!ex) return;
+  const opt = ex.options.find(o => o.label === label);
+  if (opt) opt[field] = value;
+}
+
+function setCorrectOption(exId, label) {
+  const ex = exercises.find(e => e.id === exId);
+  if (!ex) return;
+  ex.options.forEach(o => o.correct = (o.label === label));
+  ex.correct_answer = label;
+  // Re-render just this exercise's options
+  const block = document.getElementById(exId);
+  if (block) {
+    const optsContainer = block.querySelector('.qcm-options');
+    if (optsContainer) {
+      optsContainer.innerHTML = ex.options.map(o => `
+        <div class="qcm-opt-row">
+          <div class="opt-label ${o.correct ? 'correct' : ''}">${o.label}</div>
+          <input type="text" placeholder="Réponse ${o.label}…" value="${o.text}" style="font-size:14px"
+            oninput="updateQcmOption('${ex.id}','${o.label}','text',this.value)" />
+          <button class="btn-correct ${o.correct ? 'active' : ''}"
+            onclick="setCorrectOption('${ex.id}','${o.label}')">
+            ${o.correct ? '✓ Correct' : 'Définir correct'}
+          </button>
+        </div>`).join('');
+    }
+  }
+}
+
+function updatePair(exId, idx, side, value) {
+  const ex = exercises.find(e => e.id === exId);
+  if (ex && ex.pairs && ex.pairs[idx]) ex.pairs[idx][side] = value;
+}
+
+function addPair(exId) {
+  const ex = exercises.find(e => e.id === exId);
+  if (!ex) return;
+  ex.pairs = ex.pairs || [];
+  ex.pairs.push({ left: '', right: '' });
+  renderExercises();
+}
+
+function handleH5P(exId, input) {
+  const file = input.files[0];
+  if (!file) return;
+  const ex = exercises.find(e => e.id === exId);
+  if (ex) ex.h5p_file = file;
+  const zone = document.getElementById(`h5p-zone-${exId}`);
+  const name = document.getElementById(`h5p-name-${exId}`);
+  if (zone) zone.classList.add('has-file');
+  if (name) name.textContent = `✓ ${file.name} (${(file.size/1024).toFixed(0)} Ko)`;
+}
+
+// ═══════════════════════════════════════════
+//  PREVIEW
+// ═══════════════════════════════════════════
+const MATIERE_LABELS = {
+  francais: 'Français', mathematiques: 'Mathématiques',
+  sciences: 'Sciences', anglais: 'Anglais', 'histoire-geo': 'Histoire-Géo',
+};
+
+function buildPreview() {
+  const html = `
+    <div class="preview-lesson">
+      <div style="font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">
+        ${lesson.niveau} · ${MATIERE_LABELS[lesson.matiere] || lesson.matiere} · ${lesson.duration_minutes} min
+      </div>
+      <h2>${lesson.title}</h2>
+      ${lesson.summary ? `<p style="color:var(--text-muted);font-style:italic">${lesson.summary}</p>` : ''}
+      <hr style="border:none;border-top:1px solid var(--border);margin:16px 0">
+      ${formatContent(lesson.content)}
+    </div>
+    <div style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;margin:20px 0 12px">
+      ${exercises.length} exercice${exercises.length !== 1 ? 's' : ''}
+    </div>
+    ${exercises.map((ex, i) => `
+      <div class="ex-preview-card">
+        <div style="font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px">
+          Exercice ${i+1} · ${EX_LABELS[ex.type]} · ${ex.points} pt${ex.points > 1 ? 's' : ''}
+        </div>
+        <div class="ex-preview-q">${ex.question || '(pas de question)'}</div>
+        ${ex.type === 'qcm' ? `
+          <div class="ex-preview-opts">
+            ${(ex.options||[]).map(o => `
+              <div class="ex-preview-opt ${o.correct ? 'correct' : ''}">
+                <span style="width:22px;height:22px;border-radius:6px;background:${o.correct ? 'var(--green)' : 'var(--border)'};color:${o.correct ? '#fff' : 'var(--text-muted)'};display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">${o.label}</span>
+                ${o.text || '—'}
+                ${o.correct ? '<span style="margin-left:6px;font-size:11px;font-weight:700;background:var(--green-light);color:var(--green);padding:2px 8px;border-radius:20px">Correct</span>' : ''}
+              </div>`).join('')}
+          </div>` : ''}
+        ${ex.type === 'vrai_faux' ? `<div style="font-size:14px;color:var(--green);font-weight:600">Réponse : ${ex.correct_answer}</div>` : ''}
+        ${ex.type === 'texte_trous' ? `<div style="font-size:14px;color:var(--green);font-weight:600">Réponse(s) : ${ex.correct_answer}</div>` : ''}
+        ${ex.type === 'h5p' ? `<div style="font-size:14px;color:var(--text-muted)">Fichier H5P : ${ex.h5p_file?.name || '(aucun fichier)'}</div>` : ''}
+        ${ex.explanation ? `<div style="font-size:13px;color:var(--text-muted);margin-top:8px;font-style:italic">Explication : ${ex.explanation}</div>` : ''}
+      </div>`).join('')}`;
+  document.getElementById('preview-content').innerHTML = html;
+}
+
+function formatContent(text) {
+  if (!text) return '';
+  return text
+    .replace(/^## (.*)/gm, '<h3>$1</h3>')
+    .replace(/^# (.*)/gm, '<h2>$1</h2>')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/^- (.*)/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>\n?)+/g, s => `<ul>${s}</ul>`)
+    .replace(/\n\n+/g, '</p><p>')
+    .replace(/^(?!<[hul])(.+)/gm, (m) => m.startsWith('<') ? m : `<p>${m}</p>`);
+}
+
+// ═══════════════════════════════════════════
+//  PUBLISH
+// ═══════════════════════════════════════════
+async function publishLesson() {
+  const btn = document.getElementById('btn-publish');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div> Publication…';
+
+  // Build exercises payload (H5P files need multipart — we'll skip file upload for now and send metadata)
+  const exPayload = exercises.map(ex => {
+    const base = {
+      exercise_type: ex.type,
+      question: ex.question,
+      correct_answer: ex.correct_answer || '',
+      explanation: ex.explanation || '',
+      points: ex.points || 1,
+    };
+    if (ex.type === 'qcm') {
+      const opts = ex.options || [];
+      base.options = opts.map(o => `${o.label}:${o.text}`).join('|');
+      base.correct_answer = (opts.find(o => o.correct) || {}).label || '';
+    }
+    if (ex.type === 'association' && ex.pairs) {
+      base.options = ex.pairs.map(p => `${p.left}→${p.right}`).join('|');
+    }
+    return base;
+  });
+
+  const payload = {
+    title: lesson.title,
+    subject: lesson.matiere,
+    level: lesson.niveau,
+    content: lesson.content,
+    summary: lesson.summary,
+    duration_minutes: lesson.duration_minutes,
+    exercises: exPayload,
+  };
+
+  try {
+    const res = await fetch(API + '/admin/lessons', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || `Erreur ${res.status}`);
+    }
+    // Show success
+    document.getElementById('preview-card').style.display = 'none';
+    document.getElementById('success-niveau').textContent = lesson.niveau;
+    document.getElementById('success-screen').style.display = 'block';
+  } catch (e) {
+    toast('Erreur : ' + e.message, 'error');
+    btn.disabled = false;
+    btn.innerHTML = 'Publier la leçon';
+  }
+}
+
+// ═══════════════════════════════════════════
+//  RESET
+// ═══════════════════════════════════════════
+function resetWizard() {
+  lesson.niveau = null; lesson.matiere = null;
+  lesson.title = ''; lesson.content = ''; lesson.summary = '';
+  lesson.duration_minutes = 30;
+  exercises.length = 0;
+  exCounter = 0;
+  document.getElementById('lesson-title').value = '';
+  document.getElementById('lesson-content').value = '';
+  document.getElementById('lesson-summary').value = '';
+  document.getElementById('preview-card').style.display = 'block';
+  document.getElementById('success-screen').style.display = 'none';
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('selected'));
+  goToStep(1);
+}
+
+// ═══════════════════════════════════════════
+//  TOAST
+// ═══════════════════════════════════════════
+function toast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ═══════════════════════════════════════════
+//  AUTH CHECK
+// ═══════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', () => {
+  if (!token) { window.location.href = '/'; return; }
+});
+</script>
+</body>
+</html>

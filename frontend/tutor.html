@@ -90,7 +90,7 @@
       width: 100%; text-align: left;
     }
     .nav-item:hover { background: var(--bg); color: var(--text); }
-    .nav-item.active { background: var(--orange-light); color: var(--orange); font-weight: 600; }
+    .nav-item.active { background: var(--green-light); color: var(--green); font-weight: 600; }
     .nav-item .icon { font-size: 18px; width: 22px; text-align: center; }
     .badge {
       margin-left: auto; background: var(--red); color: #fff;
@@ -406,7 +406,6 @@
 <div class="layout">
   <!-- Sidebar -->
   <aside class="sidebar">
-    <div class="sidebar-label">Navigation</div>
     <button class="nav-item active" onclick="showScreen('dashboard')" id="nav-dashboard">
       <span class="icon">📊</span> Tableau de bord
     </button>
@@ -436,25 +435,21 @@
 
       <!-- Stats -->
       <div class="stats-grid" id="stats-grid">
-        <div class="stat-card green">
-          <div class="stat-icon">👥</div>
-          <div class="stat-value" id="stat-students">—</div>
+        <div class="stat-card">
           <div class="stat-label">Élèves assignés</div>
+          <div class="stat-value" id="stat-students">—</div>
         </div>
-        <div class="stat-card orange">
-          <div class="stat-icon">🆘</div>
-          <div class="stat-value" id="stat-pending">—</div>
+        <div class="stat-card">
           <div class="stat-label">Demandes en attente</div>
+          <div class="stat-value" id="stat-pending">—</div>
         </div>
-        <div class="stat-card blue">
-          <div class="stat-icon">📚</div>
-          <div class="stat-value" id="stat-lessons-done">—</div>
+        <div class="stat-card">
           <div class="stat-label">Leçons complétées</div>
+          <div class="stat-value" id="stat-lessons-done">—</div>
         </div>
-        <div class="stat-card" style="--c:var(--green)">
-          <div class="stat-icon">⭐</div>
-          <div class="stat-value" id="stat-avg-score" style="color:var(--purple)">—</div>
+        <div class="stat-card">
           <div class="stat-label">Score moyen</div>
+          <div class="stat-value" id="stat-avg-score">—</div>
         </div>
       </div>
 
@@ -726,7 +721,6 @@ function renderStudentRow(s) {
       <div><span class="level-pill">${s.level || "—"}</span></div>
       <div class="progress-mini">
         <div class="bar-mini"><div class="bar-mini-fill" style="width:${pct}%"></div></div>
-        <span style="font-size:13px;font-weight:600;color:var(--text-muted)">${pct}%</span>
       </div>
       <div><span class="score-badge ${scoreClass}">${score}%</span></div>
       <div><button class="btn-view" onclick="event.stopPropagation();viewStudent(${s.id})">Voir détail →</button></div>

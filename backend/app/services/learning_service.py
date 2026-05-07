@@ -29,224 +29,219 @@ logger = structlog.get_logger(__name__)
 # Alignées sur le curriculum CEB officiel sénégalais
 # ─────────────────────────────────────────────────────────────────
 DIAGNOSTIC_QUESTIONS = {
+    # ── CI — 10 questions : Français (4), Maths (4), Sciences (2) ──
     "CI": {
         "francais": [
-            {
-                "id": "ci_fr_1",
-                "question": "Combien de lettres y a-t-il dans le mot 'chat' ?",
-                "type": "qcm",
-                "options": [{"label": "A", "text": "3"}, {"label": "B", "text": "4"}, {"label": "C", "text": "5"}],
-                "correct": "B",
-                "points": 1
-            },
-            {
-                "id": "ci_fr_2",
-                "question": "Quel mot commence par la lettre 'M' ?",
-                "type": "qcm",
-                "options": [{"label": "A", "text": "papa"}, {"label": "B", "text": "maison"}, {"label": "C", "text": "soleil"}],
-                "correct": "B",
-                "points": 1
-            },
-            {
-                "id": "ci_fr_3",
-                "question": "Complète : 'Bonjour, je m'___ Aminata.'",
-                "type": "qcm",
-                "options": [{"label": "A", "text": "appelle"}, {"label": "B", "text": "appel"}, {"label": "C", "text": "appelles"}],
-                "correct": "A",
-                "points": 1
-            },
+            {"id": "ci_fr_1", "question": "Combien de lettres y a-t-il dans le mot 'CHAT' ?", "type": "qcm",
+             "options": [{"label": "A", "text": "3"}, {"label": "B", "text": "4"}, {"label": "C", "text": "5"}], "correct": "B", "points": 1},
+            {"id": "ci_fr_2", "question": "Quel mot commence par la lettre 'M' ?", "type": "qcm",
+             "options": [{"label": "A", "text": "papa"}, {"label": "B", "text": "maison"}, {"label": "C", "text": "soleil"}], "correct": "B", "points": 1},
+            {"id": "ci_fr_3", "question": "Complète : 'Bonjour, je m'___ Aminata.'", "type": "qcm",
+             "options": [{"label": "A", "text": "appelle"}, {"label": "B", "text": "appel"}, {"label": "C", "text": "appelles"}], "correct": "A", "points": 1},
+            {"id": "ci_fr_4", "question": "Combien de voyelles y a-t-il dans 'école' ?", "type": "qcm",
+             "options": [{"label": "A", "text": "2"}, {"label": "B", "text": "3"}, {"label": "C", "text": "4"}], "correct": "B", "points": 1},
         ],
         "mathematiques": [
-            {
-                "id": "ci_math_1",
-                "question": "Combien font 2 + 3 ?",
-                "type": "qcm",
-                "options": [{"label": "A", "text": "4"}, {"label": "B", "text": "5"}, {"label": "C", "text": "6"}],
-                "correct": "B",
-                "points": 1
-            },
-            {
-                "id": "ci_math_2",
-                "question": "Quel nombre vient après 7 ?",
-                "type": "qcm",
-                "options": [{"label": "A", "text": "6"}, {"label": "B", "text": "8"}, {"label": "C", "text": "9"}],
-                "correct": "B",
-                "points": 1
-            },
-            {
-                "id": "ci_math_3",
-                "question": "J'ai 5 mangues. J'en donne 2. Combien m'en reste-t-il ?",
-                "type": "qcm",
-                "options": [{"label": "A", "text": "2"}, {"label": "B", "text": "3"}, {"label": "C", "text": "7"}],
-                "correct": "B",
-                "points": 1
-            },
+            {"id": "ci_math_1", "question": "Combien font 2 + 3 ?", "type": "qcm",
+             "options": [{"label": "A", "text": "4"}, {"label": "B", "text": "5"}, {"label": "C", "text": "6"}], "correct": "B", "points": 1},
+            {"id": "ci_math_2", "question": "Quel nombre vient après 7 ?", "type": "qcm",
+             "options": [{"label": "A", "text": "6"}, {"label": "B", "text": "8"}, {"label": "C", "text": "9"}], "correct": "B", "points": 1},
+            {"id": "ci_math_3", "question": "J'ai 5 mangues. J'en donne 2. Combien m'en reste-t-il ?", "type": "qcm",
+             "options": [{"label": "A", "text": "2"}, {"label": "B", "text": "3"}, {"label": "C", "text": "7"}], "correct": "B", "points": 1},
+            {"id": "ci_math_4", "question": "Quel nombre est le plus petit ?", "type": "qcm",
+             "options": [{"label": "A", "text": "9"}, {"label": "B", "text": "3"}, {"label": "C", "text": "6"}], "correct": "B", "points": 1},
+        ],
+        "sciences": [
+            {"id": "ci_sci_1", "question": "Avec quoi voit-on ?", "type": "qcm",
+             "options": [{"label": "A", "text": "Les oreilles"}, {"label": "B", "text": "Les yeux"}, {"label": "C", "text": "Le nez"}], "correct": "B", "points": 1},
+            {"id": "ci_sci_2", "question": "Que fait-on avant de manger pour rester en bonne santé ?", "type": "qcm",
+             "options": [{"label": "A", "text": "Se coiffer"}, {"label": "B", "text": "Se laver les mains"}, {"label": "C", "text": "Courir"}], "correct": "B", "points": 1},
         ],
     },
+
+    # ── CP — 11 questions : Français (4), Maths (4), Sciences (2), Anglais (1) ──
     "CP": {
         "francais": [
-            {
-                "id": "cp_fr_1",
-                "question": "Quel est le pluriel de 'cheval' ?",
-                "type": "qcm",
-                "options": [{"label": "A", "text": "chevals"}, {"label": "B", "text": "chevaux"}, {"label": "C", "text": "chevales"}],
-                "correct": "B",
-                "points": 1
-            },
-            {
-                "id": "cp_fr_2",
-                "question": "Quelle phrase est correcte ?",
-                "type": "qcm",
-                "options": [{"label": "A", "text": "Le chat mange une souris."}, {"label": "B", "text": "Mange chat le souris."}, {"label": "C", "text": "Chat le mange souris."}],
-                "correct": "A",
-                "points": 1
-            },
-            {
-                "id": "cp_fr_3",
-                "question": "Quel mot est un verbe ?",
-                "type": "qcm",
-                "options": [{"label": "A", "text": "maison"}, {"label": "B", "text": "courir"}, {"label": "C", "text": "beau"}],
-                "correct": "B",
-                "points": 1
-            },
+            {"id": "cp_fr_1", "question": "Quel est le pluriel de 'cheval' ?", "type": "qcm",
+             "options": [{"label": "A", "text": "chevals"}, {"label": "B", "text": "chevaux"}, {"label": "C", "text": "chevales"}], "correct": "B", "points": 1},
+            {"id": "cp_fr_2", "question": "Quelle phrase est correcte ?", "type": "qcm",
+             "options": [{"label": "A", "text": "Le chat mange une souris."}, {"label": "B", "text": "Mange chat le souris."}, {"label": "C", "text": "Chat le mange."}], "correct": "A", "points": 1},
+            {"id": "cp_fr_3", "question": "Quel mot est un verbe ?", "type": "qcm",
+             "options": [{"label": "A", "text": "maison"}, {"label": "B", "text": "courir"}, {"label": "C", "text": "beau"}], "correct": "B", "points": 1},
+            {"id": "cp_fr_4", "question": "Quel est le féminin de 'ami' ?", "type": "qcm",
+             "options": [{"label": "A", "text": "amie"}, {"label": "B", "text": "amis"}, {"label": "C", "text": "amies"}], "correct": "A", "points": 1},
         ],
         "mathematiques": [
-            {
-                "id": "cp_math_1",
-                "question": "Combien font 15 + 8 ?",
-                "type": "qcm",
-                "options": [{"label": "A", "text": "21"}, {"label": "B", "text": "23"}, {"label": "C", "text": "22"}],
-                "correct": "B",
-                "points": 1
-            },
-            {
-                "id": "cp_math_2",
-                "question": "Quel nombre est le plus grand ?",
-                "type": "qcm",
-                "options": [{"label": "A", "text": "34"}, {"label": "B", "text": "43"}, {"label": "C", "text": "38"}],
-                "correct": "B",
-                "points": 1
-            },
+            {"id": "cp_math_1", "question": "Combien font 15 + 8 ?", "type": "qcm",
+             "options": [{"label": "A", "text": "21"}, {"label": "B", "text": "23"}, {"label": "C", "text": "22"}], "correct": "B", "points": 1},
+            {"id": "cp_math_2", "question": "Quel nombre est le plus grand ?", "type": "qcm",
+             "options": [{"label": "A", "text": "34"}, {"label": "B", "text": "43"}, {"label": "C", "text": "38"}], "correct": "B", "points": 1},
+            {"id": "cp_math_3", "question": "Combien font 20 − 7 ?", "type": "qcm",
+             "options": [{"label": "A", "text": "12"}, {"label": "B", "text": "13"}, {"label": "C", "text": "14"}], "correct": "B", "points": 1},
+            {"id": "cp_math_4", "question": "J'ai 3 rangées de 4 oranges. Combien y en a-t-il en tout ?", "type": "qcm",
+             "options": [{"label": "A", "text": "7"}, {"label": "B", "text": "12"}, {"label": "C", "text": "16"}], "correct": "B", "points": 1},
+        ],
+        "sciences": [
+            {"id": "cp_sci_1", "question": "Lequel est un animal domestique ?", "type": "qcm",
+             "options": [{"label": "A", "text": "Le lion"}, {"label": "B", "text": "La poule"}, {"label": "C", "text": "L'éléphant"}], "correct": "B", "points": 1},
+            {"id": "cp_sci_2", "question": "Un animal qui mange seulement des plantes est :", "type": "qcm",
+             "options": [{"label": "A", "text": "Carnivore"}, {"label": "B", "text": "Omnivore"}, {"label": "C", "text": "Herbivore"}], "correct": "C", "points": 1},
+        ],
+        "anglais": [
+            {"id": "cp_ang_1", "question": "How do you say 'bonjour' in English?", "type": "qcm",
+             "options": [{"label": "A", "text": "Goodbye"}, {"label": "B", "text": "Hello"}, {"label": "C", "text": "Thank you"}], "correct": "B", "points": 1},
         ],
     },
+
+    # ── CE1 — 12 questions : Français (3), Maths (3), Sciences (2), Anglais (2), Histoire-Géo (2) ──
     "CE1": {
         "francais": [
-            {
-                "id": "ce1_fr_1",
-                "question": "Quel est le féminin de 'directeur' ?",
-                "type": "qcm",
-                "options": [{"label": "A", "text": "directrice"}, {"label": "B", "text": "directeure"}, {"label": "C", "text": "directoresse"}],
-                "correct": "A",
-                "points": 1
-            },
-            {
-                "id": "ce1_fr_2",
-                "question": "Dans la phrase 'Fatou lit un livre', quel est le sujet ?",
-                "type": "qcm",
-                "options": [{"label": "A", "text": "lit"}, {"label": "B", "text": "Fatou"}, {"label": "C", "text": "livre"}],
-                "correct": "B",
-                "points": 1
-            },
+            {"id": "ce1_fr_1", "question": "Quel est le féminin de 'directeur' ?", "type": "qcm",
+             "options": [{"label": "A", "text": "directrice"}, {"label": "B", "text": "directeure"}, {"label": "C", "text": "directoresse"}], "correct": "A", "points": 1},
+            {"id": "ce1_fr_2", "question": "Dans 'Fatou lit un livre', quel est le sujet ?", "type": "qcm",
+             "options": [{"label": "A", "text": "lit"}, {"label": "B", "text": "Fatou"}, {"label": "C", "text": "livre"}], "correct": "B", "points": 1},
+            {"id": "ce1_fr_3", "question": "Quel mot est un nom commun ?", "type": "qcm",
+             "options": [{"label": "A", "text": "Dakar"}, {"label": "B", "text": "école"}, {"label": "C", "text": "Fatou"}], "correct": "B", "points": 1},
         ],
         "mathematiques": [
-            {
-                "id": "ce1_math_1",
-                "question": "Combien font 45 + 37 ?",
-                "type": "qcm",
-                "options": [{"label": "A", "text": "72"}, {"label": "B", "text": "82"}, {"label": "C", "text": "83"}],
-                "correct": "B",
-                "points": 1
-            },
-            {
-                "id": "ce1_math_2",
-                "question": "Combien y a-t-il de dizaines dans 80 ?",
-                "type": "qcm",
-                "options": [{"label": "A", "text": "8"}, {"label": "B", "text": "80"}, {"label": "C", "text": "18"}],
-                "correct": "A",
-                "points": 1
-            },
+            {"id": "ce1_math_1", "question": "Combien font 45 + 37 ?", "type": "qcm",
+             "options": [{"label": "A", "text": "72"}, {"label": "B", "text": "82"}, {"label": "C", "text": "83"}], "correct": "B", "points": 1},
+            {"id": "ce1_math_2", "question": "Combien y a-t-il de dizaines dans 80 ?", "type": "qcm",
+             "options": [{"label": "A", "text": "8"}, {"label": "B", "text": "80"}, {"label": "C", "text": "18"}], "correct": "A", "points": 1},
+            {"id": "ce1_math_3", "question": "Combien font 6 × 7 ?", "type": "qcm",
+             "options": [{"label": "A", "text": "42"}, {"label": "B", "text": "36"}, {"label": "C", "text": "48"}], "correct": "A", "points": 1},
+        ],
+        "sciences": [
+            {"id": "ce1_sci_1", "question": "Quelle partie de la plante absorbe l'eau du sol ?", "type": "qcm",
+             "options": [{"label": "A", "text": "Les feuilles"}, {"label": "B", "text": "Les racines"}, {"label": "C", "text": "La fleur"}], "correct": "B", "points": 1},
+            {"id": "ce1_sci_2", "question": "Qu'est-ce que la photosynthèse produit ?", "type": "qcm",
+             "options": [{"label": "A", "text": "Du dioxyde de carbone"}, {"label": "B", "text": "De l'eau"}, {"label": "C", "text": "De l'oxygène"}], "correct": "C", "points": 1},
+        ],
+        "anglais": [
+            {"id": "ce1_ang_1", "question": "What is 'père' in English?", "type": "qcm",
+             "options": [{"label": "A", "text": "Mother"}, {"label": "B", "text": "Father"}, {"label": "C", "text": "Brother"}], "correct": "B", "points": 1},
+            {"id": "ce1_ang_2", "question": "Complete: 'I ___ 8 years old.'", "type": "qcm",
+             "options": [{"label": "A", "text": "has"}, {"label": "B", "text": "have"}, {"label": "C", "text": "am"}], "correct": "C", "points": 1},
+        ],
+        "histoire-geo": [
+            {"id": "ce1_hg_1", "question": "Quelle est la capitale du Sénégal ?", "type": "qcm",
+             "options": [{"label": "A", "text": "Thiès"}, {"label": "B", "text": "Dakar"}, {"label": "C", "text": "Saint-Louis"}], "correct": "B", "points": 1},
+            {"id": "ce1_hg_2", "question": "Le Sénégal se trouve sur quel continent ?", "type": "qcm",
+             "options": [{"label": "A", "text": "Asie"}, {"label": "B", "text": "Europe"}, {"label": "C", "text": "Afrique"}], "correct": "C", "points": 1},
         ],
     },
+
+    # ── CE2 — 12 questions : Français (3), Maths (3), Sciences (2), Anglais (2), Histoire-Géo (2) ──
     "CE2": {
         "francais": [
-            {
-                "id": "ce2_fr_1",
-                "question": "Mets ce verbe au passé composé : 'je mange'",
-                "type": "qcm",
-                "options": [{"label": "A", "text": "j'ai mangé"}, {"label": "B", "text": "je mangeai"}, {"label": "C", "text": "j'avais mangé"}],
-                "correct": "A",
-                "points": 1
-            },
+            {"id": "ce2_fr_1", "question": "Mets au passé composé : 'je mange'", "type": "qcm",
+             "options": [{"label": "A", "text": "j'ai mangé"}, {"label": "B", "text": "je mangeai"}, {"label": "C", "text": "j'avais mangé"}], "correct": "A", "points": 1},
+            {"id": "ce2_fr_2", "question": "Identifie le verbe : 'Les enfants jouent au football.'", "type": "qcm",
+             "options": [{"label": "A", "text": "enfants"}, {"label": "B", "text": "jouent"}, {"label": "C", "text": "football"}], "correct": "B", "points": 1},
+            {"id": "ce2_fr_3", "question": "Quel est l'antonyme de 'rapide' ?", "type": "qcm",
+             "options": [{"label": "A", "text": "vite"}, {"label": "B", "text": "lent"}, {"label": "C", "text": "fort"}], "correct": "B", "points": 1},
         ],
         "mathematiques": [
-            {
-                "id": "ce2_math_1",
-                "question": "Combien font 7 × 8 ?",
-                "type": "qcm",
-                "options": [{"label": "A", "text": "54"}, {"label": "B", "text": "56"}, {"label": "C", "text": "58"}],
-                "correct": "B",
-                "points": 1
-            },
-            {
-                "id": "ce2_math_2",
-                "question": "Quelle est la moitié de 124 ?",
-                "type": "qcm",
-                "options": [{"label": "A", "text": "60"}, {"label": "B", "text": "62"}, {"label": "C", "text": "64"}],
-                "correct": "B",
-                "points": 1
-            },
+            {"id": "ce2_math_1", "question": "Combien font 7 × 8 ?", "type": "qcm",
+             "options": [{"label": "A", "text": "54"}, {"label": "B", "text": "56"}, {"label": "C", "text": "58"}], "correct": "B", "points": 1},
+            {"id": "ce2_math_2", "question": "Quelle est la moitié de 124 ?", "type": "qcm",
+             "options": [{"label": "A", "text": "60"}, {"label": "B", "text": "62"}, {"label": "C", "text": "64"}], "correct": "B", "points": 1},
+            {"id": "ce2_math_3", "question": "Combien font 450 ÷ 5 ?", "type": "qcm",
+             "options": [{"label": "A", "text": "80"}, {"label": "B", "text": "90"}, {"label": "C", "text": "95"}], "correct": "B", "points": 1},
+        ],
+        "sciences": [
+            {"id": "ce2_sci_1", "question": "À quelle température l'eau se transforme-t-elle en glace ?", "type": "qcm",
+             "options": [{"label": "A", "text": "100°C"}, {"label": "B", "text": "0°C"}, {"label": "C", "text": "50°C"}], "correct": "B", "points": 1},
+            {"id": "ce2_sci_2", "question": "Comment appelle-t-on le passage de l'eau liquide à la vapeur ?", "type": "qcm",
+             "options": [{"label": "A", "text": "Solidification"}, {"label": "B", "text": "Fusion"}, {"label": "C", "text": "Évaporation"}], "correct": "C", "points": 1},
+        ],
+        "anglais": [
+            {"id": "ce2_ang_1", "question": "What is 'sœur' in English?", "type": "qcm",
+             "options": [{"label": "A", "text": "Brother"}, {"label": "B", "text": "Sister"}, {"label": "C", "text": "Mother"}], "correct": "B", "points": 1},
+            {"id": "ce2_ang_2", "question": "How do you say 'J'ai 9 ans' in English?", "type": "qcm",
+             "options": [{"label": "A", "text": "I have 9 years."}, {"label": "B", "text": "I am 9 years old."}, {"label": "C", "text": "My age is 9."}], "correct": "B", "points": 1},
+        ],
+        "histoire-geo": [
+            {"id": "ce2_hg_1", "question": "En combien de régions le Sénégal est-il divisé ?", "type": "qcm",
+             "options": [{"label": "A", "text": "10"}, {"label": "B", "text": "14"}, {"label": "C", "text": "12"}], "correct": "B", "points": 1},
+            {"id": "ce2_hg_2", "question": "Quel pays est entièrement entouré par le Sénégal ?", "type": "qcm",
+             "options": [{"label": "A", "text": "Le Mali"}, {"label": "B", "text": "La Mauritanie"}, {"label": "C", "text": "La Gambie"}], "correct": "C", "points": 1},
         ],
     },
+
+    # ── CM1 — 12 questions : Français (3), Maths (3), Sciences (2), Anglais (2), Histoire-Géo (2) ──
     "CM1": {
         "francais": [
-            {
-                "id": "cm1_fr_1",
-                "question": "Identifie le complément d'objet direct : 'Omar mange une banane.'",
-                "type": "qcm",
-                "options": [{"label": "A", "text": "Omar"}, {"label": "B", "text": "mange"}, {"label": "C", "text": "une banane"}],
-                "correct": "C",
-                "points": 1
-            },
+            {"id": "cm1_fr_1", "question": "Identifie le COD : 'Omar mange une banane.'", "type": "qcm",
+             "options": [{"label": "A", "text": "Omar"}, {"label": "B", "text": "mange"}, {"label": "C", "text": "une banane"}], "correct": "C", "points": 1},
+            {"id": "cm1_fr_2", "question": "Quel temps est : 'Nous chanterons demain' ?", "type": "qcm",
+             "options": [{"label": "A", "text": "Imparfait"}, {"label": "B", "text": "Futur simple"}, {"label": "C", "text": "Passé composé"}], "correct": "B", "points": 1},
+            {"id": "cm1_fr_3", "question": "Quel est le synonyme de 'courageux' ?", "type": "qcm",
+             "options": [{"label": "A", "text": "peureux"}, {"label": "B", "text": "brave"}, {"label": "C", "text": "faible"}], "correct": "B", "points": 1},
         ],
         "mathematiques": [
-            {
-                "id": "cm1_math_1",
-                "question": "Combien font 324 ÷ 4 ?",
-                "type": "qcm",
-                "options": [{"label": "A", "text": "81"}, {"label": "B", "text": "82"}, {"label": "C", "text": "80"}],
-                "correct": "A",
-                "points": 1
-            },
-            {
-                "id": "cm1_math_2",
-                "question": "Quel est le périmètre d'un carré de côté 6 cm ?",
-                "type": "qcm",
-                "options": [{"label": "A", "text": "12 cm"}, {"label": "B", "text": "24 cm"}, {"label": "C", "text": "36 cm"}],
-                "correct": "B",
-                "points": 1
-            },
+            {"id": "cm1_math_1", "question": "Combien font 324 ÷ 4 ?", "type": "qcm",
+             "options": [{"label": "A", "text": "81"}, {"label": "B", "text": "82"}, {"label": "C", "text": "80"}], "correct": "A", "points": 1},
+            {"id": "cm1_math_2", "question": "Quel est le périmètre d'un carré de côté 6 cm ?", "type": "qcm",
+             "options": [{"label": "A", "text": "12 cm"}, {"label": "B", "text": "24 cm"}, {"label": "C", "text": "36 cm"}], "correct": "B", "points": 1},
+            {"id": "cm1_math_3", "question": "Quel est le PGCD de 12 et 8 ?", "type": "qcm",
+             "options": [{"label": "A", "text": "2"}, {"label": "B", "text": "4"}, {"label": "C", "text": "6"}], "correct": "B", "points": 1},
+        ],
+        "sciences": [
+            {"id": "cm1_sci_1", "question": "Dans une chaîne alimentaire, qui sont les producteurs ?", "type": "qcm",
+             "options": [{"label": "A", "text": "Les lions"}, {"label": "B", "text": "Les plantes"}, {"label": "C", "text": "Les lapins"}], "correct": "B", "points": 1},
+            {"id": "cm1_sci_2", "question": "Le criquet qui mange l'herbe est un consommateur :", "type": "qcm",
+             "options": [{"label": "A", "text": "secondaire"}, {"label": "B", "text": "primaire"}, {"label": "C", "text": "tertiaire"}], "correct": "B", "points": 1},
+        ],
+        "anglais": [
+            {"id": "cm1_ang_1", "question": "What does 'homework' mean?", "type": "qcm",
+             "options": [{"label": "A", "text": "maison"}, {"label": "B", "text": "devoirs"}, {"label": "C", "text": "école"}], "correct": "B", "points": 1},
+            {"id": "cm1_ang_2", "question": "How do you say 'Il est 8h30' in English?", "type": "qcm",
+             "options": [{"label": "A", "text": "It is 8 o'clock"}, {"label": "B", "text": "It is half past 8"}, {"label": "C", "text": "It is quarter to 8"}], "correct": "B", "points": 1},
+        ],
+        "histoire-geo": [
+            {"id": "cm1_hg_1", "question": "Quelle est la capitale du Mali ?", "type": "qcm",
+             "options": [{"label": "A", "text": "Conakry"}, {"label": "B", "text": "Bamako"}, {"label": "C", "text": "Accra"}], "correct": "B", "points": 1},
+            {"id": "cm1_hg_2", "question": "Quel grand fleuve traverse le Mali et le Niger ?", "type": "qcm",
+             "options": [{"label": "A", "text": "Le Congo"}, {"label": "B", "text": "Le Nil"}, {"label": "C", "text": "Le Niger"}], "correct": "C", "points": 1},
         ],
     },
+
+    # ── CM2 — 12 questions : Français (3), Maths (3), Sciences (2), Anglais (2), Histoire-Géo (2) ──
     "CM2": {
         "francais": [
-            {
-                "id": "cm2_fr_1",
-                "question": "Quel est le mode de ce verbe : 'Que tu viennes !'",
-                "type": "qcm",
-                "options": [{"label": "A", "text": "indicatif"}, {"label": "B", "text": "subjonctif"}, {"label": "C", "text": "impératif"}],
-                "correct": "B",
-                "points": 1
-            },
+            {"id": "cm2_fr_1", "question": "Quel est le mode de : 'Que tu viennes !'", "type": "qcm",
+             "options": [{"label": "A", "text": "indicatif"}, {"label": "B", "text": "subjonctif"}, {"label": "C", "text": "impératif"}], "correct": "B", "points": 1},
+            {"id": "cm2_fr_2", "question": "Quel connecteur logique introduit une conclusion ?", "type": "qcm",
+             "options": [{"label": "A", "text": "D'abord"}, {"label": "B", "text": "Cependant"}, {"label": "C", "text": "Donc"}], "correct": "C", "points": 1},
+            {"id": "cm2_fr_3", "question": "Dans 'La belle robe bleue', combien y a-t-il d'adjectifs ?", "type": "qcm",
+             "options": [{"label": "A", "text": "1"}, {"label": "B", "text": "2"}, {"label": "C", "text": "3"}], "correct": "B", "points": 1},
         ],
         "mathematiques": [
-            {
-                "id": "cm2_math_1",
-                "question": "Quel est 15% de 200 ?",
-                "type": "qcm",
-                "options": [{"label": "A", "text": "25"}, {"label": "B", "text": "30"}, {"label": "C", "text": "35"}],
-                "correct": "B",
-                "points": 1
-            },
+            {"id": "cm2_math_1", "question": "Quel est 15% de 200 ?", "type": "qcm",
+             "options": [{"label": "A", "text": "25"}, {"label": "B", "text": "30"}, {"label": "C", "text": "35"}], "correct": "B", "points": 1},
+            {"id": "cm2_math_2", "question": "Quelle est l'aire d'un rectangle de 8 cm × 5 cm ?", "type": "qcm",
+             "options": [{"label": "A", "text": "26 cm²"}, {"label": "B", "text": "40 cm²"}, {"label": "C", "text": "13 cm²"}], "correct": "B", "points": 1},
+            {"id": "cm2_math_3", "question": "Simplifie la fraction 12/16 :", "type": "qcm",
+             "options": [{"label": "A", "text": "2/3"}, {"label": "B", "text": "3/4"}, {"label": "C", "text": "4/5"}], "correct": "B", "points": 1},
+        ],
+        "sciences": [
+            {"id": "cm2_sci_1", "question": "Combien de planètes compte notre système solaire ?", "type": "qcm",
+             "options": [{"label": "A", "text": "7"}, {"label": "B", "text": "8"}, {"label": "C", "text": "9"}], "correct": "B", "points": 1},
+            {"id": "cm2_sci_2", "question": "Quelle planète est la plus grande du système solaire ?", "type": "qcm",
+             "options": [{"label": "A", "text": "Saturne"}, {"label": "B", "text": "Jupiter"}, {"label": "C", "text": "Neptune"}], "correct": "B", "points": 1},
+        ],
+        "anglais": [
+            {"id": "cm2_ang_1", "question": "What does 'recycling' mean?", "type": "qcm",
+             "options": [{"label": "A", "text": "pollution"}, {"label": "B", "text": "recyclage"}, {"label": "C", "text": "déforestation"}], "correct": "B", "points": 1},
+            {"id": "cm2_ang_2", "question": "Which action protects the environment?", "type": "qcm",
+             "options": [{"label": "A", "text": "Cutting trees"}, {"label": "B", "text": "Planting trees"}, {"label": "C", "text": "Burning waste"}], "correct": "B", "points": 1},
+        ],
+        "histoire-geo": [
+            {"id": "cm2_hg_1", "question": "Combien de pays forment la CEDEAO ?", "type": "qcm",
+             "options": [{"label": "A", "text": "10"}, {"label": "B", "text": "15"}, {"label": "C", "text": "20"}], "correct": "B", "points": 1},
+            {"id": "cm2_hg_2", "question": "Quel grand empire médiéval d'Afrique de l'Ouest est célèbre pour Mansa Moussa ?", "type": "qcm",
+             "options": [{"label": "A", "text": "Empire du Ghana"}, {"label": "B", "text": "Empire du Mali"}, {"label": "C", "text": "Empire Songhay"}], "correct": "B", "points": 1},
         ],
     },
 }

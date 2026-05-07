@@ -552,3 +552,201 @@ async def get_metrics(
         pass
 
     return metrics
+
+
+# ════════════════════════════════════════════════════════════════
+#  GESTION DES LEÇONS (admin JWT)
+# ════════════════════════════════════════════════════════════════
+
+from app.middleware.auth import get_current_user
+from app.database.models import Lesson, Exercise
+from pydantic import BaseModel as _BaseModel
+from typing import List as _List, Optional as _Optional
+
+
+class ExerciseCreate(_BaseModel):
+    exercise_type: str
+    question: str
+    options: _Optional[str] = None
+    correct_answer: str = ""
+    explanation: str = ""
+    points: int = 1
+
+
+class LessonCreate(_BaseModel):
+    title: str
+    subject: str
+    level: str
+    content: str
+    summary: str = ""
+    duration_minutes: int = 30
+    exercises: _List[ExerciseCreate] = []
+
+
+class LessonGenerateRequest(_BaseModel):
+    niveau: str
+    matiere: str
+    titre: str
+
+
+def _require_admin(user: User):
+    profile = getattr(user, "profile_type", None) or getattr(user, "role", None)
+    if profile not in ("admin",):
+        raise HTTPException(status_code=403, detail="Accès réservé aux administrateurs")
+
+
+@router.get("/lessons", summary="Lister toutes les leçons (admin)")
+async def admin_list_lessons(
+    request: Request,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> list:
+    _require_admin(current_user)
+    result = await db.execute(select(Lesson).order_by(Lesson.subject, Lesson.order_in_subject))
+    lessons = result.scalars().all()
+    return [
+        {
+            "id": l.id, "title": l.title, "subject": l.subject,
+            "level": l.level, "order_in_subject": l.order_in_subject,
+            "duration_minutes": l.duration_minutes, "is_active": l.is_active,
+            "created_at": l.created_at.isoformat() if l.created_at else None,
+        }
+        for l in lessons
+    ]
+
+
+@router.post("/lessons", summary="Créer une leçon avec exercices (admin)")
+async def admin_create_lesson(
+    body: LessonCreate,
+    request: Request,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    _require_admin(current_user)
+
+    # Calculer l'ordre et le prérequis
+    count_res = await db.execute(
+        select(func.count(Lesson.id))
+        .where(Lesson.subject == body.subject, Lesson.level == body.level)
+    )
+    current_count = count_res.scalar() or 0
+    order_in_subject = current_count + 1
+
+    # Trouver le dernier prérequis
+    last_res = await db.execute(
+        select(Lesson)
+        .where(Lesson.subject == body.subject, Lesson.level == body.level)
+        .order_by(Lesson.order_in_subject.desc())
+        .limit(1)
+    )
+    last_lesson = last_res.scalar_one_or_none()
+
+    lesson = Lesson(
+        title=body.title,
+        subject=body.subject,
+        level=body.level,
+        content=body.content,
+        summary=body.summary,
+        duration_minutes=body.duration_minutes,
+        order_in_subject=order_in_subject,
+        prerequisite_lesson_id=last_lesson.id if last_lesson else None,
+        is_active=True,
+    )
+    db.add(lesson)
+    await db.flush()
+
+    for i, ex_data in enumerate(body.exercises):
+        ex = Exercise(
+            lesson_id=lesson.id,
+            question=ex_data.question,
+            exercise_type=ex_data.exercise_type,
+            options=ex_data.options,
+            correct_answer=ex_data.correct_answer,
+            explanation=ex_data.explanation,
+            points=ex_data.points,
+            order_in_lesson=i + 1,
+            is_active=True,
+        )
+        db.add(ex)
+
+    await db.commit()
+    logger.info("Leçon admin créée", lesson_id=lesson.id, title=lesson.title)
+    return {"success": True, "lesson_id": lesson.id, "title": lesson.title}
+
+
+@router.delete("/lessons/{lesson_id}", summary="Supprimer une leçon (admin)")
+async def admin_delete_lesson(
+    lesson_id: int,
+    request: Request,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    _require_admin(current_user)
+    lesson = await db.get(Lesson, lesson_id)
+    if not lesson:
+        raise HTTPException(status_code=404, detail="Leçon introuvable")
+    await db.delete(lesson)
+    await db.commit()
+    return {"success": True, "deleted_lesson_id": lesson_id}
+
+
+@router.post("/lessons/generate", summary="Générer le contenu d'une leçon par IA (admin)")
+async def admin_generate_lesson(
+    body: LessonGenerateRequest,
+    request: Request,
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    _require_admin(current_user)
+
+    MATIERE_LABELS = {
+        "francais": "Français", "mathematiques": "Mathématiques",
+        "sciences": "Sciences", "anglais": "Anglais", "histoire-geo": "Histoire-Géo",
+    }
+    matiere_label = MATIERE_LABELS.get(body.matiere, body.matiere)
+
+    prompt = f"""Tu es un enseignant expert du programme scolaire sénégalais (CEB).
+Rédige une leçon pédagogique claire, structurée et adaptée au niveau {body.niveau} (école élémentaire) pour la matière : {matiere_label}.
+
+Titre de la leçon : {body.titre}
+
+STRUCTURE OBLIGATOIRE (utilise le format Markdown) :
+## Ce que je vais apprendre
+(objectifs en 2-3 points simples)
+
+## Je découvre
+(explication principale avec exemples concrets adaptés à l'âge)
+
+## Je retiens
+(résumé / règle à mémoriser, en gras)
+
+## Exercices d'application
+(2-3 exemples d'exercices guidés)
+
+Réponds UNIQUEMENT avec le contenu Markdown de la leçon, sans commentaire supplémentaire.
+Ensuite, sur une NOUVELLE LIGNE commençant par "RESUME:", écris un résumé d'une phrase de l'objectif."""
+
+    try:
+        from groq import AsyncGroq
+        client = AsyncGroq(api_key=settings.GROQ_API_KEY)
+        response = await client.chat.completions.create(
+            model=settings.LLM_MODEL,
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=1500,
+            temperature=0.7,
+        )
+        full = response.choices[0].message.content or ""
+
+        # Séparer contenu et résumé
+        if "RESUME:" in full:
+            parts = full.split("RESUME:", 1)
+            content = parts[0].strip()
+            summary = parts[1].strip()
+        else:
+            content = full.strip()
+            summary = f"Leçon de {matiere_label} pour le niveau {body.niveau} : {body.titre}."
+
+        return {"content": content, "summary": summary}
+
+    except Exception as e:
+        logger.error("Erreur génération IA leçon", error=str(e))
+        raise HTTPException(status_code=500, detail=f"Erreur IA : {str(e)}")

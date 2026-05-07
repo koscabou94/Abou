@@ -103,13 +103,14 @@
       text-align: center; margin-bottom: 32px;
     }
     .diag-avatar {
-      width: 80px; height: 80px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--green), var(--green-mid));
+      width: 72px; height: 72px; border-radius: 16px;
+      background: var(--green-light);
       display: flex; align-items: center; justify-content: center;
-      font-size: 36px; margin: 0 auto 16px;
-      box-shadow: 0 8px 24px rgba(0,135,81,.3);
+      margin: 0 auto 16px;
+      border: 2px solid #bbf7d0;
     }
-    .diag-header h1 { font-family: 'Outfit', sans-serif; font-size: 26px; margin-bottom: 8px; }
+    .diag-avatar svg { width: 36px; height: 36px; }
+    .diag-header h1 { font-family: 'Outfit', sans-serif; font-size: 24px; margin-bottom: 8px; color: var(--text); }
     .diag-header p { color: var(--text-muted); font-size: 15px; line-height: 1.6; }
     .progress-bar-wrap { background: var(--border); border-radius: 99px; height: 6px; margin: 24px 0; }
     .progress-bar-fill { background: var(--green); height: 6px; border-radius: 99px; transition: width .4s; }
@@ -188,10 +189,7 @@
       color: #fff; border-radius: var(--radius); padding: 28px 32px;
       margin-bottom: 28px; position: relative; overflow: hidden;
     }
-    .welcome-banner::after {
-      content: '📚'; position: absolute; right: 32px; top: 50%;
-      transform: translateY(-50%); font-size: 64px; opacity: .3;
-    }
+    .welcome-banner::after { content: none; }
     .welcome-banner h2 { font-family: 'Outfit', sans-serif; font-size: 22px; margin-bottom: 6px; }
     .welcome-banner p { opacity: .85; font-size: 14px; }
     .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
@@ -402,7 +400,7 @@
   </div>
   <div class="nav-right">
     <div class="student-pill" id="nav-student-name">Chargement...</div>
-    <button class="btn-chat" onclick="showScreen('help')">💬 Demander de l'aide</button>
+    <button class="btn-chat" onclick="showScreen('help')">Demander de l'aide</button>
   </div>
 </nav>
 
@@ -410,23 +408,21 @@
 
   <!-- SIDEBAR -->
   <aside class="sidebar">
-    <div class="sidebar-label">Navigation</div>
     <button class="nav-item active" id="nav-dashboard" onclick="showScreen('dashboard')">
-      <span class="icon">🏠</span> Tableau de bord
+      Tableau de bord
     </button>
     <button class="nav-item" id="nav-lessons" onclick="showScreen('subjects')">
-      <span class="icon">📖</span> Mes leçons
+      Mes leçons
     </button>
     <button class="nav-item" id="nav-grades" onclick="showScreen('grades')">
-      <span class="icon">📊</span> Mes notes
+      Mes notes
     </button>
     <button class="nav-item" id="nav-help" onclick="showScreen('help')">
-      <span class="icon">🤝</span> Demander de l'aide
+      Demander de l'aide
     </button>
     <div style="flex:1"></div>
-    <div class="sidebar-label">Mon compte</div>
     <button class="nav-item" onclick="logout()">
-      <span class="icon">🚪</span> Déconnexion
+      Déconnexion
     </button>
   </aside>
 
@@ -437,9 +433,15 @@
     <div id="screen-diagnostic" class="screen active">
       <div id="screen-diagnostic-inner">
         <div class="diag-header">
-          <div class="diag-avatar">🤖</div>
-          <h1>Bienvenue ! Je suis <span style="color:var(--green)">EduBot</span></h1>
-          <p>Avant de commencer, je vais te poser quelques questions<br>pour mieux adapter ton parcours d'apprentissage.</p>
+          <div class="diag-avatar">
+            <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="8" width="28" height="20" rx="4" stroke="#008751" stroke-width="2.2"/>
+              <path d="M12 16h12M12 21h7" stroke="#008751" stroke-width="2.2" stroke-linecap="round"/>
+              <circle cx="28" cy="8" r="4" fill="#008751"/>
+            </svg>
+          </div>
+          <h1>Évaluation de positionnement</h1>
+          <p>Réponds aux questions suivantes pour que nous puissions<br>adapter ton programme à ton niveau.</p>
         </div>
         <div class="progress-bar-wrap">
           <div class="progress-bar-fill" id="diag-progress" style="width:0%"></div>
@@ -454,7 +456,11 @@
       <!-- Résultat diagnostic -->
       <div id="diag-result-panel" style="display:none">
         <div class="diag-result">
-          <div class="diag-avatar" style="background:linear-gradient(135deg,#f59e0b,#f97316)">🎉</div>
+          <div class="diag-avatar" style="background:#fef3c7;border-color:#fde68a">
+            <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 4l3.6 7.2L30 12.4l-6 5.8 1.4 8.2L18 22.4l-7.4 4L12 18.2l-6-5.8 8.4-1.2L18 4z" fill="#f59e0b" stroke="#f59e0b" stroke-width="1.5" stroke-linejoin="round"/>
+            </svg>
+          </div>
           <div class="result-score" id="result-score">0%</div>
           <div class="result-label">Score global au diagnostic</div>
           <div class="scores-by-subject" id="result-subjects"></div>
@@ -469,32 +475,28 @@
     <!-- ════ DASHBOARD ════ -->
     <div id="screen-dashboard" class="screen">
       <div id="welcome-banner" class="welcome-banner">
-        <h2>Bonjour, <span id="student-first-name">élève</span> ! 👋</h2>
+        <h2>Bonjour, <span id="student-first-name">élève</span></h2>
         <p>Continue ton apprentissage là où tu t'es arrêté(e).</p>
       </div>
       <div class="stats-row">
         <div class="stat-card">
-          <div class="stat-icon">📚</div>
-          <div class="stat-value" id="stat-total">—</div>
           <div class="stat-label">Leçons au total</div>
+          <div class="stat-value" id="stat-total">—</div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon">✅</div>
-          <div class="stat-value" id="stat-done">—</div>
           <div class="stat-label">Leçons complétées</div>
+          <div class="stat-value" id="stat-done">—</div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon">⭐</div>
-          <div class="stat-value" id="stat-avg">—</div>
           <div class="stat-label">Moyenne générale</div>
+          <div class="stat-value" id="stat-avg">—</div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon">🏅</div>
-          <div class="stat-value" id="stat-level">—</div>
           <div class="stat-label">Mon niveau</div>
+          <div class="stat-value" id="stat-level">—</div>
         </div>
       </div>
-      <div class="section-title">📖 Mes matières</div>
+      <div class="section-title">Mes matières</div>
       <div class="subjects-grid" id="subjects-grid">
         <div class="loader"><div class="spinner"></div>Chargement...</div>
       </div>
@@ -512,19 +514,22 @@
       <button class="back-btn" id="lesson-back-btn" onclick="showScreen('lessons')">← Retour aux leçons</button>
       <div class="lesson-content-card" id="lesson-body"></div>
       <div class="exercises-section" id="exercises-section">
-        <div class="section-title">✏️ Exercices</div>
+        <div class="section-title">Exercices</div>
         <div id="exercises-list"></div>
         <div class="submit-section">
-          <button class="btn-primary" id="btn-submit-lesson" onclick="submitLesson()">
-            ✅ Valider mes réponses
+          <button class="btn-primary" id="btn-submit-lesson" onclick="submitLesson()" disabled>
+            Valider mes réponses
           </button>
+          <div style="margin-top:10px;font-size:13px;color:var(--text-muted)" id="submit-hint">
+            Réponds à tous les exercices pour activer le bouton.
+          </div>
         </div>
       </div>
     </div>
 
     <!-- ════ NOTES ════ -->
     <div id="screen-grades" class="screen">
-      <div class="section-title">📊 Mon carnet de notes</div>
+      <div class="section-title">Mon carnet de notes</div>
       <div class="grades-header">
         <div class="big-score" id="grades-avg">—%</div>
         <div>
@@ -539,14 +544,14 @@
 
     <!-- ════ AIDE ════ -->
     <div id="screen-help" class="screen">
-      <div class="section-title">🤝 Demander de l'aide</div>
+      <div class="section-title">Demander de l'aide</div>
       <div class="help-card">
         <h3>Tu as une question ? EduBot est là !</h3>
         <p>Pose ta question directement à EduBot ou demande à ton tuteur humain.</p>
         <div class="chat-messages" id="chat-messages">
           <div class="chat-msg bot">
-            <strong>🤖 EduBot</strong>
-            Bonjour ! Je suis EduBot, ton assistant pédagogique. Pose-moi n'importe quelle question sur tes leçons, et je t'aiderai de mon mieux ! 😊
+            <strong>EduBot</strong>
+            Bonjour ! Je suis ton assistant pédagogique. Pose-moi n'importe quelle question sur tes leçons et je t'aiderai.
           </div>
         </div>
         <div class="chat-input-row">
@@ -660,7 +665,9 @@ async function apiFetch(path, method = 'GET', body = null) {
   const res = await fetch(API + path, opts);
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(err.detail || `Erreur ${res.status}`);
+    const error = new Error(err.detail || `Erreur ${res.status}`);
+    error.status = res.status;
+    throw error;
   }
   return res.json();
 }
@@ -693,6 +700,7 @@ function showScreen(name) {
   if (navId) document.getElementById(navId)?.classList.add('active');
 
   if (name === 'grades') loadGrades();
+  if (name === 'subjects') loadDashboard();
 }
 
 function logout() {
@@ -897,6 +905,15 @@ async function openLesson(lessonId) {
     const data = await apiFetch(`/learning/lessons/${lessonId}`);
     currentLesson = { id: lessonId, exercises: data.exercises || [] };
 
+    // Réinitialiser les réponses et désactiver le bouton Valider
+    Object.keys(exerciseAnswers).forEach(k => delete exerciseAnswers[k]);
+    const submitBtn = document.getElementById('btn-submit-lesson');
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Valider mes réponses';
+      submitBtn.style.background = '';
+    }
+
     // Afficher le contenu
     const lesson = data.lesson;
     document.getElementById('lesson-body').innerHTML = `
@@ -949,6 +966,16 @@ function selectExOption(exId, label, btn) {
   exerciseAnswers[exId] = label;
   btn.closest('.options-grid').querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
+  checkSubmitEnable();
+}
+
+function checkSubmitEnable() {
+  if (!currentLesson) return;
+  const allAnswered = currentLesson.exercises.every(ex => exerciseAnswers[ex.id] !== undefined);
+  const btn = document.getElementById('btn-submit-lesson');
+  const hint = document.getElementById('submit-hint');
+  if (btn) btn.disabled = !allAnswered;
+  if (hint) hint.style.display = allAnswered ? 'none' : 'block';
 }
 
 async function submitLesson() {
@@ -1068,7 +1095,7 @@ function addChatMsg(text, role) {
   const container = document.getElementById('chat-messages');
   const div = document.createElement('div');
   div.className = `chat-msg ${role}`;
-  if (role === 'bot') div.innerHTML = `<strong>🤖 EduBot</strong>${text}`;
+  if (role === 'bot') div.innerHTML = `<strong>EduBot</strong>${text}`;
   else div.textContent = text;
   container.appendChild(div);
   container.scrollTop = container.scrollHeight;

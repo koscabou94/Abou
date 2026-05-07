@@ -667,6 +667,7 @@ function showScreen(name) {
 
 function logout() {
   localStorage.removeItem('edubot_token');
+  localStorage.removeItem('edubot_user');
   window.location.href = '/';
 }
 

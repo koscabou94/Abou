@@ -22,6 +22,7 @@ from app.database.connection import create_tables, check_db_connection
 from app.database.models import FAQ
 from app.routes import chat_router, faq_router, admin_router, feedback_router, auth_router
 from app.routes.learning import router as learning_router
+from app.routes.volunteer import router as volunteer_router
 from app.services import (
     LanguageService,
     TranslationService,
@@ -347,6 +348,7 @@ app.include_router(faq_router, prefix="/api")
 app.include_router(admin_router, prefix="/api")
 app.include_router(feedback_router, prefix="/api")
 app.include_router(learning_router)  # Système d'apprentissage progressif
+app.include_router(volunteer_router)  # Candidatures volontaires
 
 
 # === Health check public ===

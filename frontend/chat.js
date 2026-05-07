@@ -448,8 +448,12 @@
             reloadHistoryAfterAuthChange();
             applyLanguage(state.lang);
             hideProfileModal();
-            // Redirection selon le profil après complétion
-            redirectAfterLogin(data.user);
+            // Si volontaire → afficher questionnaire avant la redirection
+            if ((data.user.profile_type || "") === "volontaire") {
+                showVolunteerModal();
+            } else {
+                redirectAfterLogin(data.user);
+            }
         } catch (err) {
             errEl.textContent = err.message || "Erreur inconnue.";
             errEl.classList.remove("hidden");
@@ -468,6 +472,127 @@
             window.location.href = "tutor.html";
         }
         // admin et autres restent sur index.html (interface chat)
+    }
+
+    // ── Volunteer questionnaire modal ──
+    function showVolunteerModal() {
+        const modal = document.getElementById("volunteer-modal");
+        if (!modal) { redirectAfterLogin(state.user); return; }
+        modal.classList.remove("hidden");
+        // Motivation counter
+        const motEl = document.getElementById("vol-motivation");
+        const counter = document.getElementById("vol-motivation-counter");
+        if (motEl && counter) {
+            motEl.addEventListener("input", () => {
+                const len = motEl.value.trim().length;
+                counter.textContent = `${len} / 50 min.`;
+                counter.style.color = len >= 50 ? "#008751" : "";
+            });
+        }
+        // File upload zone
+        const uploadZone = document.getElementById("vol-upload-zone");
+        const fileInput = document.getElementById("vol-document");
+        const uploadLabel = document.getElementById("vol-upload-label");
+        if (uploadZone && fileInput) {
+            uploadZone.addEventListener("click", () => fileInput.click());
+            uploadZone.addEventListener("dragover", e => { e.preventDefault(); uploadZone.style.borderColor = "#008751"; });
+            uploadZone.addEventListener("dragleave", () => { uploadZone.style.borderColor = ""; });
+            uploadZone.addEventListener("drop", e => {
+                e.preventDefault();
+                uploadZone.style.borderColor = "";
+                if (e.dataTransfer.files[0]) {
+                    fileInput.files = e.dataTransfer.files;
+                    uploadLabel.textContent = "📎 " + e.dataTransfer.files[0].name;
+                }
+            });
+            fileInput.addEventListener("change", () => {
+                if (fileInput.files[0]) uploadLabel.textContent = "📎 " + fileInput.files[0].name;
+            });
+        }
+        // Skip button
+        const skipBtn = document.getElementById("volunteer-skip-btn");
+        if (skipBtn) {
+            skipBtn.onclick = () => {
+                modal.classList.add("hidden");
+                redirectAfterLogin(state.user);
+            };
+        }
+        // Form submit
+        const form = document.getElementById("volunteer-form");
+        if (form) form.onsubmit = handleVolunteerSubmit;
+    }
+
+    async function handleVolunteerSubmit(e) {
+        e.preventDefault();
+        const errEl = document.getElementById("volunteer-form-error");
+        const submitBtn = document.getElementById("volunteer-submit-btn");
+        errEl.classList.add("hidden");
+        submitBtn.disabled = true;
+
+        const motivation = document.getElementById("vol-motivation").value.trim();
+        const experience = document.getElementById("vol-experience").value.trim();
+        const education = document.getElementById("vol-education").value;
+        const subjects = Array.from(document.querySelectorAll("#vol-subjects-grid input:checked")).map(i => i.value);
+        const levels = Array.from(document.querySelectorAll("#volunteer-modal input[type=checkbox][value^='C']")).filter(i => i.checked).map(i => i.value);
+        const availability = document.getElementById("vol-availability").value;
+        const fileInput = document.getElementById("vol-document");
+
+        if (motivation.length < 50) {
+            errEl.textContent = "La lettre de motivation doit faire au moins 50 caractères.";
+            errEl.classList.remove("hidden");
+            submitBtn.disabled = false;
+            return;
+        }
+        if (!experience) {
+            errEl.textContent = "Décrivez votre expérience.";
+            errEl.classList.remove("hidden");
+            submitBtn.disabled = false;
+            return;
+        }
+        if (!education) {
+            errEl.textContent = "Sélectionnez votre niveau d'études.";
+            errEl.classList.remove("hidden");
+            submitBtn.disabled = false;
+            return;
+        }
+        if (subjects.length === 0) {
+            errEl.textContent = "Sélectionnez au moins une matière.";
+            errEl.classList.remove("hidden");
+            submitBtn.disabled = false;
+            return;
+        }
+        if (levels.length === 0) {
+            errEl.textContent = "Sélectionnez au moins un niveau.";
+            errEl.classList.remove("hidden");
+            submitBtn.disabled = false;
+            return;
+        }
+
+        try {
+            const formData = new FormData();
+            formData.append("motivation", motivation);
+            formData.append("experience", experience);
+            formData.append("education", education);
+            formData.append("subjects", JSON.stringify(subjects));
+            formData.append("levels", JSON.stringify(levels));
+            formData.append("availability", availability);
+            if (fileInput.files[0]) formData.append("document", fileInput.files[0]);
+
+            const r = await fetch(`${CONFIG.API_URL}/volunteer/apply`, {
+                method: "POST",
+                headers: { "Authorization": "Bearer " + state.token },
+                body: formData,
+            });
+            const data = await r.json();
+            if (!r.ok) throw new Error(data?.detail || "Erreur lors de la soumission.");
+
+            document.getElementById("volunteer-modal").classList.add("hidden");
+            redirectAfterLogin(state.user);
+        } catch (err) {
+            errEl.textContent = err.message || "Erreur inconnue.";
+            errEl.classList.remove("hidden");
+            submitBtn.disabled = false;
+        }
     }
 
     function logout() {

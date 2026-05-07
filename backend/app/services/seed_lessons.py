@@ -1143,6 +1143,671 @@ A: *I am 9 years old.*""",
             }
         ]
     },
+
+    # ── CI — Éveil / Sciences ──
+    {
+        "level": "CI", "subject": "sciences", "order": 1,
+        "title": "Mon corps",
+        "summary": "Découvrir les grandes parties du corps humain.",
+        "duration_minutes": 15,
+        "content": """## Mon corps
+
+Nous avons tous un corps avec des parties importantes.
+
+### Les grandes parties du corps
+- **La tête** : avec les yeux, le nez, la bouche et les oreilles
+- **Le tronc** : la poitrine et le ventre
+- **Les membres** : 2 bras et 2 jambes
+
+### Les cinq sens
+- 👀 Les **yeux** → pour voir
+- 👂 Les **oreilles** → pour entendre
+- 👃 Le **nez** → pour sentir
+- 👅 La **bouche** → pour goûter
+- ✋ Les **mains** → pour toucher
+
+### Prendre soin de son corps
+Se laver les mains avant de manger. Se brosser les dents matin et soir.""",
+        "exercises": [
+            {
+                "question": "Avec quoi voit-on ?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "Les oreilles"}, {"label": "B", "text": "Les yeux"}, {"label": "C", "text": "Le nez"}],
+                "correct": "B",
+                "explanation": "Les yeux servent à voir. C'est l'un des cinq sens.",
+                "points": 1
+            },
+            {
+                "question": "Combien de jambes avons-nous ?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "1"}, {"label": "B", "text": "4"}, {"label": "C", "text": "2"}],
+                "correct": "C",
+                "explanation": "Nous avons 2 jambes et 2 bras.",
+                "points": 1
+            },
+            {
+                "question": "Que faut-il faire avant de manger ?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "Se coiffer"}, {"label": "B", "text": "Se laver les mains"}, {"label": "C", "text": "Courir"}],
+                "correct": "B",
+                "explanation": "Se laver les mains avant de manger évite les maladies.",
+                "points": 1
+            }
+        ]
+    },
+
+    # ── CP — Sciences ──
+    {
+        "level": "CP", "subject": "sciences", "order": 1,
+        "title": "Les animaux autour de nous",
+        "summary": "Classer les animaux et comprendre leur mode de vie.",
+        "duration_minutes": 20,
+        "content": """## Les animaux autour de nous
+
+### Les animaux domestiques
+Ce sont les animaux qui vivent avec nous : le chien, le chat, la poule, le mouton, la vache.
+
+### Les animaux sauvages
+Ils vivent dans la nature : le lion, l'éléphant, le singe, le serpent.
+
+### Ce que mangent les animaux
+- **Herbivores** : mangent des plantes (vache, chèvre, lapin)
+- **Carnivores** : mangent de la viande (lion, chat)
+- **Omnivores** : mangent de tout (poule, cochon)
+
+### Les animaux utiles
+Le bœuf tire la charrue. La vache donne du lait. La poule pond des œufs.""",
+        "exercises": [
+            {
+                "question": "Lequel est un animal domestique ?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "Le lion"}, {"label": "B", "text": "La poule"}, {"label": "C", "text": "L'éléphant"}],
+                "correct": "B",
+                "explanation": "La poule est un animal domestique qui vit avec les humains.",
+                "points": 1
+            },
+            {
+                "question": "Un animal qui mange seulement des plantes est :",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "Carnivore"}, {"label": "B", "text": "Omnivore"}, {"label": "C", "text": "Herbivore"}],
+                "correct": "C",
+                "explanation": "Les herbivores, comme la vache, mangent uniquement des plantes.",
+                "points": 1
+            },
+            {
+                "question": "Que donne la vache ?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "Des œufs"}, {"label": "B", "text": "Du miel"}, {"label": "C", "text": "Du lait"}],
+                "correct": "C",
+                "explanation": "La vache est élevée notamment pour le lait qu'elle produit.",
+                "points": 1
+            }
+        ]
+    },
+
+    # ── CP — Anglais ──
+    {
+        "level": "CP", "subject": "anglais", "order": 1,
+        "title": "Hello! Greetings",
+        "summary": "Learn basic greetings and introductions in English.",
+        "duration_minutes": 15,
+        "content": """## Hello! Greetings
+
+### How to say hello
+- **Good morning** → bonjour (le matin)
+- **Good afternoon** → bonsoir (l'après-midi)
+- **Goodbye / Bye** → au revoir
+
+### Introducing yourself
+> *My name is Fatou. I am 7 years old.*
+
+### Asking questions
+- *What is your name?* → Comment tu t'appelles ?
+- *How are you?* → Comment ça va ?
+- *I am fine, thank you!* → Je vais bien, merci !
+
+### Numbers 1–5
+One (1), Two (2), Three (3), Four (4), Five (5)""",
+        "exercises": [
+            {
+                "question": "How do you say 'bonjour' in the morning in English?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "Goodbye"}, {"label": "B", "text": "Good morning"}, {"label": "C", "text": "Good night"}],
+                "correct": "B",
+                "explanation": "'Good morning' is used to greet someone in the morning.",
+                "points": 1
+            },
+            {
+                "question": "Complete: 'My ___ is Moussa.'",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "name"}, {"label": "B", "text": "age"}, {"label": "C", "text": "school"}],
+                "correct": "A",
+                "explanation": "'My name is...' is used to introduce yourself.",
+                "points": 1
+            },
+            {
+                "question": "What number comes after 'three'?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "Two"}, {"label": "B", "text": "Five"}, {"label": "C", "text": "Four"}],
+                "correct": "C",
+                "explanation": "The sequence is: one, two, three, four, five.",
+                "points": 1
+            }
+        ]
+    },
+
+    # ── CE2 — Sciences ──
+    {
+        "level": "CE2", "subject": "sciences", "order": 1,
+        "title": "L'eau et ses états",
+        "summary": "Comprendre les trois états de l'eau : solide, liquide, gazeux.",
+        "duration_minutes": 25,
+        "content": """## L'eau et ses états
+
+L'eau peut exister sous trois formes différentes.
+
+### 1. L'état liquide
+C'est la forme habituelle : l'eau des rivières, des pluies, du robinet.
+
+### 2. L'état solide
+Quand il fait très froid (0°C), l'eau gèle et devient de la **glace**.
+- La neige et la grêle sont aussi de l'eau solide.
+
+### 3. L'état gazeux
+Quand on chauffe l'eau (100°C), elle bout et s'évapore en **vapeur d'eau**.
+
+### Les changements d'état
+| Changement | Nom |
+|---|---|
+| Liquide → Solide | Solidification (congélation) |
+| Solide → Liquide | Fusion |
+| Liquide → Gazeux | Évaporation |
+
+### L'eau dans la nature
+Le **cycle de l'eau** : l'eau s'évapore, monte dans l'atmosphère, forme des nuages, puis retombe en pluie.""",
+        "exercises": [
+            {
+                "question": "À quelle température l'eau gèle-t-elle ?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "100°C"}, {"label": "B", "text": "50°C"}, {"label": "C", "text": "0°C"}],
+                "correct": "C",
+                "explanation": "L'eau se solidifie (gèle) à 0°C pour former de la glace.",
+                "points": 1
+            },
+            {
+                "question": "Quand on chauffe l'eau à 100°C, elle devient :",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "De la glace"}, {"label": "B", "text": "De la vapeur d'eau"}, {"label": "C", "text": "Du sel"}],
+                "correct": "B",
+                "explanation": "À 100°C, l'eau bout et s'évapore en vapeur d'eau (état gazeux).",
+                "points": 1
+            },
+            {
+                "question": "Comment appelle-t-on le passage de l'état liquide à l'état solide ?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "Évaporation"}, {"label": "B", "text": "Solidification"}, {"label": "C", "text": "Fusion"}],
+                "correct": "B",
+                "explanation": "La solidification (ou congélation) est le passage du liquide au solide.",
+                "points": 1
+            }
+        ]
+    },
+
+    # ── CE2 — Anglais ──
+    {
+        "level": "CE2", "subject": "anglais", "order": 1,
+        "title": "My family",
+        "summary": "Learn vocabulary about family members in English.",
+        "duration_minutes": 20,
+        "content": """## My family
+
+### Family members
+- **father** → père
+- **mother** → mère
+- **brother** → frère
+- **sister** → sœur
+- **grandfather** → grand-père
+- **grandmother** → grand-mère
+
+### Talking about your family
+> *I have one brother and two sisters.*
+> *My mother's name is Adja.*
+
+### Adjectives for family
+- big family → grande famille
+- small family → petite famille
+- happy family → famille heureuse
+
+### Possessive adjectives
+- **my** → mon/ma
+- **his/her** → son/sa""",
+        "exercises": [
+            {
+                "question": "What is 'mère' in English?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "Father"}, {"label": "B", "text": "Sister"}, {"label": "C", "text": "Mother"}],
+                "correct": "C",
+                "explanation": "'Mother' means 'mère' in French.",
+                "points": 1
+            },
+            {
+                "question": "How do you say 'frère' in English?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "Sister"}, {"label": "B", "text": "Brother"}, {"label": "C", "text": "Uncle"}],
+                "correct": "B",
+                "explanation": "'Brother' is the translation of 'frère'.",
+                "points": 1
+            },
+            {
+                "question": "Complete: '___ name is Oumar.' (son prénom)",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "My"}, {"label": "B", "text": "His"}, {"label": "C", "text": "Her"}],
+                "correct": "B",
+                "explanation": "'His' is used for a male person (son/sa pour un garçon).",
+                "points": 1
+            }
+        ]
+    },
+
+    # ── CE2 — Histoire-Géographie ──
+    {
+        "level": "CE2", "subject": "histoire-geo", "order": 1,
+        "title": "Le Sénégal — Notre pays",
+        "summary": "Découvrir la géographie de base du Sénégal.",
+        "duration_minutes": 25,
+        "content": """## Le Sénégal — Notre pays
+
+### Situation géographique
+Le Sénégal est un pays d'**Afrique de l'Ouest**. Il est bordé par l'océan Atlantique à l'ouest.
+
+### Les régions du Sénégal
+Le Sénégal est divisé en **14 régions** :
+Dakar, Thiès, Diourbel, Fatick, Kaolack, Kaffrine, Saint-Louis, Louga, Matam, Tambacounda, Kédougou, Kolda, Sédhiou, Ziguinchor
+
+### La capitale
+**Dakar** est la capitale et la plus grande ville du Sénégal.
+
+### Les voisins du Sénégal
+- Au nord : **Mauritanie**
+- À l'est : **Mali**
+- Au sud : **Guinée-Bissau** et **Guinée**
+- À l'intérieur : **Gambie**
+
+### Le fleuve Sénégal
+Le fleuve Sénégal marque la frontière nord avec la Mauritanie.""",
+        "exercises": [
+            {
+                "question": "Quelle est la capitale du Sénégal ?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "Saint-Louis"}, {"label": "B", "text": "Thiès"}, {"label": "C", "text": "Dakar"}],
+                "correct": "C",
+                "explanation": "Dakar est la capitale et la plus grande ville du Sénégal.",
+                "points": 1
+            },
+            {
+                "question": "En combien de régions le Sénégal est-il divisé ?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "10"}, {"label": "B", "text": "14"}, {"label": "C", "text": "12"}],
+                "correct": "B",
+                "explanation": "Le Sénégal est divisé en 14 régions administratives.",
+                "points": 1
+            },
+            {
+                "question": "Quel pays est enclavé à l'intérieur du Sénégal ?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "Le Mali"}, {"label": "B", "text": "La Mauritanie"}, {"label": "C", "text": "La Gambie"}],
+                "correct": "C",
+                "explanation": "La Gambie est un petit pays presque entièrement entouré par le Sénégal.",
+                "points": 1
+            }
+        ]
+    },
+
+    # ── CM1 — Sciences ──
+    {
+        "level": "CM1", "subject": "sciences", "order": 1,
+        "title": "La chaîne alimentaire",
+        "summary": "Comprendre les relations entre les êtres vivants dans un écosystème.",
+        "duration_minutes": 30,
+        "content": """## La chaîne alimentaire
+
+### Définition
+Une chaîne alimentaire montre qui mange qui dans la nature.
+
+### Les maillons de la chaîne
+1. **Producteurs** : les plantes (herbe, arbres) — ils produisent leur propre nourriture par photosynthèse
+2. **Consommateurs primaires** : les herbivores (lapins, criquets, zèbres) qui mangent les plantes
+3. **Consommateurs secondaires** : les carnivores (renard, lion) qui mangent les herbivores
+4. **Décomposeurs** : les champignons et bactéries qui décomposent les restes
+
+### Exemple de chaîne alimentaire
+> Herbe → Criquet → Grenouille → Serpent → Aigle
+
+### Le réseau trophique
+En réalité, les chaînes se croisent et forment un **réseau alimentaire**.
+
+### Importance de l'équilibre
+Si un maillon disparaît, tout l'écosystème est perturbé. C'est pourquoi il faut protéger la biodiversité.""",
+        "exercises": [
+            {
+                "question": "Qui sont les producteurs dans une chaîne alimentaire ?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "Les lions"}, {"label": "B", "text": "Les plantes"}, {"label": "C", "text": "Les lapins"}],
+                "correct": "B",
+                "explanation": "Les plantes sont les producteurs : elles fabriquent leur nourriture grâce au soleil.",
+                "points": 1
+            },
+            {
+                "question": "Dans la chaîne : Herbe → Criquet → Grenouille, le criquet est :",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "Un producteur"}, {"label": "B", "text": "Un décomposeur"}, {"label": "C", "text": "Un consommateur primaire"}],
+                "correct": "C",
+                "explanation": "Le criquet mange l'herbe (une plante), il est donc consommateur primaire.",
+                "points": 1
+            },
+            {
+                "question": "Que font les décomposeurs ?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "Ils produisent de l'oxygène"}, {"label": "B", "text": "Ils décomposent les restes d'êtres vivants"}, {"label": "C", "text": "Ils chassent les herbivores"}],
+                "correct": "B",
+                "explanation": "Les décomposeurs (champignons, bactéries) décomposent la matière organique morte.",
+                "points": 1
+            }
+        ]
+    },
+
+    # ── CM1 — Anglais ──
+    {
+        "level": "CM1", "subject": "anglais", "order": 1,
+        "title": "My school and daily routine",
+        "summary": "Describe your school life and daily activities in English.",
+        "duration_minutes": 25,
+        "content": """## My school and daily routine
+
+### School vocabulary
+- **classroom** → salle de classe
+- **blackboard** → tableau
+- **textbook** → manuel scolaire
+- **teacher** → enseignant(e)
+- **homework** → devoirs
+
+### Daily routine
+- I **wake up** at 6 o'clock.
+- I **go to school** at 7:30.
+- I **study** from 8am to 1pm.
+- I **play** with my friends at break time.
+- I **do my homework** in the afternoon.
+
+### Telling the time
+- It is **8 o'clock**. (Il est 8 heures.)
+- It is **half past 10**. (Il est 10h30.)
+- It is **quarter to 12**. (Il est 11h45.)
+
+### Asking questions about routine
+- *What time do you wake up?*
+- *How do you go to school?* → I walk / I take the bus.""",
+        "exercises": [
+            {
+                "question": "What is 'devoirs' in English?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "Homework"}, {"label": "B", "text": "Classroom"}, {"label": "C", "text": "Teacher"}],
+                "correct": "A",
+                "explanation": "'Homework' means 'devoirs' — the work you do at home after school.",
+                "points": 1
+            },
+            {
+                "question": "What does 'I wake up' mean?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "Je dors"}, {"label": "B", "text": "Je me réveille"}, {"label": "C", "text": "Je mange"}],
+                "correct": "B",
+                "explanation": "'To wake up' means 'se réveiller'.",
+                "points": 1
+            },
+            {
+                "question": "How do you say 'Il est 10h30' in English?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "It is 10 o'clock"}, {"label": "B", "text": "It is half past 10"}, {"label": "C", "text": "It is quarter to 10"}],
+                "correct": "B",
+                "explanation": "'Half past 10' means 10h30 — 'half' indicates 30 minutes past the hour.",
+                "points": 1
+            }
+        ]
+    },
+
+    # ── CM2 — Français ──
+    {
+        "level": "CM2", "subject": "francais", "order": 1,
+        "title": "La rédaction — écrire un texte clair",
+        "summary": "Apprendre à rédiger un texte organisé avec introduction, développement et conclusion.",
+        "duration_minutes": 35,
+        "content": """## La rédaction
+
+### Qu'est-ce qu'une rédaction ?
+Une rédaction est un texte écrit qui développe une idée ou raconte quelque chose.
+
+### La structure d'un texte
+Tout bon texte a **3 parties** :
+1. **Introduction** : on présente le sujet
+2. **Développement** : on développe les idées principales
+3. **Conclusion** : on résume et on termine
+
+### Les connecteurs logiques
+Pour lier les idées, on utilise :
+- **D'abord / Premièrement** → pour commencer
+- **Ensuite / Puis** → pour continuer
+- **Enfin / Pour conclure** → pour terminer
+- **Cependant / Mais** → pour opposer
+
+### Les types de textes
+- **Narratif** : raconter une histoire
+- **Descriptif** : décrire un lieu ou une personne
+- **Argumentatif** : convaincre avec des arguments
+
+### Conseils pour bien rédiger
+✅ Fais des phrases courtes et claires.
+✅ Relis toujours ton texte.
+✅ Vérifie l'accord des noms et des verbes.""",
+        "exercises": [
+            {
+                "question": "Combien de parties doit avoir un texte bien organisé ?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "2"}, {"label": "B", "text": "3"}, {"label": "C", "text": "4"}],
+                "correct": "B",
+                "explanation": "Un texte est structuré en 3 parties : introduction, développement, conclusion.",
+                "points": 1
+            },
+            {
+                "question": "Quel connecteur utilise-t-on pour terminer un texte ?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "D'abord"}, {"label": "B", "text": "Cependant"}, {"label": "C", "text": "Pour conclure"}],
+                "correct": "C",
+                "explanation": "'Pour conclure' est utilisé en conclusion pour terminer un texte.",
+                "points": 1
+            },
+            {
+                "question": "Un texte qui raconte une histoire est de type :",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "Argumentatif"}, {"label": "B", "text": "Narratif"}, {"label": "C", "text": "Descriptif"}],
+                "correct": "B",
+                "explanation": "Un texte narratif raconte une histoire ou une suite d'événements.",
+                "points": 1
+            }
+        ]
+    },
+
+    # ── CM2 — Sciences ──
+    {
+        "level": "CM2", "subject": "sciences", "order": 1,
+        "title": "Le système solaire",
+        "summary": "Connaître les planètes du système solaire et leur place par rapport au Soleil.",
+        "duration_minutes": 30,
+        "content": """## Le système solaire
+
+### Le Soleil
+Le Soleil est une **étoile** au centre de notre système solaire. C'est lui qui donne la lumière et la chaleur à la Terre.
+
+### Les 8 planètes (par ordre de distance du Soleil)
+1. **Mercure** — la plus proche, très chaude le jour, très froide la nuit
+2. **Vénus** — la plus brillante vue de la Terre
+3. **Terre** — notre planète, la seule avec de la vie
+4. **Mars** — la planète rouge
+5. **Jupiter** — la plus grande planète
+6. **Saturne** — avec ses célèbres anneaux
+7. **Uranus** — tourne sur le côté
+8. **Neptune** — la plus éloignée
+
+### La Lune
+La Lune est le satellite naturel de la Terre. Elle fait le tour de la Terre en 28 jours.
+
+### Moyen mnémotechnique
+**M-V-T-M-J-S-U-N** : *Ma Vieille Tante Marie Joue Sur Une Natte*""",
+        "exercises": [
+            {
+                "question": "Combien y a-t-il de planètes dans notre système solaire ?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "9"}, {"label": "B", "text": "7"}, {"label": "C", "text": "8"}],
+                "correct": "C",
+                "explanation": "Il y a 8 planètes : Mercure, Vénus, Terre, Mars, Jupiter, Saturne, Uranus, Neptune.",
+                "points": 1
+            },
+            {
+                "question": "Quelle planète est la plus grande du système solaire ?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "Saturne"}, {"label": "B", "text": "Jupiter"}, {"label": "C", "text": "Neptune"}],
+                "correct": "B",
+                "explanation": "Jupiter est la plus grande planète du système solaire.",
+                "points": 1
+            },
+            {
+                "question": "En combien de jours la Lune fait-elle le tour de la Terre ?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "365 jours"}, {"label": "B", "text": "28 jours"}, {"label": "C", "text": "7 jours"}],
+                "correct": "B",
+                "explanation": "La Lune orbite autour de la Terre en environ 28 jours (1 mois lunaire).",
+                "points": 1
+            }
+        ]
+    },
+
+    # ── CM2 — Anglais ──
+    {
+        "level": "CM2", "subject": "anglais", "order": 1,
+        "title": "The environment",
+        "summary": "Learn vocabulary about the environment and how to protect it.",
+        "duration_minutes": 30,
+        "content": """## The environment
+
+### Environmental vocabulary
+- **environment** → environnement
+- **pollution** → pollution
+- **recycling** → recyclage
+- **deforestation** → déforestation
+- **climate change** → changement climatique
+
+### Problems facing our environment
+- Plastic **pollutes** rivers and oceans.
+- Cutting trees causes **deforestation**.
+- Cars and factories release gases that cause **global warming**.
+
+### What can WE do?
+- **Recycle** paper, plastic and glass.
+- **Plant** trees in our neighbourhood.
+- **Save** water — do not leave the tap running.
+- **Use** public transport or walk instead of using cars.
+
+### Speaking about the environment
+- *We must protect our environment.*
+- *I recycle at home every week.*
+- *Deforestation is a serious problem in Senegal.*""",
+        "exercises": [
+            {
+                "question": "What does 'recyclage' mean in English?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "Pollution"}, {"label": "B", "text": "Recycling"}, {"label": "C", "text": "Deforestation"}],
+                "correct": "B",
+                "explanation": "'Recycling' is the process of converting waste into reusable material.",
+                "points": 1
+            },
+            {
+                "question": "Which action helps protect the environment?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "Cutting trees"}, {"label": "B", "text": "Throwing plastic in rivers"}, {"label": "C", "text": "Planting trees"}],
+                "correct": "C",
+                "explanation": "Planting trees helps fight deforestation and reduces CO₂ in the atmosphere.",
+                "points": 1
+            },
+            {
+                "question": "What causes global warming?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "Planting trees"}, {"label": "B", "text": "Gases from cars and factories"}, {"label": "C", "text": "Drinking water"}],
+                "correct": "B",
+                "explanation": "Gases (CO₂, methane) from vehicles and factories trap heat and cause global warming.",
+                "points": 1
+            }
+        ]
+    },
+
+    # ── CM2 — Histoire-Géographie ──
+    {
+        "level": "CM2", "subject": "histoire-geo", "order": 1,
+        "title": "L'Afrique de l'Ouest — Géographie",
+        "summary": "Découvrir les pays, capitales et caractéristiques de l'Afrique de l'Ouest.",
+        "duration_minutes": 30,
+        "content": """## L'Afrique de l'Ouest
+
+### Présentation
+L'Afrique de l'Ouest regroupe **15 pays** membres de la CEDEAO (Communauté Économique des États de l'Afrique de l'Ouest).
+
+### Quelques pays et leurs capitales
+| Pays | Capitale |
+|---|---|
+| Sénégal | Dakar |
+| Mali | Bamako |
+| Côte d'Ivoire | Yamoussoukro |
+| Ghana | Accra |
+| Nigeria | Abuja |
+| Guinée | Conakry |
+| Burkina Faso | Ouagadougou |
+
+### Les grands fleuves
+- **Le Niger** : traverse le Mali, le Niger et le Nigeria
+- **Le Sénégal** : frontière entre le Sénégal et la Mauritanie
+- **La Gambie** : traverse la Gambie
+
+### Caractéristiques physiques
+- **Le Sahel** : zone semi-aride au nord
+- **Les savanes** : vastes prairies au centre
+- **La forêt tropicale** : au sud (Côte d'Ivoire, Ghana)
+
+### L'histoire de la région
+Grands empires médiévaux : **Empire du Ghana**, **Empire du Mali** (avec Mansa Moussa), **Empire Songhay**.""",
+        "exercises": [
+            {
+                "question": "Quelle est la capitale du Mali ?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "Accra"}, {"label": "B", "text": "Bamako"}, {"label": "C", "text": "Conakry"}],
+                "correct": "B",
+                "explanation": "Bamako est la capitale du Mali, grand pays enclavé d'Afrique de l'Ouest.",
+                "points": 1
+            },
+            {
+                "question": "Combien de pays forment la CEDEAO ?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "15"}, {"label": "B", "text": "10"}, {"label": "C", "text": "20"}],
+                "correct": "A",
+                "explanation": "La CEDEAO regroupe 15 États membres d'Afrique de l'Ouest.",
+                "points": 1
+            },
+            {
+                "question": "Quel grand empire médiéval a existé en Afrique de l'Ouest ?",
+                "type": "qcm",
+                "options": [{"label": "A", "text": "L'Empire romain"}, {"label": "B", "text": "L'Empire du Mali"}, {"label": "C", "text": "L'Empire ottoman"}],
+                "correct": "B",
+                "explanation": "L'Empire du Mali fut l'un des plus grands empires médiévaux d'Afrique de l'Ouest.",
+                "points": 1
+            }
+        ]
+    },
 ]
 
 

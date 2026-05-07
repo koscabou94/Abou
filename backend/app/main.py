@@ -22,6 +22,7 @@ from app.database.connection import create_tables, check_db_connection
 from app.database.models import FAQ
 from app.routes import chat_router, faq_router, admin_router, feedback_router, auth_router
 from app.routes.learning import router as learning_router
+from app.routes.volunteer import router as volunteer_router
 from app.services import (
     LanguageService,
     TranslationService,
@@ -188,6 +189,27 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
         except Exception as exc2:
             logger.error("Erreur lors du chargement des FAQ", error=str(exc2))
 
+    # 4b. Auto-seed leçons si la table est vide
+    logger.info("Vérification des leçons en base...")
+    try:
+        from sqlalchemy import select, func
+        from app.database.models import Lesson
+        from app.database.connection import AsyncSessionLocal
+
+        async with AsyncSessionLocal() as db:
+            count_res = await db.execute(select(func.count(Lesson.id)))
+            lesson_count = count_res.scalar() or 0
+
+        if lesson_count == 0:
+            logger.info("Table des leçons vide — import du curriculum...")
+            from app.services.seed_lessons import seed_lessons
+            await seed_lessons()
+            logger.info("Leçons importées avec succès")
+        else:
+            logger.info("Leçons déjà en base", count=lesson_count)
+    except Exception as exc:
+        logger.warning("Impossible d'auto-seeder les leçons", error=str(exc))
+
     # 5. Initialiser la base de connaissances
     logger.info("Chargement de la base de connaissances...")
     try:
@@ -347,6 +369,7 @@ app.include_router(faq_router, prefix="/api")
 app.include_router(admin_router, prefix="/api")
 app.include_router(feedback_router, prefix="/api")
 app.include_router(learning_router)  # Système d'apprentissage progressif
+app.include_router(volunteer_router)  # Candidatures volontaires
 
 
 # === Health check public ===

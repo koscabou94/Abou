@@ -558,3 +558,67 @@ class TutorRequest(Base):
 
     def __repr__(self) -> str:
         return f"<TutorRequest(student={self.student_id}, status={self.status}, type={self.request_type})>"
+
+
+class VolunteerApplication(Base):
+    """
+    Candidature d'un volontaire souhaitant devenir tuteur.
+    Les superviseurs/admins examinent les candidatures et les approuvent ou rejettent.
+    """
+    __tablename__ = "volunteer_applications"
+
+    id: int = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    user_id: int = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"),
+                          nullable=False, unique=True, index=True)
+    motivation: str = Column(Text, nullable=False, comment="Lettre de motivation")
+    experience: str = Column(Text, nullable=False, comment="Expérience en enseignement")
+    education: str = Column(String(100), nullable=False, comment="Niveau d'études")
+    subjects: str = Column(Text, nullable=False, comment="Matières JSON: ['francais','maths']")
+    levels: str = Column(Text, nullable=False, comment="Niveaux JSON: ['CI','CP','CE1']")
+    availability: str = Column(String(50), nullable=False, default="both",
+                               comment="weekdays | weekends | both")
+    document_path: Optional[str] = Column(String(500), nullable=True,
+                                          comment="Chemin du fichier CV/diplôme uploadé")
+    document_name: Optional[str] = Column(String(255), nullable=True,
+                                          comment="Nom original du fichier")
+    status: str = Column(String(20), default="pending",
+                         comment="pending | approved | rejected")
+    reviewer_id: Optional[int] = Column(Integer, ForeignKey("users.id"), nullable=True)
+    reviewer_notes: Optional[str] = Column(Text, nullable=True)
+    created_at: datetime = Column(DateTime(timezone=True), server_default=func.now())
+    reviewed_at: Optional[datetime] = Column(DateTime(timezone=True), nullable=True)
+
+    applicant: "User" = relationship("User", foreign_keys=[user_id])
+    reviewer: Optional["User"] = relationship("User", foreign_keys=[reviewer_id])
+
+    def get_subjects(self) -> list:
+        try:
+            return json.loads(self.subjects)
+        except Exception:
+            return []
+
+    def get_levels(self) -> list:
+        try:
+            return json.loads(self.levels)
+        except Exception:
+            return []
+
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "motivation": self.motivation,
+            "experience": self.experience,
+            "education": self.education,
+            "subjects": self.get_subjects(),
+            "levels": self.get_levels(),
+            "availability": self.availability,
+            "document_name": self.document_name,
+            "status": self.status,
+            "reviewer_notes": self.reviewer_notes,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "reviewed_at": self.reviewed_at.isoformat() if self.reviewed_at else None,
+        }
+
+    def __repr__(self) -> str:
+        return f"<VolunteerApplication(user={self.user_id}, status={self.status})>"

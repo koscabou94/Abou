@@ -342,6 +342,41 @@
     @keyframes spin { to { transform: rotate(360deg); } }
 
     /* ── RESPONSIVE ── */
+    /* ── Volunteer applications ── */
+    .vol-filter-btn {
+      padding: 7px 16px; border-radius: 20px; border: 1px solid var(--border);
+      font-size: 13px; font-weight: 500; cursor: pointer;
+      background: var(--card); color: var(--text-muted); transition: all .15s;
+    }
+    .vol-filter-btn:hover { border-color: var(--orange); color: var(--orange); }
+    .vol-filter-btn.active { background: var(--orange-light); border-color: var(--orange); color: var(--orange); font-weight: 600; }
+    .vol-card {
+      background: var(--card); border-radius: var(--radius); padding: 20px 24px;
+      box-shadow: var(--shadow); margin-bottom: 16px; border-left: 4px solid var(--border);
+    }
+    .vol-card.pending { border-left-color: var(--yellow); }
+    .vol-card.approved { border-left-color: var(--green); }
+    .vol-card.rejected { border-left-color: var(--red); }
+    .vol-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+    .vol-card-name { font-size: 16px; font-weight: 700; }
+    .vol-card-meta { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+    .vol-status-pill { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; flex-shrink: 0; }
+    .vol-status-pill.pending { background: var(--yellow-light); color: #92400e; }
+    .vol-status-pill.approved { background: var(--green-light); color: var(--green); }
+    .vol-status-pill.rejected { background: var(--red-light); color: var(--red); }
+    .vol-section { margin-bottom: 12px; }
+    .vol-section-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; }
+    .vol-section-text { font-size: 14px; line-height: 1.55; color: var(--text); }
+    .vol-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+    .vol-tag { padding: 3px 10px; border-radius: 99px; font-size: 12px; font-weight: 500; background: var(--blue-light); color: var(--blue); }
+    .vol-actions { display: flex; gap: 10px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+    .btn-approve { background: var(--green); color: #fff; border: none; padding: 9px 20px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity .15s; }
+    .btn-approve:hover { opacity: .85; }
+    .btn-reject { background: transparent; color: var(--red); border: 1.5px solid var(--red); padding: 9px 20px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all .15s; }
+    .btn-reject:hover { background: var(--red-light); }
+    .vol-notes-input { flex: 1; min-width: 160px; border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; font-size: 13px; font-family: inherit; outline: none; transition: border-color .15s; }
+    .vol-notes-input:focus { border-color: var(--orange); }
+
     @media (max-width: 768px) {
       .sidebar { display: none; }
       .table-header, .table-row { grid-template-columns: 2fr 1fr 80px; }
@@ -381,6 +416,11 @@
     <button class="nav-item" onclick="showScreen('requests')" id="nav-requests">
       <span class="icon">🆘</span> Demandes d'aide
       <span class="badge" id="badge-requests" style="display:none">0</span>
+    </button>
+    <!-- Admin only -->
+    <button class="nav-item" onclick="showScreen('volunteers')" id="nav-volunteers" style="display:none">
+      <span class="icon">🤝</span> Candidatures
+      <span class="badge" id="badge-volunteers" style="display:none">0</span>
     </button>
   </aside>
 
@@ -466,6 +506,23 @@
         <p>Répondez aux questions de vos élèves</p>
       </div>
       <div id="requests-list">
+        <div class="loader"><div class="spinner"></div> Chargement…</div>
+      </div>
+    </div>
+
+    <!-- ── SCREEN : VOLUNTEERS (admin) ── -->
+    <div class="screen" id="screen-volunteers">
+      <div class="page-header">
+        <h1>Candidatures volontaires</h1>
+        <p>Examinez et validez les demandes de tuteurs volontaires</p>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
+        <button class="vol-filter-btn active" onclick="filterVolunteers('all')" id="vfil-all">Toutes</button>
+        <button class="vol-filter-btn" onclick="filterVolunteers('pending')" id="vfil-pending">En attente <span id="vfil-pending-count"></span></button>
+        <button class="vol-filter-btn" onclick="filterVolunteers('approved')" id="vfil-approved">Approuvées</button>
+        <button class="vol-filter-btn" onclick="filterVolunteers('rejected')" id="vfil-rejected">Rejetées</button>
+      </div>
+      <div id="volunteers-list">
         <div class="loader"><div class="spinner"></div> Chargement…</div>
       </div>
     </div>
@@ -856,6 +913,112 @@ document.getElementById("reply-modal").addEventListener("click", function(e) {
   if (e.target === this) closeReplyModal();
 });
 
+// ── Volunteer Applications (admin/superviseur) ──
+let volunteersData = [];
+let volunteersFilter = "all";
+
+async function loadVolunteers() {
+  try {
+    const r = await fetch(`${API}/admin/volunteers`, { headers: authHeaders() });
+    if (!r.ok) throw new Error();
+    volunteersData = await r.json();
+  } catch (e) {
+    volunteersData = [];
+  }
+  renderVolunteers();
+  updateVolunteerBadge();
+}
+
+function updateVolunteerBadge() {
+  const pending = volunteersData.filter(v => v.status === "pending").length;
+  const badge = document.getElementById("badge-volunteers");
+  const countEl = document.getElementById("vfil-pending-count");
+  if (badge) { badge.textContent = pending; badge.style.display = pending > 0 ? "" : "none"; }
+  if (countEl) countEl.textContent = pending > 0 ? `(${pending})` : "";
+}
+
+function filterVolunteers(f) {
+  volunteersFilter = f;
+  document.querySelectorAll(".vol-filter-btn").forEach(b => b.classList.remove("active"));
+  const btn = document.getElementById("vfil-" + f);
+  if (btn) btn.classList.add("active");
+  renderVolunteers();
+}
+
+function renderVolunteers() {
+  const el = document.getElementById("volunteers-list");
+  if (!el) return;
+  const list = volunteersFilter === "all" ? volunteersData : volunteersData.filter(v => v.status === volunteersFilter);
+  if (list.length === 0) {
+    el.innerHTML = `<div class="empty-state"><div class="icon">🤝</div><h3>Aucune candidature</h3><p>Aucune candidature dans cette catégorie.</p></div>`;
+    return;
+  }
+  el.innerHTML = list.map(renderVolCard).join("");
+}
+
+function renderVolCard(v) {
+  const statusLabel = { pending: "En attente", approved: "Approuvée", rejected: "Rejetée" }[v.status] || v.status;
+  const subjects = Array.isArray(v.subjects) ? v.subjects : (JSON.parse(v.subjects || "[]"));
+  const levels = Array.isArray(v.levels) ? v.levels : (JSON.parse(v.levels || "[]"));
+  const date = v.created_at ? new Date(v.created_at).toLocaleDateString("fr-FR") : "";
+  const isPending = v.status === "pending";
+  return `
+    <div class="vol-card ${v.status}" id="vol-card-${v.id}">
+      <div class="vol-card-header">
+        <div>
+          <div class="vol-card-name">👤 ${escapeHTML(v.applicant_name || "Candidat")}</div>
+          <div class="vol-card-meta">${escapeHTML(v.applicant_email || "")} · ${escapeHTML(v.education || "")} · Soumis le ${date}</div>
+        </div>
+        <span class="vol-status-pill ${v.status}">${statusLabel}</span>
+      </div>
+      <div class="vol-section">
+        <div class="vol-section-label">Lettre de motivation</div>
+        <div class="vol-section-text">${escapeHTML(v.motivation || "")}</div>
+      </div>
+      <div class="vol-section">
+        <div class="vol-section-label">Expérience</div>
+        <div class="vol-section-text">${escapeHTML(v.experience || "")}</div>
+      </div>
+      <div class="vol-section">
+        <div class="vol-section-label">Matières · Niveaux · Disponibilité</div>
+        <div class="vol-tags">
+          ${subjects.map(s => `<span class="vol-tag">📖 ${escapeHTML(s)}</span>`).join("")}
+          ${levels.map(l => `<span class="vol-tag" style="background:var(--green-light);color:var(--green)">🏫 ${escapeHTML(l)}</span>`).join("")}
+          <span class="vol-tag" style="background:var(--purple-light);color:var(--purple)">🕐 ${{ both: "Présentiel & ligne", online: "En ligne", inperson: "Présentiel" }[v.availability] || v.availability}</span>
+        </div>
+      </div>
+      ${v.document_name ? `<div class="vol-section"><div class="vol-section-label">Document joint</div><div class="vol-section-text">📎 ${escapeHTML(v.document_name)}</div></div>` : ""}
+      ${isPending ? `
+      <div class="vol-actions">
+        <input class="vol-notes-input" id="vol-notes-${v.id}" placeholder="Notes (optionnel)…">
+        <button class="btn-approve" onclick="reviewVolunteer(${v.id}, 'approved')">✅ Approuver</button>
+        <button class="btn-reject" onclick="reviewVolunteer(${v.id}, 'rejected')">❌ Rejeter</button>
+      </div>` : v.reviewer_notes ? `<div class="vol-section" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)"><div class="vol-section-label">Notes du superviseur</div><div class="vol-section-text">${escapeHTML(v.reviewer_notes)}</div></div>` : ""}
+    </div>
+  `;
+}
+
+async function reviewVolunteer(id, decision) {
+  const notes = document.getElementById(`vol-notes-${id}`)?.value?.trim() || "";
+  const confirmMsg = decision === "approved"
+    ? "Approuver cette candidature ? Le volontaire recevra le statut de tuteur."
+    : "Rejeter cette candidature ?";
+  if (!confirm(confirmMsg)) return;
+
+  try {
+    const r = await fetch(`${API}/admin/volunteers/${id}/review`, {
+      method: "POST",
+      headers: authHeaders(),
+      body: JSON.stringify({ decision, notes }),
+    });
+    if (!r.ok) { const d = await r.json(); throw new Error(d?.detail || "Erreur"); }
+    showToast(decision === "approved" ? "✅ Candidature approuvée — le volontaire est maintenant tuteur." : "❌ Candidature rejetée.", decision === "approved" ? "success" : "");
+    await loadVolunteers();
+  } catch (e) {
+    showToast("Erreur : " + e.message, "error");
+  }
+}
+
 // ── Init ──
 async function init() {
   if (!token) { window.location.href = "index.html"; return; }
@@ -871,6 +1034,12 @@ async function init() {
     }
     document.getElementById("tutor-name-pill").textContent =
       "👤 " + (currentUser.full_name || "Tuteur");
+    // Show admin nav for superviseurs/admins
+    if (role === "admin" || role === "superviseur") {
+      const navVol = document.getElementById("nav-volunteers");
+      if (navVol) navVol.style.display = "";
+      loadVolunteers();
+    }
     await loadDashboard();
   } catch (e) {
     window.location.href = "index.html";

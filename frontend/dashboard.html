@@ -68,27 +68,28 @@
 
     /* ── SIDEBAR ── */
     .sidebar {
-      width: 240px; min-width: 240px;
-      background: var(--card);
-      border-right: 1px solid var(--border);
-      padding: 24px 16px;
+      width: 220px; min-width: 220px;
+      background: #1a3a5c;
+      border-right: none;
+      padding: 28px 12px;
       display: flex; flex-direction: column; gap: 4px;
     }
-    .sidebar-label {
-      font-size: 11px; font-weight: 600; color: var(--text-muted);
-      text-transform: uppercase; letter-spacing: .05em;
-      padding: 8px 12px 4px;
+    .sidebar-brand {
+      font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 20px;
+      color: #fff; padding: 0 12px 24px; letter-spacing: -.3px;
     }
+    .sidebar-brand span { color: #6ee7b7; }
     .nav-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 12px; border-radius: 10px;
-      font-size: 14px; font-weight: 500; color: var(--text-muted);
+      display: flex; align-items: center;
+      padding: 11px 14px; border-radius: 10px;
+      font-size: 14px; font-weight: 500; color: rgba(255,255,255,.65);
       cursor: pointer; transition: all .15s; border: none; background: none;
       width: 100%; text-align: left;
     }
-    .nav-item:hover { background: var(--bg); color: var(--text); }
-    .nav-item.active { background: var(--green-light); color: var(--green); font-weight: 600; }
-    .nav-item .icon { font-size: 18px; width: 22px; text-align: center; }
+    .nav-item:hover { background: rgba(255,255,255,.1); color: #fff; }
+    .nav-item.active { background: rgba(110,231,183,.15); color: #6ee7b7; font-weight: 600; }
+    .nav-item.nav-logout { color: rgba(255,255,255,.4); margin-top: 4px; }
+    .nav-item.nav-logout:hover { color: #fca5a5; background: rgba(239,68,68,.1); }
 
     /* ── MAIN ── */
     main { flex: 1; padding: 32px; overflow-y: auto; max-width: 1100px; }
@@ -408,11 +409,9 @@
 
   <!-- SIDEBAR -->
   <aside class="sidebar">
+    <div class="sidebar-brand">Edu<span>Bot</span></div>
     <button class="nav-item active" id="nav-dashboard" onclick="showScreen('dashboard')">
       Tableau de bord
-    </button>
-    <button class="nav-item" id="nav-lessons" onclick="showScreen('subjects')">
-      Mes leçons
     </button>
     <button class="nav-item" id="nav-grades" onclick="showScreen('grades')">
       Mes notes
@@ -421,7 +420,7 @@
       Demander de l'aide
     </button>
     <div style="flex:1"></div>
-    <button class="nav-item" onclick="logout()">
+    <button class="nav-item nav-logout" onclick="logout()">
       Déconnexion
     </button>
   </aside>
@@ -682,15 +681,14 @@ function showScreen(name) {
   const map = {
     'diagnostic': 'screen-diagnostic',
     'dashboard': 'screen-dashboard',
-    'subjects': 'screen-dashboard',
     'lessons': 'screen-lessons',
     'lesson-content': 'screen-lesson-content',
     'grades': 'screen-grades',
     'help': 'screen-help',
   };
   const navMap = {
-    'dashboard': 'nav-dashboard', 'subjects': 'nav-dashboard',
-    'lessons': 'nav-lessons', 'lesson-content': 'nav-lessons',
+    'dashboard': 'nav-dashboard',
+    'lessons': 'nav-dashboard', 'lesson-content': 'nav-dashboard',
     'grades': 'nav-grades', 'help': 'nav-help',
   };
 
@@ -700,7 +698,6 @@ function showScreen(name) {
   if (navId) document.getElementById(navId)?.classList.add('active');
 
   if (name === 'grades') loadGrades();
-  if (name === 'subjects') loadDashboard();
 }
 
 function logout() {
@@ -878,16 +875,28 @@ function openSubject(subject) {
   document.getElementById('lessons-title').innerHTML = `${icon} ${label}`;
 
   const lessons = subjectData.lessons || [];
-  document.getElementById('lessons-list').innerHTML = lessons.map(l => {
-    const isLocked = !l.unlocked;
+
+  // Déverrouillage strictement séquentiel :
+  // la première leçon non complétée est la seule accessible.
+  let firstActiveFound = false;
+  const rows = lessons.map(l => {
     const isDone = l.status === 'completed';
-    const numClass = isDone ? 'done' : (isLocked ? 'locked' : 'active');
-    const badgeClass = isDone ? 'badge-done' : (isLocked ? 'badge-locked' : 'badge-active');
-    const badgeText = isDone ? '✅ Complétée' : (isLocked ? '🔒 Verrouillée' : '▶️ En cours');
+    let isCurrent = false;
+    if (!isDone && !firstActiveFound) {
+      isCurrent = true;
+      firstActiveFound = true;
+    }
+    const isLocked = !isDone && !isCurrent;
+
+    const numClass = isDone ? 'done' : (isCurrent ? 'active' : 'locked');
+    const badgeClass = isDone ? 'badge-done' : (isCurrent ? 'badge-active' : 'badge-locked');
+    const badgeText = isDone ? 'Complétée' : (isCurrent ? 'En cours' : 'Verrouillée');
     const score = isDone && l.score != null ? ` · ${l.score}%` : '';
+    const clickable = isDone || isCurrent;
+
     return `
       <div class="lesson-item ${isDone ? 'completed' : ''} ${isLocked ? 'locked' : ''}"
-           onclick="${isLocked ? '' : `openLesson(${l.id})`}">
+           onclick="${clickable ? `openLesson(${l.id})` : ''}">
         <div class="lesson-num ${numClass}">${l.order}</div>
         <div class="lesson-info">
           <div class="lesson-title">${l.title}</div>
@@ -895,8 +904,9 @@ function openSubject(subject) {
         </div>
         <span class="lesson-badge ${badgeClass}">${badgeText}</span>
       </div>`;
-  }).join('');
+  });
 
+  document.getElementById('lessons-list').innerHTML = rows.join('');
   showScreen('lessons');
 }
 
@@ -969,6 +979,10 @@ function selectExOption(exId, label, btn) {
   checkSubmitEnable();
 }
 
+function retryLesson() {
+  if (currentLesson) openLesson(currentLesson.id);
+}
+
 function checkSubmitEnable() {
   if (!currentLesson) return;
   const allAnswered = currentLesson.exercises.every(ex => exerciseAnswers[ex.id] !== undefined);
@@ -1007,21 +1021,33 @@ async function submitLesson() {
       }
     });
 
-    // Message résultat
+    // Afficher le panneau de résultat
     const passed = result.passed;
-    const color = passed ? 'var(--green)' : '#f59e0b';
-    document.getElementById('btn-submit-lesson').textContent = result.passed ? '🎉 Réussi !' : '💪 Essaie encore !';
-    document.getElementById('btn-submit-lesson').style.background = color;
-
-    toast(result.message, passed ? 'success' : '');
-    if (result.next_lesson && passed) {
-      setTimeout(() => {
-        if (confirm(`🎉 Leçon suivante débloquée : "${result.next_lesson.title}". Veux-tu y aller ?`)) {
-          openLesson(result.next_lesson.id);
-        }
-      }, 1000);
-    }
     if (passed) await loadDashboard();
+
+    const submitSection = document.querySelector('.submit-section');
+    if (submitSection) {
+      const nextBtn = (result.next_lesson && passed)
+        ? `<button class="btn-primary" style="min-width:200px" onclick="openLesson(${result.next_lesson.id})">
+             Leçon suivante : ${result.next_lesson.title} →
+           </button>`
+        : '';
+      const retryBtn = !passed
+        ? `<button class="btn-secondary" style="margin-top:8px" onclick="retryLesson()">Réessayer</button>`
+        : '';
+      submitSection.innerHTML = `
+        <div style="background:${passed ? '#f0fdf4' : '#fffbeb'};border:1px solid ${passed ? '#bbf7d0' : '#fde68a'};
+          border-radius:14px;padding:20px 24px;text-align:center;margin-bottom:8px">
+          <div style="font-size:22px;font-weight:800;color:${passed ? '#16a34a' : '#d97706'};margin-bottom:4px">
+            ${result.overall_score !== undefined ? result.overall_score + '%' : (passed ? 'Réussi' : 'À améliorer')}
+          </div>
+          <div style="font-size:14px;color:#64748b;margin-bottom:16px">${result.message || ''}</div>
+          ${nextBtn}
+          ${retryBtn}
+          <button class="btn-secondary" style="margin-top:8px;display:block;width:100%;max-width:200px;margin-left:auto;margin-right:auto"
+            onclick="openSubject(currentSubject)">← Retour à la liste</button>
+        </div>`;
+    }
   } catch (e) {
     toast(e.message, 'error');
     document.getElementById('btn-submit-lesson').disabled = false;
